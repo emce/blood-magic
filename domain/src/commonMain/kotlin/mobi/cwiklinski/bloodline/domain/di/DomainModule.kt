@@ -1,18 +1,18 @@
 package mobi.cwiklinski.bloodline.domain.di
 
-import mobi.cwiklinski.bloodline.auth.firebase.createAuthenticationModule
 import mobi.cwiklinski.bloodline.data.firebase.createDataModule
+import mobi.cwiklinski.bloodline.storage.datastore.createStorageModule
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 expect fun createDomainModules(): List<Module>
 
-fun createCommonDomainModules() = buildList {
+fun createCommonDomainModules(): List<Module> = buildList {
     addAll(createServiceModules())
     add(createUseCaseModules())
 }
 
-private fun createServiceModules() = buildList {
+private fun createServiceModules(): List<Module> = buildList {
     add(createDataModule())
     add(createStorageModule())
 }
