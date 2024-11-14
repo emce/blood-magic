@@ -3,7 +3,7 @@ package mobi.cwiklinski.bloodline.domain.model
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import mobi.cwiklinski.bloodline.domain.Constants.Sex
+import mobi.cwiklinski.bloodline.domain.Sex
 
 @Serializable
 data class Profile(

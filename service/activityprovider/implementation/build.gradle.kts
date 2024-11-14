@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.api
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -22,8 +23,8 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-            implementation(projects.service.activityprovider.api)
-            implementation(libs.koin.core)
+            api(projects.service.activityprovider.api)
+            api(libs.bundles.koin.common)
         }
     }
 }

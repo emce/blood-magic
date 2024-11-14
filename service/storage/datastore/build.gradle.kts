@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.api
 import org.gradle.kotlin.dsl.implementation
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
@@ -38,17 +39,16 @@ kotlin {
     sourceSets {
         val desktopMain by getting
         androidMain.dependencies {
-            implementation(projects.service.activityprovider.api)
-            implementation(projects.service.activityprovider.implementation)
-            implementation(libs.androidx.datastore.preferences.android)
+            api(projects.service.activityprovider.api)
+            api(projects.service.activityprovider.implementation)
+            api(libs.bundles.datastore.android)
         }
         commonMain.dependencies {
-            implementation(projects.service.storage.api)
-            implementation(projects.domain)
-            implementation(libs.androidx.datastore)
-            implementation(libs.androidx.datastore.preferences)
-            implementation(libs.kotlinx.coroutines)
-            implementation(libs.koin.core)
+            api(projects.service.storage.api)
+            api(projects.domain)
+            api(libs.bundles.datastore.common)
+            api(libs.bundles.kotlinx.coroutines.common)
+            api(libs.bundles.koin.common)
         }
         commonTest.dependencies {
             implementation(libs.junit)
@@ -57,7 +57,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
         desktopMain.dependencies {
-            implementation(libs.kotlinx.coroutines.swing)
+            api(libs.kotlinx.coroutines.swing)
         }
     }
 }

@@ -5,7 +5,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
-import mobi.cwiklinski.bloodline.domain.Constants
+import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.util.isAfter
 import mobi.cwiklinski.bloodline.domain.util.isBefore
@@ -32,14 +32,14 @@ data class Donation(
 
     fun isPacked() = type == DonationType.PACKED_CELLS
 
-    fun convertToFullBlood(sex: Constants.Sex): Int {
+    fun convertToFullBlood(sex: Sex): Int {
         return when {
             isPlasma() -> when {
-                date.isBefore(Constants.PERIOD_FIRST) -> {
+                date.isBefore(PERIOD_FIRST) -> {
                     amount.toDouble()
                 }
 
-                date.isAfter(Constants.PERIOD_FIRST) && date.isBefore(Constants.PERIOD_SECOND) -> {
+                date.isAfter(PERIOD_FIRST) && date.isBefore(PERIOD_SECOND) -> {
                     if (sex.isFemale()) amount.times(200.0).div(650.0)
                     else amount.times(180.0).div(650.0)
                 }
@@ -50,8 +50,8 @@ data class Donation(
             }.roundToInt()
 
             isPlatelets() -> when {
-                date.isBefore(Constants.PERIOD_FIRST) -> amount.toDouble()
-                date.isAfter(Constants.PERIOD_FIRST) && date.isBefore(Constants.PERIOD_SECOND) -> {
+                date.isBefore(PERIOD_FIRST) -> amount.toDouble()
+                date.isAfter(PERIOD_FIRST) && date.isBefore(PERIOD_SECOND) -> {
                     if (sex.isFemale()) amount.times(830.0).div(250.0)
                     else amount.times(670.0).div(250.0)
                 }
@@ -60,12 +60,17 @@ data class Donation(
             }.roundToInt()
 
             isPacked() -> when {
-                date.isBefore(Constants.PERIOD_FIRST) -> amount
+                date.isBefore(PERIOD_FIRST) -> amount
                 else -> amount.times(1000.0).div(600.0).roundToInt()
             }
 
             else -> amount
         }
+    }
+    
+    companion object {
+        private val PERIOD_FIRST: LocalDate = LocalDate(1998, 10, 14)
+        private val PERIOD_SECOND: LocalDate = LocalDate(2006, 2, 23)
     }
 
 }

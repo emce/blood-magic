@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.api
 import org.gradle.kotlin.dsl.implementation
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
@@ -42,10 +43,10 @@ kotlin {
             implementation(projects.service.activityprovider.implementation)
         }
         commonMain.dependencies {
-            implementation(projects.service.auth.api)
-            implementation(libs.google.firebase.kmm)
-            implementation(libs.kotlinx.coroutines)
-            implementation(libs.koin.core)
+            api(projects.service.auth.api)
+            api(libs.google.firebase.kmm)
+            api(libs.bundles.kotlinx.coroutines.common)
+            api(libs.bundles.koin.common)
         }
         commonTest.dependencies {
             //implementation(libs.kotlin.test)

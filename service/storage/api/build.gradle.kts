@@ -36,7 +36,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.domain)
+            api(projects.domain)
         }
     }
 }

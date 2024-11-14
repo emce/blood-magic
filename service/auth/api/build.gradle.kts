@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.api
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -37,8 +38,9 @@ kotlin {
     sourceSets {
         val desktopMain by getting
         commonMain.dependencies {
-            implementation(libs.kotlinx.coroutines)
-            implementation(libs.kotlinx.datetime)
+            api(libs.bundles.kotlinx.serialization.common)
+            api(libs.bundles.kotlinx.coroutines.common)
+            api(libs.bundles.kotlinx.datetime.common)
         }
         desktopMain.dependencies {
             implementation(libs.kotlinx.coroutines.swing)

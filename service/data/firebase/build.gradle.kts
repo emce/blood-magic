@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.api
 import org.gradle.kotlin.dsl.commonTest
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.implementation
@@ -44,13 +45,13 @@ kotlin {
             implementation(projects.service.activityprovider.implementation)
         }
         commonMain.dependencies {
-            implementation(projects.domain)
-            implementation(projects.service.data.api)
-            implementation(libs.google.firebase.kmm)
-            implementation(libs.google.firebase.database)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.coroutines)
-            implementation(libs.koin.core)
+            api(projects.domain)
+            api(projects.service.data.api)
+            api(libs.google.firebase.kmm)
+            api(libs.google.firebase.database)
+            api(libs.bundles.kotlinx.datetime.common)
+            api(libs.bundles.kotlinx.coroutines.common)
+            api(libs.bundles.koin.common)
         }
         commonTest.dependencies {
             implementation(libs.junit)
@@ -59,7 +60,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
         desktopMain.dependencies {
-            implementation(libs.kotlinx.coroutines.swing)
+            api(libs.kotlinx.coroutines.swing)
         }
     }
 }
