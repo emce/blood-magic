@@ -1,0 +1,5 @@
+package mobi.cwiklinski.bloodline.auth.firebase
+
+import mobi.cwiklinski.bloodline.auth.api.DesktopMainAuthenticationService
+
+class DesktopMainAuthenticationServiceImpl : AuthenticationServiceImpl(), DesktopMainAuthenticationService
