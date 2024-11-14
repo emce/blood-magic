@@ -1,6 +1,5 @@
 package mobi.cwiklinski.bloodline.auth.api
 
-import android.content.Intent
 import kotlinx.coroutines.flow.Flow
 
 interface AndroidAuthenticationService : AuthenticationService {

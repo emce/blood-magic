@@ -9,8 +9,6 @@ import mobi.cwiklinski.bloodline.storage.api.StorageService
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-
-
 actual val commonModule: Module = module {
     single<DataStore<Preferences>> {
         val context = get<Context>()
