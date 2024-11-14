@@ -1,5 +1,4 @@
 import org.gradle.kotlin.dsl.android
-import org.gradle.kotlin.dsl.implementation
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -38,16 +37,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.service.auth.api)
-            implementation(projects.service.auth.firebase)
-            implementation(projects.service.data.api)
-            implementation(projects.service.data.firebase)
-            implementation(projects.service.storage.api)
-            implementation(projects.service.storage.datastore)
-            implementation(libs.kotlinx.serializable)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.coroutines)
-            implementation(libs.koin.core)
+            api(libs.bundles.kotlinx.serialization.common)
+            api(libs.bundles.kotlinx.datetime.common)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

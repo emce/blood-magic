@@ -25,6 +25,6 @@ interface StorageService {
     suspend fun clearAll()
 
     companion object {
-        val FILE_NAME = "blood-magic.preferences_pb"
+        const val FILE_NAME = "blood-magic.preferences_pb"
     }
 }

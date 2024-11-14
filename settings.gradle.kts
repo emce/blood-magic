@@ -3,13 +3,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     repositories {
-        google {
-            mavenContent {
-                includeGroupAndSubgroups("androidx")
-                includeGroupAndSubgroups("com.android")
-                includeGroupAndSubgroups("com.google")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -18,7 +12,7 @@ pluginManagement {
 dependencyResolutionManagement {
     repositories {
         google {
-            mavenContent {
+            content {
                 includeGroupAndSubgroups("androidx")
                 includeGroupAndSubgroups("com.android")
                 includeGroupAndSubgroups("com.google")
@@ -28,6 +22,9 @@ dependencyResolutionManagement {
     }
 }
 
+include(":apps:android")
+include(":apps:desktop")
+include(":apps:ios")
 include(":shared")
 include(":domain")
 include(":service:auth:api")
