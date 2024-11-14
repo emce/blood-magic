@@ -19,6 +19,8 @@ output.json
 *.iml
 .idea/
 misc.xml
+.fleet
+.kotlin
 deploymentTargetDropDown.xml
 render.experimental.xml
 
