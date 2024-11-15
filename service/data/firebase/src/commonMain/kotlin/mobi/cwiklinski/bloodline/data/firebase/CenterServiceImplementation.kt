@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.data.firebase.model.FirebaseCenter
-import mobi.cwiklinski.bloodline.domain.util.flattenToList
+import mobi.cwiklinski.bloodline.data.firebase.util.flattenToList
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CenterServiceImplementation(val db: FirebaseDatabase) : CenterService {

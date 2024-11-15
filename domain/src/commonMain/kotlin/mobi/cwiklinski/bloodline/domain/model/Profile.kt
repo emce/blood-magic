@@ -7,6 +7,7 @@ import mobi.cwiklinski.bloodline.domain.Sex
 
 @Serializable
 data class Profile(
+    val id: String?,
     val name: String,
     val email: String,
     val avatar: String,
@@ -18,6 +19,6 @@ data class Profile(
     fun toJson() = Json.encodeToString(this)
 
     companion object {
-        fun fromJson(data: String) = Json.decodeFromString<Profile>(data)
+        fun fromJson(data: String) = if (data != "profile") Json.decodeFromString<Profile>(data) else null
     }
 }

@@ -7,14 +7,15 @@ import kotlinx.coroutines.flow.map
 import mobi.cwiklinski.bloodline.data.api.Either
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.data.firebase.model.FirebaseSettings
-import mobi.cwiklinski.bloodline.domain.Constants.Sex
-import mobi.cwiklinski.bloodline.domain.util.flattenToList
+import mobi.cwiklinski.bloodline.data.firebase.util.flattenToList
+import mobi.cwiklinski.bloodline.domain.Sex
 
 class ProfileServiceImplementation(val db: FirebaseDatabase, val auth: FirebaseAuth) : ProfileService {
 
     private val mainRef = db.reference("settings").child(auth.currentUser?.uid ?: "-")
 
     override suspend fun updateProfile(
+        id: String,
         newName: String,
         newAvatar: String,
         newSex: Sex,
@@ -35,6 +36,6 @@ class ProfileServiceImplementation(val db: FirebaseDatabase, val auth: FirebaseA
         .valueEvents
         .map { it.value<Map<String, FirebaseSettings>>().values.toList() }
         .flattenToList()
-        .map { it.toProfile(auth.currentUser?.displayName ?: "", auth.currentUser?.email ?: "") }
+        .map { it.toProfile(auth.currentUser?.uid ?: "", auth.currentUser?.displayName ?: "", auth.currentUser?.email ?: "") }
         .first()
 }

@@ -38,6 +38,7 @@ constraintlayout-compose-multiplatform = "0.4.0"
 napier = "2.7.1"
 google-firebase-kmm = "2.1.0"
 voyager = "1.1.0-beta02"
+uiDesktop = "1.7.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -97,6 +98,7 @@ voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sh
 voyager-tabNavigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+androidx-ui-desktop = { group = "androidx.compose.ui", name = "ui-desktop", version.ref = "uiDesktop" }
 
 [bundles]
 kotlinx-coroutines-common = [
@@ -136,6 +138,9 @@ constraintlayout-common = [
 ]
 kotlinx-coroutines-android = [
     "kotlinx-coroutines-android"
+]
+activity-android = [
+    "androidx-activity-compose"
 ]
 appcompat-android = [
     "androidx-appcompat",
@@ -196,11 +201,15 @@ voyager = [
     "voyager-transitions",
     "voyager-koin"
 ]
+koin-android = [
+    "koin-android",
+    "koin-androidx-compose",
+    "koin-androidx-workmanager"
+]
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

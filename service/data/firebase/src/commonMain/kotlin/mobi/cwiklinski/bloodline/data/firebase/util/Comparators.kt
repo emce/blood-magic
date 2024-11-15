@@ -1,11 +1,10 @@
 package mobi.cwiklinski.bloodline.data.firebase.util
 
 import mobi.cwiklinski.bloodline.data.firebase.model.FirebaseCenter
-import mobi.cwiklinski.bloodline.domain.Constants
 
 class RegionCenterComparator : Comparator<FirebaseCenter> {
 
-    private val polish = Constants.POLISH_DIACRITCS.toList()
+    private val polish = POLISH_DIACRITICS.toList()
 
     override fun compare(a: FirebaseCenter, b: FirebaseCenter): Int {
         if (a.voivodeship == b.voivodeship) {
@@ -23,6 +22,10 @@ class RegionCenterComparator : Comparator<FirebaseCenter> {
             }
         }
         return 0
+    }
+
+    companion object {
+        const val POLISH_DIACRITICS = "aąbcćdeęfghijklłmnńoópqrsśtvwxyzźż"
     }
 
 }

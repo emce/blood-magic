@@ -37,13 +37,17 @@ kotlin {
         androidMain.dependencies {
             api(libs.bundles.coil.android)
             api(libs.bundles.compose.android)
+            api(projects.service.activityprovider.api)
+            implementation(projects.service.activityprovider.implementation)
         }
         commonMain.dependencies {
             api(projects.domain)
+            api(projects.service.auth.api)
+            api(projects.service.data.api)
             api(projects.service.storage.api)
+            implementation(projects.service.auth.firebase)
+            implementation(projects.service.data.firebase)
             implementation(projects.service.storage.datastore)
-            implementation(libs.bundles.coil.common)
-            implementation(libs.bundles.constraintlayout.common)
             implementation(compose.animation)
             implementation(compose.foundation)
             implementation(compose.runtime)
@@ -55,6 +59,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.bundles.voyager)
             implementation(libs.bundles.constraintlayout.common)
+            implementation(libs.bundles.coil.common)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -66,6 +71,13 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
         }
     }
+    task("testClasses")
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "mobi.cwiklinski.bloodline.resources"
+    generateResClass = auto
 }
 
 android {
@@ -76,10 +88,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
     debugImplementation(compose.uiTooling)
 }
-
-tasks.create("testClasses")

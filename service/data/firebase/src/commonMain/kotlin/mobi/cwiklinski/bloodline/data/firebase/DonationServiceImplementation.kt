@@ -13,10 +13,10 @@ import mobi.cwiklinski.bloodline.data.api.DonationService
 import mobi.cwiklinski.bloodline.data.api.Either
 import mobi.cwiklinski.bloodline.data.firebase.model.FirebaseCenter
 import mobi.cwiklinski.bloodline.data.firebase.model.FirebaseDonation
+import mobi.cwiklinski.bloodline.data.firebase.util.flattenToList
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
-import mobi.cwiklinski.bloodline.domain.util.flattenToList
 
 class DonationServiceImplementation(val db: FirebaseDatabase, val auth: FirebaseAuth) :
     DonationService {
