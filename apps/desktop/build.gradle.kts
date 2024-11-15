@@ -23,8 +23,21 @@ kotlin {
     sourceSets {
         val desktopMain by getting
         desktopMain.dependencies {
-            //implementation(project(":core:platform-services:inject-desktop"))
-            //implementation(project(":feature:main-impl"))
+            implementation(projects.shared)
+            implementation(compose.animation)
+            implementation(compose.foundation)
+            implementation(compose.runtime)
+            implementation(compose.runtimeSaveable)
+            implementation(compose.ui)
+            implementation(compose.material)
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(libs.androidx.ui.desktop)
+            implementation(libs.bundles.voyager)
+            implementation(libs.bundles.constraintlayout.common)
+            implementation(libs.bundles.coil.common)
+            implementation(libs.bundles.koin.common)
         }
     }
 }

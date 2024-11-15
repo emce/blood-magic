@@ -18,7 +18,7 @@ interface StorageService {
 
     suspend fun storeProfile(profile: Profile)
 
-    suspend fun getProfile(): Profile
+    suspend fun getProfile(): Profile?
 
     suspend fun exists(key: String): Boolean
 

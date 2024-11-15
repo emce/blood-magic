@@ -2,7 +2,7 @@ package mobi.cwiklinski.bloodline.data.firebase.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import mobi.cwiklinski.bloodline.domain.Constants.Sex
+import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Profile
 
 @Serializable
@@ -15,7 +15,8 @@ class FirebaseSettings(
     val avatar: String = "",
 ) {
 
-    fun toProfile(name: String, email: String) = Profile(
+    fun toProfile(id: String, name: String, email: String) = Profile(
+        id,
         name,
         email,
         avatar,

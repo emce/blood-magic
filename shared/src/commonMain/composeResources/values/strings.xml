@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="languageCode">pl</string>
+    <string name="appName">Magia Krwi</string>
+    <string name="goBack">Wróć</string>
+    <string name="seeAll">więcej</string>
+    <string name="milliliter">ml</string>
+    <string name="liter">l</string>
+    <string name="donationFullBlood">Krew Pełna</string>
+    <string name="donationPlasma">Osocze</string>
+    <string name="donationPlatelets">Płytki Krwi</string>
+    <string name="donationPacked">KKCz</string>
+    <string name="heroGenitive">bohatera</string>
+    <string name="heroinGenitive">bohaterki</string>
+    <string name="day">dzień</string>
+    <string name="days">dni</string>
+    <string name="close">Zamknij</string>
+    <string name="male">czarowny mężczyzna</string>
+    <string name="female">magiczna kobieta</string>
+    <string-array name="months">
+        <item>styczeń</item>
+        <item>luty</item>
+        <item>marzec</item>
+        <item>kwiecień</item>
+        <item>maj</item>
+        <item>czerwiec</item>
+        <item>lipiec</item>
+        <item>sierpień</item>
+        <item>wrzesień</item>
+        <item>październik</item>
+        <item>listopad</item>
+        <item>grudzień</item>
+    </string-array>
+    <string-array name="monthGenitives">
+        <item>stycznia</item>
+        <item>lutego</item>
+        <item>marca</item>
+        <item>kwietnia</item>
+        <item>maja</item>
+        <item>czerwca</item>
+        <item>lipca</item>
+        <item>sierpnia</item>
+        <item>września</item>
+        <item>października</item>
+        <item>listopada</item>
+        <item>grudnia</item>
+    </string-array>
+
+    // LOGIN SCREEN
+    <string name="loginTitle">Witaj ponownie!</string>
+    <string name="loginEmailLabel">Email</string>
+    <string name="loginPasswordLabel">Hasło</string>
+    <string name="loginPasswordReminderButton">Nie pamiętasz hasła?</string>
+    <string name="loginSubmitButton">Zaloguj się</string>
+    <string name="loginSocialSectionTitle">lub kontynuuj, używając</string>
+    <string name="loginRegisterText">Nie masz konta?</string>
+    <string name="loginRegisterButton">Zarejestruj się</string>
+    <string name="loginEmailError">Nieprawidłowy adres email!</string>
+    <string name="loginPasswordError">Nieprawidłowe bądź za krótkie hasło!</string>
+
+    // REGISTER SCREEN
+    <string name="registerTitle">Utwórz konto</string>
+    <string name="registerRepeatLabel">Powtórz hasło</string>
+    <string name="registerRepeatError">Nieprawidłowe bądź za krótkie potwórzenie hasła!</string>
+    <string name="registerRepeatComparisonError">Hasło i jego potwórzenie nie są jednakowe!</string>
+    <string name="registerTermsPrivacyPolicy">Politykę prywatności</string>
+    <string name="registerTermsPrivacyPolicyLink"> </string>
+    <string name="registerTermsRules">Regulamin</string>
+    <string name="registerTermsRulesLink"> </string>
+    <string name="registerTerms">Tworząc konto, wyrażasz zgodę na $registerTermsPrivacyPolicy oraz $registerTermsRules.</string>
+    <string name="registerSubmitButton">Zarejestruj się</string>
+    <string name="registerLoginText">Masz już konto?</string>
+    <string name="registerLoginButton">Zaloguj się</string>
+    <string name="registerSocialSectionTitle">lub zarejestruj się, używając</string>
+
+    // RESET
+    <string name="resetTitle">Zresetuj hasło</string>
+    <string name="resetInformation">Wprowadź adres email podany podczas rejestracji. Wyślemy na niego wiadomość z linkiem do zresetowania hasła.</string>
+    <string name="resetSubmitButton">Wyślij wiadomość z linkiem</string>
+    <string name="resetError">Wystąpił błąd przy wysyłaniu formularza</string>
+
+    // HOME
+    <string name="homeTitle">Cześć, %s!</string>
+    <string name="homeHero">Bohaterze</string>
+    <string name="homeHeroin">Bohaterko</string>
+    <string name="homeSubTitle">Twoja krew ma magiczną moc</string>
+    <string name="homeSectionTitle">Oby tak dalej, %s!</string>
+    <string name="homeSectionEmptyTitle">Zacznij działać, %s!</string>
+    <string name="homeSectionNextDonationEmptyTitle">Następny pobór krwi</string>
+    <string name="homeSectionNextDonationEmptyText">Tutaj pojawi się informacja o następnym możliwym terminie poboru krwi.</string>
+    <string name="homeSectionHistoryEmptyTitle">Historia donacji</string>
+    <string name="homeSectionHistoryEmptyText">Tutaj pojawią się dokonane przez Ciebie donacje.</string>
+    <string name="homeSectionHistoryAddDonationEmptyText">Dodaj donację.</string>
+    <string name="homeDonationHistory">Historia donacji</string>
+    <string name="homeCarouselAmountTitle">%d pobrań</string>
+    <string name="homeCarouselAmountSubtitle">leczniczej krwi</string>
+    <string name="homeCarouselTotalAmountTitle">oddanej krwi</string>
+    <string name="homeCarouselBadge1Title">Brązowa Tarcza</string>
+    <string name="homeCarouselBadge1Subtitle"> </string>
+    <string name="homeCarouselBadge2Title">Srebrna Tarcza</string>
+    <string name="homeCarouselBadge2Subtitle"> </string>
+    <string name="homeCarouselBadge3Title">Złotej Tarcza</string>
+    <string name="homeCarouselBadge3Subtitle"> </string>
+    <string name="homeCarouselBadgeFinalTitle">Platynowa Tarcza</string>
+    <string name="homeCarouselBadgeFinalSubtitle"> </string>
+    <string name="homeNextDonationReadyTitle">To jest Magia!</string>
+    <string name="homeNextDonationReadySubtitle">Pobór krwi pełnej jest już MOŻLIWY</string>
+    <string name="homeNextDonationPendingTitle">Następny możliwy pobór krwi pełnej (%s)</string>
+
+    // PROFILE
+    <string name="profileTitle">Twój profil</string>
+    <string name="profileAvatarFenix">nieposkromiony feniks</string>
+    <string name="profileAvatarPegasus">zdeterminowany pegaz</string>
+    <string name="profileAvatarFairy">pracowita wróżka</string>
+    <string name="profileAvatarNymph">empatyczna nimfa</string>
+    <string name="profileAvatarKing">niepokonany władca</string>
+    <string name="profileAvatarWizard">potężny mag</string>
+    <string name="profileDataTitle">Dane %s</string>
+    <string name="profileDataNameLabel">Nazwa użytkownika</string>
+    <string name="profileDataEmailLabel">Email</string>
+    <string name="profileDataCurrentPasswordLabel">Aktualne hasło</string>
+    <string name="profileDataPasswordLabel">Nowe hasło</string>
+    <string name="profileDataPasswordRepeatLabel">Potwórzenie nowego hasła</string>
+    <string name="profileDataCurrentPasswordError">Za krótkie lub niepoprawne aktualne hasło!</string>
+    <string name="profileDataPasswordError">Nieprawidłowy format hasła (co najmniej 5 znaków)</string>
+    <string name="profileDataPasswordRepeatError">Powtórzenie hasła nie jest jednakowe z nowym hasłem!</string>
+    <string name="profileDataUpdateError">Wystąpił błąd przy aktualizacji profilu.</string>
+    <string name="profileDataPasswordUpdateError">Wystąpił błąd przy aktualizacji hasła.</string>
+    <string name="profileDataUpdateSuccess">Dane profilu zostały zmienione.</string>
+    <string name="profileDataPasswordUpdateSuccess">Nowe hasło zostało ustawione.</string>
+    <string name="profileDataSubmitButton">Edytuj dane</string>
+    <string name="profileAvatarTitle">Wybierz postać</string>
+    <string name="profilePasswordChangeTitle">Zmiana hasła użytkownika</string>
+
+    // NEW DONATION
+    <string name="donationNewTitle">Nowa donacja</string>
+    <string name="donationNewSubmit">Dodaj donację</string>
+    <string name="donationNewTypeLabel">Typ donacji</string>
+    <string name="donationNewAmountLabel">Ilość ml</string>
+    <string name="donationNewAmountError">Nieprawidłowa ilość donacji</string>
+    <string name="donationNewDateLabel">Data donacji</string>
+    <string name="donationNewDateSubmit">Wybierz datę</string>
+    <string name="donationNewError">Wystąpił błąd przy zapisie donacji</string>
+    <string name="donationNewCenterLabel">Centrum Krwiodawstwa</string>
+    <string name="donationNewCenterError">Nie wybrane zostało Centrum Krwiodawstwa!</string>
+    <string name="donationNewDisqualificationLabel">Dyskwalifikacja</string>
+
+    // EDIT DONATION
+    <string name="donationEditTitle">Edycja donacji</string>
+    <string name="donationEditIdError">Nieprawidłowe ID donacji</string>
+    <string name="donationEditSubmit">Zapisz zmiany</string>
+
+    // DONATIONS
+    <string name="donationsTitle">Twoje magiczne kropelki</string>
+    <string name="donationsDelete">Usuń donację</string>
+    <string name="donationsEdit">Edytuj donację</string>
+    <string name="donationsDeleteMessage">Wszystkie dane donacji zostaną usunięte.</string>
+    <string name="donationsDeleteWarning">Dane zostaną usunięte bezpowrotnie!</string>
+    <string name="donationsDeleteError">Wystąpił błąd przy usuwaniu donacji.</string>
+
+    // SETTINGS
+    <string name="settingsTitle">Poukładanki</string>
+    <string name="settingsDefaultCenterLabel">Domyślne Centrum Krwiodawstwa</string>
+    <string name="settingsStartingLabel">Początkowa wartość dla sumy donacji</string>
+    <string name="settingsSexLabel">Płeć</string>
+    <string name="settingsReminderLabel">Powiadomienia o możliwej donacji</string>
+    <string name="settingsSubmitButton">Zapisz Poukładanki</string>
+    <string name="settingsSavedMessage">Poukładanki zostały zapisane.</string>
+    <string name="settingsLogoutTitle">Wylogowanie</string>
+    <string name="settingsLogoutMessage">Zostaniesz wylogowany z aplikacji - nie martw się, Twoje dane są zapisane, ale aby z nich skorzystać, musisz zalogować się ponownie</string>
+
+</resources>

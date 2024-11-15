@@ -1,11 +1,12 @@
 package mobi.cwiklinski.bloodline.data.api
 
-import mobi.cwiklinski.bloodline.domain.Constants.Sex
+import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Profile
 
 interface ProfileService {
 
     suspend fun updateProfile(
+        id: String,
         newName: String,
         newAvatar: String,
         sex: Sex,

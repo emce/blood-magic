@@ -1,6 +1,5 @@
 import java.io.ByteArrayOutputStream
 import org.jetbrains.compose.internal.utils.localPropertiesFile
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 @Suppress("dsl_scope_violation")
 
@@ -69,4 +68,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+}
+
+dependencies {
+    implementation(projects.shared)
+    implementation(libs.bundles.activity.android)
+    implementation(libs.bundles.appcompat.android)
+    implementation(libs.bundles.core.android)
+    implementation(libs.bundles.compose.android)
+    implementation(libs.bundles.koin.android)
 }

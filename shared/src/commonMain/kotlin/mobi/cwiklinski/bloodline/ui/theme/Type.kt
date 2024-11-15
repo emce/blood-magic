@@ -1,80 +1,97 @@
 package mobi.cwiklinski.bloodline.ui.theme
 
-import androidx.compose.material.Typography
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import bloodmagic.shared.generated.resources.Res
+import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.quicksand_bold
+import mobi.cwiklinski.bloodline.resources.quicksand_light
+import mobi.cwiklinski.bloodline.resources.quicksand_medium
+import mobi.cwiklinski.bloodline.resources.quicksand_regular
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.Font
 
 @Composable
 fun getTypography(): Typography {
     return Typography(
-        h1 = TextStyle(
+        titleLarge = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.BOLD),
             fontWeight = FontWeight.Bold,
             fontSize = 52.sp,
         ),
-        h2 = TextStyle(
+        titleMedium = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.BOLD),
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp
         ),
-        h3 = TextStyle(
+        titleSmall = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.BOLD),
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
         ),
-        h4 = TextStyle(
+        headlineLarge = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.MEDIUM),
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
         ),
-        h5 = TextStyle(
+        headlineMedium = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.BOLD),
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp
         ),
-        h6 = TextStyle(
+        headlineSmall = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.MEDIUM),
             fontWeight = FontWeight.SemiBold,
             fontSize = 12.sp,
         ),
-        subtitle1 = TextStyle(
+        displayLarge = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.MEDIUM),
             fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp,
+            fontSize = 18.sp,
         ),
-        subtitle2 = TextStyle(
+        displayMedium = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.MEDIUM),
             fontWeight = FontWeight.Medium,
-            fontSize = 14.sp,
+            fontSize = 16.sp,
         ),
-        body1 = TextStyle(
-            //fontFamily = Res.font.quicksand_regular,
+        displaySmall = TextStyle(
+            fontFamily = getFontFamily(AppFontFamily.MEDIUM),
+            fontWeight = FontWeight.Medium,
+            fontSize = 16.sp,
+        ),
+        bodyLarge = TextStyle(
+            fontFamily = getFontFamily(AppFontFamily.REGULAR),
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp
+        ),
+        bodyMedium = TextStyle(
+            fontFamily = getFontFamily(AppFontFamily.REGULAR),
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp
         ),
-        body2 = TextStyle(fontFamily = getFontFamily(AppFontFamily.REGULAR), fontSize = 10.sp),
-        button = TextStyle(
-            fontFamily = getFontFamily(AppFontFamily.MEDIUM),
-            fontWeight = FontWeight.Normal,
-            fontSize = 13.sp
+        bodySmall = TextStyle(
+            fontFamily = getFontFamily(AppFontFamily.REGULAR),
+            fontSize = 12.sp
         ),
-        caption = TextStyle(
+        labelLarge = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.MEDIUM),
             fontWeight = FontWeight.Normal,
             fontSize = 10.sp
         ),
-        overline = TextStyle(
-            fontFamily = getFontFamily(AppFontFamily.LIGHT),
-            fontWeight = FontWeight.Light,
-            fontSize = 12.sp
-        )
+        labelMedium = TextStyle(
+            fontFamily = getFontFamily(AppFontFamily.MEDIUM),
+            fontWeight = FontWeight.Normal,
+            fontSize = 9.sp
+        ),
+        labelSmall = TextStyle(
+            fontFamily = getFontFamily(AppFontFamily.MEDIUM),
+            fontWeight = FontWeight.Normal,
+            fontSize = 8.sp
+        ),
     )
 }
 
