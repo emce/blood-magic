@@ -9,9 +9,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationNewTitle
 import mobi.cwiklinski.bloodline.resources.nav_icon_drop
+import mobi.cwiklinski.bloodline.ui.event.Event
+import mobi.cwiklinski.bloodline.ui.event.SideEffect
 import mobi.cwiklinski.bloodline.ui.screen.donations.DonationsScreen
 import mobi.cwiklinski.bloodline.ui.screen.home.HomeScreen
 import mobi.cwiklinski.bloodline.ui.screen.new_donation.NewDonationScreen
@@ -20,8 +24,12 @@ import mobi.cwiklinski.bloodline.ui.widget.BottomBar
 import mobi.cwiklinski.bloodline.ui.util.BottomNavigationItem
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.core.component.KoinComponent
 
-interface AppScreen : Screen {
+abstract class AppScreen : Screen, KoinComponent {
+
+    val _event: MutableSharedFlow<Event> = MutableSharedFlow()
+    val _sideEffect: Channel<SideEffect> = Channel()
     
     @Composable
     fun getBottomBar() {

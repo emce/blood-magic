@@ -1,11 +1,37 @@
 package mobi.cwiklinski.bloodline.ui.theme
 
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun AppTheme(
+    content: @Composable () -> Unit
+) {
+    MaterialTheme(
+        colorScheme = AppThemeColors.appColors,
+        shapes = appShapes,
+        typography = getTypography(),
+        content = content
+    )
+}
+
+val appShapes = Shapes(
+    extraSmall = RoundedCornerShape(8.dp),
+    small = RoundedCornerShape(4.dp),
+    medium = RoundedCornerShape(4.dp),
+    large = RoundedCornerShape(24.dp),
+    extraLarge = RoundedCornerShape(24.dp)
+)
+
 
 object AppThemeColors {
     val white = Color(0xFFFCFCFC)
@@ -103,8 +129,8 @@ object AppThemeColors {
     )
 
     @Composable
-    fun authFieldColors() = TextFieldDefaults.outlinedTextFieldColors(
-        textColor = AppThemeColors.black,
+    fun authFieldColors() = OutlinedTextFieldDefaults.colors(
+        focusedTextColor = AppThemeColors.black,
         focusedBorderColor = AppThemeColors.black70,
         focusedLabelColor = AppThemeColors.black70,
         unfocusedBorderColor = AppThemeColors.grey3,
@@ -137,5 +163,15 @@ object AppThemeColors {
         contentColor = AppThemeColors.white,
         disabledContainerColor = AppThemeColors.red2.copy(alpha = 0.7f),
         disabledContentColor = AppThemeColors.white
+    )
+
+    internal val appColors = lightColorScheme(
+        primary = black,
+        error = alertRed,
+        errorContainer = alertBackground,
+        onError = alertRed,
+        onErrorContainer = alertBackground,
+        background = background,
+        onBackground = background,
     )
 }

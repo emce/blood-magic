@@ -7,8 +7,8 @@ import mobi.cwiklinski.bloodline.ui.screen.splash.splashModule
 import org.koin.core.module.Module
 
 val uiModule = buildList<Module> {
-    createAuthenticationModule()
-    createDataModule()
-    createStorageModule()
+    addAll(createAuthenticationModule())
+    add(createDataModule())
+    add(createStorageModule())
     splashModule
 }

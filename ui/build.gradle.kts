@@ -50,6 +50,7 @@ kotlin {
             implementation(libs.bundles.koin.android)
         }
         commonMain.dependencies {
+            // Modules
             api(projects.domain)
             api(projects.service.auth.api)
             api(projects.service.data.api)
@@ -66,10 +67,12 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.bundles.voyager)
+            implementation(libs.accompanist.permissions)
+            // Bundles
             implementation(libs.bundles.constraintlayout.common)
             implementation(libs.bundles.coil.common)
             implementation(libs.bundles.koin.common)
+            implementation(libs.bundles.voyager)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -1,7 +1,6 @@
 package mobi.cwiklinski.bloodline
 
 import androidx.compose.foundation.Image
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.DpSize
@@ -15,6 +14,7 @@ import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.splash_logo
 import mobi.cwiklinski.bloodline.ui.screen.splash.SplashScreen
+import mobi.cwiklinski.bloodline.ui.theme.AppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -33,7 +33,7 @@ fun main() = application {
         onKeyEvent = { false }
     ) {
         window.minimumSize = Dimension(600, 500)
-        MaterialTheme {
+        AppTheme {
             Image(
                 painterResource(Res.drawable.splash_logo),
                 stringResource(Res.string.appName)
@@ -49,9 +49,7 @@ private fun App() {
             modules(appModule)
         }
     ) {
-        MaterialTheme(
-            //typography = getTypography()
-        ) {
+        AppTheme {
             Navigator(
                 screen = SplashScreen(),
                 onBackPressed = {
