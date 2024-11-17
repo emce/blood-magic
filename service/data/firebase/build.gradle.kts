@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinCocoapods)
 }
 
 java {
@@ -30,6 +31,19 @@ kotlin {
         iosTarget.binaries.framework {
             isStatic = true
         }
+    }
+
+    cocoapods {
+        version = "1.0.0"
+        summary = "Data Service"
+        ios.deploymentTarget = "14.1"
+
+        framework {
+            baseName = "dataService"
+        }
+        noPodspec()
+        pod("FirebaseCore")
+        pod("FirebaseDatabase")
     }
 
     jvm("desktop")

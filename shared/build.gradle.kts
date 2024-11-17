@@ -1,4 +1,4 @@
-import org.gradle.kotlin.dsl.implementation
+import org.gradle.kotlin.dsl.api
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.internal.utils.localPropertiesFile
@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.google.services)
 }
 
 private val gitCommitsCount: Int by lazy {
@@ -48,8 +49,8 @@ kotlin {
         
         androidMain.dependencies {
             api(projects.service.activityprovider.api)
+            api(libs.notifier)
             implementation(projects.service.activityprovider.implementation)
-            implementation(libs.bundles.activity.android)
             implementation(libs.bundles.appcompat.android)
             implementation(libs.bundles.core.android)
             implementation(libs.bundles.compose.android)
@@ -60,6 +61,8 @@ kotlin {
             api(projects.service.auth.api)
             api(projects.service.data.api)
             api(projects.service.storage.api)
+            api(projects.service.notification.api)
+            implementation(projects.service.notification.fcm)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(projects.ui)

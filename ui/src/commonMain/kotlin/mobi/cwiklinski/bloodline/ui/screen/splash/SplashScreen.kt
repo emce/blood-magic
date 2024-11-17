@@ -32,7 +32,7 @@ import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-class SplashScreen : AppScreen {
+class SplashScreen : AppScreen() {
 
     @Composable
     override fun Content() {
