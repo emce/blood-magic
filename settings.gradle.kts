@@ -22,9 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-include(":apps:android")
-include(":apps:desktop")
-include(":apps:ios")
 include(":shared")
 include(":domain")
 include(":service:auth:api")
@@ -35,3 +32,4 @@ include(":service:data:api")
 include(":service:data:firebase")
 include(":service:storage:api")
 include(":service:storage:datastore")
+include(":ui")

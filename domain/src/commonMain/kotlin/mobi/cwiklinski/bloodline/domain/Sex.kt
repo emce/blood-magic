@@ -23,7 +23,6 @@ enum class Sex(val sex: String) {
 }
 
 @OptIn(ExperimentalSerializationApi::class)
-@Serializer(forClass = Sex::class)
 object SexStringSerializer : KSerializer<Sex> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("SexString", PrimitiveKind.STRING)

@@ -1,8 +1,8 @@
 [versions]
-agp = "8.5.2"
-android-compileSdk = "34"
+agp = "8.7.2"
+android-compileSdk = "35"
 android-minSdk = "24"
-android-targetSdk = "34"
+android-targetSdk = "35"
 kotlin = "2.0.21"
 jetbrainsKotlinJvm = "1.9.24"
 compose-multiplatform = "1.7.0"
@@ -39,6 +39,7 @@ napier = "2.7.1"
 google-firebase-kmm = "2.1.0"
 voyager = "1.1.0-beta02"
 uiDesktop = "1.7.0"
+buildConfig = "4.2.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -89,8 +90,10 @@ koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin-compose" }
 constraintlayout-compose-multiplatform = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "constraintlayout-compose-multiplatform" }
-google-firebase-kmm = { module = "dev.gitlive:firebase-auth", version.ref = "google-firebase-kmm" }
+google-firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "google-firebase-kmm" }
+google-firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "google-firebase-kmm" }
 google-firebase-database = { module = "dev.gitlive:firebase-database", version.ref = "google-firebase-kmm" }
+google-firebase-messaging = { module = "dev.gitlive:firebase-messaging", version.ref = "google-firebase-kmm" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
@@ -206,6 +209,11 @@ koin-android = [
     "koin-androidx-compose",
     "koin-androidx-workmanager"
 ]
+google-firebase = [
+    "google-firebase-auth",
+    "google-firebase-database",
+    "google-firebase-messaging"
+]
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -216,3 +224,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 androidx-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidx-navigation" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
