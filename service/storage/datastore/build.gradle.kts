@@ -53,7 +53,6 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.junit)
             implementation(libs.kotlin.test)
-            implementation(libs.kotlin.test.junit)
             implementation(libs.kotlinx.coroutines.test)
         }
         desktopMain.dependencies {

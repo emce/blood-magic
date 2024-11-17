@@ -1,8 +1,4 @@
 import org.gradle.kotlin.dsl.android
-import org.gradle.kotlin.dsl.api
-import org.gradle.kotlin.dsl.commonTest
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.implementation
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -47,7 +43,7 @@ kotlin {
         commonMain.dependencies {
             api(projects.domain)
             api(projects.service.data.api)
-            api(libs.google.firebase.kmm)
+            api(libs.google.firebase.auth)
             api(libs.google.firebase.database)
             api(libs.bundles.kotlinx.datetime.common)
             api(libs.bundles.kotlinx.coroutines.common)
@@ -56,7 +52,6 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.junit)
             implementation(libs.kotlin.test)
-            implementation(libs.kotlin.test.junit)
             implementation(libs.kotlinx.coroutines.test)
         }
         desktopMain.dependencies {

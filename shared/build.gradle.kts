@@ -1,13 +1,25 @@
-import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.implementation
 import org.gradle.kotlin.dsl.kotlin
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.compose.internal.utils.localPropertiesFile
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.ByteArrayOutputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+}
+
+private val gitCommitsCount: Int by lazy {
+    val stdout = ByteArrayOutputStream()
+    rootProject.exec {
+        commandLine("git", "rev-list", "--count", "HEAD")
+        standardOutput = stdout
+    }
+    stdout.toString().trim().toInt()
 }
 
 kotlin {
@@ -35,64 +47,108 @@ kotlin {
         val desktopMain by getting
         
         androidMain.dependencies {
-            api(libs.bundles.coil.android)
-            api(libs.bundles.compose.android)
             api(projects.service.activityprovider.api)
             implementation(projects.service.activityprovider.implementation)
+            implementation(libs.bundles.activity.android)
+            implementation(libs.bundles.appcompat.android)
+            implementation(libs.bundles.core.android)
+            implementation(libs.bundles.compose.android)
+            implementation(libs.bundles.koin.android)
         }
         commonMain.dependencies {
             api(projects.domain)
             api(projects.service.auth.api)
             api(projects.service.data.api)
             api(projects.service.storage.api)
-            implementation(projects.service.auth.firebase)
-            implementation(projects.service.data.firebase)
-            implementation(projects.service.storage.datastore)
-            implementation(compose.animation)
-            implementation(compose.foundation)
-            implementation(compose.runtime)
-            implementation(compose.runtimeSaveable)
-            implementation(compose.ui)
-            implementation(compose.material)
-            implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(projects.ui)
             implementation(libs.bundles.voyager)
-            implementation(libs.bundles.constraintlayout.common)
-            implementation(libs.bundles.coil.common)
+            implementation(libs.bundles.koin.common)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-            implementation(libs.kotlin.test.junit)
             implementation(libs.kotlinx.coroutines.test)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.androidx.ui.desktop)
         }
     }
     task("testClasses")
-}
-
-compose.resources {
-    publicResClass = true
-    packageOfResClass = "mobi.cwiklinski.bloodline.resources"
-    generateResClass = auto
 }
 
 android {
     namespace = "mobi.cwiklinski.bloodline"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+    defaultConfig {
+        applicationId = "mobi.cwiklinski.bloodline"
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        versionCode = 700 + gitCommitsCount
+        versionName = "5.0.$gitCommitsCount"
+        vectorDrawables.useSupportLibrary = true
     }
     buildFeatures {
         compose = true
     }
+    signingConfigs {
+        create("release") {
+            val properties = localPropertiesFile.readLines().associate {
+                if (it.startsWith("#") || !it.contains("=")) return@associate "" to ""
+                val (key, value) = it.split("=", limit = 2)
+                key to value
+            }
+            storeFile = file(properties["bloodlineReleaseKeystore"].toString())
+            storePassword = properties["bloodlineReleasePassword"].toString()
+            keyAlias = properties["bloodlineReleaseAlias"].toString()
+            keyPassword = properties["bloodlineReleasePassword"].toString()
+        }
+    }
+    buildTypes {
+        getByName("debug") {
+            isDebuggable = true
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+        getByName("release") {
+            isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+        compose = true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }
 
-dependencies {
-    debugImplementation(compose.uiTooling)
+compose.desktop {
+    application {
+        mainClass = "mobi.cwiklinski.bloodline.MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "mobi.cwiklinski.bloodline"
+            packageVersion = "1.0.$gitCommitsCount"
+
+            val iconsRoot = project.file("icons")
+            macOS {
+                iconFile.set(iconsRoot.resolve("bloodmagic.icns"))
+            }
+            windows {
+                iconFile.set(iconsRoot.resolve("bloodmagic.ico"))
+            }
+            linux {
+                iconFile.set(iconsRoot.resolve("bloodmagic.png"))
+            }
+        }
+    }
 }
