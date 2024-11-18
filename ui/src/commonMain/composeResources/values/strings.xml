@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="languageCode">pl</string>
+    <string name="idShare">BloodMagic</string>
     <string name="appName">Magia Krwi</string>
     <string name="goBack">Wróć</string>
     <string name="seeAll">więcej</string>

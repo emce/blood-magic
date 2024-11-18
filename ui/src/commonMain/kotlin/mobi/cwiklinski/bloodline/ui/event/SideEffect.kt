@@ -27,7 +27,6 @@ class SideEffects : SideEffect {
     data class ErrorDialog constructor(val error: Throwable, val errorReport: String? = null) :
         SideEffect
 
-
     data class Navigate(val data: Any? = null) : SideEffect
     data class NavigateTo(val destination: AppScreen) : SideEffect
     data class NavigateBack(

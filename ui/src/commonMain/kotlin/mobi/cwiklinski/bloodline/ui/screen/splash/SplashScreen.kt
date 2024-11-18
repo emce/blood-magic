@@ -17,6 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -38,11 +39,7 @@ class SplashScreen : AppScreen() {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<SplashScreenModel>()
-        if (screenModel.state.value == AuthenticationState.Logged) {
-            navigator.replace(HomeScreen())
-        } else if (screenModel.state.value == AuthenticationState.NotLogged) {
-            navigator.replace(LoginScreen())
-        }
+        val state = screenModel.state.collectAsStateWithLifecycle()
         Scaffold {
             Column(
                 Modifier.fillMaxSize().background(
@@ -61,7 +58,17 @@ class SplashScreen : AppScreen() {
                     style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold)
                 )
                 Spacer(Modifier.height(20.dp))
-                FormProgress(filter = ColorFilter.tint(AppThemeColors.red2))
+                when (state.value) {
+                    AuthenticationState.Idle -> {
+                        FormProgress(filter = ColorFilter.tint(AppThemeColors.red2))
+                    }
+                    AuthenticationState.Logged -> {
+                        navigator.replace(HomeScreen())
+                    }
+                    AuthenticationState.NotLogged -> {
+                        navigator.replace(LoginScreen())
+                    }
+                }
             }
         }
     }

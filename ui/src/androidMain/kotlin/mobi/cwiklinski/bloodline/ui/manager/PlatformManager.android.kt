@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.manager
 
+import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipDescription
 import android.content.ClipboardManager
@@ -10,26 +11,19 @@ import android.os.Build
 import android.os.PersistableBundle
 import android.provider.Settings
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
-import cafe.adriel.voyager.core.model.ScreenModel
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import mobi.cwiklinski.bloodline.activityprovider.api.ActivityProvider
 import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.ui.event.Events
+import mobi.cwiklinski.bloodline.resources.idShare
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import java.io.File
 
@@ -37,41 +31,18 @@ import java.io.File
 actual fun rememberPlatformManager(): PlatformManager {
     val context = LocalContext.current
     val activity = koinInject<ActivityProvider>().get() as? FragmentActivity
+    val shareId: String = stringResource(Res.string.idShare)
 
     return remember {
-        PlatformManager(context, activity)
+        PlatformManager(context, activity, shareId)
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-actual fun askForNotificationPermissions(model: ScreenModel) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        val requestPermissionLauncher = rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            if (isGranted) {
-                model.postEvent(Events.NotificationPermissionGiven)
-            } else {
-                // Handle permission denial
-            }
-        }
-
-        val notificatioPermissionState = rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
-        LaunchedEffect(notificatioPermissionState) {
-            if(!notificatioPermissionState.status.isGranted){
-                // Show rationale if needed
-                // notificatioPermissionState.status.shouldShowRationale
-
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
-}
-
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class PlatformManager(
     val context: Context,
-    val activity: FragmentActivity?
+    val activity: FragmentActivity?,
+    val shareId: String
 ) {
     private var isWindowSecure: Boolean = false
 
@@ -91,20 +62,8 @@ actual class PlatformManager(
                 builder.setShowTitle(true)
                 builder.setUrlBarHidingEnabled(false)
                 builder.setDefaultColorSchemeParams(
-                    CustomTabColorSchemeParams.Builder()
-//                    .setToolbarColor(ContextCompat.getColor(context, R.color.brand_surface))
-//                    .setNavigationBarColor(ContextCompat.getColor(context, R.color.brand_surface))
-//                    .setNavigationBarDividerColor(
-//                        ContextCompat.getColor(
-//                            context,
-//                            R.color.brand_green
-//                        )
-//                    )
-                        .build()
+                    CustomTabColorSchemeParams.Builder().build()
                 )
-//            builder.setStartAnimations(context, R.anim.enter_slide_up, R.anim.fade_out)
-//            builder.setExitAnimations(context, R.anim.fade_in, R.anim.exit_slide_down)
-
                 val customTabsIntent = builder.build()
                 customTabsIntent.launchUrl(context, Uri.parse(url))
 
@@ -138,6 +97,7 @@ actual class PlatformManager(
         }
     }
 
+    @SuppressLint("NewApi")
     actual fun clearClipboard() {
         (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -154,7 +114,7 @@ actual class PlatformManager(
         context.startActivity(
             Intent.createChooser(
                 builder.intent,
-                stringResource(Res.string.id_share)
+                shareId
             )
         )
     }
@@ -173,12 +133,12 @@ actual class PlatformManager(
         context.startActivity(
             Intent.createChooser(
                 builder.intent,
-                stringResource(Res.string.id_share)
+                shareId
             )
         )
     }
 
-    actual fun enableLocationService(){
+    actual fun enableLocationService() {
         activity?.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
     }
 }
