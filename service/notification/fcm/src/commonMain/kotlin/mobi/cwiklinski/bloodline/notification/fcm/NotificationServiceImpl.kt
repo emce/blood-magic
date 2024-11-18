@@ -6,15 +6,13 @@ import org.koin.core.component.KoinComponent
 
 open class NotificationServiceImpl : NotificationService, KoinComponent {
 
-    protected val notifier = NotifierManager.getLocalNotifier()
-
-    override fun initialize() {}
+    override fun initialize() { }
 
     override fun sendNotification(id: Int, title: String, body: String) =
-        notifier.notify(id, title, body)
+        NotifierManager.getLocalNotifier().notify(id, title, body)
 
-    override fun removeNotification(id: Int) = notifier.remove(id)
+    override fun removeNotification(id: Int) = NotifierManager.getLocalNotifier().remove(id)
 
-    override fun removeAllNotifications() = notifier.removeAll()
+    override fun removeAllNotifications() = NotifierManager.getLocalNotifier().removeAll()
 
 }

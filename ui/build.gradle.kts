@@ -48,6 +48,7 @@ kotlin {
             implementation(libs.bundles.core.android)
             implementation(libs.bundles.compose.android)
             implementation(libs.bundles.koin.android)
+            api(libs.accompanist.permissions)
         }
         commonMain.dependencies {
             // Modules
@@ -68,7 +69,6 @@ kotlin {
             api(compose.components.resources)
             api(compose.components.uiToolingPreview)
             api(libs.jetbrains.androidx.lifecycle.runtime.compose)
-            api(libs.accompanist.permissions)
             // Bundles
             api(libs.bundles.constraintlayout.common)
             implementation(libs.bundles.coil.common)

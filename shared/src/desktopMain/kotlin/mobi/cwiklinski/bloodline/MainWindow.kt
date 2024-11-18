@@ -1,6 +1,5 @@
 package mobi.cwiklinski.bloodline
 
-import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.DpSize
@@ -10,6 +9,8 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import cafe.adriel.voyager.navigator.Navigator
+import com.mmk.kmpnotifier.extensions.composeDesktopResourcesPath
+import mobi.cwiklinski.bloodline.notification.api.DesktopNotificationService
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.splash_logo
@@ -19,7 +20,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.KoinApplication
+import org.koin.compose.koinInject
 import java.awt.Dimension
+import java.io.File
 
 fun main() = application {
     Window(
@@ -33,12 +36,7 @@ fun main() = application {
         onKeyEvent = { false }
     ) {
         window.minimumSize = Dimension(600, 500)
-        AppTheme {
-            Image(
-                painterResource(Res.drawable.splash_logo),
-                stringResource(Res.string.appName)
-            )
-        }
+        //App()
     }
 }
 
@@ -46,9 +44,11 @@ fun main() = application {
 private fun App() {
     KoinApplication(
         application = {
-            modules(appModule)
+            modules(createAppModule())
         }
     ) {
+        val notificationService = koinInject<DesktopNotificationService>()
+        notificationService.initialize(composeDesktopResourcesPath() + File.separator + "ic_notification.png")
         AppTheme {
             Navigator(
                 screen = SplashScreen(),

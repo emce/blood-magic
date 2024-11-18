@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.buildconfig)
-    alias(libs.plugins.kotlinCocoapods)
 }
 
 java {
@@ -35,19 +34,6 @@ kotlin {
         }
     }
 
-    cocoapods {
-        version = "1.0.0"
-        summary = "Auth Service"
-        ios.deploymentTarget = "14.1"
-
-        framework {
-            baseName = "authService"
-        }
-        noPodspec()
-        pod("FirebaseCore")
-        pod("FirebaseAuth")
-    }
-
     jvm("desktop")
 
     sourceSets {
@@ -57,11 +43,12 @@ kotlin {
             implementation(projects.service.activityprovider.implementation)
         }
         commonMain.dependencies {
+            api(projects.common)
             api(projects.service.auth.api)
             api(libs.google.firebase.common)
             api(libs.google.firebase.auth)
+            api(libs.koin.compose)
             api(libs.bundles.kotlinx.coroutines.common)
-            api(libs.bundles.koin.common)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

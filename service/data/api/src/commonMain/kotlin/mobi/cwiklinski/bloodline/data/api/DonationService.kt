@@ -1,20 +1,22 @@
 package mobi.cwiklinski.bloodline.data.api
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
 
 interface DonationService {
 
-    suspend fun getDonations(): List<Donation>
+    fun getDonations(): Flow<List<Donation>>
 
-    suspend fun getDonation(id: String): Donation
+    fun getDonation(id: String): Flow<Donation>
 
-    suspend fun addDonation(
+    fun addDonation(
         date: LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
         type: DonationType = DonationType.FULL_BLOOD,
         amount: Int = 0,
@@ -23,9 +25,9 @@ interface DonationService {
         diastolic: Int = 0,
         disqualification: Boolean = false,
         center: Center
-    ): Either<Donation, Throwable>
+    ): Flow<Either<Donation, Throwable>>
 
-    suspend fun updateDonation(
+    fun updateDonation(
         id: String,
         date: LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
         type: DonationType = DonationType.FULL_BLOOD,
@@ -35,7 +37,7 @@ interface DonationService {
         diastolic: Int = 0,
         disqualification: Boolean = false,
         center: Center
-    ): Either<Donation, Throwable>
+    ): Flow<Either<Donation, Throwable>>
 
-    suspend fun deleteDonation(id: String): Either<Boolean, Throwable>
+    fun deleteDonation(id: String): Flow<Either<Boolean, Throwable>>
 }

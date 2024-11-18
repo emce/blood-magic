@@ -1,4 +1,4 @@
-package mobi.cwiklinski.bloodline.data.api
+package mobi.cwiklinski.bloodline.common
 
 sealed class Either<out L, out R> {
     data class Left<out T>(val value: T) : Either<T, Nothing>()

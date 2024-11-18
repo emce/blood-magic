@@ -11,7 +11,7 @@ import org.koin.compose.KoinApplication
 fun NativeMainContent() {
     KoinApplication(
         application = {
-            modules(appModule)
+            modules(createAppModule())
         }
     ) {
         MaterialTheme(
