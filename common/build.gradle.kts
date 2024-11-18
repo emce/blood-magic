@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 java {
@@ -36,14 +37,18 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.common)
-            api(projects.domain)
+            api(libs.bundles.kotlinx.serialization.common)
+            api(libs.bundles.kotlinx.datetime.common)
+            api(libs.bundles.kotlinx.coroutines.common)
+        }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
     }
 }
 
 android {
-    namespace = "mobi.cwiklinski.bloodline.storage.api"
+    namespace = "mobi.cwiklinski.bloodline.common"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     compileOptions {

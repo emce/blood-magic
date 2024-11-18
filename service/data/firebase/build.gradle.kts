@@ -6,7 +6,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinCocoapods)
 }
 
 java {
@@ -33,19 +32,6 @@ kotlin {
         }
     }
 
-    cocoapods {
-        version = "1.0.0"
-        summary = "Data Service"
-        ios.deploymentTarget = "14.1"
-
-        framework {
-            baseName = "dataService"
-        }
-        noPodspec()
-        pod("FirebaseCore")
-        pod("FirebaseDatabase")
-    }
-
     jvm("desktop")
 
     sourceSets {
@@ -55,6 +41,7 @@ kotlin {
             implementation(projects.service.activityprovider.implementation)
         }
         commonMain.dependencies {
+            api(projects.common)
             api(projects.domain)
             api(projects.service.data.api)
             api(libs.google.firebase.auth)

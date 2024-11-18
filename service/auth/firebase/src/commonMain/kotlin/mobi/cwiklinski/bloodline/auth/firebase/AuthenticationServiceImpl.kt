@@ -5,10 +5,12 @@ import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.auth.api.authenticate
 import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.FirebaseException
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.auth.auth
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flow
 import org.koin.core.component.KoinComponent
 
 open class AuthenticationServiceImpl : AuthenticationService, KoinComponent {
@@ -41,11 +43,22 @@ open class AuthenticationServiceImpl : AuthenticationService, KoinComponent {
         sideEffect = { _authenticationState.value = AuthenticationState.Logged }
     )
 
-    override suspend fun logOut() {
-        firebaseAuth.signOut()
-        _authenticationState.value = AuthenticationState.NotLogged
+    override fun logOut() = flow {
+        try {
+            firebaseAuth.signOut()
+            _authenticationState.value = AuthenticationState.NotLogged
+            emit(true)
+        } catch (e: FirebaseException) {
+            emit(false)
+        }
     }
 
-    override suspend fun resetPassword(email: String): Unit =
-        firebaseAuth.sendPasswordResetEmail(email)
+    override fun resetPassword(email: String) = flow {
+        try {
+            firebaseAuth.sendPasswordResetEmail(email)
+            emit(true)
+        } catch (e: FirebaseException) {
+            emit(false)
+        }
+    }
 }

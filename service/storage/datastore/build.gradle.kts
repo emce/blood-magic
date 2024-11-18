@@ -44,6 +44,7 @@ kotlin {
             api(libs.bundles.datastore.android)
         }
         commonMain.dependencies {
+            api(projects.common)
             api(projects.service.storage.api)
             api(projects.domain)
             api(libs.bundles.datastore.common)

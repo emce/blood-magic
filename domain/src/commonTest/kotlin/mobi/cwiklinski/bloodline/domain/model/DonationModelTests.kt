@@ -1,5 +1,7 @@
 package mobi.cwiklinski.bloodline.domain.model
 
+import mobi.cwiklinski.bloodline.domain.DonationType
+import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.TestTools
 import kotlin.test.Test
 import kotlin.test.assertEquals

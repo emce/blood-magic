@@ -1,10 +1,11 @@
 package mobi.cwiklinski.bloodline.data.api
 
+import kotlinx.coroutines.flow.Flow
 import mobi.cwiklinski.bloodline.domain.model.Center
 
 interface CenterService {
 
-    suspend fun getCenters(): List<Center>
+    fun getCenters(): Flow<List<Center>>
 
-    suspend fun getCenter(id: String): Center
+    fun getCenter(id: String): Flow<Center>
 }

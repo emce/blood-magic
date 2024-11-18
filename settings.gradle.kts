@@ -23,6 +23,7 @@ dependencyResolutionManagement {
 }
 
 include(":shared")
+include(":common")
 include(":domain")
 include(":service:auth:api")
 include(":service:auth:firebase")

@@ -4,6 +4,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.internal.utils.localPropertiesFile
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.io.ByteArrayOutputStream
 
 plugins {
@@ -74,9 +75,9 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
         desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutines.swing)
-            implementation(libs.androidx.ui.desktop)
+            api(compose.desktop.currentOs)
+            api(libs.kotlinx.coroutines.swing)
+            api(libs.androidx.ui.desktop)
         }
     }
     task("testClasses")
@@ -135,7 +136,7 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "mobi.cwiklinski.bloodline.MainKt"
+        mainClass = "mobi.cwiklinski.bloodline.MainWindowKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)

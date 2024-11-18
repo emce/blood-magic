@@ -38,6 +38,7 @@ kotlin {
     sourceSets {
         val desktopMain by getting
         commonMain.dependencies {
+            api(projects.common)
             api(projects.domain)
             api(libs.bundles.kotlinx.datetime.common)
             api(libs.bundles.kotlinx.coroutines.common)

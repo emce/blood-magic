@@ -1,7 +1,5 @@
 package mobi.cwiklinski.bloodline
 
-import kotlinx.datetime.LocalDate
-
 object Constants {
 
     // Reminder

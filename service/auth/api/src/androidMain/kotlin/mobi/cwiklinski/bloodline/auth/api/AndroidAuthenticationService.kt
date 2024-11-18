@@ -10,7 +10,7 @@ interface AndroidAuthenticationService : AuthenticationService {
 
     override fun registerWithEmailAndPassWord(email: String, password: String): Flow<AuthResult>
 
-    override suspend fun logOut()
+    override fun logOut(): Flow<Boolean>
 
-    override suspend fun resetPassword(email: String)
+    override fun resetPassword(email: String): Flow<Boolean>
 }

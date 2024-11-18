@@ -23,11 +23,11 @@ class App: Application()/*, Configuration.Provider*/ {
         startKoin {
             androidContext(this@App)
             //workManagerFactory()
-            modules(appModule)
+            modules(createAppModule())
         }
         val notificationService: AndroidNotificationService = get()
         notificationService.initialize(R.drawable.ic_launcher_foreground)
-        val permissionUtil by permissionUtil()
-        permissionUtil.askNotificationPermission()
+        //val permissionUtil by permissionUtil()
+        //permissionUtil.askNotificationPermission()
     }
 }

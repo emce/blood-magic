@@ -8,7 +8,7 @@ import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfig
 import mobi.cwiklinski.bloodline.notification.api.AndroidNotificationService
 import mobi.cwiklinski.bloodline.notification.api.NotificationListener
 
-class AndroidNotificationServiceImpl() : NotificationServiceImpl(),
+class AndroidNotificationServiceImpl : NotificationServiceImpl(),
     AndroidNotificationService {
 
     override fun initialize() {

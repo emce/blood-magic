@@ -5,10 +5,10 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
+import mobi.cwiklinski.bloodline.common.isAfter
+import mobi.cwiklinski.bloodline.common.isBefore
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.DonationType
-import mobi.cwiklinski.bloodline.domain.util.isAfter
-import mobi.cwiklinski.bloodline.domain.util.isBefore
 import kotlin.math.roundToInt
 
 @Serializable

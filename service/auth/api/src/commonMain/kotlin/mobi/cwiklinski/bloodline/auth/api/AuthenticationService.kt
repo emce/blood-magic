@@ -16,7 +16,7 @@ interface AuthenticationService {
 
     fun registerWithEmailAndPassWord(email: String, password: String): Flow<AuthResult>
 
-    suspend fun logOut()
+    fun logOut(): Flow<Boolean>
 
-    suspend fun resetPassword(email: String)
+    fun resetPassword(email: String): Flow<Boolean>
 }

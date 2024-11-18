@@ -1,19 +1,21 @@
 package mobi.cwiklinski.bloodline.data.api
 
+import kotlinx.coroutines.flow.Flow
+import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Profile
 
 interface ProfileService {
 
-    suspend fun updateProfile(
+    fun updateProfile(
         id: String,
-        newName: String,
-        newAvatar: String,
+        name: String,
+        avatar: String,
         sex: Sex,
         notification: Boolean,
         starting: Int,
         centerId: String
-    ): Either<Profile, Throwable>
+    ): Flow<Either<Profile, Throwable>>
 
-    suspend fun getProfile(): Profile
+    fun getProfile(): Flow<Profile>
 }
