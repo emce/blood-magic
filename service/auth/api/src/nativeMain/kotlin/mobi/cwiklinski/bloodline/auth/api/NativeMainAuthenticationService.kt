@@ -12,5 +12,5 @@ interface NativeMainAuthenticationService : AuthenticationService {
 
     override fun logOut(): Flow<Boolean>
 
-    override fun resetPassword(email: String): Flow<Boolean>
+    override fun resetPassword(email: String): Flow<AuthResult>
 }

@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.event
 
+import mobi.cwiklinski.bloodline.ui.manager.PlatformManager
 import mobi.cwiklinski.bloodline.ui.screen.AppScreen
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -35,5 +36,9 @@ class SideEffects : SideEffect {
         val error: Throwable? = null,
         val errorReport: String? = null,
     ) : SideEffect
+
     class NavigateToRoot : SideEffect
 }
+
+suspend fun openBrowser(platformManager: PlatformManager, url: String, openSystemBrowser: Boolean = false) =
+    platformManager.openBrowser(url = url, openSystemBrowser = openSystemBrowser)

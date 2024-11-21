@@ -18,7 +18,18 @@ data class Profile(
 ) {
     fun toJson() = Json.encodeToString(this)
 
+    fun differs(
+        newAvatar: String,
+        newSex: Sex,
+        newNotification: Boolean,
+        newStarting: Int,
+        newCenterId: String
+    ) =
+        newAvatar != avatar || newSex != sex || newNotification != notification
+                || newStarting != starting || newCenterId != centerId
+
     companion object {
-        fun fromJson(data: String) = if (data != "profile") Json.decodeFromString<Profile>(data) else null
+        fun fromJson(data: String) =
+            if (data != "profile") Json.decodeFromString<Profile>(data) else null
     }
 }

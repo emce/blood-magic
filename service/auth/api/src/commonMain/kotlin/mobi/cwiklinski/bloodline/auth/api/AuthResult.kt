@@ -10,20 +10,16 @@ sealed class AuthResult {
 
     data class Success(val data: Any? = null) : AuthResult()
 
-    data class Failure(val error: String) : AuthResult()
+    data class Failure(val error: AuthError) : AuthResult()
 
     data class Dismissed(val error: String? = null) : AuthResult()
 }
 
-fun authenticate(
-    authFunction: suspend () -> Boolean,
-    sideEffect: () -> Unit = { }
-): Flow<AuthResult> = callbackFlow {
-    try {
-        withContext(Dispatchers.Default) { authFunction() }
-        trySend(element = AuthResult.Success()).also { sideEffect() }
-    } catch (exception: Exception) {
-        trySend(element = AuthResult.Failure(error = exception.message.orEmpty()))
-    }
-    awaitClose { }
+enum class AuthError {
+    INCORRECT_EMAIL,
+    INCORRECT_PASSWORD,
+    USER_NOT_FOUND,
+    USER_DISABLED,
+    EMAIL_ALREADY_IN_USE,
+    ERROR
 }

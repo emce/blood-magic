@@ -58,12 +58,14 @@
     <string name="loginRegisterButton">Zarejestruj się</string>
     <string name="loginEmailError">Nieprawidłowy adres email!</string>
     <string name="loginPasswordError">Nieprawidłowe bądź za krótkie hasło!</string>
+    <string name="loginError">Proces logowania nieudany!</string>
 
     // REGISTER SCREEN
     <string name="registerTitle">Utwórz konto</string>
     <string name="registerRepeatLabel">Powtórz hasło</string>
     <string name="registerRepeatError">Nieprawidłowe bądź za krótkie potwórzenie hasła!</string>
     <string name="registerRepeatComparisonError">Hasło i jego potwórzenie nie są jednakowe!</string>
+    <string name="registerError">Proces rejestracji nieudany!</string>
     <string name="registerTermsPrivacyPolicy">Politykę prywatności</string>
     <string name="registerTermsPrivacyPolicyLink"> </string>
     <string name="registerTermsRules">Regulamin</string>
@@ -119,19 +121,21 @@
     <string name="profileDataTitle">Dane %s</string>
     <string name="profileDataNameLabel">Nazwa użytkownika</string>
     <string name="profileDataEmailLabel">Email</string>
+    <string name="profileDataEmailError">Błąd przy zmianie adresu email</string>
     <string name="profileDataCurrentPasswordLabel">Aktualne hasło</string>
     <string name="profileDataPasswordLabel">Nowe hasło</string>
     <string name="profileDataPasswordRepeatLabel">Potwórzenie nowego hasła</string>
     <string name="profileDataCurrentPasswordError">Za krótkie lub niepoprawne aktualne hasło!</string>
     <string name="profileDataPasswordError">Nieprawidłowy format hasła (co najmniej 5 znaków)</string>
     <string name="profileDataPasswordRepeatError">Powtórzenie hasła nie jest jednakowe z nowym hasłem!</string>
-    <string name="profileDataUpdateError">Wystąpił błąd przy aktualizacji profilu.</string>
+    <string name="profileDataUpdateError">Wystąpił błąd przy aktualizacji danych profilu.</string>
     <string name="profileDataPasswordUpdateError">Wystąpił błąd przy aktualizacji hasła.</string>
     <string name="profileDataUpdateSuccess">Dane profilu zostały zmienione.</string>
     <string name="profileDataPasswordUpdateSuccess">Nowe hasło zostało ustawione.</string>
     <string name="profileDataSubmitButton">Edytuj dane</string>
     <string name="profileAvatarTitle">Wybierz postać</string>
     <string name="profilePasswordChangeTitle">Zmiana hasła użytkownika</string>
+    <string name="profileUpdateError">Błąd aktualizacji profilu</string>
 
     // NEW DONATION
     <string name="donationNewTitle">Nowa donacja</string>

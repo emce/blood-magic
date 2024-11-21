@@ -14,7 +14,7 @@ import mobi.cwiklinski.bloodline.notification.api.DesktopNotificationService
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.splash_logo
-import mobi.cwiklinski.bloodline.ui.screen.splash.SplashScreen
+import mobi.cwiklinski.bloodline.ui.screen.SplashScreen
 import mobi.cwiklinski.bloodline.ui.theme.AppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.resources.painterResource

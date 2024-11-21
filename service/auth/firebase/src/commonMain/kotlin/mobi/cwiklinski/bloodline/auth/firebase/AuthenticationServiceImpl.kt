@@ -3,14 +3,18 @@ package mobi.cwiklinski.bloodline.auth.firebase
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
-import mobi.cwiklinski.bloodline.auth.api.authenticate
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.FirebaseException
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.auth.auth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
+import mobi.cwiklinski.bloodline.auth.api.AuthError
 import org.koin.core.component.KoinComponent
 
 open class AuthenticationServiceImpl : AuthenticationService, KoinComponent {
@@ -33,12 +37,12 @@ open class AuthenticationServiceImpl : AuthenticationService, KoinComponent {
         _authenticationState.value = state
     }
 
-    override fun loginWithEmailAndPassword(email: String, password: String): Flow<AuthResult> = authenticate(
+    override fun loginWithEmailAndPassword(email: String, password: String): Flow<AuthResult> = send(
         authFunction = { firebaseAuth.signInWithEmailAndPassword(email, password).user != null },
         sideEffect = { _authenticationState.value = AuthenticationState.Logged }
     )
 
-    override fun registerWithEmailAndPassWord(email: String, password: String): Flow<AuthResult> = authenticate(
+    override fun registerWithEmailAndPassWord(email: String, password: String): Flow<AuthResult> = send(
         authFunction = { firebaseAuth.createUserWithEmailAndPassword(email, password).user != null },
         sideEffect = { _authenticationState.value = AuthenticationState.Logged }
     )
@@ -53,12 +57,50 @@ open class AuthenticationServiceImpl : AuthenticationService, KoinComponent {
         }
     }
 
-    override fun resetPassword(email: String) = flow {
-        try {
+    override fun resetPassword(email: String): Flow<AuthResult> = send(
+        authFunction = {
             firebaseAuth.sendPasswordResetEmail(email)
-            emit(true)
-        } catch (e: FirebaseException) {
-            emit(false)
+            true
+       },
+        sideEffect = { _authenticationState.value = AuthenticationState.Logged }
+    )
+}
+
+fun send(
+    authFunction: suspend () -> Boolean,
+    sideEffect: () -> Unit = { }
+): Flow<AuthResult> = callbackFlow {
+    try {
+        withContext(Dispatchers.Default) { authFunction() }
+        trySend(element = AuthResult.Success()).also { sideEffect() }
+    } catch (exception: FirebaseException) {
+        val error = when (exception.message) {
+            "ERROR_EMAIL_ALREADY_IN_USE",
+            "account-exists-with-different-credential",
+            "email-already-in-use" -> {
+                AuthError.EMAIL_ALREADY_IN_USE
+            }
+            "ERROR_WRONG_PASSWORD",
+            "wrong-password" -> {
+                AuthError.INCORRECT_PASSWORD
+            }
+            "ERROR_USER_NOT_FOUND",
+            "user-not-found" -> {
+                AuthError.USER_NOT_FOUND
+            }
+            "ERROR_USER_DISABLED",
+            "user-disabled" -> {
+                AuthError.USER_DISABLED
+            }
+            "ERROR_INVALID_EMAIL",
+            "invalid-email" -> {
+                AuthError.INCORRECT_EMAIL
+            }
+            else -> {
+                AuthError.ERROR
+            }
         }
+        trySend(element = AuthResult.Failure(error = error))
     }
+    awaitClose { }
 }

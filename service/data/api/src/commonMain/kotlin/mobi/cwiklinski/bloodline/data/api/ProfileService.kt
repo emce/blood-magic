@@ -7,15 +7,33 @@ import mobi.cwiklinski.bloodline.domain.model.Profile
 
 interface ProfileService {
 
-    fun updateProfile(
-        id: String,
+    fun updateProfileData(
         name: String,
         avatar: String,
         sex: Sex,
         notification: Boolean,
         starting: Int,
         centerId: String
-    ): Flow<Either<Profile, Throwable>>
+    ): Flow<Either<ProfileUpdate, Throwable>>
+
+    fun updateProfileEmail(
+        email: String
+    ): Flow<Either<ProfileUpdate, Throwable>>
+
+    fun updateProfilePassword(
+        password: String
+    ): Flow<Either<ProfileUpdate, Throwable>>
 
     fun getProfile(): Flow<Profile>
+}
+
+data class ProfileUpdate(val updated: List<ProfileUpdateState>)
+
+enum class ProfileUpdateState {
+    NOTHING,
+    NAME,
+    EMAIL,
+    PASSWORD,
+    DATA,
+    ALL
 }
