@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.mmk.kmpnotifier.permission.permissionUtil
 import mobi.cwiklinski.bloodline.activityprovider.api.ActivitySetter
 import mobi.cwiklinski.bloodline.notification.api.AndroidNotificationService
-import mobi.cwiklinski.bloodline.ui.screen.splash.SplashScreen
+import mobi.cwiklinski.bloodline.ui.screen.SplashScreen
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
