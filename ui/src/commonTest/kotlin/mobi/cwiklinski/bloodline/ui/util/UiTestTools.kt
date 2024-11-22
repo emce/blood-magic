@@ -38,12 +38,22 @@ object UiTestTools {
         override suspend fun getString(key: String, defaultValue: String) =
             storage.getOrElse(key) { defaultValue }
 
+        override suspend fun deleteString(key: String): Boolean {
+            storage.remove(key)
+            return exists(key)
+        }
+
         override suspend fun storeInt(key: String, objectToStore: Int) {
             storage[key] = objectToStore.toString()
         }
 
         override suspend fun getInt(key: String, defaultValue: Int) =
             storage.getOrElse(key) { defaultValue.toString() }.toInt()
+
+        override suspend fun deleteInt(key: String): Boolean {
+            storage.remove(key)
+            return exists(key)
+        }
 
         override suspend fun storeBoolean(key: String, objectToStore: Boolean) {
             storage[key] = if (objectToStore) "1" else "0"
@@ -52,12 +62,21 @@ object UiTestTools {
         override suspend fun getBoolean(key: String, defaultValue: Boolean) =
             storage.getOrElse(key) { if (defaultValue) "1" else "0" } == "1"
 
+        override suspend fun deleteBoolean(key: String): Boolean {
+            storage.remove(key)
+            return exists(key)
+        }
+
         override suspend fun storeProfile(profile: Profile) {
             storage["profile"] = profile.toJson()
         }
 
         override suspend fun getProfile(): Profile?  =
             Json.decodeFromString(storage.getOrElse("profile") { "" })
+
+        override suspend fun deleteProfile(): Boolean {
+            TODO("Not yet implemented")
+        }
 
         override suspend fun exists(key: String) = storage.containsKey(key)
 

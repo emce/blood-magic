@@ -8,17 +8,25 @@ interface StorageService {
 
     suspend fun getString(key: String, defaultValue: String): String
 
+    suspend fun deleteString(key: String): Boolean
+
     suspend fun storeInt(key: String, objectToStore: Int)
 
     suspend fun getInt(key: String, defaultValue: Int): Int
+
+    suspend fun deleteInt(key: String): Boolean
 
     suspend fun storeBoolean(key: String, objectToStore: Boolean)
 
     suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean
 
+    suspend fun deleteBoolean(key: String): Boolean
+
     suspend fun storeProfile(profile: Profile)
 
     suspend fun getProfile(): Profile?
+
+    suspend fun deleteProfile(): Boolean
 
     suspend fun exists(key: String): Boolean
 

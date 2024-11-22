@@ -16,46 +16,50 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import mobi.cwiklinski.bloodline.ui.theme.AppPreview
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.util.BottomNavigationItem
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
 fun BottomBar(
     onClicked: (BottomNavigationItem) -> Unit,
     modifier: Modifier = Modifier.fillMaxWidth().wrapContentHeight(),
     selected: BottomNavigationItem = BottomNavigationItem.HOME
 ) {
-    BottomAppBar(
-        containerColor = AppThemeColors.rose2,
-        contentPadding = PaddingValues(0.dp),
-        tonalElevation = 0.dp,
-        modifier = modifier.padding(0.dp).background(AppThemeColors.mainGradient),
-    ) {
-        NavigationBar(
-            modifier = Modifier.background(Color.Transparent),
-            containerColor = Color.Transparent,
-            contentColor = Color.Transparent
+    AppPreview {
+        BottomAppBar(
+            containerColor = AppThemeColors.rose2,
+            contentPadding = PaddingValues(0.dp),
+            tonalElevation = 0.dp,
+            modifier = modifier.padding(0.dp).background(AppThemeColors.mainGradient),
         ) {
-            BottomNavigationItem.entries.forEach { item ->
-                NavigationBarItem(
-                    selected = item == selected,
-                    enabled = item != selected,
-                    icon = {
-                        Image(
-                            painterResource(item.icon),
-                            item.name,
-                            modifier = Modifier.padding(4.dp),
-                            colorFilter = ColorFilter.tint(if (item == selected) AppThemeColors.red3 else AppThemeColors.white)
-                        )
-                    },
-                    alwaysShowLabel = false,
-                    onClick = {
-                        onClicked(item)
-                    })
-                if (item == BottomNavigationItem.LIST) {
-                    Spacer(Modifier.weight(1.0f))
+            NavigationBar(
+                modifier = Modifier.background(Color.Transparent),
+                containerColor = Color.Transparent,
+                contentColor = Color.Transparent
+            ) {
+                BottomNavigationItem.entries.forEach { item ->
+                    NavigationBarItem(
+                        selected = item == selected,
+                        enabled = item != selected,
+                        icon = {
+                            Image(
+                                painterResource(item.icon),
+                                item.name,
+                                modifier = Modifier.padding(4.dp),
+                                colorFilter = ColorFilter.tint(if (item == selected) AppThemeColors.red3 else AppThemeColors.white)
+                            )
+                        },
+                        alwaysShowLabel = false,
+                        onClick = {
+                            onClicked(item)
+                        })
+                    if (item == BottomNavigationItem.LIST) {
+                        Spacer(Modifier.weight(1.0f))
+                    }
                 }
             }
         }

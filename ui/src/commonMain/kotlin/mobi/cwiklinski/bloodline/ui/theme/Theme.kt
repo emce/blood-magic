@@ -7,10 +7,13 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import mobi.cwiklinski.bloodline.ui.manager.LocalPlatformManager
+import mobi.cwiklinski.bloodline.ui.manager.rememberPlatformManager
 
 @Composable
 fun AppTheme(
@@ -31,6 +34,21 @@ val appShapes = Shapes(
     large = RoundedCornerShape(24.dp),
     extraLarge = RoundedCornerShape(24.dp)
 )
+
+
+
+@Composable
+fun AppPreview(
+    content: @Composable () -> Unit
+) {
+    val platformManager = rememberPlatformManager()
+
+    CompositionLocalProvider(
+        LocalPlatformManager provides platformManager
+    ) {
+        AppTheme(content = content)
+    }
+}
 
 
 object AppThemeColors {

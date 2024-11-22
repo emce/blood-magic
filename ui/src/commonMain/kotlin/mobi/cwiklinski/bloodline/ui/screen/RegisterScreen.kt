@@ -33,10 +33,9 @@ import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.resources.*
-import mobi.cwiklinski.bloodline.ui.event.Event
 import mobi.cwiklinski.bloodline.ui.event.Events
-import mobi.cwiklinski.bloodline.ui.widget.Highlight
-import mobi.cwiklinski.bloodline.ui.widget.HighlightedText
+import mobi.cwiklinski.bloodline.ui.widget.LinkedText
+import mobi.cwiklinski.bloodline.ui.widget.TextWithLinks
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SocialIconButton
@@ -127,22 +126,16 @@ class RegisterScreen : AppScreen() {
                     Spacer(Modifier.height(30.dp))
                 }
                 Spacer(Modifier.height(20.dp))
-                HighlightedText(
+                TextWithLinks(
                     text = stringResource(Res.string.registerTerms),
-                    highlights = listOf(
-                        Highlight(
+                    linkedTexts = listOf(
+                        LinkedText(
                             text = stringResource(Res.string.registerTermsPrivacyPolicy),
-                            data = stringResource(Res.string.registerTermsPrivacyPolicyLink),
-                            onClick = { link ->
-                                screenModel.postEvent(Events.OpenBrowser(link))
-                            }
+                            link = stringResource(Res.string.registerTermsPrivacyPolicyLink)
                         ),
-                        Highlight(
+                        LinkedText(
                             text = stringResource(Res.string.registerTermsRules),
-                            data = stringResource(Res.string.registerTermsRulesLink),
-                            onClick = { link ->
-                                screenModel.postEvent(Events.OpenBrowser(link))
-                            }
+                            link = stringResource(Res.string.registerTermsRulesLink)
                         )
                     )
                 )
