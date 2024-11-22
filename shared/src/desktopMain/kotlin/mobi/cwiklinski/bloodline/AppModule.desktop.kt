@@ -7,7 +7,7 @@ import org.koin.dsl.module
 
 actual fun createAppModule(): List<Module> = buildList {
     add(platformModule)
-    addAll(appModule)
+    //addAll(appModule)
 }
 
 val platformModule = module {

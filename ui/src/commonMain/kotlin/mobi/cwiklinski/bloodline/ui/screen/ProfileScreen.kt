@@ -68,10 +68,12 @@ import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString()) : AppProfileScreen() {
 
     @OptIn(ExperimentalMaterial3Api::class)
+    @Preview
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow

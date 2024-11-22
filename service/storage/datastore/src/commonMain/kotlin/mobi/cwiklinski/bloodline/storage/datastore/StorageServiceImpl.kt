@@ -12,6 +12,8 @@ import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 
 class StorageServiceImpl(private val store: DataStore<Preferences>) : StorageService {
+    
+    private val _profileKey = "__profile" 
 
     override suspend fun storeString(key: String, objectToStore: String) {
         store.edit { preferences ->
@@ -26,6 +28,15 @@ class StorageServiceImpl(private val store: DataStore<Preferences>) : StorageSer
         }
         .first() ?: defaultValue
 
+    override suspend fun deleteString(key: String): Boolean {
+        store
+            .edit { preferences ->
+                preferences.remove(stringPreferencesKey(key))
+                exists(key)
+            }
+        return exists(key)
+    }
+
     override suspend fun storeInt(key: String, objectToStore: Int) {
         store.edit { preferences ->
             preferences[intPreferencesKey(key)] = objectToStore
@@ -38,6 +49,15 @@ class StorageServiceImpl(private val store: DataStore<Preferences>) : StorageSer
             preferences[intPreferencesKey(key)]
         }
         .first() ?: defaultValue
+
+    override suspend fun deleteInt(key: String): Boolean {
+        store
+            .edit { preferences ->
+                preferences.remove(intPreferencesKey(key))
+                exists(key)
+            }
+        return exists(key)
+    }
 
     override suspend fun storeBoolean(key: String, objectToStore: Boolean) {
         store.edit { preferences ->
@@ -52,18 +72,36 @@ class StorageServiceImpl(private val store: DataStore<Preferences>) : StorageSer
         }
         .first() ?: defaultValue
 
+    override suspend fun deleteBoolean(key: String): Boolean {
+        store
+            .edit { preferences ->
+                preferences.remove(booleanPreferencesKey(key))
+                exists(key)
+            }
+        return exists(key)
+    }
+
     override suspend fun storeProfile(profile: Profile) {
         store.edit { preferences ->
-            preferences[stringPreferencesKey("profile")] = profile.toJson()
+            preferences[stringPreferencesKey(_profileKey)] = profile.toJson()
         }
     }
 
     override suspend fun getProfile() = Profile.fromJson(store
         .data
         .map { preferences ->
-            preferences[stringPreferencesKey("profile")]
+            preferences[stringPreferencesKey(_profileKey)]
         }
-        .first() ?: "profile")
+        .first() ?: _profileKey)
+
+    override suspend fun deleteProfile(): Boolean {
+        store
+            .edit { preferences ->
+                preferences.remove(stringPreferencesKey(_profileKey))
+                exists(_profileKey)
+            }
+        return exists(_profileKey)
+    }
 
     override suspend fun exists(key: String) = store
         .data

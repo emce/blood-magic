@@ -43,11 +43,12 @@ kotlin {
         androidMain.dependencies {
             api(projects.service.activityprovider.api)
             implementation(projects.service.activityprovider.implementation)
-            implementation(libs.bundles.activity.android)
-            implementation(libs.bundles.appcompat.android)
-            implementation(libs.bundles.core.android)
-            implementation(libs.bundles.compose.android)
-            implementation(libs.bundles.koin.android)
+            api(libs.androidx.browser)
+            api(libs.bundles.activity.android)
+            api(libs.bundles.appcompat.android)
+            api(libs.bundles.core.android)
+            api(libs.bundles.compose.android)
+            api(libs.bundles.koin.android)
             api(libs.accompanist.permissions)
         }
         commonMain.dependencies {
@@ -56,8 +57,8 @@ kotlin {
             api(projects.service.auth.api)
             api(projects.service.data.api)
             api(projects.service.storage.api)
-            implementation(projects.service.auth.firebase)
-            implementation(projects.service.data.firebase)
+            implementation(projects.service.auth.filed)
+            implementation(projects.service.data.filed)
             implementation(projects.service.storage.datastore)
             api(compose.animation)
             api(compose.foundation)
