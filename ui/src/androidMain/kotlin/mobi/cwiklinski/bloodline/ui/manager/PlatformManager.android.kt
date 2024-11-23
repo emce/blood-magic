@@ -20,17 +20,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
-import mobi.cwiklinski.bloodline.activityprovider.api.ActivityProvider
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.idShare
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
 import java.io.File
 
 @Composable
 actual fun rememberPlatformManager(): PlatformManager {
     val context = LocalContext.current
-    val activity = koinInject<ActivityProvider>().get() as? FragmentActivity
+    val activity = LocalContext.current as? FragmentActivity
     val shareId: String = stringResource(Res.string.idShare)
 
     return remember {

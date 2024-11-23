@@ -3,7 +3,6 @@ package mobi.cwiklinski.bloodline.ui.model
 import app.cash.turbine.test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.runTest
@@ -36,7 +35,6 @@ class SplashScreenModelTest {
         authService.loginWithEmailAndPassword(credentials.key, credentials.value)
         testScheduler.advanceUntilIdle()
         val model = SplashScreenModel(authService)
-        model.onStart()
         testScheduler.advanceTimeBy(SplashScreenModel.SPLASH_DELAY * 2)
         model.state.test {
             assertIs<AuthenticationState.Logged>(awaitItem())

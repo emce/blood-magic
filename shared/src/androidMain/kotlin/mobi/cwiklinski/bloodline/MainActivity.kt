@@ -7,13 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mmk.kmpnotifier.permission.permissionUtil
-import mobi.cwiklinski.bloodline.activityprovider.api.ActivitySetter
 import mobi.cwiklinski.bloodline.ui.screen.SplashScreen
-import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
-    private val activitySetter by inject<ActivitySetter>()
     //private val notificationService by inject<AndroidNotificationService>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,16 +26,6 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         //notificationService.onCreateOrOnNewIntent(intent)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        activitySetter.set(this)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        activitySetter.clear()
     }
 
 }

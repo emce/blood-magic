@@ -1,16 +1,15 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import app.cash.turbine.test
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.data.api.ProfileUpdate
 import mobi.cwiklinski.bloodline.data.api.ProfileUpdateState
-import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -18,15 +17,18 @@ import kotlin.test.assertIs
 import kotlin.test.assertIsNot
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class RegisterScreenModelTest {
 
     private val profile = UiTestTools.generateProfile()
+    private val testDispatcher = UnconfinedTestDispatcher()
     private val update = ProfileUpdate(listOf(ProfileUpdateState.ALL))
+    private val storageService = UiTestTools.getStorageService()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
+    fun setUp() = runTest {
+        Dispatchers.setMain(testDispatcher)
+        storageService.storeProfile(profile)
     }
 
     @Test
@@ -124,19 +126,15 @@ class RegisterScreenModelTest {
 
     private fun getDefaultModel() = getModel(
         AuthResult.Success(),
-        false,
-        profile,
-        update
+        false
     )
 
     private fun getModel(
         authResult: AuthResult = AuthResult.Success(),
-        authSecond: Boolean = true,
-        profile: Profile? = null,
-        profileUpdate: ProfileUpdate
+        authSecond: Boolean = true
     ) = RegisterScreenModel(
         UiTestTools.getAuthService(authResult, authSecond),
-        UiTestTools.getProfileService(profile, profileUpdate),
+        UiTestTools.getProfileService(storageService, CoroutineScope(testDispatcher)),
         UiTestTools.getStorageService()
     )
 }

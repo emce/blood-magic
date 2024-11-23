@@ -8,5 +8,5 @@ import org.koin.dsl.module
 fun createDataModule() = module {
     single<CenterService> { CenterServiceImplementation() }
     single<DonationService> { DonationServiceImplementation() }
-    single<ProfileService> { ProfileServiceImplementation() }
+    single<ProfileService> { ProfileServiceImplementation(get(), get()) }
 }

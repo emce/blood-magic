@@ -1,6 +1,5 @@
 package mobi.cwiklinski.bloodline.ui.model
 
-import app.cash.turbine.test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -19,16 +18,17 @@ import kotlin.test.assertIs
 import kotlin.test.assertIsNot
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class LoginScreenModelTest {
 
     private val profile = UiTestTools.generateProfile()
+    private val storageService = UiTestTools.getStorageService()
+    private val testDispatcher = UnconfinedTestDispatcher()
 
-    private val update = ProfileUpdate(listOf(ProfileUpdateState.ALL))
-
-    @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
+    fun setUp() = runTest {
+        Dispatchers.setMain(testDispatcher)
+        storageService.storeProfile(profile)
     }
 
     @Test
@@ -58,7 +58,7 @@ class LoginScreenModelTest {
     }
 
     @Test
-    fun `return error with incorrect password length`() = runTest {
+    fun `returns error with incorrect password length`() = runTest {
         val model = getDefaultModel()
         val email = "sfdd@afaf.com"
         val password = "5qe"
@@ -73,7 +73,7 @@ class LoginScreenModelTest {
     }
 
     @Test
-    fun `passing with correct password length`() = runTest {
+    fun `passes with correct password length`() = runTest {
         val model = getDefaultModel()
         val email = "sfdd@afaf.com"
         val password = "5qe313434342"
@@ -84,7 +84,7 @@ class LoginScreenModelTest {
     }
 
     @Test
-    fun `return error when credentials are incorrect`() = runTest {
+    fun `returns error when credentials are incorrect`() = runTest {
         val model = getDefaultModel()
         val email = "sfdd@afaf.com"
         val password = "5qe"
@@ -111,19 +111,15 @@ class LoginScreenModelTest {
 
     private fun getDefaultModel() = getModel(
         AuthResult.Success(),
-        false,
-        profile,
-        update
+        false
     )
 
     private fun getModel(
         authResult: AuthResult = AuthResult.Success(),
-        authSecond: Boolean = true,
-        profile: Profile? = null,
-        profileUpdate: ProfileUpdate
+        authSecond: Boolean = true
     ) = LoginScreenModel(
         UiTestTools.getAuthService(authResult, authSecond),
-        UiTestTools.getProfileService(profile, profileUpdate),
+        UiTestTools.getProfileService(storageService, CoroutineScope(testDispatcher)),
         UiTestTools.getStorageService()
     )
 }

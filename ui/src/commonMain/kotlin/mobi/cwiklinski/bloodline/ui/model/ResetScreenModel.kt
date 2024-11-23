@@ -18,9 +18,7 @@ class ResetScreenModel(
     fun onPasswordReset(email: String) {
         clearError()
         mutableState.value = ResetState.Sending
-        if (!email.isValidEmail()) {
-            mutableState.value = ResetState.Error(listOf(ResetError.EMAIL_ERROR))
-        } else {
+        if (email.isValidEmail()) {
             screenModelScope.launch {
                 authService.resetPassword(email)
                     .collectLatest {
@@ -34,6 +32,8 @@ class ResetScreenModel(
                         }
                     }
             }
+        } else {
+            mutableState.value = ResetState.Error(listOf(ResetError.EMAIL_ERROR))
         }
     }
 

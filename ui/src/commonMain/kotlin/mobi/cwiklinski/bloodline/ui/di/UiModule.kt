@@ -20,6 +20,6 @@ val uiModule = buildList<Module> {
         factory { LoginScreenModel(get(), get(), get()) }
         factory { RegisterScreenModel(get(), get(), get()) }
         factory { ResetScreenModel(get()) }
-        factory { ProfileScreenModel(get(), get()) }
+        factory { ProfileScreenModel(get(), get(), get()) }
     }
 }

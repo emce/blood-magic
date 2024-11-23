@@ -1,22 +1,19 @@
 package mobi.cwiklinski.bloodline.ui.util
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
-import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.common.today
-import mobi.cwiklinski.bloodline.data.api.ProfileService
-import mobi.cwiklinski.bloodline.data.api.ProfileUpdate
 import mobi.cwiklinski.bloodline.data.filed.DummyData
+import mobi.cwiklinski.bloodline.data.filed.ProfileServiceImplementation
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
@@ -24,7 +21,6 @@ import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.test.CommonTestTools
-import kotlin.time.Duration.Companion.days
 
 object UiTestTools {
 
@@ -96,52 +92,8 @@ object UiTestTools {
 
     }
 
-    fun getProfileService(profile: Profile?, update: ProfileUpdate?) = object : ProfileService {
-
-        override fun updateProfileData(
-            name: String,
-            avatar: String,
-            sex: Sex,
-            notification: Boolean,
-            starting: Int,
-            centerId: String
-        ): Flow<Either<ProfileUpdate, Throwable>> = flow {
-            emit(
-                if (update != null) {
-                    Either.Left(update)
-                } else {
-                    Either.Right(RuntimeException())
-                }
-            )
-        }
-
-        override fun updateProfileEmail(email: String) = flow {
-            emit(
-                if (update != null) {
-                    Either.Left(update)
-                } else {
-                    Either.Right(RuntimeException())
-                }
-            )
-        }
-
-        override fun updateProfilePassword(password: String) = flow {
-            emit(
-                if (update != null) {
-                    Either.Left(update)
-                } else {
-                    Either.Right(RuntimeException())
-                }
-            )
-        }
-
-        override fun getProfile() = flow {
-            if (profile != null) {
-                emit(profile)
-            }
-        }
-
-    }
+    fun getProfileService(storageService: StorageService, coroutineScope: CoroutineScope) =
+        ProfileServiceImplementation(storageService, coroutineScope)
 
     fun generateProfile(
         id: String? = CommonTestTools.randomString(9),

@@ -18,11 +18,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
-import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import io.github.aakira.napier.Napier
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
@@ -37,19 +36,17 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 class SplashScreen : AppScreen() {
 
-    @OptIn(ExperimentalVoyagerApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<SplashScreenModel>()
-        LifecycleEffectOnce {
-            screenModel.onStart()
-        }
         when (screenModel.state.collectAsStateWithLifecycle().value) {
             AuthenticationState.Logged -> {
+                Napier.v("Redirecting to HomeScreen")
                 navigator.replace(HomeScreen())
             }
             AuthenticationState.NotLogged -> {
+                Napier.v("Redirecting to LoginScreen")
                 navigator.replace(LoginScreen())
             }
             else -> Unit
