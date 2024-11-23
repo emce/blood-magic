@@ -1,6 +1,7 @@
 package mobi.cwiklinski.bloodline.data.api
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Profile
@@ -24,7 +25,7 @@ interface ProfileService {
         password: String
     ): Flow<Either<ProfileUpdate, Throwable>>
 
-    fun getProfile(): Flow<Profile>
+    fun getProfile(): StateFlow<Profile>
 }
 
 data class ProfileUpdate(val updated: List<ProfileUpdateState>)

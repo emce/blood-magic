@@ -1,6 +1,5 @@
 package mobi.cwiklinski.bloodline.auth.filed
 
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -8,6 +7,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.auth.api.AuthError
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
@@ -45,6 +45,9 @@ class AuthenticationServiceImpl(private val storageService: StorageService) :
             if (users.containsKey(email)) {
                 if (users[email] == password) {
                     storageService.storeBoolean(_dataSessionKey, true)
+                    storageService.storeProfile(AuthData.generateProfile(
+                        email = email
+                    ))
                     _authenticationState.value = AuthenticationState.Logged
                         emit(AuthResult.Success())
                 } else {
@@ -63,6 +66,7 @@ class AuthenticationServiceImpl(private val storageService: StorageService) :
 
     override fun logOut(): Flow<Boolean> = flow {
         storageService.deleteBoolean(_dataSessionKey)
+        storageService.deleteProfile()
         _authenticationState.value = AuthenticationState.NotLogged
         emit(!storageService.exists(_dataSessionKey))
     }

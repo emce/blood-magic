@@ -29,6 +29,10 @@ struct iOSApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
+    init() {
+            NapierProxyKt.debugBuild()
+        }
+
     var body: some Scene {
         WindowGroup {
             ContentView()

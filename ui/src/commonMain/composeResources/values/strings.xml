@@ -130,6 +130,7 @@
     <string name="profileDataPasswordRepeatError">Powtórzenie hasła nie jest jednakowe z nowym hasłem!</string>
     <string name="profileDataUpdateError">Wystąpił błąd przy aktualizacji danych profilu.</string>
     <string name="profileDataPasswordUpdateError">Wystąpił błąd przy aktualizacji hasła.</string>
+    <string name="profileDataEmailUpdateError">Wystąpił błąd przy aktualizacji adresu email.</string>
     <string name="profileDataUpdateSuccess">Dane profilu zostały zmienione.</string>
     <string name="profileDataPasswordUpdateSuccess">Nowe hasło zostało ustawione.</string>
     <string name="profileDataSubmitButton">Edytuj dane</string>

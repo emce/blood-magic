@@ -41,8 +41,6 @@ kotlin {
         val desktopMain by getting
 
         androidMain.dependencies {
-            api(projects.service.activityprovider.api)
-            implementation(projects.service.activityprovider.implementation)
             api(libs.androidx.browser)
             api(libs.bundles.activity.android)
             api(libs.bundles.appcompat.android)
@@ -70,6 +68,7 @@ kotlin {
             api(compose.components.resources)
             api(compose.components.uiToolingPreview)
             api(libs.jetbrains.androidx.lifecycle.runtime.compose)
+            implementation(libs.napier)
             // Bundles
             api(libs.bundles.constraintlayout.common)
             implementation(libs.bundles.coil.common)

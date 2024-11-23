@@ -13,7 +13,7 @@ import mobi.cwiklinski.bloodline.storage.api.StorageService
 
 class StorageServiceImpl(private val store: DataStore<Preferences>) : StorageService {
     
-    private val _profileKey = "__profile" 
+    private val _profileKey = "__profile"
 
     override suspend fun storeString(key: String, objectToStore: String) {
         store.edit { preferences ->

@@ -15,9 +15,6 @@ class SplashScreenModel(
 
     init {
         bootstrap()
-    }
-
-    fun onStart() {
         screenModelScope.launch {
             delay(SPLASH_DELAY)
             mutableState.value = authService.authenticationState.first()

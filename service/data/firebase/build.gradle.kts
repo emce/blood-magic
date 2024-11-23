@@ -37,8 +37,6 @@ kotlin {
     sourceSets {
         val desktopMain by getting
         androidMain.dependencies {
-            implementation(projects.service.activityprovider.api)
-            implementation(projects.service.activityprovider.implementation)
         }
         commonMain.dependencies {
             api(projects.common)

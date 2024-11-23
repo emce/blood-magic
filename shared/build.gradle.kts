@@ -53,9 +53,7 @@ kotlin {
         val desktopMain by getting
         
         androidMain.dependencies {
-            api(projects.service.activityprovider.api)
             api(libs.notifier)
-            implementation(projects.service.activityprovider.implementation)
             implementation(libs.bundles.appcompat.android)
             implementation(libs.bundles.core.android)
             implementation(libs.bundles.compose.android)
@@ -71,6 +69,7 @@ kotlin {
             implementation(projects.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.napier)
             implementation(libs.bundles.voyager)
             implementation(libs.bundles.koin.common)
         }

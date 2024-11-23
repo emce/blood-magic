@@ -10,8 +10,10 @@ import mobi.cwiklinski.bloodline.resources.profileAvatarPegasus
 import mobi.cwiklinski.bloodline.resources.profileAvatarWizard
 import mobi.cwiklinski.bloodline.resources.profileDataCurrentPasswordError
 import mobi.cwiklinski.bloodline.resources.profileDataEmailError
+import mobi.cwiklinski.bloodline.resources.profileDataEmailUpdateError
 import mobi.cwiklinski.bloodline.resources.profileDataPasswordError
 import mobi.cwiklinski.bloodline.resources.profileDataPasswordRepeatError
+import mobi.cwiklinski.bloodline.resources.profileDataPasswordUpdateError
 import mobi.cwiklinski.bloodline.resources.profileDataUpdateError
 import mobi.cwiklinski.bloodline.resources.profileUpdateError
 import mobi.cwiklinski.bloodline.ui.model.ProfileError
@@ -46,6 +48,8 @@ abstract class AppProfileScreen : AppScreen() {
                 ProfileError.ERROR -> stringResource(Res.string.profileUpdateError)
                 ProfileError.CURRENT_PASSWORD -> stringResource(Res.string.profileDataCurrentPasswordError)
                 ProfileError.REPEAT -> stringResource(Res.string.profileDataPasswordRepeatError)
+                ProfileError.NEW_PASSWORD -> stringResource(Res.string.profileDataPasswordUpdateError)
+                ProfileError.NEW_EMAIL -> stringResource(Res.string.profileDataEmailUpdateError)
             }
         }
             .joinToString("\n")
