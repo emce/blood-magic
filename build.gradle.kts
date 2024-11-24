@@ -11,4 +11,5 @@ plugins {
     alias(libs.plugins.kotlinCocoapods) apply false
     alias(libs.plugins.jetbrainsKotlinJvm) apply false
     alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.kotlin.android) apply false
 }

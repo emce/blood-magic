@@ -13,15 +13,20 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 suspend fun <T> Flow<List<T>>.flattenToList() =
     flatMapConcat { it.asFlow() }.toList()
+
+fun today() = Clock.System.now()
+    .toLocalDateTime(TimeZone.currentSystemDefault()).date
 
 fun LocalDate.isBefore(date: LocalDate) =
     LocalDateTime(this.year, this.monthNumber, this.dayOfMonth, 0, 0, 0)

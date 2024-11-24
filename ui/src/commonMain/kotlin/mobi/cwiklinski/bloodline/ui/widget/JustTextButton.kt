@@ -11,6 +11,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.theme.submitButton
 
 @Composable
 fun JustTextButton(
@@ -21,10 +22,7 @@ fun JustTextButton(
     textDecoration: TextDecoration = TextDecoration.Underline,
     textColor: Color = AppThemeColors.grey3,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    textStyle: TextStyle = getTypography().bodyMedium.copy(
-        color = textColor,
-        textDecoration = textDecoration
-    )
+    textStyle: TextStyle = submitButton()
 ) {
     TextButton(
         modifier = modifier,

@@ -12,7 +12,6 @@ import mobi.cwiklinski.bloodline.resources.quicksand_bold
 import mobi.cwiklinski.bloodline.resources.quicksand_light
 import mobi.cwiklinski.bloodline.resources.quicksand_medium
 import mobi.cwiklinski.bloodline.resources.quicksand_regular
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.Font
 
 @Composable
@@ -95,7 +94,107 @@ fun getTypography(): Typography {
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
+@Composable
+fun hugeTitle() = TextStyle(
+    fontSize = 40.sp,
+    color = AppThemeColors.violet4,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 46.sp,
+)
+
+@Composable
+fun toolbarTitle() = TextStyle(
+    fontSize = 22.sp,
+    color = AppThemeColors.black,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 30.sp,
+)
+
+@Composable
+fun toolbarSubTitle() = TextStyle(
+    fontSize = 16.sp,
+    color = AppThemeColors.black70,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 20.sp,
+)
+
+@Composable
+fun contentTitle() = TextStyle(
+    fontSize = 17.sp,
+    color = AppThemeColors.black,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 24.sp,
+)
+
+@Composable
+fun cardTitle() = TextStyle(
+    fontSize = 28.sp,
+    color = AppThemeColors.black,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 36.sp,
+)
+
+@Composable
+fun contentText() = TextStyle(
+    fontSize = 16.sp,
+    color = AppThemeColors.black70,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 20.sp,
+)
+
+@Composable
+fun contentAction() = TextStyle(
+    fontSize = 13.sp,
+    color = AppThemeColors.black,
+    fontWeight = FontWeight.SemiBold,
+    lineHeight = 18.sp
+)
+
+@Composable
+fun inputPlaceHolder() = TextStyle(
+    fontSize = 13.sp,
+    color = AppThemeColors.grey3,
+    fontWeight = FontWeight.SemiBold,
+    lineHeight = 18.sp
+)
+
+@Composable
+fun itemTitle() = TextStyle(
+    fontSize = 13.sp,
+    color = AppThemeColors.black,
+    fontWeight = FontWeight.SemiBold,
+    lineHeight = 18.sp
+)
+
+@Composable
+fun itemSubTitle() = TextStyle(
+    fontSize = 11.sp,
+    color = AppThemeColors.black70,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 16.sp
+)
+
+@Composable
+fun itemTrailing() = TextStyle(
+    fontSize = 13.sp,
+    color = AppThemeColors.black,
+    fontWeight = FontWeight.SemiBold,
+    lineHeight = 18.sp
+)
+
+@Composable
+fun submitButton() = TextStyle(
+    fontSize = 12.sp,
+    color = AppThemeColors.white,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 20.sp
+)
+
+@Composable
+fun secondaryButton() = submitButton().copy(
+    color = AppThemeColors.rose1,
+)
+
 @Composable
 fun getFontFamily(family: AppFontFamily): FontFamily {
     val quickSandLight =

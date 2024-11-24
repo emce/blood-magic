@@ -80,6 +80,7 @@ kotlin {
             implementation(libs.bundles.tests)
             implementation(libs.kotlinx.coroutines.test)
             implementation(projects.commonTest)
+            implementation(libs.turbine)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
