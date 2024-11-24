@@ -30,6 +30,7 @@ import mobi.cwiklinski.bloodline.resources.splash_logo
 import mobi.cwiklinski.bloodline.ui.model.SplashScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
+import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -74,7 +75,7 @@ class SplashScreen : AppScreen() {
                 Spacer(Modifier.height(20.dp))
                 Text(
                     stringResource(Res.string.appName),
-                    style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                    style = hugeTitle()
                 )
                 Spacer(Modifier.height(20.dp))
                 FormProgress(filter = ColorFilter.tint(AppThemeColors.red2))

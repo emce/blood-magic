@@ -16,7 +16,7 @@ class ProfileScreenModel(
 ) : AppModel<ProfileState>(ProfileState.Idle) {
 
     val profile = profileService.getProfile()
-        .stateIn(screenModelScope, SharingStarted.WhileSubscribed(5000), null)
+        .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), null)
 
     init {
         bootstrap()

@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.model
 
+import app.cash.turbine.test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -34,9 +35,12 @@ class RegisterScreenModelTest {
         val email1 = "sfdd@afaf"
         val password = "5qe313434342"
         model.onRegisterSubmit(email1, password, password)
-        assertIs<RegisterState.Error>(model.state.first())
-        assertTrue {
-            (model.state.first() as RegisterState.Error).errors.contains(RegisterError.EMAIL_ERROR)
+        model.state.test {
+            val state = awaitItem()
+            assertIs<RegisterState.Error>(state)
+            assertTrue {
+                state.errors.contains(RegisterError.EMAIL_ERROR)
+            }
         }
     }
 
@@ -46,7 +50,9 @@ class RegisterScreenModelTest {
         val email1 = "sfdd@afaf.com"
         val password = "5qe313434342"
         model.onRegisterSubmit(email1, password, password)
-        assertIsNot<RegisterState.Error>(model.state.first())
+        model.state.test {
+            assertIsNot<RegisterState.Error>(awaitItem())
+        }
     }
 
     @Test
@@ -55,9 +61,12 @@ class RegisterScreenModelTest {
         val email = "sfdd@afaf.com"
         val password = "5qe"
         model.onRegisterSubmit(email, password, password)
-        assertIs<RegisterState.Error>(model.state.first())
-        assertTrue {
-            (model.state.first() as RegisterState.Error).errors.contains(RegisterError.PASSWORD_ERROR)
+        model.state.test {
+            val state = awaitItem()
+            assertIs<RegisterState.Error>(state)
+            assertTrue {
+                state.errors.contains(RegisterError.PASSWORD_ERROR)
+            }
         }
     }
 
@@ -68,7 +77,9 @@ class RegisterScreenModelTest {
         val password = "5qe313434342"
         val repeat = "5qe313434342"
         model.onRegisterSubmit(email, password, repeat)
-        assertIsNot<RegisterState.Error>(model.state.first())
+        model.state.test {
+            assertIsNot<RegisterState.Error>(awaitItem())
+        }
     }
 
     @Test
@@ -78,9 +89,12 @@ class RegisterScreenModelTest {
         val password = "5qe313434342"
         val repeat = "54356345345"
         model.onRegisterSubmit(email, password, repeat)
-        assertIs<RegisterState.Error>(model.state.first())
-        assertTrue {
-            (model.state.first() as RegisterState.Error).errors.contains(RegisterError.REPEAT_ERROR)
+        model.state.test {
+            val state = awaitItem()
+            assertIs<RegisterState.Error>(state)
+            assertTrue {
+                state.errors.contains(RegisterError.REPEAT_ERROR)
+            }
         }
     }
 
@@ -91,7 +105,9 @@ class RegisterScreenModelTest {
         val password = "5qe313434342"
         val repeat = "5qe313434342"
         model.onRegisterSubmit(email, password, repeat)
-        assertIsNot<RegisterState.Error>(model.state.first())
+        model.state.test {
+            assertIsNot<RegisterState.Error>(awaitItem())
+        }
     }
 
     @Test
@@ -101,7 +117,9 @@ class RegisterScreenModelTest {
         val password = "5qe313434342"
         val repeat = "5qe313434342"
         model.onRegisterSubmit(email, password, repeat)
-        assertIs<RegisterState.Registered>(model.state.first())
+        model.state.test {
+            assertIs<RegisterState.Registered>(awaitItem())
+        }
     }
 
     private fun getDefaultModel() = getModel(

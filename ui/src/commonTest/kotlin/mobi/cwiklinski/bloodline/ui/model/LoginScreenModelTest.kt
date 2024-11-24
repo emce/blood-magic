@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.model
 
+import app.cash.turbine.test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -36,9 +37,12 @@ class LoginScreenModelTest {
         val email1 = "sfdd@afaf"
         val password = "5qe313434342"
         model.onLoginSubmit(email1, password)
-        assertIs<LoginState.Error>(model.state.first())
-        assertTrue {
-            (model.state.first() as LoginState.Error).errors.contains(LoginError.EMAIL_ERROR)
+        model.state.test {
+            val state = awaitItem()
+            assertIs<LoginState.Error>(state)
+            assertTrue {
+                state.errors.contains(LoginError.EMAIL_ERROR)
+            }
         }
     }
 
@@ -48,7 +52,9 @@ class LoginScreenModelTest {
         val email1 = "sfdd@afaf.com"
         val password = "5qe313434342"
         model.onLoginSubmit(email1, password)
-        assertIsNot<LoginState.Error>(model.state.first())
+        model.state.test {
+            assertIsNot<LoginState.Error>(awaitItem())
+        }
     }
 
     @Test
@@ -57,9 +63,12 @@ class LoginScreenModelTest {
         val email = "sfdd@afaf.com"
         val password = "5qe"
         model.onLoginSubmit(email, password)
-        assertIs<LoginState.Error>(model.state.first())
-        assertTrue {
-            (model.state.first() as LoginState.Error).errors.contains(LoginError.PASSWORD_ERROR)
+        model.state.test {
+            val state = awaitItem()
+            assertIs<LoginState.Error>(state)
+            assertTrue {
+                state.errors.contains(LoginError.PASSWORD_ERROR)
+            }
         }
     }
 
@@ -69,7 +78,9 @@ class LoginScreenModelTest {
         val email = "sfdd@afaf.com"
         val password = "5qe313434342"
         model.onLoginSubmit(email, password)
-        assertIsNot<LoginState.Error>(model.state.first())
+        model.state.test {
+            assertIsNot<LoginState.Error>(awaitItem())
+        }
     }
 
     @Test
@@ -78,9 +89,12 @@ class LoginScreenModelTest {
         val email = "sfdd@afaf.com"
         val password = "5qe"
         model.onLoginSubmit(email, password)
-        assertIs<LoginState.Error>(model.state.first())
-        assertTrue {
-            (model.state.first() as LoginState.Error).errors.contains(LoginError.PASSWORD_ERROR)
+        model.state.test {
+            val state = awaitItem()
+            assertIs<LoginState.Error>(state)
+            assertTrue {
+                state.errors.contains(LoginError.PASSWORD_ERROR)
+            }
         }
     }
 
@@ -90,7 +104,9 @@ class LoginScreenModelTest {
         val email = "sfdd@afaf.com"
         val password = "5qe313434342"
         model.onLoginSubmit(email, password)
-        assertIs<LoginState.LoggedIn>(model.state.first())
+        model.state.test {
+            assertIs<LoginState.LoggedIn>(awaitItem())
+        }
     }
 
     private fun getDefaultModel() = getModel(

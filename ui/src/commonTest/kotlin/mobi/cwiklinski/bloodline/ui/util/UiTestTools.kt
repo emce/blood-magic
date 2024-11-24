@@ -4,17 +4,27 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.common.Either
+import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.data.api.ProfileUpdate
+import mobi.cwiklinski.bloodline.data.filed.DummyData
+import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.Sex
+import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.test.CommonTestTools
+import kotlin.time.Duration.Companion.days
 
 object UiTestTools {
 
@@ -151,5 +161,27 @@ object UiTestTools {
         notification,
         starting,
         centerId
+    )
+
+    fun generateDonation(
+        id: String = CommonTestTools.randomString(10),
+        amount: Int = CommonTestTools.randomInt(200, 500),
+        date: LocalDate = today().minus(CommonTestTools.randomInt(2, 50), DateTimeUnit.DAY),
+        center: Center = DummyData.CENTERS.random(),
+        type: Int = DonationType.entries.random().type,
+        hemoglobin: Int = CommonTestTools.randomInt(200, 500),
+        systolic: Int = CommonTestTools.randomInt(100, 150),
+        diastolic: Int = CommonTestTools.randomInt(100, 150),
+        disqualification: Boolean = listOf(true, false).random()
+    ) = Donation(
+        id,
+        date,
+        DonationType.byType(type),
+        amount,
+        hemoglobin.toFloat(),
+        systolic,
+        diastolic,
+        disqualification,
+        center
     )
 }
