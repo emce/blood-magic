@@ -31,7 +31,7 @@ class DonationScreenModelTest {
         model.centers.test {
             assertEquals(193, awaitItem().size)
         }
-        val donations = model.donations.test {
+        model.donations.test {
             assertEquals(74, awaitItem().size)
         }
     }

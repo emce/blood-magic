@@ -50,6 +50,7 @@ kotlin {
             implementation(libs.kotlin.test)
             implementation(projects.commonTest)
             implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.turbine)
         }
     }
 }

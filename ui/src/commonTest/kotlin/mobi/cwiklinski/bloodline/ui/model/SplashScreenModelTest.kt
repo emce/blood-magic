@@ -1,8 +1,10 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import app.cash.turbine.test
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.runTest
@@ -20,6 +22,7 @@ class SplashScreenModelTest {
 
     private val scheduler = TestCoroutineScheduler()
     private val dispatcher = StandardTestDispatcher(scheduler)
+    private val scope = CoroutineScope(dispatcher)
 
     @BeforeTest
     fun setUp() {
@@ -32,7 +35,7 @@ class SplashScreenModelTest {
         val storage = UiTestTools.getStorageService()
         val authService = AuthenticationServiceImpl(storage)
         val credentials = AuthData.users.entries.last()
-        authService.loginWithEmailAndPassword(credentials.key, credentials.value)
+        authService.loginWithEmailAndPassword(credentials.key, credentials.value).launchIn(scope)
         testScheduler.advanceUntilIdle()
         val model = SplashScreenModel(authService)
         testScheduler.advanceTimeBy(SplashScreenModel.SPLASH_DELAY * 2)

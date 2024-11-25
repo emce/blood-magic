@@ -4,16 +4,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
-import mobi.cwiklinski.bloodline.data.api.ProfileUpdate
-import mobi.cwiklinski.bloodline.data.api.ProfileUpdateState
 import mobi.cwiklinski.bloodline.data.filed.DummyData
-import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.test.CommonTestTools
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
 import kotlin.test.BeforeTest
