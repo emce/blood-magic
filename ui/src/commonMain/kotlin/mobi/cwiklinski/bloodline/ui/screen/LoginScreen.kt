@@ -236,7 +236,8 @@ class LoginScreen : AppScreen() {
                 when (it) {
                     LoginError.EMAIL_ERROR -> stringResource(Res.string.loginEmailError)
                     LoginError.PASSWORD_ERROR -> stringResource(Res.string.loginEmailError)
-                    LoginError.LOGIN_ERROR -> stringResource(Res.string.loginEmailError)
+                    LoginError.LOGIN_ERROR -> stringResource(Res.string.loginError)
+                    LoginError.PROFILE_ERROR -> stringResource(Res.string.loginError)
                 }
             }
             .joinToString("\n")

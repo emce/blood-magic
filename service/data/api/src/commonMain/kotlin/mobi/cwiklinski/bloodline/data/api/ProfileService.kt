@@ -25,7 +25,7 @@ interface ProfileService {
         password: String
     ): Flow<Either<ProfileUpdate, Throwable>>
 
-    fun getProfile(): StateFlow<Profile>
+    fun getProfile(): StateFlow<Profile?>
 }
 
 data class ProfileUpdate(val updated: List<ProfileUpdateState>)

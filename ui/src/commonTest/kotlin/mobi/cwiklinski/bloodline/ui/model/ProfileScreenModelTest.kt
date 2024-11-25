@@ -1,10 +1,13 @@
 package mobi.cwiklinski.bloodline.ui.model
 
+import app.cash.turbine.test
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -22,28 +25,36 @@ import kotlin.test.assertNotNull
 class ProfileScreenModelTest {
 
     private val profile = UiTestTools.generateProfile()
-    private val testDispatcher = UnconfinedTestDispatcher()
+    private val scheduler = TestCoroutineScheduler()
+    private val dispatcher = UnconfinedTestDispatcher(scheduler)
+    private val scope = CoroutineScope(dispatcher)
     private val storageService = UiTestTools.getStorageService()
+    private lateinit var model: ProfileScreenModel
 
     @BeforeTest
     fun setUp() = runTest {
-        Dispatchers.setMain(testDispatcher)
+        Dispatchers.setMain(dispatcher)
         runBlocking {
             storageService.storeProfile(profile)
         }
+        model = ProfileScreenModel(
+            UiTestTools.getProfileService(storageService, scope),
+            UiTestTools.getAuthService(AuthResult.Success(), false),
+            storageService
+        )
     }
 
     @Test
     fun `starts with profile`() = runTest {
-        val model = getDefaultModel()
-        val currentProfile = model.profile.value
-        assertNotNull(currentProfile)
-        assertEquals(profile.email, currentProfile.email)
+        model.profile.test {
+            val currentProfile = awaitItem()
+            assertNotNull(currentProfile)
+            assertEquals(profile.email, currentProfile.email)
+        }
     }
 
     @Test
     fun `updates profile with data`() = runTest {
-        val model = getDefaultModel()
         val newProfile =
             UiTestTools.generateProfile(id = profile.id ?: CommonTestTools.randomString(9))
         model.onProfileDataUpdate(
@@ -54,47 +65,42 @@ class ProfileScreenModelTest {
             newStarting = newProfile.starting,
             newCenterId = newProfile.centerId
         )
-        val state = model.state.first()
-        assertIs<ProfileState.Saved>(state)
-        val currentProfile = model.profile.value
-        assertNotNull(currentProfile)
-        assertEquals(newProfile.name, currentProfile.name)
-        assertEquals(newProfile.sex, currentProfile.sex)
-        assertEquals(newProfile.centerId, currentProfile.centerId)
+        model.state.test {
+            val state = awaitItem()
+            assertIs<ProfileState.Saved>(state)
+        }
+        model.profile.test {
+            val currentProfile = awaitItem()
+            assertNotNull(currentProfile)
+            assertEquals(newProfile.name, currentProfile.name)
+            assertEquals(newProfile.sex, currentProfile.sex)
+            assertEquals(newProfile.centerId, currentProfile.centerId)
+        }
     }
 
     @Test
     fun `updates profile with email`() = runTest {
-        val model = getDefaultModel()
         val newEmail = DummyData.ACCOUNTS.last().first
         model.onProfileEmailUpdate(newEmail)
-        val state = model.state.value
-        assertIs<ProfileState.Saved>(state)
-        val currentProfile = model.profile.value
-        assertEquals(newEmail, currentProfile.email)
+        model.state.test {
+            val state = awaitItem()
+            assertIs<ProfileState.Saved>(state)
+        }
+        model.profile.test {
+            val profile = awaitItem()
+            assertNotNull(profile)
+            assertEquals(newEmail, profile.email)
+        }
     }
 
     @Test
     fun `returns error when updates profile with incorrect email`() = runTest {
-        val model = getDefaultModel()
         val newEmail = "354234#adas"
         model.onProfileEmailUpdate(newEmail)
-        val state = model.state.first()
-        assertIs<ProfileState.Error>(state)
+        model.state.test {
+            val state = awaitItem()
+            assertIs<ProfileState.Error>(state)
+        }
     }
-
-    private fun getDefaultModel() = getModel(
-        AuthResult.Success(),
-        false,
-    )
-
-    private fun getModel(
-        authResult: AuthResult = AuthResult.Success(),
-        authSecond: Boolean = true,
-    ) = ProfileScreenModel(
-        UiTestTools.getProfileService(storageService, CoroutineScope(testDispatcher)),
-        UiTestTools.getAuthService(authResult, authSecond),
-        storageService
-    )
 
 }

@@ -15,7 +15,7 @@ fun createDataModule() = module {
         db.setLoggingEnabled(true)
         db
     }
-    single<CenterService> { CenterServiceImplementation(db = get()) }
-    single<DonationService> { DonationServiceImplementation(db = get(), auth = get()) }
-    single<ProfileService> { ProfileServiceImplementation(db = get(), auth = get()) }
+    single<CenterService> { CenterServiceImplementation(get()) }
+    single<DonationService> { DonationServiceImplementation(get(), get()) }
+    single<ProfileService> { ProfileServiceImplementation(get(), get(), get()) }
 }

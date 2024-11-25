@@ -222,6 +222,7 @@ class RegisterScreen : AppScreen() {
                 RegisterError.PASSWORD_ERROR -> stringResource(Res.string.loginEmailError)
                 RegisterError.REPEAT_ERROR -> stringResource(Res.string.loginEmailError)
                 RegisterError.REGISTER_ERROR -> stringResource(Res.string.registerError)
+                RegisterError.PROFILE_ERROR -> stringResource(Res.string.registerError)
             }
         }
         .joinToString("\n")
