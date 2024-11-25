@@ -78,10 +78,11 @@ object UiTestTools {
         }
 
         override suspend fun getProfile(): Profile?  =
-            Json.decodeFromString(storage.getOrElse("profile") { "" })
+            Profile.fromJson(storage.getOrElse("profile") { "" })
 
         override suspend fun deleteProfile(): Boolean {
-            TODO("Not yet implemented")
+            storage.remove("profile")
+            return !storage.containsKey("profile")
         }
 
         override suspend fun exists(key: String) = storage.containsKey(key)
