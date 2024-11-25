@@ -39,10 +39,14 @@ class RegisterScreenModel(
                                         is AuthResult.Failure -> mutableState.value =
                                             RegisterState.Error(listOf(RegisterError.REGISTER_ERROR))
                                         is AuthResult.Success -> {
-                                            profileService.getProfile().first().let { profile ->
-                                                storageService.storeProfile(profile)
+                                            profileService.getProfile().collectLatest { profile ->
+                                                if (profile != null) {
+                                                    storageService.storeProfile(profile)
+                                                    mutableState.value = RegisterState.Registered
+                                                } else {
+                                                    mutableState.value = RegisterState.Error(listOf(RegisterError.PROFILE_ERROR))
+                                                }
                                             }
-                                            mutableState.value = RegisterState.Registered
                                         }
                                     }
                                 }
@@ -76,6 +80,7 @@ enum class RegisterError {
     EMAIL_ERROR,
     PASSWORD_ERROR,
     REPEAT_ERROR,
+    PROFILE_ERROR,
     REGISTER_ERROR
 
 }

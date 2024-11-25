@@ -2,7 +2,6 @@ package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.auth.api.AuthError
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
@@ -49,10 +48,14 @@ class LoginScreenModel(
                                         LoginState.Error(errors)
                                 }
                                 is AuthResult.Success -> {
-                                    profileService.getProfile().first().let { profile ->
-                                        storageService.storeProfile(profile)
+                                    profileService.getProfile().collectLatest { profile ->
+                                        if (profile != null) {
+                                            storageService.storeProfile(profile)
+                                            mutableState.value = LoginState.LoggedIn
+                                        } else {
+                                            mutableState.value = LoginState.Error(listOf(LoginError.PROFILE_ERROR))
+                                        }
                                     }
-                                    mutableState.value = LoginState.LoggedIn
                                 }
                             }
                         }
@@ -81,5 +84,6 @@ sealed class LoginState {
 enum class LoginError {
     EMAIL_ERROR,
     PASSWORD_ERROR,
-    LOGIN_ERROR
+    LOGIN_ERROR,
+    PROFILE_ERROR
 }

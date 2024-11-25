@@ -1,10 +1,10 @@
 package mobi.cwiklinski.bloodline.data.filed
 
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -21,12 +21,12 @@ class ProfileServiceImplementation(
     coroutineScope: CoroutineScope
 ) : ProfileService {
 
-    private lateinit var _memory: MutableStateFlow<Profile>
+    private val _memory = MutableStateFlow<Profile?>(null)
 
     init {
         coroutineScope.launch {
             storageService.getProfile()?.let{
-                _memory = MutableStateFlow(it)
+                _memory.value = it
             }
         }
     }
@@ -39,30 +39,32 @@ class ProfileServiceImplementation(
         starting: Int,
         centerId: String
     ): Flow<Either<ProfileUpdate, Throwable>> = flow {
-        val oldProfile = _memory.value
-        val newProfile = oldProfile.withData(
-            name,
-            avatar,
-            sex,
-            notification,
-            starting,
-            centerId
-        )
-        storageService.storeProfile(newProfile)
-        _memory.value = newProfile
-        emit(Either.Left(ProfileUpdate(listOf(ProfileUpdateState.DATA))))
+        _memory.value?.let {
+            val newProfile = it.withData(
+                name,
+                avatar,
+                sex,
+                notification,
+                starting,
+                centerId
+            )
+            storageService.storeProfile(newProfile)
+            _memory.value = newProfile
+            emit(Either.Left(ProfileUpdate(listOf(ProfileUpdateState.DATA))))
+        }
     }
 
     override fun updateProfileEmail(email: String): Flow<Either<ProfileUpdate, Throwable>> = flow {
-        val oldProfile = _memory.value
-        val newProfile = oldProfile.withEmail(email)
-        storageService.storeProfile(newProfile)
-        _memory.value = newProfile
-        emit(Either.Left(ProfileUpdate(listOf(ProfileUpdateState.EMAIL))))
+        _memory.value?.let {
+            val newProfile = it.withEmail(email)
+            storageService.storeProfile(newProfile)
+            _memory.value = newProfile
+            emit(Either.Left(ProfileUpdate(listOf(ProfileUpdateState.EMAIL))))
+        }
     }
 
     override fun updateProfilePassword(password: String): Flow<Either<ProfileUpdate, Throwable>> =
         flowOf(Either.Left(ProfileUpdate(listOf(ProfileUpdateState.PASSWORD))))
 
-    override fun getProfile(): StateFlow<Profile> = _memory
+    override fun getProfile(): StateFlow<Profile?> = _memory.asStateFlow()
 }

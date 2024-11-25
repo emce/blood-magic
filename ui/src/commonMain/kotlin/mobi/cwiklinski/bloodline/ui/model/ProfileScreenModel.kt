@@ -23,8 +23,10 @@ class ProfileScreenModel(
     init {
         bootstrap()
         screenModelScope.launch {
-            profileService.getProfile().collectLatest {
-                storageService.storeProfile(it)
+            profileService.getProfile().collectLatest { profile ->
+                if (profile != null) {
+                    storageService.storeProfile(profile)
+                }
             }
         }
     }
@@ -35,7 +37,7 @@ class ProfileScreenModel(
     ) {
         mutableState.value = ProfileState.Saving
         val currentProfile = profile.value
-        if (newName != currentProfile.name || currentProfile.differs(
+        if (newName != currentProfile?.name || currentProfile.differs(
                 newAvatar,
                 newSex,
                 newNotification,
@@ -51,10 +53,15 @@ class ProfileScreenModel(
                     .collectLatest {
                         when (it) {
                             is Either.Left -> {
-                                profile.value.let { newProfile ->
-                                    storageService.storeProfile(newProfile)
+                                profile.collectLatest { newProfile ->
+                                    if (newProfile != null) {
+                                        storageService.storeProfile(newProfile)
+                                        mutableState.value = ProfileState.Saved
+                                    } else {
+                                        mutableState.value =
+                                            ProfileState.Error(listOf(ProfileError.ERROR))
+                                    }
                                 }
-                                mutableState.value = ProfileState.Saved
                             }
 
                             is Either.Right -> {
@@ -75,7 +82,7 @@ class ProfileScreenModel(
                 screenModelScope.launch {
                     val logged =
                         authService.loginWithEmailAndPassword(
-                            currentProfile.email,
+                            currentProfile?.email ?: "",
                             currentPassword
                         )
                     if (logged.first() is AuthResult.Success) {
@@ -110,7 +117,7 @@ class ProfileScreenModel(
     fun onProfileEmailUpdate(newEmail: String) {
         mutableState.value = ProfileState.Saving
         val currentProfile = profile.value
-        if (newEmail.isValidEmail() && currentProfile.email != newEmail) {
+        if (newEmail.isValidEmail() && currentProfile?.email != newEmail) {
             screenModelScope.launch {
                 profileService.updateProfileEmail(newEmail)
                     .collectLatest {
