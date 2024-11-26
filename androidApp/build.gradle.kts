@@ -59,5 +59,5 @@ dependencies {
     api(projects.service.auth.api)
     api(projects.service.data.api)
     api(projects.service.storage.api)
-    implementation(projects.ui)
+    implementation(projects.shared)
 }

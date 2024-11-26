@@ -1,9 +1,6 @@
 package mobi.cwiklinski.bloodline.data.firebase.model
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import mobi.cwiklinski.bloodline.data.firebase.util.IntToBooleanSerializer

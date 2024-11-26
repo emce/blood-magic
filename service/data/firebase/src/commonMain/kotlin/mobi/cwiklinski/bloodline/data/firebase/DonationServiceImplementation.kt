@@ -19,7 +19,7 @@ import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DonationServiceImplementation(val db: FirebaseDatabase, val auth: FirebaseAuth) :
+class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth) :
     DonationService {
 
     private val centerRef = db.reference("center")

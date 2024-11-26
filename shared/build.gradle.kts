@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.api
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.internal.utils.localPropertiesFile
@@ -12,6 +11,8 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.buildconfig)
 }
 
 java {
@@ -54,37 +55,66 @@ kotlin {
         
         androidMain.dependencies {
             api(libs.notifier)
-            implementation(libs.bundles.appcompat.android)
-            implementation(libs.bundles.core.android)
-            implementation(libs.bundles.compose.android)
-            implementation(libs.bundles.koin.android)
+            api(libs.androidx.browser)
+            api(libs.bundles.activity.android)
+            api(libs.bundles.appcompat.android)
+            api(libs.bundles.core.android)
+            api(libs.bundles.compose.android)
+            api(libs.bundles.koin.android)
+            api(libs.accompanist.permissions)
+            api(libs.bundles.appcompat.android)
+            api(libs.bundles.core.android)
+            api(libs.bundles.compose.android)
+            api(libs.bundles.koin.android)
         }
         commonMain.dependencies {
+
             api(projects.domain)
             api(projects.service.auth.api)
             api(projects.service.data.api)
             api(projects.service.storage.api)
+            api(compose.animation)
+            api(compose.foundation)
+            api(compose.runtime)
+            api(compose.runtimeSaveable)
+            api(compose.ui)
+            api(compose.material)
+            api(compose.material3)
+            api(compose.components.resources)
+            api(compose.components.uiToolingPreview)
+            api(libs.jetbrains.androidx.lifecycle.runtime.compose)
+            api(libs.bundles.voyager)
+            api(libs.bundles.koin.common)
+            api(libs.napier)
+            implementation(projects.service.auth.filed)
+            implementation(projects.service.auth.firebase)
+            implementation(projects.service.data.filed)
+            implementation(projects.service.data.firebase)
+            implementation(projects.service.storage.datastore)
             //api(projects.service.notification.api)
             //implementation(projects.service.notification.fcm)
-            implementation(projects.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.napier)
-            implementation(libs.bundles.voyager)
-            implementation(libs.bundles.koin.common)
         }
         commonTest.dependencies {
-            implementation(libs.kotlin.test)
+            implementation(libs.bundles.tests)
             implementation(libs.kotlinx.coroutines.test)
             implementation(projects.commonTest)
+            implementation(libs.turbine)
         }
         desktopMain.dependencies {
-            api(compose.desktop.currentOs)
-            api(libs.kotlinx.coroutines.swing)
-            api(libs.androidx.ui.desktop)
+            implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.androidx.ui.desktop)
         }
     }
     task("testClasses")
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "mobi.cwiklinski.bloodline.resources"
+    generateResClass = auto
 }
 
 android {
@@ -159,4 +189,31 @@ compose.desktop {
             }
         }
     }
+}
+
+buildConfig {
+    className("FirebaseConfig")   // forces the class name. Defaults to 'BuildConfig'
+    packageName("mobi.cwiklinski.bloodline.config")
+    useKotlinOutput { internalVisibility = true }
+    val properties = localPropertiesFile.readLines().associate {
+        if (it.startsWith("#") || !it.contains("=")) return@associate "" to ""
+        val (key, value) = it.split("=", limit = 2)
+        key to value
+    }
+
+    val firebaseAndroidApiKey = properties["firebaseAndroidApiKey"].toString()
+    val firebaseIosApiKey = properties["firebaseIosApiKey"].toString()
+    val firebaseMessagingSenderId = properties["firebaseGcmSenderId"].toString()
+    val firebaseAppId = properties["firebaseApplicationId"].toString()
+    val firebaseStorageBucket = properties["firebaseStorageBucket"].toString()
+    val firebaseProjectId = properties["firebaseProjectId"].toString()
+    val firebaseDatabaseUrl = properties["firebaseDatabaseUrl"].toString()
+
+    buildConfigField("String", "FIREBASE_ANDROID_API_KEY", firebaseAndroidApiKey)
+    buildConfigField("String", "FIREBASE_IOS_API_KEY", firebaseIosApiKey)
+    buildConfigField("String", "FIREBASE_MESSAGING_SENDER_ID", firebaseMessagingSenderId)
+    buildConfigField("String", "FIREBASE_APP_ID", firebaseAppId)
+    buildConfigField("String", "FIREBASE_STORAGE_BUCKET", firebaseStorageBucket)
+    buildConfigField("String", "FIREBASE_PROJECT_ID", firebaseProjectId)
+    buildConfigField("String", "FIREBASE_DATABASE_URL", firebaseDatabaseUrl)
 }

@@ -1,5 +1,7 @@
 package mobi.cwiklinski.bloodline
 
+import kotlinx.datetime.LocalDate
+
 object Constants {
 
     // Reminder
@@ -17,6 +19,16 @@ object Constants {
     const val PERIOD_PLATELETS_FULL_BLOOD = (8 * 7) + 1
     const val PERIOD_PLATELETS_PLASMA = (4 * 7) + 1
     const val PERIOD_PLATELETS_PLATELETS = (4 * 7) + 1
+
+    // Relief
+    const val TAX_RELIEF_ONE_LITER_AMOUNT = 130
+    val PERIOD_FIRST: LocalDate = LocalDate(1998, 10, 14)
+    val PERIOD_SECOND: LocalDate = LocalDate(2006, 2, 23)
+
+    // Badges
+    const val BADGE_FEMALE_FIRST = 5000
+    const val BADGE_MALE_FIRST = 6000
+    const val BADGE_FINAL = 20000
 
     // Notifications
     const val CHANNEL_NAME = "BloodMagic"

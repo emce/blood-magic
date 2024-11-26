@@ -3,9 +3,9 @@ package mobi.cwiklinski.bloodline.auth.api
 import kotlinx.coroutines.flow.Flow
 
 sealed class AuthenticationState {
-    object Idle : AuthenticationState()
-    object Logged : AuthenticationState()
-    object NotLogged : AuthenticationState()
+    data object Idle : AuthenticationState()
+    data object Logged : AuthenticationState()
+    data object NotLogged : AuthenticationState()
 }
 
 interface AuthenticationService {
