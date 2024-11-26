@@ -7,7 +7,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.common.isValidEmail
@@ -29,19 +31,21 @@ class ProfileServiceImplementation(
 
     init {
         scope.launch {
-            mainRef
-                .valueEvents
-                .collectLatest { settings ->
-                    settings.value<Map<String, FirebaseSettings>>().values.toList().map {
-                        profileFlow.emit(
-                            it.toProfile(
-                                auth.currentUser?.uid ?: "",
-                                auth.currentUser?.displayName ?: "",
-                                auth.currentUser?.email ?: ""
-                            )
+            combine(
+                mainRef.valueEvents.map { it.value<Map<String, FirebaseSettings>>().values.toList() },
+                auth.authStateChanged
+            ) { settings, user ->
+                    settings.map {
+                        it.toProfile(
+                            user?.uid ?: "",
+                            user?.displayName ?: "",
+                            user?.email ?: ""
                         )
                     }
                 }
+            .collectLatest {
+                profileFlow.emit(it.first())
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 package mobi.cwiklinski.bloodline.data.firebase
 
 import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.FirebaseAuth
+import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.database.FirebaseDatabase
 import dev.gitlive.firebase.database.database
 import mobi.cwiklinski.bloodline.data.api.CenterService
@@ -15,7 +17,8 @@ fun createDataModule() = module {
         db.setLoggingEnabled(true)
         db
     }
+    single<FirebaseAuth> { Firebase.auth }
     single<CenterService> { CenterServiceImplementation(get()) }
     single<DonationService> { DonationServiceImplementation(get(), get()) }
-    single<ProfileService> { ProfileServiceImplementation(get(), get(), get()) }
+    single<ProfileService> { ProfileServiceImplementation(get(), get(),  get()) }
 }

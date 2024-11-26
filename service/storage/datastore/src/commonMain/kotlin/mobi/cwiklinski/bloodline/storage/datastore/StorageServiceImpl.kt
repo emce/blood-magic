@@ -92,7 +92,7 @@ class StorageServiceImpl(private val store: DataStore<Preferences>) : StorageSer
         .map { preferences ->
             preferences[stringPreferencesKey(_profileKey)]
         }
-        .first() ?: _profileKey)
+        .first() ?: "{}")
 
     override suspend fun deleteProfile(): Boolean {
         store

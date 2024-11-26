@@ -7,17 +7,20 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.FirebaseException
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.auth.auth
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mobi.cwiklinski.bloodline.auth.api.AuthError
 import org.koin.core.component.KoinComponent
 
-open class AuthenticationServiceImpl : AuthenticationService, KoinComponent {
+class AuthenticationServiceImpl(private val coroutineScope: CoroutineScope) : AuthenticationService, KoinComponent {
 
     private val firebaseAuth: FirebaseAuth = Firebase.auth
 
@@ -25,19 +28,20 @@ open class AuthenticationServiceImpl : AuthenticationService, KoinComponent {
     override val authenticationState: Flow<AuthenticationState> = _authenticationState
 
     init {
+        coroutineScope.launch {
+            firebaseAuth.authStateChanged.collectLatest {
+                _authenticationState.emit(
+                    if (it != null) AuthenticationState.Logged else AuthenticationState.NotLogged
+                )
+            }
+        }
         _authenticationState.value = if (firebaseAuth.currentUser == null)
             AuthenticationState.NotLogged
         else
             AuthenticationState.Logged
     }
 
-    fun getFirebaseAuth(): FirebaseAuth = firebaseAuth
-
-    fun setAuthenticationState(state: AuthenticationState) {
-        _authenticationState.value = state
-    }
-
-    override fun loginWithEmailAndPassword(email: String, password: String): Flow<AuthResult> = send(
+    override fun loginWithEmailAndPassword(email: String, password: String) = send(
         authFunction = { firebaseAuth.signInWithEmailAndPassword(email, password).user != null },
         sideEffect = { _authenticationState.value = AuthenticationState.Logged }
     )
@@ -72,7 +76,7 @@ fun send(
 ): Flow<AuthResult> = callbackFlow {
     try {
         withContext(Dispatchers.Default) { authFunction() }
-        trySend(element = AuthResult.Success()).also { sideEffect() }
+        trySend(AuthResult.Success()).also { sideEffect() }
     } catch (exception: FirebaseException) {
         val error = when (exception.message) {
             "ERROR_EMAIL_ALREADY_IN_USE",
@@ -100,7 +104,7 @@ fun send(
                 AuthError.ERROR
             }
         }
-        trySend(element = AuthResult.Failure(error = error))
+        trySend(AuthResult.Failure(error = error))
     }
     awaitClose { }
 }

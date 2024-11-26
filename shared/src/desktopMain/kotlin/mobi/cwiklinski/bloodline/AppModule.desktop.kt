@@ -1,15 +1,17 @@
 package mobi.cwiklinski.bloodline
 
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual fun createAppModule(): List<Module> = buildList {
     add(platformModule)
-    //addAll(appModule)
+    addAll(appModule)
 }
 
 val platformModule = module {
     factory<CoroutineDispatcher> { Dispatchers.IO }
+    factory<CoroutineScope> { CoroutineScope(Dispatchers.IO) }
 }
