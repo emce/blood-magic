@@ -15,11 +15,7 @@ import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
-import com.google.firebase.FirebasePlatform
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.FirebaseOptions
-import dev.gitlive.firebase.initialize
-import mobi.cwiklinski.bloodline.config.FirebaseConfig
+import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.splash_logo
@@ -29,26 +25,10 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
+import org.koin.compose.koinInject
 import java.awt.Dimension
 
 fun main() = application {
-    FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
-        val storage = mutableMapOf<String, String>()
-        override fun store(key: String, value: String) = storage.set(key, value)
-        override fun retrieve(key: String) = storage[key]
-        override fun clear(key: String) { storage.remove(key) }
-        override fun log(msg: String) = println(msg)
-    })
-    Firebase.initialize(
-        Context(), options = FirebaseOptions(
-            applicationId = FirebaseConfig.FIREBASE_APP_ID,
-            apiKey = FirebaseConfig.FIREBASE_IOS_API_KEY,
-            databaseUrl = FirebaseConfig.FIREBASE_DATABASE_URL,
-            storageBucket = FirebaseConfig.FIREBASE_STORAGE_BUCKET,
-            projectId = FirebaseConfig.FIREBASE_PROJECT_ID,
-            gcmSenderId = FirebaseConfig.FIREBASE_MESSAGING_SENDER_ID
-        )
-    )
     Window(
         onCloseRequest = ::exitApplication,
         state = WindowState(
@@ -73,6 +53,8 @@ private fun App() {
             modules(createAppModule())
         }
     ) {
+        val authInit = koinInject<AuthenticationInitializer>()
+        authInit.run()
         AppTheme {
             BottomSheetNavigator(
                 modifier = Modifier.animateContentSize(),

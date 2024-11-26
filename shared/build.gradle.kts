@@ -108,7 +108,13 @@ kotlin {
             implementation(libs.androidx.ui.desktop)
         }
     }
+
     task("testClasses")
+
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 }
 
 compose.resources {
