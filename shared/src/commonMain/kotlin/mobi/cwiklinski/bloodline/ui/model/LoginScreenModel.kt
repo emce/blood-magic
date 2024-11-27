@@ -1,7 +1,9 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.auth.api.AuthError
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
@@ -32,13 +34,15 @@ class LoginScreenModel(
     fun onLoginSubmit(email: String, password: String) {
         if (email.isValidEmail()) {
             if (password.length > 3) {
+                mutableState.value = LoginState.LoggingIn
                 screenModelScope.launch {
                     authService.loginWithEmailAndPassword(email, password)
+                        .debounce(5000)
                         .collectLatest {
                             when (it) {
                                 is AuthResult.Dismissed -> mutableState.value = LoginState.Idle
                                 is AuthResult.Failure -> {
-                                    val errors = mutableListOf(LoginError.LOGIN_ERROR)
+                                    val errors = mutableListOf<LoginError>()
                                     when (it.error) {
                                         AuthError.INCORRECT_EMAIL,
                                         AuthError.EMAIL_ALREADY_IN_USE -> {

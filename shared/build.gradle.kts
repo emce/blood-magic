@@ -113,7 +113,13 @@ kotlin {
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
+        freeCompilerArgs = listOf(
+            "-Xopt-in=kotlin.RequiresOptIn",
+            "-Xopt-in=kotlin.OptIn",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xopt-in=kotlinx.coroutines.ObsoleteCoroutinesApi",
+            "-Xopt-in=kotlinx.coroutines.FlowPreview"
+        )
     }
 }
 
@@ -135,9 +141,7 @@ android {
         versionName = "5.0.$gitCommitsCount"
         vectorDrawables.useSupportLibrary = true
     }
-    buildFeatures {
-        compose = true
-    }
+
     signingConfigs {
         create("release") {
             val properties = localPropertiesFile.readLines().associate {

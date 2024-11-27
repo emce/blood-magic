@@ -27,7 +27,9 @@ import mobi.cwiklinski.bloodline.ui.model.LoginError
 import mobi.cwiklinski.bloodline.ui.model.LoginScreenModel
 import mobi.cwiklinski.bloodline.ui.model.LoginState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
+import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
@@ -75,10 +77,7 @@ class LoginScreen : AppScreen() {
                     Spacer(Modifier.height(40.dp))
                     Text(
                         stringResource(Res.string.loginTitle),
-                        style = getTypography().displayLarge.copy(
-                            fontSize = 34.sp,
-                            color = AppThemeColors.violet4
-                        )
+                        style = hugeTitle()
                     )
                     Spacer(Modifier.height(50.dp))
                     Column(
@@ -125,30 +124,32 @@ class LoginScreen : AppScreen() {
                             ),
                             visualTransformation = if (showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
                             trailingIcon = {
-                                Image(
-                                    painterResource(if (showPassword.value) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
-                                    "password",
-                                    modifier = Modifier.clickable {
-                                        showPassword.value = !showPassword.value
-                                    }
-                                )
+                                if (state != LoginState.LoggingIn) {
+                                    Image(
+                                        painterResource(if (showPassword.value) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
+                                        "password",
+                                        modifier = Modifier.clickable {
+                                            showPassword.value = !showPassword.value
+                                        }
+                                    )
+                                }
                                            },
                             )
                         Spacer(Modifier.height(20.dp))
-                        JustTextButton(
-                            text = stringResource(Res.string.loginPasswordReminderButton),
-                            onClicked = {
-                                navigator.push(ResetScreen())
-                                        },
-                            enabled = state != LoginState.LoggingIn
-                        )
+                        Row(modifier = Modifier.fillMaxWidth().align(Alignment.End)) {
+                            JustTextButton(
+                                text = stringResource(Res.string.loginPasswordReminderButton),
+                                onClicked = {
+                                    navigator.push(ResetScreen())
+                                },
+                                enabled = state != LoginState.LoggingIn
+                            )
+                        }
                         Spacer(Modifier.height(30.dp))
                         if (state is LoginState.Error) {
                             Text(
                                 getErrorMessage(state as LoginState.Error),
-                                style = getTypography().displaySmall.copy(
-                                    color = AppThemeColors.red1
-                                )
+                                style = contentText().copy(color = AppThemeColors.alertRed)
                             )
                             Spacer(Modifier.height(30.dp))
                         }
