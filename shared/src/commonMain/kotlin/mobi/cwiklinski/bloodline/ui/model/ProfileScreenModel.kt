@@ -1,29 +1,37 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
+import io.github.aakira.napier.Napier
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.common.isValidEmail
+import mobi.cwiklinski.bloodline.common.removeDiacritics
+import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.domain.Sex
+import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 
 class ProfileScreenModel(
     private val profileService: ProfileService,
+    centerService: CenterService,
     private val authService: AuthenticationService,
     private val storageService: StorageService
 ) : AppModel<ProfileState>(ProfileState.Idle) {
 
     val profile = profileService.getProfile()
 
+    val centers: StateFlow<List<Center>> = centerService.getCenters()
+        .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
     init {
         bootstrap()
         screenModelScope.launch {
             profileService.getProfile().collectLatest { profile ->
+                Napier.d(profile.toString())
                 if (profile != null) {
                     storageService.storeProfile(profile)
                 }
@@ -71,6 +79,8 @@ class ProfileScreenModel(
                         }
                     }
             }
+        } else {
+            mutableState.value = ProfileState.Error(listOf(ProfileError.ERROR))
         }
     }
 
@@ -132,6 +142,24 @@ class ProfileScreenModel(
             mutableState.value = ProfileState.Error(listOf(ProfileError.NEW_EMAIL))
         }
     }
+
+    fun loggingOut() {
+        mutableState.value = ProfileState.LoggingOut
+    }
+
+    fun logout() {
+        screenModelScope.launch {
+            authService.logOut().debounce(1000).collectLatest {
+                if (it) {
+                    storageService.clearAll()
+                    authService.logOut()
+                    mutableState.value = ProfileState.LoggedOut
+                } else {
+                    mutableState.value = ProfileState.Idle
+                }
+            }
+        }
+    }
 }
 
 sealed class ProfileState {
@@ -143,6 +171,10 @@ sealed class ProfileState {
     data object Saved : ProfileState()
 
     data class Error(val errors: List<ProfileError>) : ProfileState()
+
+    data object LoggingOut : ProfileState()
+
+    data object LoggedOut : ProfileState()
 
 }
 

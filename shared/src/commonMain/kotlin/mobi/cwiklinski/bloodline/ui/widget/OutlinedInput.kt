@@ -2,20 +2,14 @@ package mobi.cwiklinski.bloodline.ui.widget
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
 
 @Composable
@@ -38,20 +32,37 @@ fun OutlinedInput(
     OutlinedTextField(
         value = text,
         onValueChange = onValueChanged,
-        label = Text(label),
         modifier = modifier,
         enabled = enabled,
-        colors = AppThemeColors.authFieldColors(),
-        textStyle = inputPlaceHolder(),
-        isError = error,
-        errorMessage = errorMessage,
-        singleLine = true,
         readOnly = readOnly,
+        textStyle = inputPlaceHolder(),
+        label = { Text(label) },
+        placeholder = placeholder,
         trailingIcon = trailingIcon,
+        isError = error,
+        visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        placeholder = placeholder,
-        visualTransformation = visualTransformation,
-        interactionSource = interactionSource
+        singleLine = true,
+        maxLines = 1,
+        minLines = 1,
+        supportingText = {
+            if (error) {
+                Text(
+                    errorMessage,
+                    style = inputPlaceHolder().copy(
+                        color = AppThemeColors.alertRed
+                    )
+                )
+            }
+        },
+        interactionSource = interactionSource,
+        shape = OutlinedTextFieldDefaults.shape,
+        colors = AppThemeColors.authFieldColors()
     )
+}
+
+@Composable
+fun OutlinedInputLabel(text: String) {
+    Text(text)
 }

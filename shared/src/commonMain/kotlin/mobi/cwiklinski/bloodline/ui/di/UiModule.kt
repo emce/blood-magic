@@ -13,13 +13,12 @@ import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.RegisterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ResetScreenModel
 import mobi.cwiklinski.bloodline.ui.model.SplashScreenModel
+import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val uiModule = buildList {
-    add(firebaseAuthModule())
-    add(firebaseDataModule())
-    //add(filedAuthModule())
-    //add(filedDataModule())
+    addAll(getFirebaseImplementation())
+    //addall(filedImplementation())
     add(createStorageModule())
     add(module {
         // Models
@@ -28,18 +27,18 @@ val uiModule = buildList {
         factory { LoginScreenModel(authService = get(), profileService = get(), storageService = get()) }
         factory { RegisterScreenModel(authService = get(), profileService = get(), storageService = get()) }
         factory { ResetScreenModel(authService = get()) }
-        factory { ProfileScreenModel(authService = get(), profileService = get(), storageService = get()) }
+        factory { ProfileScreenModel(authService = get(), profileService = get(), storageService = get(), centerService = get()) }
         factory { DonationScreenModel(donationService = get(), centerService = get()) }
         factory { CenterScreenModel(centerService = get()) }
     })
 }
 
-private fun getFirebaseImplementation() = buildList{
+private fun getFirebaseImplementation() = buildList {
     add(firebaseAuthModule())
-    add(firebaseDataModule())
+    addAll(firebaseDataModule())
 }
 
-private fun getFiledImplementation() = buildList{
+private fun getFiledImplementation() = buildList {
     add(filedAuthModule())
     add(filedDataModule())
 }

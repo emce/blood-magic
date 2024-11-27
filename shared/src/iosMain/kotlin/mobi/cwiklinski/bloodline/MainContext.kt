@@ -10,6 +10,7 @@ import mobi.cwiklinski.bloodline.config.FirebaseConfig
 import mobi.cwiklinski.bloodline.ui.screen.SplashScreen
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import org.koin.compose.KoinApplication
+import org.koin.core.lazyModules
 
 @Composable
 fun NativeMainContent() {
@@ -25,6 +26,7 @@ fun NativeMainContent() {
     )
     KoinApplication(
         application = {
+            lazyModules(createAppLazyModule())
             modules(createAppModule())
         }
     ) {

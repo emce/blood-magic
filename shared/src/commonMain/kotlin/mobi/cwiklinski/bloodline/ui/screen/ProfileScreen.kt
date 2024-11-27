@@ -3,25 +3,14 @@ package mobi.cwiklinski.bloodline.ui.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Checkbox
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +22,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,26 +32,19 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.datetime.Clock
-import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.resources.button_edit
-import mobi.cwiklinski.bloodline.resources.heroGenitive
-import mobi.cwiklinski.bloodline.resources.heroinGenitive
-import mobi.cwiklinski.bloodline.resources.profileAvatarTitle
-import mobi.cwiklinski.bloodline.resources.profileDataEmailLabel
-import mobi.cwiklinski.bloodline.resources.profileDataNameLabel
-import mobi.cwiklinski.bloodline.resources.profileDataSubmitButton
-import mobi.cwiklinski.bloodline.resources.profileDataTitle
-import mobi.cwiklinski.bloodline.resources.profilePasswordChangeTitle
-import mobi.cwiklinski.bloodline.resources.profileTitle
+import mobi.cwiklinski.bloodline.data.filed.DummyData
+import mobi.cwiklinski.bloodline.domain.Sex
+import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.domain.model.Profile
+import mobi.cwiklinski.bloodline.resources.*
 import mobi.cwiklinski.bloodline.ui.model.ProfileError
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
-import mobi.cwiklinski.bloodline.ui.theme.AppFontFamily
-import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.getFontFamily
-import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.theme.*
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
+import mobi.cwiklinski.bloodline.ui.util.filter
+import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
@@ -70,23 +53,60 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString()) : AppProfileScreen() {
+class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString()) :
+    AppProfileScreen() {
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Preview
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
-        val profile = screenModel.profile.collectAsStateWithLifecycle()
+        val profile by screenModel.profile.collectAsStateWithLifecycle()
+        val centerList by screenModel.centers.collectAsStateWithLifecycle()
+        val state by screenModel.state.collectAsStateWithLifecycle()
+        if (state == ProfileState.LoggedOut) {
+            navigator.replaceAll(SplashScreen())
+        }
+        ProfileView(
+            profile,
+            centerList,
+            state,
+            { newName, newSex, newNotification, newStarting, newCenterId ->
+                screenModel.onProfileDataUpdate(
+                    newName,
+                    profile?.avatar ?: Avatar.WIZARD.name,
+                    newSex,
+                    newNotification,
+                    newStarting,
+                    newCenterId
+                )
+            }) { screenModel.logout() }
+    }
+
+    @Composable
+    fun Break() = Spacer(Modifier.height(20.dp))
+
+    @Preview
+    @Composable
+    fun ProfileView(
+        profile: Profile? = DummyData.generateProfile(),
+        centerList: List<Center> = DummyData.CENTERS,
+        state: ProfileState = ProfileState.Idle,
+        onProfileSave: (String, Sex, Boolean, Int, String) -> Unit,
+        logout: () -> Unit
+    ) {
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val behaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
-        var name by remember { mutableStateOf(profile.value?.name) }
-        var email by remember { mutableStateOf(profile.value?.email) }
-        val hero = if (profile.value?.sex?.isFemale() == true)
-                stringResource(Res.string.heroinGenitive)
-            else
-                stringResource(Res.string.heroGenitive)
+        var name by remember { mutableStateOf(profile?.name ?: "") }
+        var sex by remember { mutableStateOf(profile?.sex ?: Sex.MALE) }
+        var starting by remember { mutableStateOf(profile?.starting ?: 0) }
+        var center by remember { mutableStateOf(centerList.firstOrNull { it.id == profile?.centerId }) }
+        var query by remember { mutableStateOf("") }
+        var notification by remember { mutableStateOf(profile?.notification ?: true) }
+        var email by remember { mutableStateOf(profile?.email) }
+        val hero = if (profile?.sex?.isFemale() == true)
+            stringResource(Res.string.heroinGenitive)
+        else
+            stringResource(Res.string.heroGenitive)
         val scrollState = rememberScrollState()
         Box(
             modifier = Modifier.background(AppThemeColors.homeGradient)
@@ -99,7 +119,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                         title = {
                             Text(
                                 stringResource(Res.string.profileTitle),
-                                style = getTypography().displaySmall.copy(color = AppThemeColors.black)
+                                style = toolbarTitle()
                             )
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
@@ -107,6 +127,14 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             titleContentColor = AppThemeColors.black,
                             navigationIconContentColor = AppThemeColors.black
                         ),
+                        actions = {
+                            Text(
+                                stringResource(Res.string.settingsLogoutAction),
+                                modifier = Modifier.padding(5.dp).clickable {
+                                    logout.invoke()
+                                }
+                            )
+                        },
                         scrollBehavior = behaviour
                     )
                 },
@@ -150,7 +178,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
-                            painterResource(Avatar.byName(profile.value?.avatar).icon),
+                            painterResource(Avatar.byName(profile?.avatar).icon),
                             stringResource(Res.string.profileAvatarTitle),
                             modifier = Modifier
                                 .width(184.dp)
@@ -166,15 +194,12 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                         )
                     }
                     Text(
-                        screenModel.profile.value?.name ?: "",
-                        style = getTypography().displayMedium.copy(color = AppThemeColors.black)
+                        name,
+                        style = contentTitle()
                     )
                     Text(
-                        "⎯⎯  ${getAvatarName(screenModel.profile.value?.avatar)}  ⎯⎯",
-                        style = getTypography().displaySmall.copy(
-                            color = AppThemeColors.black70,
-                            fontFamily = getFontFamily(AppFontFamily.REGULAR)
-                        ),
+                        "⎯⎯  ${getAvatarName(profile?.avatar)}  ⎯⎯",
+                        style = contentText(),
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Column(
@@ -189,27 +214,108 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             ),
                             modifier = Modifier.fillMaxWidth()
                         )
-                        Spacer(Modifier.height(20.dp))
+                        Break()
                         OutlinedInput(
-                            text = name ?: "",
+                            text = name,
                             onValueChanged = { name = it },
                             label = stringResource(Res.string.profileDataNameLabel),
-                            enabled = screenModel.state.value != ProfileState.Saving,
-                            error = screenModel.state.value is ProfileState.Error
-                                    && (screenModel.state.value as ProfileState.Error).errors.contains(ProfileError.DATA),
+                            enabled = state != ProfileState.Saving,
+                            error = state is ProfileState.Error
+                                    && state.errors.contains(ProfileError.DATA),
                             errorMessage = getError(listOf(ProfileError.DATA))
                         )
-                        Spacer(Modifier.height(20.dp))
+                        Break()
                         OutlinedInput(
                             text = email ?: "",
                             onValueChanged = { email = it },
                             label = stringResource(Res.string.profileDataEmailLabel),
-                            enabled = screenModel.state.value != ProfileState.Saving,
-                            error = screenModel.state.value is ProfileState.Error &&
-                                    (screenModel.state.value as ProfileState.Error).errors.contains(ProfileError.EMAIL),
+                            enabled = state != ProfileState.Saving,
+                            error = state is ProfileState.Error &&
+                                    state.errors.contains(ProfileError.EMAIL),
                             errorMessage = getError(listOf(ProfileError.EMAIL))
                         )
-                        Spacer(Modifier.height(20.dp))
+                        Break()
+                        Text(
+                            stringResource(Res.string.settingsSexLabel)
+                        )
+                        Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+                            Row(horizontalArrangement = Arrangement.Center) {
+                                Image(
+                                    painterResource(Res.drawable.avatar_fairy),
+                                    stringResource(Res.string.female),
+                                    modifier = Modifier.size(40.dp)
+                                )
+                                Checkbox(
+                                    checked = sex == Sex.FEMALE,
+                                    onCheckedChange = {
+                                        sex = Sex.FEMALE
+                                    },
+                                    colors = AppThemeColors.checkboxColors()
+                                )
+                            }
+                            Row(horizontalArrangement = Arrangement.Center) {
+                                Image(
+                                    painterResource(Res.drawable.avatar_wizard),
+                                    stringResource(Res.string.male),
+                                    modifier = Modifier.size(40.dp)
+                                )
+                                Checkbox(
+                                    checked = sex == Sex.MALE,
+                                    onCheckedChange = {
+                                        sex = Sex.MALE
+                                    },
+                                    colors = AppThemeColors.checkboxColors()
+                                )
+                            }
+                        }
+                        Break()
+                        AutoCompleteTextView(
+                            modifier = Modifier.fillMaxWidth(),
+                            query = query,
+                            enabled = state != ProfileState.Saving,
+                            queryLabel = stringResource(Res.string.settingsDefaultCenterLabel),
+                            onQueryChanged = { newQuery ->
+                                query = newQuery
+                            },
+                            predictions = centerList.filter(query),
+                            onClearClick = {
+                                query = ""
+                            },
+                            onItemClick = { selectedCenter ->
+                                center = selectedCenter
+                                query = selectedCenter.toSelection()
+                            }
+                        ) { center ->
+                            Text(
+                                center.toSelection(),
+                                style = inputPlaceHolder(),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        Break()
+                        OutlinedInput(
+                            text = starting.toString(),
+                            onValueChanged = {
+                                starting = it.toIntOrNull() ?: 0 },
+                            label = stringResource(Res.string.settingsStartingLabel),
+                            enabled = state != ProfileState.Saving,
+                            error = state is ProfileState.Error
+                                    && state.errors.contains(ProfileError.DATA),
+                            errorMessage = getError(listOf(ProfileError.DATA)),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        )
+                        Break()
+                        Text(
+                            stringResource(Res.string.settingsReminderLabel)
+                        )
+                        Switch(
+                            checked = notification,
+                            onCheckedChange = {
+                                notification = it
+                            },
+                            enabled = state != ProfileState.Saving,
+                            colors = AppThemeColors.switchColors()
+                        )
                         Box(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.CenterEnd
@@ -219,26 +325,26 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                                 onClicked = {
                                     bottomSheetNavigator.show(ProfilePasswordScreen())
                                 },
-                                enabled = screenModel.state.value != ProfileState.Saving
+                                enabled = state != ProfileState.Saving
                             )
                         }
-                        Spacer(Modifier.height(20.dp))
-                        if (screenModel.state.value is ProfileState.Error) {
+                        Break()
+                        if (state is ProfileState.Error) {
                             Text(
-                                getError((screenModel.state.value as ProfileState.Error).errors),
+                                getError(state.errors),
                                 style = getTypography().bodyMedium.copy(
                                     color = AppThemeColors.red2
                                 )
                             )
                             Spacer(Modifier.height(30.dp))
                         }
-                        if (screenModel.state.value != ProfileState.Saving) {
+                        if (state != ProfileState.Saving) {
                             SubmitButton(
                                 onClick = {
-
+                                    onProfileSave.invoke(name, sex, notification, starting, center?.id ?: "")
                                 },
                                 text = stringResource(Res.string.profileDataSubmitButton),
-                                enabled = screenModel.state.value != ProfileState.Saving,
+                                enabled = state != ProfileState.Saving,
                             )
                         } else {
                             FormProgress()

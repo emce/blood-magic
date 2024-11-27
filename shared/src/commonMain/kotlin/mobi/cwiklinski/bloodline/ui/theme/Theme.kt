@@ -1,10 +1,14 @@
 package mobi.cwiklinski.bloodline.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Shapes
+import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -181,6 +185,34 @@ object AppThemeColors {
         contentColor = AppThemeColors.white,
         disabledContainerColor = AppThemeColors.red2.copy(alpha = 0.7f),
         disabledContentColor = AppThemeColors.white
+    )
+
+    fun switchColors() = SwitchColors(
+        checkedThumbColor = rose1,
+        checkedTrackColor = white,
+        checkedBorderColor = rose1,
+        checkedIconColor = white,
+        uncheckedThumbColor = grey3,
+        uncheckedTrackColor = white,
+        uncheckedBorderColor = grey3,
+        uncheckedIconColor = white,
+        disabledCheckedThumbColor = grey1,
+        disabledCheckedTrackColor = white,
+        disabledCheckedBorderColor = grey1,
+        disabledCheckedIconColor = white,
+        disabledUncheckedThumbColor = grey1,
+        disabledUncheckedTrackColor = white,
+        disabledUncheckedBorderColor = grey1,
+        disabledUncheckedIconColor = white
+    )
+
+    @Composable
+    fun checkboxColors() = CheckboxDefaults.colors(
+        checkedColor = rose1,
+        uncheckedColor = grey3.copy(alpha = 0.6f),
+        checkmarkColor = white,
+        disabledColor = grey1.copy(alpha = ContentAlpha.disabled),
+        disabledIndeterminateColor = rose1.copy(alpha = ContentAlpha.disabled)
     )
 
     internal val appColors = lightColorScheme(

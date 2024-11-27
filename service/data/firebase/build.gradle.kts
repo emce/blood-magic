@@ -48,6 +48,7 @@ kotlin {
             api(libs.bundles.kotlinx.datetime.common)
             api(libs.bundles.kotlinx.coroutines.common)
             api(libs.bundles.koin.common)
+            implementation(libs.napier)
         }
         commonTest.dependencies {
             implementation(libs.junit)

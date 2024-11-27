@@ -10,6 +10,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.factory.KoinWorkerFactory
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
+import org.koin.core.lazyModules
 
 class App: Application()/*, Configuration.Provider*/ {
 
@@ -23,6 +24,7 @@ class App: Application()/*, Configuration.Provider*/ {
         startKoin {
             androidContext(this@App)
             //workManagerFactory()
+            lazyModules(createAppLazyModule())
             modules(createAppModule())
         }
         if (BuildConfig.DEBUG) {

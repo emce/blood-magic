@@ -105,6 +105,7 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
+koin_coroutines = { module = "io.insert-koin:koin-core-coroutines", version.ref = "koin-compose" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin-compose" }
 constraintlayout-compose-multiplatform = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "constraintlayout-compose-multiplatform" }
 google-firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "google-firebase-kmm" }
@@ -158,7 +159,8 @@ lifecycle-common = [
 ]
 koin-common = [
     "koin-compose",
-    "koin-compose-viewmodel"
+    "koin-compose-viewmodel",
+    "koin_coroutines"
 ]
 coil-common = [
     "coil-compose"

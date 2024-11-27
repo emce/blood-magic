@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.common.removeDiacritics
 import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.ui.util.filter
 
 class CenterScreenModel(centerService: CenterService) :
     AppModel<CenterState>(CenterState.Idle) {
@@ -21,15 +22,7 @@ class CenterScreenModel(centerService: CenterService) :
         .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), emptyList())
     val filteredCenters = combine(query, centers) { query, centers ->
             if (query.length > 2) {
-                centers.filter {
-                    it.name.lowercase().removeDiacritics()
-                        .contains(query.lowercase().removeDiacritics()) or
-                            it.city.lowercase().removeDiacritics()
-                                .contains(query.lowercase().removeDiacritics()) or
-                            it.street.lowercase().removeDiacritics().contains(
-                                query.lowercase().removeDiacritics()
-                            )
-                }
+                centers.filter(query)
             } else {
                 centers
             }

@@ -16,6 +16,7 @@
     <string name="day">dzień</string>
     <string name="days">dni</string>
     <string name="close">Zamknij</string>
+    <string name="clear">Wyczyść</string>
     <string name="loading">Ładuję...</string>
     <string name="stillLoading">Ciągle ładuję...</string>
     <string name="male">czarowny mężczyzna</string>
@@ -174,6 +175,7 @@
     <string name="settingsReminderLabel">Powiadomienia o możliwej donacji</string>
     <string name="settingsSubmitButton">Zapisz Poukładanki</string>
     <string name="settingsSavedMessage">Poukładanki zostały zapisane.</string>
+    <string name="settingsLogoutAction">Wyloguj</string>
     <string name="settingsLogoutTitle">Wylogowanie</string>
     <string name="settingsLogoutMessage">Zostaniesz wylogowany z aplikacji - nie martw się, Twoje dane są zapisane, ale aby z nich skorzystać, musisz zalogować się ponownie</string>
 
