@@ -3,12 +3,15 @@ package mobi.cwiklinski.bloodline.data.firebase
 import dev.gitlive.firebase.FirebaseException
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.database.FirebaseDatabase
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.common.Either
@@ -26,26 +29,28 @@ class ProfileServiceImplementation(
     scope: CoroutineScope
 ) : ProfileService {
 
-    private val profileFlow = MutableStateFlow<Profile?>(null)
+    private val _profileData = MutableStateFlow<Profile?>(null)
     private val mainRef = db.reference("settings").child(auth.currentUser?.uid ?: "-")
 
     init {
         scope.launch {
             combine(
                 mainRef.valueEvents.map { it.value<Map<String, FirebaseSettings>>().values.toList() },
-                auth.authStateChanged
+                auth.authStateChanged.filterNotNull()
             ) { settings, user ->
-                    settings.map {
-                        it.toProfile(
-                            user?.uid ?: "",
-                            user?.displayName ?: "",
-                            user?.email ?: ""
-                        )
-                    }
+                settings.map {
+                    val authUser = auth.currentUser?.providerData?.first()
+                    Napier.d(authUser.toString())
+                    it.toProfile(
+                        user.uid,
+                        user.displayName ?: authUser?.displayName ?: "",
+                        user.email ?: authUser?.email ?: ""
+                    )
                 }
-            .collectLatest {
-                profileFlow.emit(it.first())
             }
+                .collectLatest {
+                    _profileData.value = it.first()
+                }
         }
     }
 
@@ -59,13 +64,13 @@ class ProfileServiceImplementation(
     ) = flow {
         val result = mutableListOf(ProfileUpdateState.NOTHING)
         try {
-            profileFlow.value?.let { profile ->
-                if (name != profile.name) {
-                    auth.currentUser?.updateProfile(name)
+            _profileData.collectLatest { profile ->
+                if (name != profile?.name) {
+                    auth.currentUser?.updateProfile(displayName = name)
                     result.remove(ProfileUpdateState.NOTHING)
                     result.add(ProfileUpdateState.NAME)
                 }
-                if (profile.differs(avatar, sex, notification, starting, centerId)) {
+                if (profile?.differs(avatar, sex, notification, starting, centerId) == true) {
                     mainRef.setValue(
                         FirebaseSettings(
                             sex.sex,
@@ -76,7 +81,7 @@ class ProfileServiceImplementation(
                         )
                     )
                     result.remove(ProfileUpdateState.NOTHING)
-                    result.add(ProfileUpdateState.PASSWORD)
+                    result.add(ProfileUpdateState.DATA)
                 }
                 emit(Either.Left(ProfileUpdate(result)))
             }
@@ -88,8 +93,8 @@ class ProfileServiceImplementation(
     override fun updateProfileEmail(email: String) = flow {
         val result = mutableListOf(ProfileUpdateState.NOTHING)
         try {
-            profileFlow.value?.let { profile ->
-                if (email.isValidEmail() && email != (profile.email)) {
+            _profileData.collectLatest { profile ->
+                if (email.isValidEmail() && email != profile?.email) {
                     auth.currentUser?.verifyBeforeUpdateEmail(newEmail = email)
                     result.remove(ProfileUpdateState.NOTHING)
                     result.add(ProfileUpdateState.PASSWORD)
@@ -115,5 +120,5 @@ class ProfileServiceImplementation(
         }
     }
 
-    override fun getProfile() = profileFlow.asStateFlow()
+    override fun getProfile() = _profileData.asStateFlow()
 }

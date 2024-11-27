@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import mobi.cwiklinski.bloodline.common.removeDiacritics
+import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 
 fun Modifier.topBorder(strokeWidth: Dp, color: Color, cornerRadiusDp: Dp) = composed(
@@ -213,3 +215,13 @@ internal fun Modifier.avatarShadow(
         }
     }
 )
+
+fun List<Center>.filter(query: String) = filter {
+    it.name.lowercase().removeDiacritics()
+        .contains(query.lowercase().removeDiacritics()) or
+            it.city.lowercase().removeDiacritics()
+                .contains(query.lowercase().removeDiacritics()) or
+            it.street.lowercase().removeDiacritics().contains(
+                query.lowercase().removeDiacritics()
+            )
+}

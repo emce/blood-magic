@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.theme
 
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
@@ -159,7 +160,7 @@ fun contentAction() = TextStyle(
 )
 
 @Composable
-fun inputPlaceHolder() = TextStyle(
+fun inputPlaceHolder() = LocalTextStyle.current.copy(
     fontFamily = getFontFamily(AppFontFamily.SEMIBOLD),
     fontSize = 13.sp,
     color = AppThemeColors.grey3,

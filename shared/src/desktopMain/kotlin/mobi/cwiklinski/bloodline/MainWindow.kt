@@ -25,6 +25,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
+import org.koin.core.lazyModules
 import java.awt.Dimension
 
 fun main() = application {
@@ -49,6 +50,7 @@ fun main() = application {
 private fun App() {
     KoinApplication(
         application = {
+            lazyModules(createAppLazyModule())
             modules(createAppModule())
         }
     ) {

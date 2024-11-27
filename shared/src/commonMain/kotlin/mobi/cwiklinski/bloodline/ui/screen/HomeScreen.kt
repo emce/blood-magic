@@ -120,8 +120,9 @@ class HomeScreen : AppScreen() {
                         modifier = Modifier.padding(20.dp).align(Alignment.Center)
                             .offset(x = 62.dp)
                     )
+                    val name = profile?.name ?: hero
                     Text(
-                        stringResource(Res.string.homeTitle).replace("%s", hero),
+                        stringResource(Res.string.homeTitle).replace("%s", name),
                         modifier = Modifier.align(Alignment.CenterStart).offset(y = 15.dp)
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp),

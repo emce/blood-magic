@@ -46,7 +46,7 @@ kotlin {
             api(projects.service.storage.api)
             api(libs.google.firebase.common)
             api(libs.google.firebase.auth)
-            api(libs.koin.compose)
+            api(libs.bundles.koin.common)
             api(libs.bundles.kotlinx.coroutines.common)
         }
         commonTest.dependencies {
