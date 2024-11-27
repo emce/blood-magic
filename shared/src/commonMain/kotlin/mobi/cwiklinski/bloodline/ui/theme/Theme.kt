@@ -139,7 +139,7 @@ object AppThemeColors {
     )
 
     @Composable
-    fun textButtonColors() = ButtonDefaults.buttonColors(
+    fun textButtonColors() = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = Color.Transparent,
         disabledContainerColor = Color.Transparent,

@@ -1,6 +1,5 @@
 package mobi.cwiklinski.bloodline
 
-import android.content.Context
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -33,7 +32,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         state = WindowState(
             position = WindowPosition.Aligned(Alignment.Center),
-            size = DpSize(600.dp, 500.dp)
+            size = DpSize(1024.dp, 768.dp)
         ),
         title = stringResource(Res.string.appName),
         icon = painterResource(Res.drawable.splash_logo),

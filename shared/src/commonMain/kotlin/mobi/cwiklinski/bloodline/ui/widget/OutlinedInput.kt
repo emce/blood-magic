@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
 
 @Composable
 fun OutlinedInput(
@@ -36,11 +38,13 @@ fun OutlinedInput(
     OutlinedTextField(
         value = text,
         onValueChange = onValueChanged,
-        label = { Text(label) },
+        label = Text(label),
         modifier = modifier,
         enabled = enabled,
         colors = AppThemeColors.authFieldColors(),
+        textStyle = inputPlaceHolder(),
         isError = error,
+        errorMessage = errorMessage,
         singleLine = true,
         readOnly = readOnly,
         trailingIcon = trailingIcon,
@@ -50,12 +54,4 @@ fun OutlinedInput(
         visualTransformation = visualTransformation,
         interactionSource = interactionSource
     )
-    if (error) {
-        Text(
-            text = errorMessage,
-            color = AppThemeColors.red1,
-            style = getTypography().bodyMedium.copy(textAlign = TextAlign.Start),
-            modifier = Modifier.fillMaxWidth().padding(top = 6.dp)
-        )
-    }
 }

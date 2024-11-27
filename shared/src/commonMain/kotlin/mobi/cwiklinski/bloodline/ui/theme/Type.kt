@@ -12,6 +12,7 @@ import mobi.cwiklinski.bloodline.resources.quicksand_bold
 import mobi.cwiklinski.bloodline.resources.quicksand_light
 import mobi.cwiklinski.bloodline.resources.quicksand_medium
 import mobi.cwiklinski.bloodline.resources.quicksand_regular
+import mobi.cwiklinski.bloodline.resources.quicksand_semibold
 import org.jetbrains.compose.resources.Font
 
 @Composable
@@ -96,6 +97,7 @@ fun getTypography(): Typography {
 
 @Composable
 fun hugeTitle() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.BOLD),
     fontSize = 40.sp,
     color = AppThemeColors.violet4,
     fontWeight = FontWeight.Bold,
@@ -104,6 +106,7 @@ fun hugeTitle() = TextStyle(
 
 @Composable
 fun toolbarTitle() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.BOLD),
     fontSize = 22.sp,
     color = AppThemeColors.black,
     fontWeight = FontWeight.Bold,
@@ -112,6 +115,7 @@ fun toolbarTitle() = TextStyle(
 
 @Composable
 fun toolbarSubTitle() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.MEDIUM),
     fontSize = 16.sp,
     color = AppThemeColors.black70,
     fontWeight = FontWeight.Medium,
@@ -120,6 +124,7 @@ fun toolbarSubTitle() = TextStyle(
 
 @Composable
 fun contentTitle() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.BOLD),
     fontSize = 17.sp,
     color = AppThemeColors.black,
     fontWeight = FontWeight.Bold,
@@ -128,6 +133,7 @@ fun contentTitle() = TextStyle(
 
 @Composable
 fun cardTitle() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.BOLD),
     fontSize = 28.sp,
     color = AppThemeColors.black,
     fontWeight = FontWeight.Bold,
@@ -136,6 +142,7 @@ fun cardTitle() = TextStyle(
 
 @Composable
 fun contentText() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.MEDIUM),
     fontSize = 16.sp,
     color = AppThemeColors.black70,
     fontWeight = FontWeight.Medium,
@@ -144,6 +151,7 @@ fun contentText() = TextStyle(
 
 @Composable
 fun contentAction() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.SEMIBOLD),
     fontSize = 13.sp,
     color = AppThemeColors.black,
     fontWeight = FontWeight.SemiBold,
@@ -152,6 +160,7 @@ fun contentAction() = TextStyle(
 
 @Composable
 fun inputPlaceHolder() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.SEMIBOLD),
     fontSize = 13.sp,
     color = AppThemeColors.grey3,
     fontWeight = FontWeight.SemiBold,
@@ -160,6 +169,7 @@ fun inputPlaceHolder() = TextStyle(
 
 @Composable
 fun itemTitle() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.SEMIBOLD),
     fontSize = 13.sp,
     color = AppThemeColors.black,
     fontWeight = FontWeight.SemiBold,
@@ -168,6 +178,7 @@ fun itemTitle() = TextStyle(
 
 @Composable
 fun itemSubTitle() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.MEDIUM),
     fontSize = 11.sp,
     color = AppThemeColors.black70,
     fontWeight = FontWeight.Medium,
@@ -176,6 +187,7 @@ fun itemSubTitle() = TextStyle(
 
 @Composable
 fun itemTrailing() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.SEMIBOLD),
     fontSize = 13.sp,
     color = AppThemeColors.black,
     fontWeight = FontWeight.SemiBold,
@@ -184,6 +196,7 @@ fun itemTrailing() = TextStyle(
 
 @Composable
 fun submitButton() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.BOLD),
     fontSize = 12.sp,
     color = AppThemeColors.white,
     fontWeight = FontWeight.Bold,
@@ -193,6 +206,11 @@ fun submitButton() = TextStyle(
 @Composable
 fun secondaryButton() = submitButton().copy(
     color = AppThemeColors.rose1,
+)
+
+@Composable
+fun standardButton() = submitButton().copy(
+    color = AppThemeColors.black,
 )
 
 @Composable
@@ -207,6 +225,9 @@ fun getFontFamily(family: AppFontFamily): FontFamily {
     val quickSandMedium = FontFamily(
         Font(Res.font.quicksand_medium, FontWeight.SemiBold, FontStyle.Normal)
     )
+    val quickSandSemiBold = FontFamily(
+        Font(Res.font.quicksand_semibold, FontWeight.Bold, FontStyle.Normal)
+    )
     val quickSandBold = FontFamily(
         Font(Res.font.quicksand_bold, FontWeight.Bold, FontStyle.Normal)
     )
@@ -214,6 +235,7 @@ fun getFontFamily(family: AppFontFamily): FontFamily {
         AppFontFamily.LIGHT -> quickSandLight
         AppFontFamily.MEDIUM -> quickSandMedium
         AppFontFamily.BOLD -> quickSandBold
+        AppFontFamily.SEMIBOLD -> quickSandSemiBold
         else -> quickSandRegular
     }
 }
@@ -222,5 +244,6 @@ enum class AppFontFamily {
     REGULAR,
     LIGHT,
     MEDIUM,
+    SEMIBOLD,
     BOLD
 }

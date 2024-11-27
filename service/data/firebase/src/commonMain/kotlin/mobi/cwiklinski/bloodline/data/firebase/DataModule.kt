@@ -10,7 +10,7 @@ import mobi.cwiklinski.bloodline.data.api.DonationService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import org.koin.dsl.module
 
-fun createDataModule() = module {
+fun createDataModule() = module(createdAtStart = false) {
     single<FirebaseDatabase> {
         val db = Firebase.database
         db.setPersistenceEnabled(true)

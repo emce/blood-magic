@@ -1,6 +1,7 @@
 package mobi.cwiklinski.bloodline.ui.widget
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -10,8 +11,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.getTypography
-import mobi.cwiklinski.bloodline.ui.theme.submitButton
+import mobi.cwiklinski.bloodline.ui.theme.itemTrailing
 
 @Composable
 fun JustTextButton(
@@ -21,19 +21,19 @@ fun JustTextButton(
     modifier: Modifier = Modifier,
     textDecoration: TextDecoration = TextDecoration.Underline,
     textColor: Color = AppThemeColors.grey3,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
-    textStyle: TextStyle = submitButton()
+    contentPadding: PaddingValues = PaddingValues(horizontal = 5.dp, vertical = 0.dp),
+    textStyle: TextStyle = itemTrailing()
 ) {
     TextButton(
         modifier = modifier,
         onClick = onClicked,
         enabled = enabled,
         contentPadding = contentPadding,
-        colors = AppThemeColors.textButtonColors()
+        colors = AppThemeColors.textButtonColors(),
     ) {
         Text(
             text,
-            style = textStyle
+            style = textStyle.copy(color = textColor, textDecoration = textDecoration)
         )
     }
 }
