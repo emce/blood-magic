@@ -307,7 +307,7 @@ class HomeScreen : AppScreen() {
                             }, false)
                         }
                     }
-                    Spacer(Modifier.height(120.dp))
+                    Spacer(Modifier.height(10.dp))
                 }
             }
         }

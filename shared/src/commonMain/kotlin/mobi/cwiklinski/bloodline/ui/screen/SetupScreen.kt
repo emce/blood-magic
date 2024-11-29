@@ -19,15 +19,16 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Checkbox
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -43,7 +44,9 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
@@ -56,10 +59,11 @@ import mobi.cwiklinski.bloodline.data.filed.DummyData
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Profile
+import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.resources.avatar_fairy
-import mobi.cwiklinski.bloodline.resources.avatar_wizard
 import mobi.cwiklinski.bloodline.resources.female
+import mobi.cwiklinski.bloodline.resources.ic_sex_female
+import mobi.cwiklinski.bloodline.resources.ic_sex_male
 import mobi.cwiklinski.bloodline.resources.male
 import mobi.cwiklinski.bloodline.resources.profileDataEmailError
 import mobi.cwiklinski.bloodline.resources.profileDataEmailLabel
@@ -80,6 +84,7 @@ import mobi.cwiklinski.bloodline.ui.model.SetupState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
+import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
@@ -90,6 +95,7 @@ import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
+import mobi.cwiklinski.bloodline.ui.widget.camelCase
 import mobi.cwiklinski.bloodline.ui.widget.getAvatarName
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -120,13 +126,18 @@ class SetupScreen : AppScreen() {
         state: SetupState = SetupState.Idle,
         storedEmail: String = DummyData.ACCOUNTS.first().first
     ) {
+        val avatarSize = 75.dp
         val navigator = LocalNavigator.currentOrThrow
         val behaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
         var name by remember { mutableStateOf(profile.name) }
         var sex by remember { mutableStateOf(profile.sex) }
         var starting by remember { mutableStateOf(profile.starting) }
         var center by remember { mutableStateOf(centerList.firstOrNull { it.id == profile.centerId }) }
-        var query by remember { mutableStateOf(centerList.firstOrNull { it.id == profile.centerId }?.toSelection() ?: "") }
+        var query by remember {
+            mutableStateOf(
+                centerList.firstOrNull { it.id == profile.centerId }?.toSelection() ?: ""
+            )
+        }
         var notification by remember { mutableStateOf(profile.notification) }
         var email by remember { mutableStateOf(profile.email.ifEmpty { storedEmail }) }
         var avatar by remember { mutableStateOf(Avatar.valueOf(profile.avatar)) }
@@ -137,10 +148,10 @@ class SetupScreen : AppScreen() {
                 if (fetchedProfile.email.isNotEmpty() && fetchedProfile.email.isValidEmail()) {
                     email = fetchedProfile.email
                 }
-                avatar= Avatar.byName(fetchedProfile.avatar)
-                sex= fetchedProfile.sex
+                avatar = Avatar.byName(fetchedProfile.avatar)
+                sex = fetchedProfile.sex
                 notification = fetchedProfile.notification
-                starting= fetchedProfile.starting
+                starting = fetchedProfile.starting
                 if (center == null && fetchedProfile.centerId.isNotEmpty()) {
                     center = centerList.firstOrNull { it.id == fetchedProfile.centerId }
                     query = center?.toSelection() ?: ""
@@ -154,7 +165,7 @@ class SetupScreen : AppScreen() {
                 modifier = Modifier.nestedScroll(behaviour.nestedScrollConnection),
                 backgroundColor = Color.Transparent,
                 topBar = {
-                    TopAppBar(
+                    CenterAlignedTopAppBar(
                         title = {
                             Text(
                                 stringResource(Res.string.setupTitle),
@@ -163,31 +174,41 @@ class SetupScreen : AppScreen() {
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = Color.Transparent,
+                            scrolledContainerColor = Color.Transparent,
                             titleContentColor = AppThemeColors.black,
                             navigationIconContentColor = AppThemeColors.black
                         ),
                         scrollBehavior = behaviour
                     )
                 }
-            ) {
+            ) { paddingValues ->
                 if (state == SetupState.SavingData) {
                     BasicAlertDialog(
-                        onDismissRequest = {
-
-                        }
+                        onDismissRequest = { }
                     ) {
-                        FormProgress(filter = ColorFilter.tint(AppThemeColors.red2))
+                        Box(
+                            modifier = Modifier
+                                .size(200.dp)
+                                .background(
+                                    AppThemeColors.white,
+                                    shape = RoundedCornerShape(20.dp)
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            FormProgress(filter = ColorFilter.tint(AppThemeColors.red2))
+                        }
                     }
                 }
                 Column(
                     modifier = Modifier
+                        .padding(paddingValues)
                         .fillMaxSize()
                         .verticalScroll(scrollState)
                         .drawBehind {
                             val start = 100.dp.value
                             val middle = 450.dp.value
                             drawPath(
-                                color = AppThemeColors.background,
+                                color = AppThemeColors.white,
                                 path = Path().apply {
                                     reset()
                                     moveTo(0f, start)
@@ -230,7 +251,10 @@ class SetupScreen : AppScreen() {
                     ) {
                         Text(
                             stringResource(Res.string.setupInformation),
-                            style = contentText(),
+                            style = contentText().copy(
+                                textAlign = TextAlign.Center
+                            ),
+                            modifier = Modifier.padding(horizontal = getScreenWidth() / 8)
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         OutlinedInput(
@@ -247,7 +271,13 @@ class SetupScreen : AppScreen() {
                             text = email,
                             onValueChanged = { },
                             label = stringResource(Res.string.profileDataEmailLabel),
-                            enabled = state != SetupState.SavingData,
+                            enabled = false,
+                            placeholder = {
+                                Text(
+                                    "email",
+                                    style = inputPlaceHolder().copy(color = Color.Transparent)
+                                )
+                            },
                             readOnly = true
                         )
                         Break()
@@ -260,7 +290,7 @@ class SetupScreen : AppScreen() {
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Avatar.entries.forEach { item ->
-                                Column(
+                                ConstraintLayout(
                                     modifier = Modifier.wrapContentSize()
                                         .selectable(
                                             selected = (item == avatar),
@@ -270,61 +300,102 @@ class SetupScreen : AppScreen() {
                                             role = Role.RadioButton
                                         )
                                         .padding(horizontal = 16.dp),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
+                                    val (avatarImage, radioButton, title) = createRefs()
                                     Image(
                                         painterResource(item.icon),
                                         getAvatarName(item),
                                         modifier = Modifier
-                                            .size(150.dp)
+                                            .size(avatarSize)
                                             .avatarShadow()
+                                            .constrainAs(avatarImage) {
+                                                top.linkTo(parent.top)
+                                                centerHorizontallyTo(parent)
+                                            }
                                     )
-                                    Break()
                                     RadioButton(
                                         selected = (item == avatar),
-                                        onClick = null
+                                        onClick = null,
+                                        colors = RadioButtonDefaults.colors(
+                                            selectedColor = AppThemeColors.violet4.copy(alpha = 0.4f),
+                                            unselectedColor = AppThemeColors.violet1.copy(alpha = 0.4f),
+                                        ),
+                                        modifier = Modifier
+                                            .size(20.dp)
+                                            .constrainAs(radioButton) {
+                                                top.linkTo(avatarImage.top)
+                                                centerHorizontallyTo(parent)
+                                            }
                                     )
-                                    Break()
                                     Text(
-                                        text = getAvatarName(item),
-                                        style = contentText()
+                                        text = getAvatarName(item).camelCase(),
+                                        style = itemSubTitle().copy(
+                                            color = AppThemeColors.black70,
+                                            textAlign = TextAlign.Center
+                                        ),
+                                        modifier = Modifier.constrainAs(title) {
+                                            top.linkTo(avatarImage.bottom, 10.dp)
+                                            bottom.linkTo(parent.bottom)
+                                            centerHorizontallyTo(parent)
+                                        }
                                     )
-                                    Break()
                                 }
                             }
                         }
                         Break()
                         Text(
-                            stringResource(Res.string.settingsSexLabel)
+                            stringResource(Res.string.settingsSexLabel),
+                            style = itemSubTitle()
                         )
-                        Row(horizontalArrangement = Arrangement.SpaceEvenly) {
-                            Row(horizontalArrangement = Arrangement.Center) {
+                        Row(
+                            modifier = Modifier.selectableGroup().padding(vertical = 10.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(
+                                        if (sex.isFemale()) AppThemeColors.grey3 else AppThemeColors.background,
+                                        shape = RoundedCornerShape(10.dp)
+                                    )
+                                    .selectable(
+                                        selected = (sex == Sex.FEMALE),
+                                        onClick = {
+                                            sex = Sex.FEMALE
+                                        },
+                                        role = Role.RadioButton
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
                                 Image(
-                                    painterResource(Res.drawable.avatar_fairy),
+                                    painterResource(Res.drawable.ic_sex_female),
                                     stringResource(Res.string.female),
-                                    modifier = Modifier.size(40.dp)
-                                )
-                                Checkbox(
-                                    checked = sex == Sex.FEMALE,
-                                    onCheckedChange = {
-                                        sex = Sex.FEMALE
-                                    },
-                                    colors = AppThemeColors.checkboxColors()
+                                    colorFilter = ColorFilter.tint(if (sex.isFemale()) AppThemeColors.white else AppThemeColors.violet2),
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
-                            Row(horizontalArrangement = Arrangement.Center) {
+                            Spacer(Modifier.width(20.dp))
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(
+                                        if (!sex.isFemale()) AppThemeColors.grey else AppThemeColors.background,
+                                        shape = RoundedCornerShape(10.dp)
+                                    )
+                                    .selectable(
+                                        selected = (sex == Sex.MALE),
+                                        onClick = {
+                                            sex = Sex.MALE
+                                        },
+                                        role = Role.RadioButton
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
                                 Image(
-                                    painterResource(Res.drawable.avatar_wizard),
+                                    painterResource(Res.drawable.ic_sex_male),
                                     stringResource(Res.string.male),
-                                    modifier = Modifier.size(40.dp)
-                                )
-                                Checkbox(
-                                    checked = sex == Sex.MALE,
-                                    onCheckedChange = {
-                                        sex = Sex.MALE
-                                    },
-                                    colors = AppThemeColors.checkboxColors()
+                                    colorFilter = ColorFilter.tint(if (!sex.isFemale()) AppThemeColors.white else AppThemeColors.violet2),
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
                         }
@@ -367,7 +438,8 @@ class SetupScreen : AppScreen() {
                         )
                         Break()
                         Text(
-                            stringResource(Res.string.settingsReminderLabel)
+                            stringResource(Res.string.settingsReminderLabel),
+                            style = itemSubTitle()
                         )
                         Switch(
                             checked = notification,

@@ -91,7 +91,7 @@
     <string name="resetError">Wystąpił błąd przy wysyłaniu formularza</string>
 
     // SETUP
-    <string name="setupTitle">Witaj</string>
+    <string name="setupTitle">Witaj, Wędrowcze</string>
     <string name="setupInformation">Rozpoczynasz magiczną podróż, potrzebujemy zatem paru informacji o Twojej osobie. Pozwolą one schludnie przeliczać magiczne kropelki, oraz serwować zgrabne dane o Twoich wyczynach.</string>
     <string name="setupSave">Utrwal informacje</string>
 

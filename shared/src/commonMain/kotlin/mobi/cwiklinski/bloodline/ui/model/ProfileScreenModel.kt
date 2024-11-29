@@ -19,6 +19,7 @@ import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
+import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
 import mobi.cwiklinski.bloodline.data.filed.withEmail
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
@@ -57,40 +58,22 @@ class ProfileScreenModel(
     ) {
         mutableState.value = ProfileState.Saving
         screenModelScope.launch {
-            profile.collectLatest { currentProfile ->
-                if (currentProfile.differs(
-                        newName,
-                        newAvatar,
-                        newSex,
-                        newNotification,
-                        newStarting,
-                        newCenterId
-                    )
-                ) {
-                    profileService.updateProfileData(
-                        newName, newEmail, newAvatar, newSex,
-                        newNotification, newStarting, newCenterId
-                    )
-                        .timeout(10.seconds)
-                        .catch {
-                            mutableState.value = ProfileState.Error(listOf(ProfileError.ERROR))
-                        }
-                        .collectLatest {
-                            when (it) {
-                                is Either.Left -> {
-                                    mutableState.value = ProfileState.Saved
-                                }
-
-                                is Either.Right -> {
-                                    mutableState.value =
-                                        ProfileState.Error(listOf(ProfileError.ERROR))
-                                }
-                            }
-                        }
-                } else {
+            profileService.updateProfileData(
+                newName, newEmail, newAvatar, newSex,
+                newNotification, newStarting, newCenterId
+            )
+                .timeout(10.seconds)
+                .catch {
                     mutableState.value = ProfileState.Error(listOf(ProfileError.ERROR))
                 }
-            }
+                .collectLatest {
+                    when (it) {
+                        is ProfileServiceState.Error -> ProfileState.Error(listOf(ProfileError.ERROR))
+                        ProfileServiceState.Idle -> {}
+                        ProfileServiceState.Saved -> mutableState.value = ProfileState.Saved
+                        ProfileServiceState.Saving -> {}
+                    }
+                }
         }
     }
 

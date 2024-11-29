@@ -15,7 +15,7 @@ interface ProfileService {
         notification: Boolean,
         starting: Int,
         centerId: String
-    ): Flow<Either<ProfileUpdate, Throwable>>
+    ): Flow<ProfileServiceState>
 
     fun updateProfileEmail(
         email: String
@@ -37,4 +37,11 @@ enum class ProfileUpdateState {
     PASSWORD,
     DATA,
     ALL
+}
+
+sealed class ProfileServiceState {
+    data object Idle: ProfileServiceState()
+    data object Saving: ProfileServiceState()
+    data object Saved: ProfileServiceState()
+    data class Error(val error: Throwable): ProfileServiceState()
 }

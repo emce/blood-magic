@@ -47,9 +47,14 @@ fun getAvatarName(avatar: Avatar) = stringResource(
 fun Orientation.isHorizontal() = this == Orientation.Horizontal
 
 @Composable
-fun DonationType.getGenitive() = stringResource(when (this) {
-    DonationType.FULL_BLOOD -> Res.string.donationFullBloodGenitive
-    DonationType.PLASMA -> Res.string.donationPlasmaGenitive
-    DonationType.PLATELETS -> Res.string.donationPlateletsGenitive
-    DonationType.PACKED_CELLS -> Res.string.donationPackedGenitive
-})
+fun DonationType.getGenitive() = stringResource(
+    when (this) {
+        DonationType.FULL_BLOOD -> Res.string.donationFullBloodGenitive
+        DonationType.PLASMA -> Res.string.donationPlasmaGenitive
+        DonationType.PLATELETS -> Res.string.donationPlateletsGenitive
+        DonationType.PACKED_CELLS -> Res.string.donationPackedGenitive
+    }
+)
+
+fun String.camelCase() = this.split(' ')
+    .joinToString(" ") { it.replaceFirstChar(Char::uppercaseChar) }

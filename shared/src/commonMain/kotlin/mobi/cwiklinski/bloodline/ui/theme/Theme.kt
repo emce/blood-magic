@@ -157,8 +157,10 @@ object AppThemeColors {
         focusedLabelColor = AppThemeColors.black70,
         unfocusedBorderColor = AppThemeColors.grey3,
         unfocusedLabelColor = AppThemeColors.grey3,
-        disabledBorderColor = AppThemeColors.grey1,
-        disabledTextColor = AppThemeColors.grey1,
+        unfocusedContainerColor = AppThemeColors.grey2,
+        unfocusedTextColor = AppThemeColors.grey3,
+        disabledBorderColor = AppThemeColors.grey2,
+        disabledTextColor = AppThemeColors.grey2,
         errorBorderColor = AppThemeColors.red1,
         errorLabelColor = AppThemeColors.red1,
     )
