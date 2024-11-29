@@ -1,32 +1,39 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.auth.api.AuthError
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
+import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.storage.api.StorageService
+import kotlin.time.Duration.Companion.seconds
 
 class LoginScreenModel(
     private val authService: AuthenticationService,
     private val profileService: ProfileService,
     private val storageService: StorageService
-) : AppModel<LoginState>(
-    LoginState.Idle
-) {
+) : AppModel<LoginState>(LoginState.Idle) {
+
+    val authState = authService.authenticationState.stateIn(
+        screenModelScope,
+        SharingStarted.Eagerly,
+        AuthenticationState.Idle
+    )
 
     init {
         bootstrap()
         screenModelScope.launch {
             profileService.getProfile().collectLatest {
-                if (it != null) {
-                    storageService.storeProfile(it)
-                }
+                storageService.storeProfile(it)
             }
         }
     }
@@ -48,9 +55,11 @@ class LoginScreenModel(
                                         AuthError.EMAIL_ALREADY_IN_USE -> {
                                             errors.add(LoginError.EMAIL_ERROR)
                                         }
+
                                         AuthError.INCORRECT_PASSWORD -> {
                                             errors.add(LoginError.PASSWORD_ERROR)
                                         }
+
                                         else -> {
                                             errors.add(LoginError.LOGIN_ERROR)
                                         }
@@ -58,7 +67,10 @@ class LoginScreenModel(
                                     mutableState.value =
                                         LoginState.Error(errors)
                                 }
+
                                 is AuthResult.Success -> {
+                                    storageService.storeString(Constants.EMAIL_KEY, email)
+                                    delay(1.seconds.inWholeMilliseconds)
                                     mutableState.value = LoginState.LoggedIn
                                 }
                             }

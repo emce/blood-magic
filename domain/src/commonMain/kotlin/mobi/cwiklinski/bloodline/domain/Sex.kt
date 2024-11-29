@@ -18,7 +18,7 @@ enum class Sex(val sex: String) {
     fun isFemale() = this == FEMALE
 
     companion object {
-        fun fromSex(sex: String) = Sex.entries.first { it.sex == sex }
+        fun fromSex(sex: String): Sex = Sex.entries.firstOrNull { it.sex == sex } ?: MALE
     }
 }
 

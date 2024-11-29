@@ -2,12 +2,8 @@ package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import mobi.cwiklinski.bloodline.common.Either
@@ -28,13 +24,11 @@ class DonationScreenModel(
 
     val query = MutableStateFlow("")
 
-    val donations: StateFlow<List<Donation>> = donationService.getDonations()
-        .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    val donations = donationService.getDonations()
 
-    val centers: StateFlow<List<Center>> = centerService.getCenters()
-        .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    val centers = centerService.getCenters()
 
-    val filteredCenters: StateFlow<List<Center>> =
+    val filteredCenters =
         query.combine(centers) { query, centers ->
             val filtered = centers.filter {
                 it.name.lowercase().removeDiacritics()
@@ -47,7 +41,6 @@ class DonationScreenModel(
             }
             filtered
         }
-        .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), centers.value)
 
     init {
         bootstrap()

@@ -7,6 +7,8 @@ import mobi.cwiklinski.bloodline.domain.model.Profile
 
 @Serializable
 class FirebaseSettings(
+    val name: String = "",
+    val email: String = "",
     val sex: String = "",
     val reminder: Int = 0,
     @SerialName("center_id")
@@ -15,7 +17,7 @@ class FirebaseSettings(
     val avatar: String = "",
 ) {
 
-    fun toProfile(id: String, name: String, email: String) = Profile(
+    fun toProfile(id: String) = Profile(
         id,
         name,
         email,

@@ -118,7 +118,6 @@ class ResetScreen() : AppScreen() {
                 SubmitButton(
                     onClick = { navigator.pop() },
                     text = stringResource(Res.string.goBack),
-                    textColor = AppThemeColors.rose1,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = AppThemeColors.rose4,
                         contentColor = AppThemeColors.rose1,

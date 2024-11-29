@@ -21,7 +21,7 @@ class ProfileServiceImplementation(
     coroutineScope: CoroutineScope
 ) : ProfileService {
 
-    private val _memory = MutableStateFlow<Profile?>(null)
+    private val _memory = MutableStateFlow(DummyData.generateProfile())
 
     init {
         coroutineScope.launch {
@@ -33,15 +33,17 @@ class ProfileServiceImplementation(
 
     override fun updateProfileData(
         name: String,
+        email: String,
         avatar: String,
         sex: Sex,
         notification: Boolean,
         starting: Int,
         centerId: String
     ): Flow<Either<ProfileUpdate, Throwable>> = flow {
-        _memory.value?.let {
+        _memory.value.let {
             val newProfile = it.withData(
                 name,
+                email,
                 avatar,
                 sex,
                 notification,
@@ -55,7 +57,7 @@ class ProfileServiceImplementation(
     }
 
     override fun updateProfileEmail(email: String): Flow<Either<ProfileUpdate, Throwable>> = flow {
-        _memory.value?.let {
+        _memory.value.let {
             val newProfile = it.withEmail(email)
             storageService.storeProfile(newProfile)
             _memory.value = newProfile
@@ -66,5 +68,5 @@ class ProfileServiceImplementation(
     override fun updateProfilePassword(password: String): Flow<Either<ProfileUpdate, Throwable>> =
         flowOf(Either.Left(ProfileUpdate(listOf(ProfileUpdateState.PASSWORD))))
 
-    override fun getProfile(): StateFlow<Profile?> = _memory.asStateFlow()
+    override fun getProfile(): StateFlow<Profile> = _memory.asStateFlow()
 }

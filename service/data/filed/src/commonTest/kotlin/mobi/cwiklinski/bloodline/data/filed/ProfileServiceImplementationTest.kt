@@ -59,6 +59,7 @@ class ProfileServiceImplementationTest {
         val newProfile = DummyData.generateProfile()
         profileService.updateProfileData(
             name = newProfile.name,
+            email = newProfile.email,
             avatar = newProfile.avatar,
             sex = newProfile.sex,
             notification = newProfile.notification,

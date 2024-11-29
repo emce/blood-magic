@@ -25,8 +25,64 @@ fun Profile.withName(newName: String) = Profile(
     centerId
 )
 
+fun Profile.withAvatar(newAvatar: String) = Profile(
+    id,
+    name,
+    email,
+    newAvatar,
+    sex,
+    notification,
+    starting,
+    centerId
+)
+
+fun Profile.withSex(newSex: Sex) = Profile(
+    id,
+    name,
+    email,
+    avatar,
+    newSex,
+    notification,
+    starting,
+    centerId
+)
+
+fun Profile.withNotification(newNotification: Boolean) = Profile(
+    id,
+    name,
+    email,
+    avatar,
+    sex,
+    newNotification,
+    starting,
+    centerId
+)
+
+fun Profile.withStarting(newStarting: Int) = Profile(
+    id,
+    name,
+    email,
+    avatar,
+    sex,
+    notification,
+    newStarting,
+    centerId
+)
+
+fun Profile.withCenter(newCenter: String) = Profile(
+    id,
+    name,
+    email,
+    avatar,
+    sex,
+    notification,
+    starting,
+    newCenter
+)
+
 fun Profile.withData(
     newName: String,
+    newEmail: String,
     newAvatar: String,
     newSex: Sex,
     newNotification: Boolean,
@@ -35,7 +91,7 @@ fun Profile.withData(
 ) = Profile(
     id,
     newName,
-    email,
+    newEmail,
     newAvatar,
     newSex,
     newNotification,

@@ -9,7 +9,7 @@ import mobi.cwiklinski.bloodline.domain.Sex
 data class Profile(
     val id: String?,
     val name: String = "",
-    val email: String,
+    val email: String = "",
     val avatar: String = "WIZARD",
     val sex: Sex = Sex.MALE,
     val notification: Boolean = true,
@@ -19,13 +19,14 @@ data class Profile(
     fun toJson() = Json.encodeToString(this)
 
     fun differs(
+        newName: String,
         newAvatar: String,
         newSex: Sex,
         newNotification: Boolean,
         newStarting: Int,
         newCenterId: String
     ) =
-        newAvatar != avatar || newSex != sex || newNotification != notification
+        newName != name || newAvatar != avatar || newSex != sex || newNotification != notification
                 || newStarting != starting || newCenterId != centerId
 
     companion object {

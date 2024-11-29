@@ -12,17 +12,20 @@ import mobi.cwiklinski.bloodline.ui.model.LoginScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.RegisterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ResetScreenModel
+import mobi.cwiklinski.bloodline.ui.model.SetupScreenModel
 import mobi.cwiklinski.bloodline.ui.model.SplashScreenModel
 import org.koin.core.module.Module
+import org.koin.dsl.lazyModule
 import org.koin.dsl.module
 
 val uiModule = buildList {
     addAll(getFirebaseImplementation())
     //addall(filedImplementation())
     add(createStorageModule())
-    add(module {
+    add(lazyModule {
         // Models
         factory { SplashScreenModel(authService = get()) }
+        factory { SetupScreenModel(profileService = get(), centerService = get(), storageService = get()) }
         factory { HomeScreenModel(profileService = get(), donationService = get(), storageService = get()) }
         factory { LoginScreenModel(authService = get(), profileService = get(), storageService = get()) }
         factory { RegisterScreenModel(authService = get(), profileService = get(), storageService = get()) }

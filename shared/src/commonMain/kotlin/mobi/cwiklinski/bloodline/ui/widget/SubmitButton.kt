@@ -13,6 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
+import mobi.cwiklinski.bloodline.ui.theme.secondaryButton
+import mobi.cwiklinski.bloodline.ui.theme.submitButton
 
 @Composable
 fun SubmitButton(
@@ -20,7 +23,6 @@ fun SubmitButton(
     modifier: Modifier = Modifier.padding(10.dp),
     text: String,
     enabled: Boolean = true,
-    textColor: Color = AppThemeColors.white,
     colors: ButtonColors = AppThemeColors.submitButtonColors()
 ) {
     Button(
@@ -38,10 +40,35 @@ fun SubmitButton(
         Text(
             text,
             modifier = modifier,
-            style = getTypography().bodyMedium.copy(
-                fontSize = 13.sp,
-                color = textColor
-            )
+            style = submitButton()
+        )
+    }
+}
+
+@Composable
+fun SecondaryButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier.padding(10.dp),
+    text: String,
+    enabled: Boolean = true,
+    colors: ButtonColors = AppThemeColors.secondarySubmitButtonColors()
+) {
+    Button(
+        modifier = Modifier
+            .shadow(
+                elevation = 8.dp,
+                spotColor = AppThemeColors.rose4,
+                ambientColor = AppThemeColors.rose4
+            ),
+        onClick = onClick,
+        enabled = enabled,
+        shape = RoundedCornerShape(8.dp),
+        colors = colors
+    ) {
+        Text(
+            text,
+            modifier = modifier,
+            style = secondaryButton()
         )
     }
 }

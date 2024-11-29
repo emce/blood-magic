@@ -43,12 +43,12 @@ class SplashScreen : AppScreen() {
         val screenModel = navigator.koinNavigatorScreenModel<SplashScreenModel>()
         when (screenModel.state.collectAsStateWithLifecycle().value) {
             AuthenticationState.Logged -> {
-                Napier.v("Redirecting to HomeScreen")
-                navigator.replace(HomeScreen())
+                Napier.v("Redirecting to SetupScreen")
+                navigator.replaceAll(SetupScreen())
             }
             AuthenticationState.NotLogged -> {
                 Napier.v("Redirecting to LoginScreen")
-                navigator.replace(LoginScreen())
+                navigator.replaceAll(LoginScreen())
             }
             else -> Unit
         }
