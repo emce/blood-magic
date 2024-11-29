@@ -38,10 +38,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.avatar_submit
 import mobi.cwiklinski.bloodline.resources.close
@@ -71,7 +73,8 @@ class ProfileAvatarScreen : AppProfileScreen() {
         if (screenModel.state.value == ProfileState.Saved) {
             bottomSheetNavigator.hide()
         }
-        var avatar by remember { mutableStateOf(Avatar.byName(screenModel.profile.value?.avatar)) }
+        val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
+        var avatar by remember { mutableStateOf(Avatar.byName(profile.avatar)) }
         Column(
             modifier = Modifier.background(AppThemeColors.homeGradient)
         ) {
@@ -134,7 +137,7 @@ class ProfileAvatarScreen : AppProfileScreen() {
                     style = getTypography().displayMedium.copy(color = AppThemeColors.black)
                 )
                 Text(
-                    "⎯⎯  ${getAvatarName(screenModel.profile.value?.avatar)}  ⎯⎯",
+                    "⎯⎯  ${getAvatarName(profile.avatar)}  ⎯⎯",
                     style = getTypography().displayMedium.copy(
                         color = AppThemeColors.black70,
                         fontFamily = getFontFamily(AppFontFamily.REGULAR)
@@ -164,7 +167,7 @@ class ProfileAvatarScreen : AppProfileScreen() {
                             Box(
                                 modifier = Modifier.width(80.dp).height(80.dp)
                                     .selectable(
-                                        selected = screenModel.profile.value?.avatar == listAvatar.name,
+                                        selected = profile.avatar == listAvatar.name,
                                         interactionSource = MutableInteractionSource(),
                                         indication = null,
                                         onClick = {
@@ -205,16 +208,15 @@ class ProfileAvatarScreen : AppProfileScreen() {
                             if (screenModel.state.value != ProfileState.Saving) {
                                 Box(
                                     modifier = Modifier.width(80.dp).height(80.dp).clickable {
-                                        screenModel.profile.value?.let {
-                                            screenModel.onProfileDataUpdate(
-                                                it.name,
-                                                avatar.name,
-                                                it.sex,
-                                                it.notification,
-                                                it.starting,
-                                                it.centerId
-                                            )
-                                        }
+                                        screenModel.onProfileDataUpdate(
+                                            profile.name,
+                                            profile.email,
+                                            avatar.name,
+                                            profile.sex,
+                                            profile.notification,
+                                            profile.starting,
+                                            profile.centerId
+                                        )
                                     },
                                     contentAlignment = Alignment.BottomCenter
                                 ) {

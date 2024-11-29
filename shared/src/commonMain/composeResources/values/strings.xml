@@ -17,6 +17,7 @@
     <string name="days">dni</string>
     <string name="close">Zamknij</string>
     <string name="clear">Wyczyść</string>
+    <string name="skip">Pomiń</string>
     <string name="loading">Ładuję...</string>
     <string name="stillLoading">Ciągle ładuję...</string>
     <string name="male">czarowny mężczyzna</string>
@@ -85,6 +86,11 @@
     <string name="resetSubmitButton">Wyślij wiadomość z linkiem</string>
     <string name="resetError">Wystąpił błąd przy wysyłaniu formularza</string>
 
+    // SETUP
+    <string name="setupTitle">Witaj</string>
+    <string name="setupInformation">Rozpoczynasz magiczną podróż, potrzebujemy zatem paru informacji o Twojej osobie. Pozwolą one schludnie przeliczać magiczne kropelki, oraz serwować zgrabne dane o Twoich wyczynach.</string>
+    <string name="setupSave">Utrwal informacje</string>
+
     // HOME
     <string name="homeTitle">Cześć, %s!</string>
     <string name="homeHero">Bohaterze</string>
@@ -123,6 +129,7 @@
     <string name="profileAvatarWizard">potężny mag</string>
     <string name="profileDataTitle">Dane %s</string>
     <string name="profileDataNameLabel">Nazwa użytkownika</string>
+    <string name="profileDataNameError">Błąd przy zmianie nazwy</string>
     <string name="profileDataEmailLabel">Email</string>
     <string name="profileDataEmailError">Błąd przy zmianie adresu email</string>
     <string name="profileDataCurrentPasswordLabel">Aktualne hasło</string>

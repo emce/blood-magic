@@ -48,6 +48,7 @@ kotlin {
             api(libs.google.firebase.auth)
             api(libs.bundles.koin.common)
             api(libs.bundles.kotlinx.coroutines.common)
+            api(libs.napier)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -1,6 +1,5 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
-
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,6 +47,7 @@ import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.close
 import mobi.cwiklinski.bloodline.resources.icon_close
@@ -83,7 +83,7 @@ class ProfilePasswordScreen : AppProfileScreen() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
-        val profile = screenModel.profile.collectAsStateWithLifecycle()
+        val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
         val focusManager = LocalFocusManager.current
         if (screenModel.state.value == ProfileState.Saved) {
             bottomSheetNavigator.hide()
@@ -138,7 +138,7 @@ class ProfilePasswordScreen : AppProfileScreen() {
                     drawCircle(AppThemeColors.white.copy(alpha = 0.2f))
                 }
                 Image(
-                    painterResource(Avatar.byName(screenModel.profile.value?.avatar).icon),
+                    painterResource(Avatar.byName(profile.avatar).icon),
                     stringResource(Res.string.profileAvatarTitle),
                     modifier = Modifier.width(184.dp).height(184.dp).avatarShadow()
                 )
@@ -163,11 +163,11 @@ class ProfilePasswordScreen : AppProfileScreen() {
                 verticalArrangement = Arrangement.Top,
             ) {
                 Text(
-                    profile.value?.name ?: "",
+                    profile.name,
                     style = getTypography().displayMedium.copy(color = AppThemeColors.black)
                 )
                 Text(
-                    "⎯⎯  ${getAvatarName(screenModel.profile.value?.avatar)}  ⎯⎯",
+                    "⎯⎯  ${getAvatarName(profile.avatar)}  ⎯⎯",
                     style = getTypography().displaySmall.copy(
                         color = AppThemeColors.black70,
                         fontFamily = getFontFamily(AppFontFamily.REGULAR)

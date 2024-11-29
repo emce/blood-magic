@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.resources.*
 import mobi.cwiklinski.bloodline.ui.model.LoginError
 import mobi.cwiklinski.bloodline.ui.model.LoginScreenModel
@@ -46,7 +47,8 @@ class LoginScreen : AppScreen() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<LoginScreenModel>()
         val state by screenModel.state.collectAsStateWithLifecycle()
-        if (state == LoginState.LoggedIn) {
+        val authState by screenModel.authState.collectAsStateWithLifecycle()
+        if (state == LoginState.LoggedIn && authState == AuthenticationState.Logged) {
             navigator.replaceAll(HomeScreen())
         }
         MainWindow(screenModel)

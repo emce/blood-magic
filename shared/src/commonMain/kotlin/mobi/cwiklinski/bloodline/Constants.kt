@@ -30,6 +30,9 @@ object Constants {
     const val BADGE_MALE_FIRST = 6000
     const val BADGE_FINAL = 20000
 
+    // Storage
+    const val EMAIL_KEY = "email"
+
     // Notifications
     const val CHANNEL_NAME = "BloodMagic"
     const val CHANNEL_ID = "mobi.cwiklinski.bloodline"

@@ -19,15 +19,16 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinx.coroutines.flow.onEach
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationsTitle
 import mobi.cwiklinski.bloodline.resources.homeTitle
@@ -45,6 +46,7 @@ class DonationsScreen : AppScreen() {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
+        val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
         Box(
             modifier = Modifier.background(AppThemeColors.homeGradient)
                 .padding(top = 20.dp)
@@ -88,14 +90,12 @@ class DonationsScreen : AppScreen() {
                     item {
                         Spacer(modifier = Modifier.height(20.dp))
                     }
-                    screenModel.donations.onEach { donations ->
-                        items(donations) { donation ->
-                            DonationItem(
-                                donation,
-                                { navigator.push(EditDonationScreen(donation)) },
-                                { screenModel.deleteDonation(donation) }
-                            )
-                        }
+                    items(donations) { donation ->
+                        DonationItem(
+                            donation,
+                            { navigator.push(EditDonationScreen(donation)) },
+                            { screenModel.deleteDonation(donation) }
+                        )
                     }
                     item {
                         Spacer(modifier = Modifier.height(100.dp))

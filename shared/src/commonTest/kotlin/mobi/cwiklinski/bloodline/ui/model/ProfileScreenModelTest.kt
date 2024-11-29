@@ -4,14 +4,13 @@ import app.cash.turbine.test
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineScheduler
-import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
+import mobi.cwiklinski.bloodline.data.filed.CenterServiceImplementation
 import mobi.cwiklinski.bloodline.data.filed.DummyData
 import mobi.cwiklinski.bloodline.test.CommonTestTools
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
@@ -39,6 +38,7 @@ class ProfileScreenModelTest {
         }
         model = ProfileScreenModel(
             UiTestTools.getProfileService(storageService, scope),
+            CenterServiceImplementation(),
             UiTestTools.getAuthService(AuthResult.Success(), false),
             storageService
         )
@@ -59,6 +59,7 @@ class ProfileScreenModelTest {
             UiTestTools.generateProfile(id = profile.id ?: CommonTestTools.randomString(9))
         model.onProfileDataUpdate(
             newName = newProfile.name,
+            newEmail = newProfile.email,
             newAvatar = newProfile.avatar,
             newSex = newProfile.sex,
             newNotification = newProfile.notification,

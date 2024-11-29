@@ -5,6 +5,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.common.isValidEmail
@@ -19,6 +20,11 @@ class RegisterScreenModel(
 
     init {
         bootstrap()
+        screenModelScope.launch {
+            profileService.getProfile().collectLatest {
+                storageService.storeProfile(it)
+            }
+        }
     }
 
     fun onRegisterSubmit(email: String, password: String, repeat: String) {
@@ -39,14 +45,8 @@ class RegisterScreenModel(
                                         is AuthResult.Failure -> mutableState.value =
                                             RegisterState.Error(listOf(RegisterError.REGISTER_ERROR))
                                         is AuthResult.Success -> {
-                                            profileService.getProfile().collectLatest { profile ->
-                                                if (profile != null) {
-                                                    storageService.storeProfile(profile)
-                                                    mutableState.value = RegisterState.Registered
-                                                } else {
-                                                    mutableState.value = RegisterState.Error(listOf(RegisterError.PROFILE_ERROR))
-                                                }
-                                            }
+                                            storageService.storeString(Constants.EMAIL_KEY, email)
+                                            mutableState.value = RegisterState.Registered
                                         }
                                     }
                                 }

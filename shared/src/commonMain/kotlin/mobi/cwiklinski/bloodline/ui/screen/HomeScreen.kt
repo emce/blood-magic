@@ -37,7 +37,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.aakira.napier.Napier
 import mobi.cwiklinski.bloodline.Constants
-import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.homeCarouselAmountSubtitle
 import mobi.cwiklinski.bloodline.resources.homeCarouselAmountTitle
@@ -47,8 +46,8 @@ import mobi.cwiklinski.bloodline.resources.homeCarouselBadge2Subtitle
 import mobi.cwiklinski.bloodline.resources.homeCarouselBadge2Title
 import mobi.cwiklinski.bloodline.resources.homeCarouselBadge3Subtitle
 import mobi.cwiklinski.bloodline.resources.homeCarouselBadge3Title
-import mobi.cwiklinski.bloodline.resources.homeCarouselBadgeFinalTitle
 import mobi.cwiklinski.bloodline.resources.homeCarouselBadgeFinalSubtitle
+import mobi.cwiklinski.bloodline.resources.homeCarouselBadgeFinalTitle
 import mobi.cwiklinski.bloodline.resources.homeCarouselTotalAmountTitle
 import mobi.cwiklinski.bloodline.resources.homeDonationHistory
 import mobi.cwiklinski.bloodline.resources.homeHero
@@ -98,9 +97,7 @@ class HomeScreen : AppScreen() {
         val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle()
         val profile by screenModel.profile.collectAsStateWithLifecycle()
-        val hero = if (Sex.fromSex(screenModel.profile.value?.sex?.sex ?: Sex.MALE.sex)
-                .isFemale()
-        ) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
+        val hero = if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
         Scaffold(
             modifier = Modifier.background(AppThemeColors.homeGradient),
             backgroundColor = Color.Transparent,
@@ -120,7 +117,7 @@ class HomeScreen : AppScreen() {
                         modifier = Modifier.padding(20.dp).align(Alignment.Center)
                             .offset(x = 62.dp)
                     )
-                    val name = profile?.name ?: hero
+                    val name = profile.name.ifEmpty { hero }
                     Text(
                         stringResource(Res.string.homeTitle).replace("%s", name),
                         modifier = Modifier.align(Alignment.CenterStart).offset(y = 15.dp)
@@ -213,11 +210,11 @@ class HomeScreen : AppScreen() {
                                 ),
                                 subTitle = stringResource(Res.string.homeCarouselAmountSubtitle)
                             )
-                            var totalSum = screenModel.profile.value?.starting ?: 0
+                            var totalSum = profile.starting ?: 0
                             totalSum += donations
                                 .filter { !it.disqualification }.sumOf {
                                     it.convertToFullBlood(
-                                        screenModel.profile.value?.sex ?: Sex.MALE
+                                        profile.sex
                                     )
                                 }
                             CarouselItem(
@@ -229,7 +226,7 @@ class HomeScreen : AppScreen() {
                                 subTitle = stringResource(Res.string.homeCarouselTotalAmountTitle)
                             )
                             val part =
-                                if (profile?.sex?.isFemale() == true) Constants.BADGE_FEMALE_FIRST else Constants.BADGE_MALE_FIRST
+                                if (profile.sex.isFemale()) Constants.BADGE_FEMALE_FIRST else Constants.BADGE_MALE_FIRST
                             var badge = Res.drawable.ic_zhdk_3
                             var badgeTitle = stringResource(Res.string.homeCarouselBadge1Title)
                             var badgeSubTitle = stringResource(Res.string.homeCarouselBadge1Subtitle)
