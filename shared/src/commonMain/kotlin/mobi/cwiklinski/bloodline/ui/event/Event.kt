@@ -1,6 +1,10 @@
 package mobi.cwiklinski.bloodline.ui.event
 
-import mobi.cwiklinski.bloodline.ui.screen.AppScreen
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
+import mobi.cwiklinski.bloodline.ui.model.AppModel
 
 interface Event
 
@@ -10,18 +14,21 @@ interface EventWithSideEffect : Event {
 
 class Events : Event {
     open class EventSideEffect(override val sideEffect: SideEffect) : EventWithSideEffect
-    open class OpenBrowser(val url: String) : EventWithSideEffect {
+    open class OpenBrowser(private val url: String) : EventWithSideEffect {
         override val sideEffect
             get() = SideEffects.OpenBrowser(url)
     }
 
-    open class NavigateTo(val destination: AppScreen) : EventWithSideEffect {
-        override val sideEffect
-            get() = SideEffects.NavigateTo(destination)
+}
+
+@Composable
+fun <S> HandleEvent(
+    viewModel: AppModel<S>,
+    handler: suspend CoroutineScope.(event: Event) -> Unit = {}
+) {
+    LaunchedEffect(Unit) {
+        viewModel.event.collectLatest {
+            handler.invoke(this, it)
+        }
     }
-
-    object NavigateBack : EventSideEffect(SideEffects.NavigateBack())
-
-    object NotificationPermissionGiven: Event
-
 }

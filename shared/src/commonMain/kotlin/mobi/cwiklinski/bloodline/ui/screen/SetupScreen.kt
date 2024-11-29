@@ -105,7 +105,7 @@ class SetupScreen : AppScreen() {
         val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
         val state by screenModel.state.collectAsStateWithLifecycle()
         val email by screenModel.email.collectAsStateWithLifecycle()
-        if (state == SetupState.SavedData) {
+        if (state == SetupState.SavedData || state == SetupState.AlreadySetup) {
             navigator.replaceAll(HomeScreen())
         }
         SetupView(screenModel, profile, centerList, state, email)

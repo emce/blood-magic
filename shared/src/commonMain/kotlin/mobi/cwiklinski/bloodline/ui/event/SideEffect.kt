@@ -1,7 +1,11 @@
 package mobi.cwiklinski.bloodline.ui.event
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import mobi.cwiklinski.bloodline.ui.manager.PlatformManager
-import mobi.cwiklinski.bloodline.ui.screen.AppScreen
+import mobi.cwiklinski.bloodline.ui.model.AppModel
 import org.jetbrains.compose.resources.DrawableResource
 
 interface SideEffect
@@ -12,8 +16,6 @@ interface SideEffectWithEvent : SideEffect {
 
 class SideEffects : SideEffect {
     open class SideEffectEvent(override val event: Event) : SideEffectWithEvent
-
-    data class OpenDialog(val id: Int = 0) : SideEffect
     data class OpenBrowser(val url: String, val openSystemBrowser: Boolean = false) : SideEffect
     data class Snackbar(val text: String) : SideEffect
     data class ErrorSnackbar(val error: Throwable, val errorReport: String? = null) :
@@ -28,17 +30,23 @@ class SideEffects : SideEffect {
     data class ErrorDialog constructor(val error: Throwable, val errorReport: String? = null) :
         SideEffect
 
-    data class Navigate(val data: Any? = null) : SideEffect
-    data class NavigateTo(val destination: AppScreen) : SideEffect
-    data class NavigateBack(
-        val title: String? = null,
-        val message: String? = null,
-        val error: Throwable? = null,
-        val errorReport: String? = null,
-    ) : SideEffect
-
-    class NavigateToRoot : SideEffect
+    data class ShareText(val text: String) : SideEffect
 }
 
 suspend fun openBrowser(platformManager: PlatformManager, url: String, openSystemBrowser: Boolean = false) =
     platformManager.openBrowser(url = url, openSystemBrowser = openSystemBrowser)
+
+suspend fun shareText(platformManager: PlatformManager, text: String) =
+    platformManager.shareText(content = text)
+
+@Composable
+fun <S> HandleSideEffect(
+    viewModel: AppModel<S>,
+    handler: suspend CoroutineScope.(sideEffect: SideEffect) -> Unit = {}
+) {
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collectLatest {
+            handler.invoke(this, it)
+        }
+    }
+}

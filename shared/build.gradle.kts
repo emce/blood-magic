@@ -1,4 +1,4 @@
-import org.gradle.kotlin.dsl.kotlin
+
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.internal.utils.localPropertiesFile
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
@@ -60,11 +60,7 @@ kotlin {
             api(libs.bundles.appcompat.android)
             api(libs.bundles.core.android)
             api(libs.bundles.compose.android)
-            api(libs.bundles.koin.android)
             api(libs.accompanist.permissions)
-            api(libs.bundles.appcompat.android)
-            api(libs.bundles.core.android)
-            api(libs.bundles.compose.android)
             api(libs.bundles.koin.android)
         }
         commonMain.dependencies {
@@ -85,6 +81,7 @@ kotlin {
             api(libs.jetbrains.androidx.lifecycle.runtime.compose)
             api(libs.bundles.voyager)
             api(libs.bundles.koin.common)
+            api(libs.bundles.constraintlayout.common)
             api(libs.napier)
             implementation(projects.service.auth.filed)
             implementation(projects.service.auth.firebase)

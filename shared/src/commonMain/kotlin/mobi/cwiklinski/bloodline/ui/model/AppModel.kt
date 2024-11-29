@@ -4,6 +4,7 @@ import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.ui.event.Event
 import mobi.cwiklinski.bloodline.ui.event.Events
 import mobi.cwiklinski.bloodline.ui.event.SideEffect
+import mobi.cwiklinski.bloodline.ui.event.SideEffects
 import org.koin.core.component.KoinComponent
 
 abstract class AppModel<S>(initialState: S) : StateScreenModel<S>(initialState), KoinComponent {
@@ -18,6 +20,7 @@ abstract class AppModel<S>(initialState: S) : StateScreenModel<S>(initialState),
     private var _bootstrapped: Boolean = false
 
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
+    val event = _event.asSharedFlow()
     private val _sideEffect: Channel<SideEffect> = Channel()
     val sideEffect = _sideEffect.receiveAsFlow()
 
@@ -44,18 +47,16 @@ abstract class AppModel<S>(initialState: S) : StateScreenModel<S>(initialState),
 
     open suspend fun handleEvent(event: Event) = when (event) {
         is Events.OpenBrowser -> {
-
+            _sideEffect.send(event.sideEffect)
         }
-        is Events.NavigateTo -> {
-
+        is Events.EventSideEffect -> {
+            when (event.sideEffect) {
+                is SideEffects.ShareText -> {
+                    _event.emit(event)
+                }
+                else -> {}
+            }
         }
-        is Events.NavigateBack -> {
-
-        }
-        is Events.NotificationPermissionGiven -> {
-
-        }
-
         else -> {}
     }
 }

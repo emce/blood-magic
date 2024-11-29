@@ -88,7 +88,6 @@ actual class PlatformManager(
         return Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2
     }
 
-    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     internal actual fun getClipboard(): String? {
         return (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).let {
             it.primaryClip?.getItemAt(0)?.text?.toString()
