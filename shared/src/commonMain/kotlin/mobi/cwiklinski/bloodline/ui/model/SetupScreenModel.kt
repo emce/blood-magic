@@ -5,21 +5,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.Constants
-import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
+import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.util.Avatar
-import kotlin.time.Duration.Companion.seconds
 
 class SetupScreenModel(
     private val profileService: ProfileService,
@@ -65,39 +61,19 @@ class SetupScreenModel(
     ) {
         mutableState.value = SetupState.SavingData
         screenModelScope.launch {
-            val currentProfile = profile.lastOrNull()
-            if (currentProfile?.differs(
-                    newName,
-                    newAvatar.name,
-                    newSex,
-                    newNotification,
-                    newStarting,
-                    newCenter?.id ?: ""
-                ) == true
-            ) {
-                profileService.updateProfileData(
-                    newName, newEmail, newAvatar.name, newSex,
-                    newNotification, newStarting, newCenter?.id ?: ""
-                )
-                    .timeout(10.seconds)
-                    .catch {
-                        mutableState.value = SetupState.Error(SetupError.ERROR)
+            profileService.updateProfileData(
+                newName, newEmail, newAvatar.name, newSex,
+                newNotification, newStarting, newCenter?.id ?: ""
+            )
+                .collectLatest {
+                    when (it) {
+                        is ProfileServiceState.Error -> mutableState.value =
+                            SetupState.Error(SetupError.ERROR)
+                        ProfileServiceState.Idle -> {}
+                        ProfileServiceState.Saved -> mutableState.value = SetupState.SavedData
+                        ProfileServiceState.Saving -> mutableState.value = SetupState.SavingData
                     }
-                    .collectLatest {
-                        when (it) {
-                            is Either.Left -> {
-                                mutableState.value = SetupState.SavedData
-                            }
-
-                            is Either.Right -> {
-                                mutableState.value =
-                                    SetupState.Error(SetupError.ERROR)
-                            }
-                        }
-                    }
-            } else {
-                mutableState.value = SetupState.Error(SetupError.ERROR)
-            }
+                }
         }
     }
 

@@ -4,7 +4,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -36,7 +38,9 @@ fun OutlinedInput(
         enabled = enabled,
         readOnly = readOnly,
         textStyle = inputPlaceHolder(),
-        label = { Text(label) },
+        label = {
+            Text(label)
+        },
         placeholder = placeholder,
         trailingIcon = trailingIcon,
         isError = error,

@@ -17,10 +17,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Checkbox
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.BasicAlertDialog
@@ -40,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -59,12 +61,12 @@ import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.resources.avatar_fairy
-import mobi.cwiklinski.bloodline.resources.avatar_wizard
 import mobi.cwiklinski.bloodline.resources.button_edit
 import mobi.cwiklinski.bloodline.resources.female
 import mobi.cwiklinski.bloodline.resources.heroGenitive
 import mobi.cwiklinski.bloodline.resources.heroinGenitive
+import mobi.cwiklinski.bloodline.resources.ic_sex_female
+import mobi.cwiklinski.bloodline.resources.ic_sex_male
 import mobi.cwiklinski.bloodline.resources.male
 import mobi.cwiklinski.bloodline.resources.profileAvatarTitle
 import mobi.cwiklinski.bloodline.resources.profileDataEmailLabel
@@ -90,6 +92,7 @@ import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
 import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
+import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
@@ -263,7 +266,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             val start = 100.dp.value
                             val middle = 450.dp.value
                             drawPath(
-                                color = AppThemeColors.background,
+                                color = AppThemeColors.white,
                                 path = Path().apply {
                                     reset()
                                     moveTo(0f, start)
@@ -348,35 +351,58 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                         )
                         Break()
                         Text(
-                            stringResource(Res.string.settingsSexLabel)
+                            stringResource(Res.string.settingsSexLabel),
+                            style = itemSubTitle()
                         )
-                        Row(horizontalArrangement = Arrangement.SpaceEvenly) {
-                            Row(horizontalArrangement = Arrangement.Center) {
+                        Row(
+                            modifier = Modifier.selectableGroup().padding(vertical = 10.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(
+                                        if (sex.isFemale()) AppThemeColors.grey3 else AppThemeColors.background,
+                                        shape = RoundedCornerShape(10.dp)
+                                    )
+                                    .selectable(
+                                        selected = (sex == Sex.FEMALE),
+                                        onClick = {
+                                            sex = Sex.FEMALE
+                                        },
+                                        role = Role.RadioButton
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
                                 Image(
-                                    painterResource(Res.drawable.avatar_fairy),
+                                    painterResource(Res.drawable.ic_sex_female),
                                     stringResource(Res.string.female),
-                                    modifier = Modifier.size(40.dp)
-                                )
-                                Checkbox(
-                                    checked = sex == Sex.FEMALE,
-                                    onCheckedChange = {
-                                        sex = Sex.FEMALE
-                                    },
-                                    colors = AppThemeColors.checkboxColors()
+                                    colorFilter = ColorFilter.tint(if (sex.isFemale()) AppThemeColors.white else AppThemeColors.violet2),
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
-                            Row(horizontalArrangement = Arrangement.Center) {
+                            Spacer(Modifier.width(20.dp))
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(
+                                        if (!sex.isFemale()) AppThemeColors.grey else AppThemeColors.background,
+                                        shape = RoundedCornerShape(10.dp)
+                                    )
+                                    .selectable(
+                                        selected = (sex == Sex.MALE),
+                                        onClick = {
+                                            sex = Sex.MALE
+                                        },
+                                        role = Role.RadioButton
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
                                 Image(
-                                    painterResource(Res.drawable.avatar_wizard),
+                                    painterResource(Res.drawable.ic_sex_male),
                                     stringResource(Res.string.male),
-                                    modifier = Modifier.size(40.dp)
-                                )
-                                Checkbox(
-                                    checked = sex == Sex.MALE,
-                                    onCheckedChange = {
-                                        sex = Sex.MALE
-                                    },
-                                    colors = AppThemeColors.checkboxColors()
+                                    colorFilter = ColorFilter.tint(if (!sex.isFemale()) AppThemeColors.white else AppThemeColors.violet2),
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
                         }
@@ -419,7 +445,8 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                         )
                         Break()
                         Text(
-                            stringResource(Res.string.settingsReminderLabel)
+                            stringResource(Res.string.settingsReminderLabel),
+                            style = itemSubTitle()
                         )
                         Switch(
                             checked = notification,

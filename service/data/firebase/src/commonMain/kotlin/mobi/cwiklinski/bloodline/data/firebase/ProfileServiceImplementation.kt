@@ -4,12 +4,18 @@ import dev.gitlive.firebase.FirebaseException
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.database.FirebaseDatabase
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.data.api.ProfileService
+import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
 import mobi.cwiklinski.bloodline.data.api.ProfileUpdate
 import mobi.cwiklinski.bloodline.data.api.ProfileUpdateState
 import mobi.cwiklinski.bloodline.data.firebase.model.FirebaseSettings
@@ -40,30 +46,26 @@ class ProfileServiceImplementation(
         notification: Boolean,
         starting: Int,
         centerId: String
-    ) = channelFlow<Either<ProfileUpdate, Throwable>> {
-        val result = mutableListOf(ProfileUpdateState.NOTHING)
+    ): Flow<ProfileServiceState> = callbackFlow {
         try {
-            _profileData.collectLatest { profile ->
-                if (profile.differs(name, avatar, sex, notification, starting, centerId)) {
-                    mainRef.setValue(
-                        FirebaseSettings(
-                            name,
-                            email,
-                            sex.sex,
-                            if (notification) 1 else 0,
-                            centerId,
-                            starting,
-                            avatar
-                        )
+            withContext(Dispatchers.Default) {
+                mainRef.setValue(
+                    FirebaseSettings(
+                        name,
+                        email,
+                        sex.sex,
+                        if (notification) 1 else 0,
+                        centerId,
+                        starting,
+                        avatar
                     )
-                    result.remove(ProfileUpdateState.NOTHING)
-                    result.add(ProfileUpdateState.DATA)
-                }
-                trySend(Either.Left(ProfileUpdate(result)))
+                )
             }
-        } catch (e: FirebaseException) {
-            trySend(Either.Right(e))
+            trySend(ProfileServiceState.Saved)
+        } catch (exception: FirebaseException) {
+            trySend(ProfileServiceState.Error(exception))
         }
+        awaitClose { }
     }
 
     override fun updateProfileEmail(email: String) = channelFlow<Either<ProfileUpdate, Throwable>> {
