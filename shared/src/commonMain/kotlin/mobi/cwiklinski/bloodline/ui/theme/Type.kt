@@ -108,10 +108,10 @@ fun hugeTitle() = TextStyle(
 @Composable
 fun toolbarTitle() = TextStyle(
     fontFamily = getFontFamily(AppFontFamily.BOLD),
-    fontSize = 22.sp,
+    fontSize = 20.sp,
     color = AppThemeColors.black,
     fontWeight = FontWeight.Bold,
-    lineHeight = 30.sp,
+    lineHeight = 28.sp,
 )
 
 @Composable

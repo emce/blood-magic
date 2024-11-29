@@ -11,6 +11,10 @@
     <string name="donationPlasma">Osocze</string>
     <string name="donationPlatelets">Płytki Krwi</string>
     <string name="donationPacked">KKCz</string>
+    <string name="donationFullBloodGenitive">krwi pełnej</string>
+    <string name="donationPlasmaGenitive">osocza</string>
+    <string name="donationPlateletsGenitive">płytek krwi</string>
+    <string name="donationPackedGenitive">koncentratu krwi</string>
     <string name="heroGenitive">bohatera</string>
     <string name="heroinGenitive">bohaterki</string>
     <string name="day">dzień</string>
@@ -173,6 +177,7 @@
     <string name="donationsDeleteMessage">Wszystkie dane donacji zostaną usunięte.</string>
     <string name="donationsDeleteWarning">Dane zostaną usunięte bezpowrotnie!</string>
     <string name="donationsDeleteError">Wystąpił błąd przy usuwaniu donacji.</string>
+    <string name="donationsShare">Kolejne Magiczne Kropelki poleciały!\nTym razem fiolka, a w niej %s</string>
 
     // SETTINGS
     <string name="settingsTitle">Poukładanki</string>

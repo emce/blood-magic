@@ -72,6 +72,11 @@ import mobi.cwiklinski.bloodline.resources.ic_zhdk_3
 import mobi.cwiklinski.bloodline.resources.liter
 import mobi.cwiklinski.bloodline.resources.milliliter
 import mobi.cwiklinski.bloodline.resources.seeAll
+import mobi.cwiklinski.bloodline.ui.event.Events
+import mobi.cwiklinski.bloodline.ui.event.HandleSideEffect
+import mobi.cwiklinski.bloodline.ui.event.SideEffects
+import mobi.cwiklinski.bloodline.ui.event.shareText
+import mobi.cwiklinski.bloodline.ui.manager.rememberPlatformManager
 import mobi.cwiklinski.bloodline.ui.model.HomeScreenModel
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentAction
@@ -95,8 +100,14 @@ class HomeScreen : AppScreen() {
         Napier.d("Home Screen started")
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
+        val platformManager = rememberPlatformManager()
         val donations by screenModel.donations.collectAsStateWithLifecycle()
         val profile by screenModel.profile.collectAsStateWithLifecycle()
+        HandleSideEffect(screenModel) {
+            if (it is SideEffects.ShareText) {
+                shareText(platformManager, it.text)
+            }
+        }
         val hero = if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
         Scaffold(
             modifier = Modifier.background(AppThemeColors.homeGradient),
@@ -105,8 +116,10 @@ class HomeScreen : AppScreen() {
             floatingActionButtonPosition = FabPosition.Center,
             isFloatingActionButtonDocked = true,
             bottomBar = { getBottomBar() }
-        ) {
-            Column {
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier.padding(paddingValues)
+            ) {
                 Box(
                     modifier = Modifier.height(180.dp).fillMaxWidth()
                         .background(Color.Transparent)
@@ -288,8 +301,10 @@ class HomeScreen : AppScreen() {
                                 )
                             }
                         }
-                        donations.takeLast(5).forEach {
-                            DonationItem(it, {}, {}, false)
+                        donations.take(5).forEach {
+                            DonationItem(it, {}, {}, { text ->
+                                screenModel.postEvent(Events.EventSideEffect(sideEffect = SideEffects.ShareText(text)))
+                            }, false)
                         }
                     }
                     Spacer(Modifier.height(120.dp))

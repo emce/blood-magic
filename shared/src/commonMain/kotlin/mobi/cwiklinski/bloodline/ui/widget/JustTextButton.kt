@@ -1,7 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.widget
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -22,7 +21,8 @@ fun JustTextButton(
     textDecoration: TextDecoration = TextDecoration.Underline,
     textColor: Color = AppThemeColors.grey3,
     contentPadding: PaddingValues = PaddingValues(horizontal = 5.dp, vertical = 0.dp),
-    textStyle: TextStyle = itemTrailing()
+    textStyle: TextStyle = itemTrailing(),
+    leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     TextButton(
         modifier = modifier,
@@ -31,6 +31,7 @@ fun JustTextButton(
         contentPadding = contentPadding,
         colors = AppThemeColors.textButtonColors(),
     ) {
+        leadingIcon?.invoke()
         Text(
             text,
             style = textStyle.copy(color = textColor, textDecoration = textDecoration)

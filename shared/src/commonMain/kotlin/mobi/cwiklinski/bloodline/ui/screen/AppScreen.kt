@@ -7,13 +7,12 @@ import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationNewTitle
 import mobi.cwiklinski.bloodline.resources.nav_icon_drop
-import mobi.cwiklinski.bloodline.ui.widget.BottomBar
 import mobi.cwiklinski.bloodline.ui.util.BottomNavigationItem
+import mobi.cwiklinski.bloodline.ui.widget.BottomBar
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.component.KoinComponent
@@ -27,6 +26,7 @@ abstract class AppScreen : Screen, KoinComponent {
             onClicked = { this.getNavigationContext(it, navigator) },
             selected = when (this) {
                 is DonationsScreen -> BottomNavigationItem.LIST
+                is CentersScreen -> BottomNavigationItem.CENTER
                 is ProfileScreen -> BottomNavigationItem.PROFILE
                 else -> BottomNavigationItem.HOME
             }

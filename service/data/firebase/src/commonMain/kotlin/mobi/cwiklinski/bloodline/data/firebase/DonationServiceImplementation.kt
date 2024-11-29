@@ -41,7 +41,7 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
         ) { centers, donations ->
             emit(donations.map { donation ->
                 donation.toDonation(centers.first { it.id == donation.centerId }.toCenter())
-            })
+            }.sortedByDescending { it.date })
         }
 
     override fun getDonation(id: String) =

@@ -4,11 +4,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.SwitchColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -102,7 +102,7 @@ object AppThemeColors {
     val iconGreen2Background = Color(0xFFD4F3EB)
     val iconBlue2 = Color(0xFF62A5CA)
     val iconBlue2Background = Color(0xFFE0EDF4)
-    val background = Color(0xFFFCFCFC)
+    val background = Color(0xFFEFEFEF) //Color(0xFFFCFCFC)
 
     val grey = Color(0xFF767676)
     val greyish = Color(0xFFDBDBDB)
@@ -213,6 +213,15 @@ object AppThemeColors {
         checkmarkColor = white,
         disabledColor = grey1.copy(alpha = ContentAlpha.disabled),
         disabledIndeterminateColor = rose1.copy(alpha = ContentAlpha.disabled)
+    )
+
+    @Composable
+    fun topBarColors() = TopAppBarDefaults.topAppBarColors(
+        containerColor = Color.Transparent,
+        scrolledContainerColor = Color.Transparent,
+        navigationIconContentColor = rose1,
+        titleContentColor = rose1,
+        actionIconContentColor = rose1
     )
 
     internal val appColors = lightColorScheme(

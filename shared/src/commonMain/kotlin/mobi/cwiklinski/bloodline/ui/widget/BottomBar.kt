@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,25 +26,24 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun BottomBar(
     onClicked: (BottomNavigationItem) -> Unit,
-    modifier: Modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+    modifier: Modifier = Modifier.fillMaxWidth().wrapContentHeight().background(AppThemeColors.homeGradient),
     selected: BottomNavigationItem = BottomNavigationItem.HOME
 ) {
     AppPreview {
         BottomAppBar(
-            containerColor = AppThemeColors.rose2,
+            modifier = modifier.padding(0.dp),
+            containerColor = Color.Transparent,
             contentPadding = PaddingValues(0.dp),
             tonalElevation = 0.dp,
-            modifier = modifier.padding(0.dp).background(AppThemeColors.mainGradient),
         ) {
             NavigationBar(
-                modifier = Modifier.background(Color.Transparent),
                 containerColor = Color.Transparent,
                 contentColor = Color.Transparent
             ) {
                 BottomNavigationItem.entries.forEach { item ->
                     NavigationBarItem(
                         selected = item == selected,
-                        enabled = item != selected,
+                        enabled = true,
                         icon = {
                             Image(
                                 painterResource(item.icon),
@@ -56,7 +55,12 @@ fun BottomBar(
                         alwaysShowLabel = false,
                         onClick = {
                             onClicked(item)
-                        })
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = AppThemeColors.red3,
+                            unselectedIconColor = AppThemeColors.white
+                        )
+                    )
                     if (item == BottomNavigationItem.LIST) {
                         Spacer(Modifier.weight(1.0f))
                     }
