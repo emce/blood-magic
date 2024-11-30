@@ -6,13 +6,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import mobi.cwiklinski.bloodline.common.toPrecision
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.donationFullBlood
 import mobi.cwiklinski.bloodline.resources.donationFullBloodGenitive
+import mobi.cwiklinski.bloodline.resources.donationPacked
 import mobi.cwiklinski.bloodline.resources.donationPackedGenitive
+import mobi.cwiklinski.bloodline.resources.donationPlasma
 import mobi.cwiklinski.bloodline.resources.donationPlasmaGenitive
+import mobi.cwiklinski.bloodline.resources.donationPlatelets
 import mobi.cwiklinski.bloodline.resources.donationPlateletsGenitive
+import mobi.cwiklinski.bloodline.resources.icon_full_blood
+import mobi.cwiklinski.bloodline.resources.icon_packed
+import mobi.cwiklinski.bloodline.resources.icon_plasma
+import mobi.cwiklinski.bloodline.resources.icon_platelets
 import mobi.cwiklinski.bloodline.resources.profileAvatarFairy
 import mobi.cwiklinski.bloodline.resources.profileAvatarFenix
 import mobi.cwiklinski.bloodline.resources.profileAvatarKing
@@ -56,5 +67,27 @@ fun DonationType.getGenitive() = stringResource(
     }
 )
 
+@Composable
+fun DonationType.getName() = stringResource(
+    when (this) {
+        DonationType.FULL_BLOOD -> Res.string.donationFullBlood
+        DonationType.PLASMA -> Res.string.donationPlasma
+        DonationType.PLATELETS -> Res.string.donationPlatelets
+        DonationType.PACKED_CELLS -> Res.string.donationPacked
+    }
+)
+
+@Composable
+fun DonationType.getIcon() = when (this) {
+        DonationType.FULL_BLOOD -> Res.drawable.icon_full_blood
+        DonationType.PLASMA -> Res.drawable.icon_plasma
+        DonationType.PLATELETS -> Res.drawable.icon_platelets
+        DonationType.PACKED_CELLS -> Res.drawable.icon_packed
+    }
+
 fun String.camelCase() = this.split(' ')
     .joinToString(" ") { it.replaceFirstChar(Char::uppercaseChar) }
+
+fun Long.toLocalDate() =
+    Instant.fromEpochMilliseconds(this)
+        .toLocalDateTime(TimeZone.currentSystemDefault()).date

@@ -21,7 +21,7 @@ class SetupScreenModel(
     private val profileService: ProfileService,
     centerService: CenterService,
     private val storageService: StorageService
-) : AppModel<SetupState>(SetupState.Idle) {
+) : AppModel<SetupState>(SetupState.Loading) {
 
     val profile = profileService.getProfile()
 
@@ -35,6 +35,7 @@ class SetupScreenModel(
         bootstrap()
         screenModelScope.launch {
             profileService.getProfile().collectLatest {
+                mutableState.value = SetupState.Idle
                 if (it.name.isEmpty() || it.email.isEmpty()) {
                     mutableState.value = SetupState.NeedSetup
                 } else {
@@ -80,6 +81,7 @@ class SetupScreenModel(
 }
 
 sealed class SetupState {
+    data object Loading: SetupState()
     data object Idle: SetupState()
     data object NeedSetup: SetupState()
     data object AlreadySetup: SetupState()

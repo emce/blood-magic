@@ -5,12 +5,10 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
@@ -87,10 +85,6 @@ class ProfileScreenModel(
                         if (logged.first() is AuthResult.Success) {
                             if (newPassword.isNotEmpty() && newPassword.length > 5) {
                                 profileService.updateProfilePassword(newPassword)
-                                    .timeout(10.seconds)
-                                    .catch {
-                                        ProfileState.Error(listOf(ProfileError.PASSWORD))
-                                    }
                                     .collectLatest {
                                         when (it) {
                                             is Either.Left -> mutableState.value =

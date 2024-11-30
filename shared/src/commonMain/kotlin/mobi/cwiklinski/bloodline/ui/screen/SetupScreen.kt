@@ -114,7 +114,17 @@ class SetupScreen : AppScreen() {
         if (state == SetupState.SavedData || state == SetupState.AlreadySetup) {
             navigator.replaceAll(HomeScreen())
         }
-        SetupView(screenModel, profile, centerList, state, email)
+        if (state == SetupState.Loading) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+                    .background(AppThemeColors.background),
+                contentAlignment = Alignment.Center
+            ) {
+                FormProgress()
+            }
+        } else {
+            SetupView(screenModel, profile, centerList, state, email)
+        }
     }
 
     @Preview

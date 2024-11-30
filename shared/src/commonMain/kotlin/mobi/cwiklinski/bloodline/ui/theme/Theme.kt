@@ -4,6 +4,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Shapes
@@ -11,20 +12,18 @@ import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import mobi.cwiklinski.bloodline.ui.manager.LocalPlatformManager
-import mobi.cwiklinski.bloodline.ui.manager.rememberPlatformManager
+import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.appColors
 
 @Composable
 fun AppTheme(
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = AppThemeColors.appColors,
+        colorScheme = appColors,
         shapes = appShapes,
         typography = getTypography(),
         content = content
@@ -38,22 +37,6 @@ val appShapes = Shapes(
     large = RoundedCornerShape(24.dp),
     extraLarge = RoundedCornerShape(24.dp)
 )
-
-
-
-@Composable
-fun AppPreview(
-    content: @Composable () -> Unit
-) {
-    val platformManager = rememberPlatformManager()
-
-    CompositionLocalProvider(
-        LocalPlatformManager provides platformManager
-    ) {
-        AppTheme(content = content)
-    }
-}
-
 
 object AppThemeColors {
     val white = Color(0xFFFCFCFC)
@@ -152,41 +135,41 @@ object AppThemeColors {
 
     @Composable
     fun authFieldColors() = OutlinedTextFieldDefaults.colors(
-        focusedTextColor = AppThemeColors.black,
-        focusedBorderColor = AppThemeColors.black70,
-        focusedLabelColor = AppThemeColors.black70,
-        unfocusedBorderColor = AppThemeColors.grey3,
-        unfocusedLabelColor = AppThemeColors.grey3,
-        unfocusedContainerColor = AppThemeColors.grey2,
-        unfocusedTextColor = AppThemeColors.grey3,
-        disabledBorderColor = AppThemeColors.grey2,
-        disabledTextColor = AppThemeColors.grey2,
-        errorBorderColor = AppThemeColors.red1,
-        errorLabelColor = AppThemeColors.red1,
+        focusedTextColor = black,
+        focusedBorderColor = black70,
+        focusedLabelColor = black70,
+        unfocusedBorderColor = grey3,
+        unfocusedLabelColor = grey3,
+        unfocusedContainerColor = grey2,
+        unfocusedTextColor = grey3,
+        disabledBorderColor = grey2,
+        disabledTextColor = grey2,
+        errorBorderColor = red1,
+        errorLabelColor = red1,
     )
 
     @Composable
     fun submitButtonColors() = ButtonDefaults.buttonColors(
-        containerColor = AppThemeColors.rose1,
-        contentColor = AppThemeColors.white,
-        disabledContainerColor = AppThemeColors.rose1.copy(alpha = 0.7f),
-        disabledContentColor = AppThemeColors.white
+        containerColor = rose1,
+        contentColor = white,
+        disabledContainerColor = rose1.copy(alpha = 0.7f),
+        disabledContentColor = white
     )
 
     @Composable
     fun secondarySubmitButtonColors() = ButtonDefaults.buttonColors(
-        containerColor = AppThemeColors.rose4,
-        contentColor = AppThemeColors.violet4,
-        disabledContainerColor = AppThemeColors.rose4.copy(alpha = 0.7f),
-        disabledContentColor = AppThemeColors.violet4
+        containerColor = rose4,
+        contentColor = violet4,
+        disabledContainerColor = rose4.copy(alpha = 0.7f),
+        disabledContentColor = violet4
     )
 
     @Composable
     fun attentionButtonColors() = ButtonDefaults.buttonColors(
-        containerColor = AppThemeColors.red2,
-        contentColor = AppThemeColors.white,
-        disabledContainerColor = AppThemeColors.red2.copy(alpha = 0.7f),
-        disabledContentColor = AppThemeColors.white
+        containerColor = red2,
+        contentColor = white,
+        disabledContainerColor = red2.copy(alpha = 0.7f),
+        disabledContentColor = white
     )
 
     fun switchColors() = SwitchColors(
@@ -224,6 +207,32 @@ object AppThemeColors {
         navigationIconContentColor = rose1,
         titleContentColor = rose1,
         actionIconContentColor = rose1
+    )
+
+    @Composable
+    fun calendarPickerColors() = DatePickerDefaults.colors(
+        containerColor = white,
+        titleContentColor = black70,
+        subheadContentColor = white,
+        navigationContentColor = grey,
+        yearContentColor = black70,
+        disabledYearContentColor = grey3,
+        currentYearContentColor = black,
+        selectedYearContentColor = rose1,
+        disabledSelectedYearContentColor = grey3,
+        selectedYearContainerColor = rose3,
+        disabledSelectedYearContainerColor = rose4,
+        dayContentColor = black70,
+        disabledDayContentColor = grey3,
+        selectedDayContentColor = rose1,
+        disabledSelectedDayContentColor = greyish,
+        selectedDayContainerColor = rose3,
+        disabledSelectedDayContainerColor = rose4,
+        todayContentColor = white,
+        todayDateBorderColor = black,
+        dayInSelectionRangeContentColor = white,
+        dayInSelectionRangeContainerColor = white,
+        dividerColor = white,
     )
 
     internal val appColors = lightColorScheme(

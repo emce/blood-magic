@@ -22,8 +22,6 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.FabPosition
-import androidx.compose.material.Scaffold
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -62,6 +60,7 @@ import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.button_edit
+import mobi.cwiklinski.bloodline.resources.close
 import mobi.cwiklinski.bloodline.resources.female
 import mobi.cwiklinski.bloodline.resources.heroGenitive
 import mobi.cwiklinski.bloodline.resources.heroinGenitive
@@ -82,14 +81,13 @@ import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
 import mobi.cwiklinski.bloodline.resources.settingsReminderLabel
 import mobi.cwiklinski.bloodline.resources.settingsSexLabel
 import mobi.cwiklinski.bloodline.resources.settingsStartingLabel
-import mobi.cwiklinski.bloodline.resources.skip
 import mobi.cwiklinski.bloodline.ui.model.ProfileError
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
+import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
-import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
 import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
@@ -169,9 +167,8 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
         Box(
             modifier = Modifier.background(AppThemeColors.homeGradient)
         ) {
-            Scaffold(
+            MobileScaffold(
                 modifier = Modifier.nestedScroll(behaviour.nestedScrollConnection),
-                backgroundColor = Color.Transparent,
                 topBar = {
                     TopAppBar(
                         title = {
@@ -185,22 +182,20 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             titleContentColor = AppThemeColors.black,
                             navigationIconContentColor = AppThemeColors.black
                         ),
+                        scrollBehavior = behaviour,
                         actions = {
                             Text(
-                                stringResource(Res.string.settingsLogoutAction),
-                                modifier = Modifier.padding(5.dp).clickable {
+                                stringResource(Res.string.settingsLogoutTitle),
+                                style = contentAction(),
+                                modifier = Modifier.clickable {
                                     screenModel.loggingOut()
                                 }
                             )
-                        },
-                        scrollBehavior = behaviour
+                            Spacer(Modifier.width(30.dp))
+                        }
                     )
                 },
-                floatingActionButton = { getFAB() },
-                floatingActionButtonPosition = FabPosition.Center,
-                isFloatingActionButtonDocked = true,
-                bottomBar = { getBottomBar() }
-            ) {
+            ) { paddingValues ->
                 if ((listOf(ProfileState.LoggingOut, ProfileState.ToLoggedOut).contains(state))) {
                     BasicAlertDialog(
                         onDismissRequest = {
@@ -242,7 +237,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     SecondaryButton(
-                                        text = stringResource(Res.string.skip),
+                                        text = stringResource(Res.string.close),
                                         onClick = {
                                             screenModel.cancelLogout()
                                         }
@@ -259,7 +254,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                     }
                 }
                 Column(
-                    modifier = Modifier
+                    modifier = Modifier.padding(paddingValues)
                         .fillMaxSize()
                         .verticalScroll(scrollState)
                         .drawBehind {
@@ -323,10 +318,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                     ) {
                         Text(
                             stringResource(Res.string.profileDataTitle).replace("%s", hero),
-                            style = getTypography().bodyMedium.copy(
-                                color = AppThemeColors.black,
-                                textAlign = TextAlign.Start
-                            ),
+                            style = contentText(),
                             modifier = Modifier.fillMaxWidth()
                         )
                         Break()
@@ -472,7 +464,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                         if (state is ProfileState.Error) {
                             Text(
                                 getError(state.errors),
-                                style = getTypography().bodyMedium.copy(
+                                style = contentText().copy(
                                     color = AppThemeColors.red2
                                 )
                             )

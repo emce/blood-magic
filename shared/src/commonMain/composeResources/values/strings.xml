@@ -156,10 +156,12 @@
     <string name="donationNewTitle">Nowa donacja</string>
     <string name="donationNewSubmit">Dodaj donację</string>
     <string name="donationNewTypeLabel">Typ donacji</string>
+    <string name="donationNewTypeError">Brak type donacji</string>
     <string name="donationNewAmountLabel">Ilość ml</string>
     <string name="donationNewAmountError">Nieprawidłowa ilość donacji</string>
     <string name="donationNewDateLabel">Data donacji</string>
     <string name="donationNewDateSubmit">Wybierz datę</string>
+    <string name="donationNewDateError">Data nie może być datą przyszłą</string>
     <string name="donationNewError">Wystąpił błąd przy zapisie donacji</string>
     <string name="donationNewCenterLabel">Centrum Krwiodawstwa</string>
     <string name="donationNewCenterError">Nie wybrane zostało Centrum Krwiodawstwa!</string>
@@ -178,6 +180,9 @@
     <string name="donationsDeleteWarning">Dane zostaną usunięte bezpowrotnie!</string>
     <string name="donationsDeleteError">Wystąpił błąd przy usuwaniu donacji.</string>
     <string name="donationsShare">Kolejne Magiczne Kropelki poleciały!\nTym razem fiolka, a w niej %s</string>
+
+    // CENTERS
+    <string name="centersTitle">Miejsca kropelkowania</string>
 
     // SETTINGS
     <string name="settingsTitle">Poukładanki</string>

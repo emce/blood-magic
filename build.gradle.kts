@@ -1,5 +1,3 @@
-import java.io.ByteArrayOutputStream
-
 plugins {
     // this is necessary to avoid the plugins to be loaded multiple times
     // in each subproject's classloader
@@ -13,3 +11,6 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.kotlin.android) apply false
 }
+
+// Rebuild resources
+// ./gradlew :shared:generateResourceAccessorsForCommonMain

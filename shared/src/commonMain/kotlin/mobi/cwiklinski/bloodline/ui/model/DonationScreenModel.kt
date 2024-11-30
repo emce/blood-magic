@@ -12,13 +12,15 @@ import mobi.cwiklinski.bloodline.common.removeDiacritics
 import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.data.api.DonationService
+import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
 
 class DonationScreenModel(
     private val donationService: DonationService,
-    private val centerService: CenterService
+    centerService: CenterService,
+    profileService: ProfileService
 ) :
     AppModel<DonationState>(DonationState.Idle) {
 
@@ -27,6 +29,8 @@ class DonationScreenModel(
     val donations = donationService.getDonations()
 
     val centers = centerService.getCenters()
+
+    val profile = profileService.getProfile()
 
     val filteredCenters =
         query.combine(centers) { query, centers ->
@@ -69,10 +73,10 @@ class DonationScreenModel(
         date: LocalDate,
         center: Center?,
         type: Int,
-        hemoglobin: Int,
-        systolic: Int,
-        diastolic: Int,
-        disqualification: Boolean
+        hemoglobin: Int = 0,
+        systolic: Int = 0,
+        diastolic: Int = 0,
+        disqualification: Boolean = false
     ) {
         mutableState.value = DonationState.Saving
         _validateDonation(
@@ -182,6 +186,10 @@ class DonationScreenModel(
         } else {
             mutableState.value = DonationState.Error(DonationError.AMOUNT_ERROR)
         }
+    }
+
+    fun clearError() {
+        mutableState.value = DonationState.Idle
     }
 }
 
