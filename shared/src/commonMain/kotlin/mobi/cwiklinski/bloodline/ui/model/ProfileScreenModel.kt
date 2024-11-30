@@ -62,13 +62,9 @@ class ProfileScreenModel(
                 newName, newEmail, newAvatar, newSex,
                 newNotification, newStarting, newCenterId
             )
-                .timeout(10.seconds)
-                .catch {
-                    mutableState.value = ProfileState.Error(listOf(ProfileError.ERROR))
-                }
                 .collectLatest {
                     when (it) {
-                        is ProfileServiceState.Error -> ProfileState.Error(listOf(ProfileError.ERROR))
+                        is ProfileServiceState.Error -> mutableState.value = ProfileState.Error(listOf(ProfileError.ERROR))
                         ProfileServiceState.Idle -> {}
                         ProfileServiceState.Saved -> mutableState.value = ProfileState.Saved
                         ProfileServiceState.Saving -> {}
@@ -126,23 +122,17 @@ class ProfileScreenModel(
     fun onProfileEmailUpdate(newEmail: String) {
         mutableState.value = ProfileState.Saving
         screenModelScope.launch {
-            profile.collectLatest { currentProfile ->
-                if (newEmail.isValidEmail() && currentProfile.email != newEmail) {
-                    profileService.updateProfileEmail(newEmail)
-                        .timeout(10.seconds)
-                        .catch {
-                            ProfileState.Error(listOf(ProfileError.EMAIL))
+            if (newEmail.isValidEmail()) {
+                profileService.updateProfileEmail(newEmail)
+                    .collectLatest {
+                        when (it) {
+                            is Either.Left -> mutableState.value = ProfileState.Saved
+                            is Either.Right -> mutableState.value =
+                                ProfileState.Error(listOf(ProfileError.EMAIL))
                         }
-                        .collectLatest {
-                            when (it) {
-                                is Either.Left -> mutableState.value = ProfileState.Saved
-                                is Either.Right -> mutableState.value =
-                                    ProfileState.Error(listOf(ProfileError.EMAIL))
-                            }
-                        }
-                } else {
-                    mutableState.value = ProfileState.Error(listOf(ProfileError.NEW_EMAIL))
-                }
+                    }
+            } else {
+                mutableState.value = ProfileState.Error(listOf(ProfileError.NEW_EMAIL))
             }
         }
     }

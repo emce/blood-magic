@@ -1,7 +1,6 @@
 package mobi.cwiklinski.bloodline.data.filed
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
@@ -46,20 +44,18 @@ class ProfileServiceImplementation(
         centerId: String
     ): Flow<ProfileServiceState>  = callbackFlow {
         try {
-            withContext(Dispatchers.Default) {
-                _memory.value.let {
-                    val newProfile = it.withData(
-                        name,
-                        email,
-                        avatar,
-                        sex,
-                        notification,
-                        starting,
-                        centerId
-                    )
-                    storageService.storeProfile(newProfile)
-                    _memory.value = newProfile
-                }
+            _memory.value.let {
+                val newProfile = it.withData(
+                    name,
+                    email,
+                    avatar,
+                    sex,
+                    notification,
+                    starting,
+                    centerId
+                )
+                storageService.storeProfile(newProfile)
+                _memory.value = newProfile
             }
             trySend(ProfileServiceState.Saved)
         } catch (exception: Exception) {

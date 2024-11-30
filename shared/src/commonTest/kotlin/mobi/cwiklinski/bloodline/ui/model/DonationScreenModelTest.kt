@@ -1,10 +1,12 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import app.cash.turbine.test
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -19,19 +21,25 @@ import kotlin.test.assertNotNull
 
 class DonationScreenModelTest {
 
+
+
+    private val scheduler = TestCoroutineScheduler()
+    private val dispatcher = UnconfinedTestDispatcher(scheduler)
+    private val scope = CoroutineScope(dispatcher)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeTest
     fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
+        Dispatchers.setMain(dispatcher)
     }
 
     @Test
     fun `loads data on bootstrap`() = runTest {
         val model = getModel()
-        model.centers.test {
+        model.centers.stateIn(scope, SharingStarted.Lazily, emptyList()).test {
             assertEquals(193, awaitItem().size)
         }
-        model.donations.test {
+        model.donations.stateIn(scope, SharingStarted.Lazily, emptyList()).test {
             assertEquals(74, awaitItem().size)
         }
     }
@@ -39,11 +47,11 @@ class DonationScreenModelTest {
     @Test
     fun `searches centers based on query`() = runTest {
         val model = getModel()
-        model.centers.test {
+        model.centers.stateIn(scope, SharingStarted.Lazily, emptyList()).test {
             assertEquals(193, awaitItem().size)
         }
         model.query.value = "krak"
-        model.filteredCenters.test {
+        model.filteredCenters.stateIn(scope, SharingStarted.Lazily, emptyList()).test {
             assertEquals(20, awaitItem().size)
         }
     }
@@ -53,7 +61,7 @@ class DonationScreenModelTest {
         val model = getModel()
         val state = model.state.value
         assertIs<DonationState.Idle>(state)
-        model.donations.test {
+        model.donations.stateIn(scope, SharingStarted.Lazily, emptyList()).test {
             assertEquals(74, awaitItem().size)
         }
         UiTestTools.generateDonation()
@@ -68,9 +76,10 @@ class DonationScreenModelTest {
             newDonation.diastolic,
             newDonation.disqualification
         )
-        val currentState = model.state.first()
-        assertIs<DonationState.Saved>(currentState)
-        model.donations.test {
+        model.state.stateIn(scope, SharingStarted.Lazily, DonationState.Idle).test {
+            assertIs<DonationState.Saved>(awaitItem())
+        }
+        model.donations.stateIn(scope, SharingStarted.Lazily, emptyList()).test {
             val newList = awaitItem()
             assertEquals(75, newList.size)
             val savedDonation = newList.firstOrNull {
