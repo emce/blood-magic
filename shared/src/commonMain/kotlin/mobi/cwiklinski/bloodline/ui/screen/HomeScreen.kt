@@ -1,7 +1,5 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
-
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -20,8 +18,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.FabPosition
-import androidx.compose.material.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -109,14 +105,7 @@ class HomeScreen : AppScreen() {
             }
         }
         val hero = if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
-        Scaffold(
-            modifier = Modifier.background(AppThemeColors.homeGradient),
-            backgroundColor = Color.Transparent,
-            floatingActionButton = { getFAB() },
-            floatingActionButtonPosition = FabPosition.Center,
-            isFloatingActionButtonDocked = true,
-            bottomBar = { getBottomBar() }
-        ) { paddingValues ->
+        MobileScaffold { paddingValues ->
             Column(
                 modifier = Modifier.padding(paddingValues)
             ) {
@@ -223,7 +212,7 @@ class HomeScreen : AppScreen() {
                                 ),
                                 subTitle = stringResource(Res.string.homeCarouselAmountSubtitle)
                             )
-                            var totalSum = profile.starting ?: 0
+                            var totalSum = profile.starting
                             totalSum += donations
                                 .filter { !it.disqualification }.sumOf {
                                     it.convertToFullBlood(

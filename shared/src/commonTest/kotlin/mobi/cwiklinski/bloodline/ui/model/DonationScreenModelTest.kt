@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.data.filed.CenterServiceImplementation
 import mobi.cwiklinski.bloodline.data.filed.DonationServiceImplementation
+import mobi.cwiklinski.bloodline.data.filed.ProfileServiceImplementation
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -94,6 +95,7 @@ class DonationScreenModelTest {
 
     private fun getModel() = DonationScreenModel(
         DonationServiceImplementation(),
-        CenterServiceImplementation()
+        CenterServiceImplementation(),
+        ProfileServiceImplementation(UiTestTools.getStorageService(), scope)
     )
 }

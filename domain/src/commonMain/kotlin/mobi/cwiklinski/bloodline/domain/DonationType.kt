@@ -8,6 +8,6 @@ enum class DonationType(val type: Int) {
 
     companion object {
         fun byType(type: Int) =
-            entries.firstOrNull { it.type == type } ?: DonationType.FULL_BLOOD
+            entries.firstOrNull { it.type == type } ?: FULL_BLOOD
     }
 }
