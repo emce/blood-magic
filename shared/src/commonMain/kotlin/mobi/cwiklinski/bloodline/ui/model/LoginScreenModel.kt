@@ -1,10 +1,8 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.Constants
@@ -15,7 +13,6 @@ import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import kotlin.time.Duration.Companion.seconds
 
 class LoginScreenModel(
     private val authService: AuthenticationService,
@@ -44,7 +41,6 @@ class LoginScreenModel(
                 mutableState.value = LoginState.LoggingIn
                 screenModelScope.launch {
                     authService.loginWithEmailAndPassword(email, password)
-                        .debounce(5000)
                         .collectLatest {
                             when (it) {
                                 is AuthResult.Dismissed -> mutableState.value = LoginState.Idle
@@ -70,7 +66,6 @@ class LoginScreenModel(
 
                                 is AuthResult.Success -> {
                                     storageService.storeString(Constants.EMAIL_KEY, email)
-                                    delay(1.seconds.inWholeMilliseconds)
                                     mutableState.value = LoginState.LoggedIn
                                 }
                             }

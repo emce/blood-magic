@@ -57,15 +57,18 @@ class ProfileScreenModelTest {
     fun `updates profile with data`() = runTest {
         val newProfile =
             UiTestTools.generateProfile(id = profile.id ?: CommonTestTools.randomString(9))
-        model.onProfileDataUpdate(
-            newName = newProfile.name,
-            newEmail = newProfile.email,
-            newAvatar = newProfile.avatar,
-            newSex = newProfile.sex,
-            newNotification = newProfile.notification,
-            newStarting = newProfile.starting,
-            newCenterId = newProfile.centerId
-        )
+        runBlocking {
+            model.onProfileDataUpdate(
+                newName = newProfile.name,
+                newEmail = newProfile.email,
+                newAvatar = newProfile.avatar,
+                newSex = newProfile.sex,
+                newNotification = newProfile.notification,
+                newStarting = newProfile.starting,
+                newCenterId = newProfile.centerId
+            )
+        }
+        scheduler.advanceUntilIdle()
         model.state.test {
             val state = awaitItem()
             assertIs<ProfileState.Saved>(state)

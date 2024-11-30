@@ -11,6 +11,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.data.api.ProfileService
+import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
 import mobi.cwiklinski.bloodline.data.api.ProfileUpdate
 import mobi.cwiklinski.bloodline.data.api.ProfileUpdateState
 import mobi.cwiklinski.bloodline.storage.api.StorageService
@@ -66,8 +67,7 @@ class ProfileServiceImplementationTest {
             starting = newProfile.starting,
             centerId = newProfile.centerId
         ).onEach { result ->
-            assertIs<Either.Left<ProfileUpdate>>(result)
-            assertEquals(ProfileUpdateState.DATA, result.value.updated.first())
+            assertIs<ProfileServiceState.Saved>(result)
             profileService.getProfile().onEach { profile ->
                 assertNotNull(profile)
                 assertEquals(newProfile.sex, profile.sex)
