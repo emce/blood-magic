@@ -76,23 +76,26 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
             val newRef = mainRef.push()
             val id = newRef.key
             if (id != null) {
-                newRef.setValue(
-                    FirebaseDonation(
-                        id,
-                        date.year,
-                        date.monthNumber,
-                        date.dayOfMonth,
-                        type.type,
-                        amount,
-                        hemoglobin,
-                        center.id,
-                        systolic,
-                        diastolic,
-                        disqualification
+                try {
+                    newRef.setValue(
+                        FirebaseDonation(
+                            id,
+                            date.year,
+                            date.monthNumber,
+                            date.dayOfMonth,
+                            type.type,
+                            amount,
+                            hemoglobin,
+                            center.id,
+                            systolic,
+                            diastolic,
+                            disqualification
+                        )
                     )
-                )
-                val newDonation = getDonation(id)
-                emit(Either.Left(newDonation.first()))
+                } finally {
+                    val newDonation = getDonation(id)
+                    emit(Either.Left(newDonation.first()))
+                }
             } else {
                 emit(Either.Right(Exception()))
             }

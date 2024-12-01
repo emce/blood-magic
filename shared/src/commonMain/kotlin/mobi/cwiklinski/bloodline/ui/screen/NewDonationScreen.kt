@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,9 +35,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
@@ -73,9 +71,9 @@ import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.calendarPickerColors
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.textButtonColors
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
-import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
-import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
+import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
+import mobi.cwiklinski.bloodline.ui.widget.DonationTypeItem
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SelectView
@@ -86,7 +84,9 @@ import mobi.cwiklinski.bloodline.ui.widget.toLocalDate
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-class NewDonationScreen : AppScreen() {
+class NewDonationScreen(
+    override val key: ScreenKey = Clock.System.now().toEpochMilliseconds().toString()
+) : AppScreen() {
 
     @Composable
     override fun Content() {
@@ -96,9 +96,10 @@ class NewDonationScreen : AppScreen() {
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
         val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
         val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
+        val centerSearch by screenModel.query.collectAsStateWithLifecycle("")
         val centerList by screenModel.filteredCenters.collectAsStateWithLifecycle(emptyList())
         if (state == DonationState.Saved) {
-            bottomSheetNavigator.hide()
+            bottomSheetNavigator.pop()
         }
         val calendarState = rememberDatePickerState(
             initialSelectedDateMillis = Clock.System.now().toEpochMilliseconds(),
@@ -114,7 +115,6 @@ class NewDonationScreen : AppScreen() {
             }
         )
         var donationType by remember { mutableStateOf(DonationType.FULL_BLOOD) }
-        var centerSearch by remember { mutableStateOf("") }
         var centerLabel by remember {
             mutableStateOf(
                 centerList.firstOrNull { it.id == profile.centerId }?.name ?: ""
@@ -142,7 +142,15 @@ class NewDonationScreen : AppScreen() {
                     modifier = Modifier,
                     actions = {
                         Button(
-                            onClick = { bottomSheetNavigator.hide() },
+                            onClick = {
+                                screenModel.query.value = ""
+                                amountValue = 0
+                                amountLabel = ""
+                                donationType = DonationType.FULL_BLOOD
+                                disqualificationValue = 0
+                                centerSelected = null
+                                bottomSheetNavigator.hide()
+                            },
                             colors = textButtonColors()
                         ) {
                             Image(
@@ -196,23 +204,13 @@ class NewDonationScreen : AppScreen() {
                     itemList = DonationType.entries.toList(),
                     text = donationType.getName(),
                     label = stringResource(Res.string.donationNewTypeLabel),
+                    icon = donationType.getIcon(),
                     onSelectionChanged = {
                         donationType = it
                     },
                     enabled = state != DonationState.Saving,
                 ) {
-                    Image(
-                        painterResource(it.getIcon()),
-                        stringResource(Res.string.donationNewTypeLabel),
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        it.getName(),
-                        style = itemSubTitle(),
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.weight(1f).height(24.dp)
-                    )
+                    DonationTypeItem(it)
                 }
                 AutoCompleteTextView(
                     modifier = Modifier.fillMaxWidth(),
@@ -220,17 +218,16 @@ class NewDonationScreen : AppScreen() {
                     enabled = state != DonationState.Saving,
                     queryLabel = stringResource(Res.string.donationNewCenterLabel),
                     onQueryChanged = { updatedSymbol ->
-                        centerSearch = updatedSymbol
-
+                        screenModel.query.value = updatedSymbol
                     },
                     predictions = centerList,
                     onClearClick = {
-                        centerSearch = ""
+                        screenModel.query.value = ""
                     },
                     onItemClick = {
                         centerSelected = it
                         centerLabel = it.toSelection()
-                        centerSearch = it.toSelection()
+                        screenModel.query.value = it.toSelection()
                         focusManager.clearFocus()
                     },
                     keyboardActions = KeyboardActions(
@@ -238,12 +235,8 @@ class NewDonationScreen : AppScreen() {
                             focusManager.clearFocus()
                         }
                     )
-                ) {
-                    Text(
-                        it.toSelection(),
-                        style = inputPlaceHolder(),
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                ) { center, index ->
+                    CenterSelectItem(center, if (index > 0) centerList[index - 1] else null)
                 }
                 OutlinedInput(
                     modifier = Modifier.fillMaxWidth(),
@@ -309,11 +302,13 @@ class NewDonationScreen : AppScreen() {
     }
 
     @Composable
-    fun getError(error: DonationError) = stringResource(when (error) {
-        DonationError.DATE_IN_FUTURE_ERROR -> Res.string.donationNewDateError
-        DonationError.AMOUNT_ERROR -> Res.string.donationNewAmountError
-        DonationError.CENTER_ERROR -> Res.string.donationNewCenterError
-        DonationError.TYPE_ERROR -> Res.string.donationNewTypeError
-        else -> Res.string.donationNewError
-    })
+    fun getError(error: DonationError) = stringResource(
+        when (error) {
+            DonationError.DATE_IN_FUTURE_ERROR -> Res.string.donationNewDateError
+            DonationError.AMOUNT_ERROR -> Res.string.donationNewAmountError
+            DonationError.CENTER_ERROR -> Res.string.donationNewCenterError
+            DonationError.TYPE_ERROR -> Res.string.donationNewTypeError
+            else -> Res.string.donationNewError
+        }
+    )
 }

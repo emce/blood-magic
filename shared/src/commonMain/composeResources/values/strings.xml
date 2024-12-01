@@ -176,8 +176,8 @@
     <string name="donationsTitle">Twoje magiczne kropelki</string>
     <string name="donationsDelete">Usuń donację</string>
     <string name="donationsEdit">Edytuj donację</string>
-    <string name="donationsDeleteMessage">Wszystkie dane donacji zostaną usunięte.</string>
-    <string name="donationsDeleteWarning">Dane zostaną usunięte bezpowrotnie!</string>
+    <string name="donationsDeleteTitle">Usunięcie danych donacji</string>
+    <string name="donationsDeleteMessage">Dane donacji zostaną bezpowrotnie usunięte!\nCzy chcesz kontynuować?</string>
     <string name="donationsDeleteError">Wystąpił błąd przy usuwaniu donacji.</string>
     <string name="donationsShare">Kolejne Magiczne Kropelki poleciały!\nTym razem fiolka, a w niej %s</string>
 

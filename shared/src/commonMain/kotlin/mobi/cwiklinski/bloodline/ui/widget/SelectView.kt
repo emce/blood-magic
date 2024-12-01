@@ -33,6 +33,7 @@ import mobi.cwiklinski.bloodline.resources.icon_chevron_down
 import mobi.cwiklinski.bloodline.resources.icon_chevron_up
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.util.bottomDivider
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -40,6 +41,7 @@ fun <T> SelectView(
     modifier: Modifier,
     text: String = "",
     label: String,
+    icon: DrawableResource? = null,
     onSelectionChanged: (T) -> Unit = {},
     itemList: List<T>,
     enabled: Boolean = true,
@@ -79,6 +81,13 @@ fun <T> SelectView(
         readOnly = true,
         onValueChanged = {},
         label = label,
+        leadingIcon = {
+            icon?.let {
+                Image(
+                    painterResource(it),
+                    contentDescription = text)
+            }
+        },
         trailingIcon = {
             Image(
                 painterResource(if (expanded.isNotEmpty()) Res.drawable.icon_chevron_up else Res.drawable.icon_chevron_down),
@@ -90,7 +99,6 @@ fun <T> SelectView(
     LazyColumn(
         state = rememberLazyListState(),
         modifier = modifier.heightIn(max = 72.dp * itemList.size, min = 0.dp)
-            .padding(vertical = 8.dp)
             .background(AppThemeColors.white)
             .border(borderSize, borderColor, RoundedCornerShape(8.dp)),
     ) {
