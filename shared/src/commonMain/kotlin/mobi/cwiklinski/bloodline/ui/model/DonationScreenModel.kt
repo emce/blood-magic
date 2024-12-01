@@ -33,8 +33,8 @@ class DonationScreenModel(
     val profile = profileService.getProfile()
 
     val filteredCenters =
-        query.combine(centers) { query, centers ->
-            val filtered = centers.filter {
+        combine(centers, query) { centers, query ->
+            centers.filter {
                 it.name.lowercase().removeDiacritics()
                     .contains(query.lowercase().removeDiacritics()) or
                         it.city.lowercase().removeDiacritics()
@@ -43,7 +43,6 @@ class DonationScreenModel(
                             query.lowercase().removeDiacritics()
                         )
             }
-            filtered
         }
 
     init {

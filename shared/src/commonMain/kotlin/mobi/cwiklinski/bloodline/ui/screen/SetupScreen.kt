@@ -91,6 +91,7 @@ import mobi.cwiklinski.bloodline.ui.util.avatarShadow
 import mobi.cwiklinski.bloodline.ui.util.filter
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.Break
+import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
@@ -426,12 +427,8 @@ class SetupScreen : AppScreen() {
                                 center = selectedCenter
                                 query = selectedCenter.toSelection()
                             }
-                        ) { center ->
-                            Text(
-                                center.toSelection(),
-                                style = inputPlaceHolder(),
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                        ) { center, index ->
+                            CenterSelectItem(center, if (index > 0) centerList[index - 1] else null)
                         }
                         Break()
                         OutlinedInput(

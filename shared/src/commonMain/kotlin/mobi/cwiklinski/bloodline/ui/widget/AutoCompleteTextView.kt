@@ -45,7 +45,7 @@ fun <T> AutoCompleteTextView(
     onItemClick: (T) -> Unit = {},
     enabled: Boolean = true,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    itemContent: @Composable (T) -> Unit = {}
+    itemContent: @Composable (T, Int) -> Unit
 ) {
     val borderColor = AppThemeColors.grey3
     val borderSize = 1.dp
@@ -105,7 +105,7 @@ fun <T> AutoCompleteTextView(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            itemContent(predictions[position])
+                            itemContent(predictions[position], position)
                         }
                     }
                 }

@@ -24,7 +24,8 @@ fun OutlinedInput(
     error: Boolean = false,
     errorMessage: String = "",
     readOnly: Boolean = false,
-    trailingIcon: @Composable () -> Unit = {},
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     placeholder: @Composable (() -> Unit)? = null,
@@ -42,6 +43,7 @@ fun OutlinedInput(
             Text(label)
         },
         placeholder = placeholder,
+        leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = error,
         visualTransformation = visualTransformation,

@@ -89,7 +89,6 @@ import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
-import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.util.Avatar
@@ -97,6 +96,7 @@ import mobi.cwiklinski.bloodline.ui.util.avatarShadow
 import mobi.cwiklinski.bloodline.ui.util.filter
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.Break
+import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
@@ -415,12 +415,8 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                                 center = selectedCenter
                                 query = selectedCenter.toSelection()
                             }
-                        ) { center ->
-                            Text(
-                                center.toSelection(),
-                                style = inputPlaceHolder(),
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                        ) { center, index ->
+                            CenterSelectItem(center, if (index > 0) centerList[index - 1] else null)
                         }
                         Break()
                         OutlinedInput(

@@ -21,28 +21,28 @@ actual class AuthenticationInitializerImpl actual constructor(
 ) : AuthenticationInitializer {
 
     override fun run() {
-        FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
-            override fun clear(key: String) {
-                coroutineScope.launch {
-                    storageService.clearAll()
-                }
-            }
-
-            override fun log(msg: String) {
-                println(msg)
-            }
-
-            override fun retrieve(key: String) = runBlocking {
-                storageService.getString(key, "")
-            }
-
-            override fun store(key: String, value: String) {
-                coroutineScope.launch {
-                    storageService.storeString(key, value)
-                }
-            }
-        })
         try {
+            FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
+                override fun clear(key: String) {
+                    coroutineScope.launch {
+                        storageService.clearAll()
+                    }
+                }
+
+                override fun log(msg: String) {
+                    println(msg)
+                }
+
+                override fun retrieve(key: String) = runBlocking {
+                    storageService.getString(key, "")
+                }
+
+                override fun store(key: String, value: String) {
+                    coroutineScope.launch {
+                        storageService.storeString(key, value)
+                    }
+                }
+            })
             Firebase.initialize(
                 Context(), options = FirebaseOptions(
                     applicationId = FirebaseConfig.FIREBASE_APP_ID,

@@ -11,9 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,15 +27,25 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.getDonationGridSize
 import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.close
+import mobi.cwiklinski.bloodline.resources.donationsDelete
+import mobi.cwiklinski.bloodline.resources.donationsDeleteMessage
+import mobi.cwiklinski.bloodline.resources.donationsDeleteTitle
 import mobi.cwiklinski.bloodline.resources.donationsTitle
 import mobi.cwiklinski.bloodline.resources.homeTitle
 import mobi.cwiklinski.bloodline.resources.home_stars
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
+import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
+import mobi.cwiklinski.bloodline.ui.theme.contentText
+import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.widget.DonationItem
+import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
+import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -42,11 +56,50 @@ class DonationsScreen : AppScreen() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
-
+        val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
+        var donationToDelete: Donation? by remember { mutableStateOf(null) }
+        if (state == DonationState.Deleted) {
+            donationToDelete = null
+        }
         Box(
             modifier = Modifier.background(AppThemeColors.homeGradient)
                 .padding(top = 20.dp)
         ) {
+            if (donationToDelete != null) {
+                AlertDialog(
+                    onDismissRequest = { },
+                    title = {
+                        Text(
+                            stringResource(Res.string.donationsDeleteTitle),
+                            style = contentTitle()
+                        )
+                    },
+                    text = {
+                        Text(
+                            stringResource(Res.string.donationsDeleteMessage),
+                            style = contentText()
+                        )
+                   },
+                    confirmButton = {
+                        SubmitButton(
+                            onClick = {
+                                donationToDelete?.let {
+                                    screenModel.deleteDonation(it)
+                                }
+                            },
+                            text = stringResource(Res.string.donationsDelete)
+                        )
+                    },
+                    dismissButton = {
+                        SecondaryButton(
+                            onClick = {
+                                donationToDelete = null
+                            },
+                            text = stringResource(Res.string.close)
+                        )
+                    }
+                )
+            }
             MobileScaffold(
                 topBar = {
                     Box(
@@ -85,7 +138,7 @@ class DonationsScreen : AppScreen() {
                             DonationItem(
                                 donation,
                                 { navigator.push(EditDonationScreen(donation)) },
-                                { screenModel.deleteDonation(donation) },
+                                { donationToDelete = donation },
                                 { }
                             )
                         }
