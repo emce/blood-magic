@@ -25,7 +25,6 @@ import org.koin.core.component.KoinComponent
 
 abstract class AppScreen : Screen, KoinComponent {
 
-
     @Composable
     fun MobileScaffold(
         modifier: Modifier = Modifier,

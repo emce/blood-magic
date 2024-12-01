@@ -33,8 +33,8 @@ import mobi.cwiklinski.bloodline.resources.homeNextDonationPendingTitle
 import mobi.cwiklinski.bloodline.resources.homeNextDonationReadySubtitle
 import mobi.cwiklinski.bloodline.resources.homeNextDonationReadyTitle
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
-import mobi.cwiklinski.bloodline.ui.theme.itemTitle
+import mobi.cwiklinski.bloodline.ui.theme.cardTitle
+import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.util.NextDonationTime
 import mobi.cwiklinski.bloodline.ui.util.coloredShadow
 import org.jetbrains.compose.resources.stringResource
@@ -96,7 +96,7 @@ fun NextDonationPrediction(lastDonation: Donation?) {
         ) {
             Text(
                 progressTitle,
-                style = itemTitle(),
+                style = cardTitle(),
                 modifier = Modifier.fillMaxWidth(),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -104,7 +104,7 @@ fun NextDonationPrediction(lastDonation: Donation?) {
             Spacer(Modifier.height(20.dp))
             Text(
                 progressSubtitle,
-                style = itemSubTitle(),
+                style = contentText(),
                 modifier = Modifier.fillMaxWidth(),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -114,7 +114,14 @@ fun NextDonationPrediction(lastDonation: Donation?) {
                 progress = {
                     progress
                 },
-                modifier = Modifier.fillMaxWidth().height(24.dp),
+                modifier = Modifier.fillMaxWidth()
+                    .height(24.dp)
+                    .coloredShadow(
+                        color = AppThemeColors.grey3,
+                        cornerRadiusDp = 12.dp,
+                        offsetX = 3.dp,
+                        offsetY = 3.dp
+                    ),
                 color = AppThemeColors.red2,
                 trackColor = AppThemeColors.iconRedBackground,
                 strokeCap = StrokeCap.Round

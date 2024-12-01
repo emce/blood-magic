@@ -125,6 +125,13 @@ object AppThemeColors {
         endY = Float.POSITIVE_INFINITY
     )
 
+    val navigationGradient = Brush.verticalGradient(
+        0.0f to Color(0xFFB794A5),
+        1f to Color(0xFFE1C7D3),
+        startY = 0.0f,
+        endY = Float.POSITIVE_INFINITY
+    )
+
     @Composable
     fun textButtonColors() = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
