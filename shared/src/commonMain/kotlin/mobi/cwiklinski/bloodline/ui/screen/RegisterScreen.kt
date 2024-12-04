@@ -32,28 +32,44 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import mobi.cwiklinski.bloodline.resources.*
-import mobi.cwiklinski.bloodline.ui.event.Events
-import mobi.cwiklinski.bloodline.ui.widget.LinkedText
-import mobi.cwiklinski.bloodline.ui.widget.TextWithLinks
-import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
-import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
-import mobi.cwiklinski.bloodline.ui.widget.SocialIconButton
-import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
+import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.icon_apple
+import mobi.cwiklinski.bloodline.resources.icon_facebook
+import mobi.cwiklinski.bloodline.resources.icon_google
+import mobi.cwiklinski.bloodline.resources.icon_register
+import mobi.cwiklinski.bloodline.resources.loginEmailError
+import mobi.cwiklinski.bloodline.resources.loginEmailLabel
+import mobi.cwiklinski.bloodline.resources.loginPasswordLabel
+import mobi.cwiklinski.bloodline.resources.registerError
+import mobi.cwiklinski.bloodline.resources.registerLoginButton
+import mobi.cwiklinski.bloodline.resources.registerLoginText
+import mobi.cwiklinski.bloodline.resources.registerRepeatLabel
+import mobi.cwiklinski.bloodline.resources.registerSocialSectionTitle
+import mobi.cwiklinski.bloodline.resources.registerSubmitButton
+import mobi.cwiklinski.bloodline.resources.registerTerms
+import mobi.cwiklinski.bloodline.resources.registerTermsPrivacyPolicy
+import mobi.cwiklinski.bloodline.resources.registerTermsPrivacyPolicyLink
+import mobi.cwiklinski.bloodline.resources.registerTermsRules
+import mobi.cwiklinski.bloodline.resources.registerTermsRulesLink
+import mobi.cwiklinski.bloodline.resources.registerTitle
 import mobi.cwiklinski.bloodline.ui.model.RegisterError
 import mobi.cwiklinski.bloodline.ui.model.RegisterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.RegisterState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
+import mobi.cwiklinski.bloodline.ui.widget.LinkedText
+import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
+import mobi.cwiklinski.bloodline.ui.widget.SocialIconButton
+import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
+import mobi.cwiklinski.bloodline.ui.widget.TextWithLinks
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 class RegisterScreen : AppScreen() {
 
-    @Preview
     @Composable
-    override fun Content() {
+    override fun verticalView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<RegisterScreenModel>()
         var email by remember { mutableStateOf("") }
@@ -212,6 +228,11 @@ class RegisterScreen : AppScreen() {
                 }
             }
         }
+    }
+
+    @Composable
+    override fun horizontalView() {
+        verticalView()
     }
 
     @Composable

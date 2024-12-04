@@ -183,6 +183,7 @@
 
     // CENTERS
     <string name="centersTitle">Miejsca kropelkowania</string>
+    <string name="centerRegion">%s włości</string>
 
     // SETTINGS
     <string name="settingsTitle">Poukładanki</string>

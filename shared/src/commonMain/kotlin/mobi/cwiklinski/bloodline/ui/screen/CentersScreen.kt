@@ -2,23 +2,30 @@ package mobi.cwiklinski.bloodline.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -33,28 +40,24 @@ import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.widget.CenterItem
+import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
+import mobi.cwiklinski.bloodline.ui.widget.CenterView
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
-class CentersScreen() : AppScreen() {
+class CentersScreen : AppScreen() {
 
     @Composable
-    override fun Content() {
+    override fun verticalView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
-        val centerList by screenModel.centers.collectAsStateWithLifecycle(emptyList())
-        CentersView(centerList)
-    }
-
-    @Preview
-    @Composable
-    fun CentersView(centers: List<Center>) {
+        val centers by screenModel.centers.collectAsStateWithLifecycle(emptyList())
         Box(
-            modifier = Modifier.background(AppThemeColors.homeGradient)
+            modifier = Modifier
+                .background(AppThemeColors.homeGradient)
                 .padding(top = 20.dp)
         ) {
-            MobileScaffold(
+            VerticalScaffold(
                 topBar = {
                     Box(
                         modifier = Modifier.height(100.dp)
@@ -92,4 +95,52 @@ class CentersScreen() : AppScreen() {
 
     }
 
+    @Composable
+    override fun horizontalView() {
+        val navigator = LocalNavigator.currentOrThrow
+        val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
+        val centers by screenModel.centers.collectAsStateWithLifecycle(emptyList())
+        val selectedCenter = remember { mutableStateOf(centers.firstOrNull() ?: Center()) }
+        HorizontalScaffold(
+            modifier = Modifier.padding(0.dp),
+            title = selectedCenter.value.name,
+        ) {
+            ConstraintLayout(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                val (menu, content) = createRefs()
+                LazyColumn(
+                    modifier = Modifier
+                        .constrainAs(menu) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start, 10.dp)
+                            bottom.linkTo(parent.bottom)
+                        }
+                        .fillMaxWidth(.3f)
+                ) {
+                    itemsIndexed(centers) { index, center ->
+                        CenterSelectItem(
+                            modifier = Modifier.clickable {
+                                selectedCenter.value = center
+                            },
+                            center = center,
+                            previous = if (index > 0) centers[index - 1] else null)
+                    }
+                }
+                CenterView(
+                    center = selectedCenter.value,
+                    modifier = Modifier
+                        .constrainAs(content) {
+                            top.linkTo(parent.top)
+                            start.linkTo(menu.end)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(parent.end)
+                        }
+                        .fillMaxWidth(.7f)
+                        .fillMaxHeight()
+                )
+            }
+        }
+    }
 }

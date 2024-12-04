@@ -86,13 +86,11 @@ import mobi.cwiklinski.bloodline.ui.widget.NextDonationPrediction
 import mobi.cwiklinski.bloodline.ui.widget.capacity
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 class HomeScreen : AppScreen() {
 
-    @Preview
     @Composable
-    override fun Content() {
+    override fun verticalView() {
         Napier.d("Home Screen started")
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
@@ -105,7 +103,7 @@ class HomeScreen : AppScreen() {
             }
         }
         val hero = if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
-        MobileScaffold { paddingValues ->
+        VerticalScaffold { paddingValues ->
             Column(
                 modifier = Modifier.padding(paddingValues)
             ) {
@@ -300,5 +298,10 @@ class HomeScreen : AppScreen() {
                 }
             }
         }
+    }
+
+    @Composable
+    override fun horizontalView() {
+        verticalView()
     }
 }

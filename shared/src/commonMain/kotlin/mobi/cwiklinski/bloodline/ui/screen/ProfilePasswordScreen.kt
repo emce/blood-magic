@@ -79,7 +79,7 @@ class ProfilePasswordScreen : AppProfileScreen() {
 
     @Preview
     @Composable
-    override fun Content() {
+    override fun verticalView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
@@ -325,5 +325,10 @@ class ProfilePasswordScreen : AppProfileScreen() {
                 }
             }
         }
+    }
+
+    @Composable
+    override fun horizontalView() {
+        verticalView()
     }
 }

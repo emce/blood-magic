@@ -89,7 +89,7 @@ class NewDonationScreen(
 ) : AppScreen() {
 
     @Composable
-    override fun Content() {
+    override fun verticalView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val focusManager = LocalFocusManager.current
@@ -236,7 +236,7 @@ class NewDonationScreen(
                         }
                     )
                 ) { center, index ->
-                    CenterSelectItem(center, if (index > 0) centerList[index - 1] else null)
+                    CenterSelectItem(center = center, previous = if (index > 0) centerList[index - 1] else null)
                 }
                 OutlinedInput(
                     modifier = Modifier.fillMaxWidth(),
@@ -299,6 +299,11 @@ class NewDonationScreen(
                 Spacer(modifier = Modifier.height(105.dp))
             }
         }
+    }
+
+    @Composable
+    override fun horizontalView() {
+        verticalView()
     }
 
     @Composable

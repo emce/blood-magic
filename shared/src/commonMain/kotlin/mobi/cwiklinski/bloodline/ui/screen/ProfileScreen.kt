@@ -54,9 +54,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import mobi.cwiklinski.bloodline.common.isValidEmail
-import mobi.cwiklinski.bloodline.data.filed.DummyData
 import mobi.cwiklinski.bloodline.domain.Sex
-import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.button_edit
@@ -104,14 +102,14 @@ import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString()) :
     AppProfileScreen() {
 
     @Composable
-    override fun Content() {
+    override fun verticalView() {
         val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
         val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
         val centerList by screenModel.centers.collectAsStateWithLifecycle()
@@ -119,23 +117,6 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
         if (state == ProfileState.LoggedOut) {
             navigator.replaceAll(SplashScreen())
         }
-        ProfileView(
-            screenModel,
-            profile,
-            centerList,
-            state
-        )
-    }
-
-    @Preview
-    @Composable
-    fun ProfileView(
-        screenModel: ProfileScreenModel,
-        profile: Profile = DummyData.generateProfile(),
-        centerList: List<Center> = DummyData.CENTERS,
-        state: ProfileState = ProfileState.Idle
-    ) {
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val behaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
         var name by remember { mutableStateOf(profile.name) }
         var sex by remember { mutableStateOf(profile.sex) }
@@ -155,9 +136,9 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 if (fetchedProfile.email.isNotEmpty() && fetchedProfile.email.isValidEmail()) {
                     email = fetchedProfile.email
                 }
-                sex= fetchedProfile.sex
+                sex = fetchedProfile.sex
                 notification = fetchedProfile.notification
-                starting= fetchedProfile.starting
+                starting = fetchedProfile.starting
                 if (center == null && fetchedProfile.centerId.isNotEmpty()) {
                     center = centerList.firstOrNull { it.id == fetchedProfile.centerId }
                     query = center?.toSelection() ?: ""
@@ -167,7 +148,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
         Box(
             modifier = Modifier.background(AppThemeColors.homeGradient)
         ) {
-            MobileScaffold(
+            VerticalScaffold(
                 modifier = Modifier.nestedScroll(behaviour.nestedScrollConnection),
                 topBar = {
                     TopAppBar(
@@ -328,7 +309,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             label = stringResource(Res.string.profileDataNameLabel),
                             enabled = state != ProfileState.Saving,
                             error = state is ProfileState.Error
-                                    && state.errors.contains(ProfileError.DATA),
+                                    && (state as ProfileState.Error).errors.contains(ProfileError.DATA),
                             errorMessage = getError(listOf(ProfileError.DATA))
                         )
                         Break()
@@ -338,7 +319,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             label = stringResource(Res.string.profileDataEmailLabel),
                             enabled = state != ProfileState.Saving,
                             error = state is ProfileState.Error &&
-                                    state.errors.contains(ProfileError.EMAIL),
+                                    (state as ProfileState.Error).errors.contains(ProfileError.EMAIL),
                             errorMessage = getError(listOf(ProfileError.EMAIL))
                         )
                         Break()
@@ -416,7 +397,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                                 query = selectedCenter.toSelection()
                             }
                         ) { center, index ->
-                            CenterSelectItem(center, if (index > 0) centerList[index - 1] else null)
+                            CenterSelectItem(center = center, previous = if (index > 0) centerList[index - 1] else null)
                         }
                         Break()
                         OutlinedInput(
@@ -427,7 +408,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             label = stringResource(Res.string.settingsStartingLabel),
                             enabled = state != ProfileState.Saving,
                             error = state is ProfileState.Error
-                                    && state.errors.contains(ProfileError.DATA),
+                                    && (state as ProfileState.Error).errors.contains(ProfileError.DATA),
                             errorMessage = getError(listOf(ProfileError.DATA)),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
@@ -459,7 +440,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                         Break()
                         if (state is ProfileState.Error) {
                             Text(
-                                getError(state.errors),
+                                getError((state as ProfileState.Error).errors),
                                 style = contentText().copy(
                                     color = AppThemeColors.red2
                                 )
@@ -490,5 +471,10 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 }
             }
         }
+    }
+
+    @Composable
+    override fun horizontalView() {
+        verticalView()
     }
 }
