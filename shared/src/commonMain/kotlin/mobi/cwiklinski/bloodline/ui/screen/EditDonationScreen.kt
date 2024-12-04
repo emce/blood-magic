@@ -6,7 +6,12 @@ import mobi.cwiklinski.bloodline.domain.model.Donation
 class EditDonationScreen(val donation: Donation) : AppScreen() {
 
     @Composable
-    override fun Content() {
+    override fun verticalView() {
         TODO("Not yet implemented")
+    }
+
+    @Composable
+    override fun horizontalView() {
+        verticalView()
     }
 }

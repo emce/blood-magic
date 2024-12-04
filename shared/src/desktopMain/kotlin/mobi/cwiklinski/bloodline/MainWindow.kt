@@ -14,12 +14,14 @@ import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
+import coil3.compose.setSingletonImageLoaderFactory
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.splash_logo
 import mobi.cwiklinski.bloodline.ui.screen.SplashScreen
 import mobi.cwiklinski.bloodline.ui.theme.AppTheme
+import mobi.cwiklinski.bloodline.ui.widget.getAsyncImageLoader
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -54,6 +56,9 @@ private fun App() {
             modules(createAppModule())
         }
     ) {
+        setSingletonImageLoaderFactory { context ->
+            getAsyncImageLoader(context)
+        }
         val authInit = koinInject<AuthenticationInitializer>()
         authInit.run()
         AppTheme {

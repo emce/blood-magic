@@ -48,7 +48,7 @@ import org.jetbrains.compose.resources.stringResource
 class ResetScreen() : AppScreen() {
 
     @Composable
-    override fun Content() {
+    override fun verticalView() {
 
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<ResetScreenModel>()
@@ -127,6 +127,11 @@ class ResetScreen() : AppScreen() {
                 )
             }
         }
+    }
+
+    @Composable
+    override fun horizontalView() {
+        verticalView()
     }
 
     @Composable

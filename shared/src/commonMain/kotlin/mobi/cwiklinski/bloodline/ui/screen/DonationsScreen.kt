@@ -52,7 +52,7 @@ import org.jetbrains.compose.resources.stringResource
 class DonationsScreen : AppScreen() {
 
     @Composable
-    override fun Content() {
+    override fun verticalView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
@@ -100,7 +100,7 @@ class DonationsScreen : AppScreen() {
                     }
                 )
             }
-            MobileScaffold(
+            VerticalScaffold(
                 topBar = {
                     Box(
                         modifier = Modifier.height(100.dp)
@@ -146,5 +146,10 @@ class DonationsScreen : AppScreen() {
                 }
             }
         }
+    }
+
+    @Composable
+    override fun horizontalView() {
+        verticalView()
     }
 }

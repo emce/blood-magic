@@ -64,7 +64,6 @@ kotlin {
             api(libs.bundles.koin.android)
         }
         commonMain.dependencies {
-
             api(projects.domain)
             api(projects.service.auth.api)
             api(projects.service.data.api)
@@ -81,6 +80,7 @@ kotlin {
             api(libs.jetbrains.androidx.lifecycle.runtime.compose)
             api(libs.bundles.voyager)
             api(libs.bundles.koin.common)
+            api(libs.bundles.coil.common)
             api(libs.bundles.constraintlayout.common)
             api(libs.napier)
             implementation(projects.service.auth.filed)

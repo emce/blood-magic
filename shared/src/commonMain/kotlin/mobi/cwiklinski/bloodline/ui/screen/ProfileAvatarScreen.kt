@@ -66,7 +66,7 @@ import org.jetbrains.compose.resources.stringResource
 class ProfileAvatarScreen : AppProfileScreen() {
 
     @Composable
-    override fun Content() {
+    override fun verticalView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
@@ -242,5 +242,10 @@ class ProfileAvatarScreen : AppProfileScreen() {
                 }
             }
         }
+    }
+
+    @Composable
+    override fun horizontalView() {
+        verticalView()
     }
 }

@@ -1,18 +1,13 @@
 package mobi.cwiklinski.bloodline
 
 import android.app.Application
-import androidx.work.Configuration
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
-import org.koin.android.ext.android.get
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.workmanager.factory.KoinWorkerFactory
-import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import org.koin.core.lazyModules
 
-class App: Application()/*, Configuration.Provider*/ {
+class MainApplication: Application()/*, Configuration.Provider*/ {
 
     //private val workerFactory: KoinWorkerFactory by inject()
 
@@ -22,7 +17,7 @@ class App: Application()/*, Configuration.Provider*/ {
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            androidContext(this@App)
+            androidContext(this@MainApplication)
             //workManagerFactory()
             lazyModules(createAppLazyModule())
             modules(createAppModule())

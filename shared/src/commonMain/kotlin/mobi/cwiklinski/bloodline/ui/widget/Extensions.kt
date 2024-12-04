@@ -6,6 +6,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.disk.DiskCache
+import coil3.request.CachePolicy
+import coil3.request.crossfade
+import coil3.svg.SvgDecoder
+import coil3.util.DebugLogger
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -31,6 +38,7 @@ import mobi.cwiklinski.bloodline.resources.profileAvatarNymph
 import mobi.cwiklinski.bloodline.resources.profileAvatarPegasus
 import mobi.cwiklinski.bloodline.resources.profileAvatarWizard
 import mobi.cwiklinski.bloodline.ui.util.Avatar
+import okio.FileSystem
 import org.jetbrains.compose.resources.stringResource
 
 fun Int.capacity(ml: String, l: String): String = if (this < 1000) {
@@ -79,11 +87,11 @@ fun DonationType.getName() = stringResource(
 
 @Composable
 fun DonationType.getIcon() = when (this) {
-        DonationType.FULL_BLOOD -> Res.drawable.icon_full_blood
-        DonationType.PLASMA -> Res.drawable.icon_plasma
-        DonationType.PLATELETS -> Res.drawable.icon_platelets
-        DonationType.PACKED_CELLS -> Res.drawable.icon_packed
-    }
+    DonationType.FULL_BLOOD -> Res.drawable.icon_full_blood
+    DonationType.PLASMA -> Res.drawable.icon_plasma
+    DonationType.PLATELETS -> Res.drawable.icon_platelets
+    DonationType.PACKED_CELLS -> Res.drawable.icon_packed
+}
 
 fun String.camelCase() = this.split(' ')
     .joinToString(" ") { it.replaceFirstChar(Char::uppercaseChar) }
@@ -91,3 +99,23 @@ fun String.camelCase() = this.split(' ')
 fun Long.toLocalDate() =
     Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+fun getAsyncImageLoader(context: PlatformContext) =
+    ImageLoader.Builder(context)
+        .diskCachePolicy(CachePolicy.ENABLED)
+        .networkCachePolicy(CachePolicy.ENABLED)
+        .diskCache {
+            newDiskCache()
+        }
+        .components {
+            add(SvgDecoder.Factory())
+        }
+        .crossfade(true)
+        .logger(DebugLogger())
+    .build()
+
+fun newDiskCache(): DiskCache {
+    return DiskCache.Builder().directory(FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "image_cache")
+        .maxSizeBytes(512L * 1024 * 1024)
+            .build()
+}
