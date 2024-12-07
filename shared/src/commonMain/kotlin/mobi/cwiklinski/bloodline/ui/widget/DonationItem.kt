@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -30,7 +29,6 @@ import androidx.constraintlayout.compose.Dimension
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.getPlatform
-import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationFullBlood
 import mobi.cwiklinski.bloodline.resources.donationPacked
@@ -63,9 +61,9 @@ fun DonationItem(
     onEdit: () -> Unit,
     onDelete: () -> Unit,
     onShare: (text: String) -> Unit,
-    showAction: Boolean = true
+    showAction: Boolean = true,
+    modifier: Modifier = Modifier
 ) {
-    val itemWidth = getScreenWidth() / 2 - getScreenWidth() / 100
     val defaultPadding = 15.dp
     var typeName = stringResource(Res.string.donationFullBlood)
     var icon = Res.drawable.icon_full_blood
@@ -94,8 +92,7 @@ fun DonationItem(
         icon = Res.drawable.icon_donation_alert
     }
     Box(
-        modifier = Modifier
-            .width(itemWidth)
+        modifier = modifier
             .padding(10.dp)
             .background(AppThemeColors.background)
     ) {
@@ -199,14 +196,14 @@ fun DonationItem(
                     "${donation.center.name}, ${donation.center.getFullAddress()}",
                     style = itemSubTitle(),
                     textAlign = TextAlign.Start,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
                     modifier = Modifier
                         .padding(horizontal = defaultPadding)
                         .constrainAs(center) {
-                            top.linkTo(typeIcon.bottom)
-                            start.linkTo(parent.start, margin = 40.dp)
+                            top.linkTo(typeIcon.bottom, 20.dp)
+                            start.linkTo(parent.start)
                             bottom.linkTo(actions.top)
+                            end.linkTo(parent.end)
+                            width = Dimension.fillToConstraints
                         }
                 )
                 // Actions

@@ -1,18 +1,12 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import app.cash.turbine.test
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import mobi.cwiklinski.bloodline.auth.api.AuthError
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
-import mobi.cwiklinski.bloodline.data.api.ProfileUpdate
-import mobi.cwiklinski.bloodline.data.api.ProfileUpdateState
-import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -121,7 +115,6 @@ class LoginScreenModelTest {
         authSecond: Boolean = true
     ) = LoginScreenModel(
         UiTestTools.getAuthService(authResult, authSecond),
-        UiTestTools.getProfileService(storageService, CoroutineScope(testDispatcher)),
         UiTestTools.getStorageService()
     )
 }

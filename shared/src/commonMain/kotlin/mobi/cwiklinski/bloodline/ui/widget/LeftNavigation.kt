@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import mobi.cwiklinski.bloodline.ui.screen.AppScreen
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.util.BottomNavigationItem
 import org.jetbrains.compose.resources.painterResource
@@ -31,9 +30,7 @@ fun LeftNavigation(
             .background(
                 Brush.horizontalGradient(
                     0.0f to Color(0xFFE1C7D3),
-                    1f to Color(0xFFB794A5),
-                    startX = 0.0f,
-                    endX =  AppScreen.HORIZONTAL_MENU_WIDTH.value,
+                    1.0f to Color(0xFFB794A5),
                 ),
                 RoundedCornerShape(8.dp)
             ),

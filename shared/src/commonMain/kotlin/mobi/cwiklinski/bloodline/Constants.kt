@@ -37,4 +37,8 @@ object Constants {
     const val CHANNEL_NAME = "BloodMagic"
     const val CHANNEL_ID = "mobi.cwiklinski.bloodline"
     const val NOTIFICATION_ID = 2001
+
+    // Centers
+    const val CENTER_URL = "https://krwiodawca.cwiklin.ski/storage/images/center/%id.jpg"
+    const val MAP_URL = "https://krwiodawca.cwiklin.ski/storage/images/maps/%id.png"
 }

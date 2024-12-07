@@ -1,12 +1,10 @@
 package mobi.cwiklinski.bloodline.ui.widget
 
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter.State
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -16,7 +14,11 @@ fun RemoteImage(
     url: String,
     description: String? = null,
     error: DrawableResource,
-    placeHolder: DrawableResource
+    placeHolder: DrawableResource,
+    contentScale: ContentScale = ContentScale.FillWidth,
+    onLoading: ((State.Loading) -> Unit)? = null,
+    onSuccess: ((State.Success) -> Unit)? = null,
+    onError: ((State.Error) -> Unit)? = null,
 ) =
     AsyncImage(
         model = url,
@@ -24,6 +26,9 @@ fun RemoteImage(
         placeholder = painterResource(placeHolder),
         error = painterResource(error),
         fallback = painterResource(placeHolder),
-        contentScale = ContentScale.FillWidth,
-        modifier = modifier.clip(RoundedCornerShape(10.dp))
+        contentScale = contentScale,
+        modifier = modifier,
+        onLoading = onLoading,
+        onSuccess = onSuccess,
+        onError = onError
     )
