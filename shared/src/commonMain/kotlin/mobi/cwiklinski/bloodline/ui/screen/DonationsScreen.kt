@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -101,6 +100,7 @@ class DonationsScreen : AppScreen() {
                 )
             }
             VerticalScaffold(
+                backgroundColor = Color.Transparent,
                 topBar = {
                     Box(
                         modifier = Modifier.height(100.dp)
@@ -110,8 +110,7 @@ class DonationsScreen : AppScreen() {
                         Image(
                             painterResource(Res.drawable.home_stars),
                             stringResource(Res.string.homeTitle),
-                            modifier = Modifier.padding(20.dp).align(Alignment.Center)
-                                .offset(x = 62.dp)
+                            modifier = Modifier.padding(20.dp).align(Alignment.CenterEnd)
                         )
                         Text(
                             stringResource(Res.string.donationsTitle),
@@ -130,6 +129,7 @@ class DonationsScreen : AppScreen() {
                 ) {
                     LazyVerticalGrid(
                         modifier = Modifier.fillMaxWidth()
+                            .background(AppThemeColors.background)
                             .padding(vertical = 5.dp),
                         columns = getDonationGridSize(),
                         verticalArrangement = Arrangement.Top

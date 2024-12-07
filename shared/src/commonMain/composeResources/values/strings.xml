@@ -183,7 +183,11 @@
 
     // CENTERS
     <string name="centersTitle">Miejsca kropelkowania</string>
+    <string name="centersEmpty">Wybierz miejsca kropelkowania, aby zobaczyć jego aspekty</string>
     <string name="centerRegion">%s włości</string>
+    <string name="centerAddress">Kropelkowania adres</string>
+    <string name="centerContact">Namiary</string>
+    <string name="centerInfo">Przydatne aspekty</string>
 
     // SETTINGS
     <string name="settingsTitle">Poukładanki</string>

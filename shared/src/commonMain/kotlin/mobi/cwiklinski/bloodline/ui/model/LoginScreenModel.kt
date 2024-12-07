@@ -11,12 +11,10 @@ import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.common.isValidEmail
-import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 
 class LoginScreenModel(
     private val authService: AuthenticationService,
-    private val profileService: ProfileService,
     private val storageService: StorageService
 ) : AppModel<LoginState>(LoginState.Idle) {
 
@@ -28,11 +26,6 @@ class LoginScreenModel(
 
     init {
         bootstrap()
-        screenModelScope.launch {
-            profileService.getProfile().collectLatest {
-                storageService.storeProfile(it)
-            }
-        }
     }
 
     fun onLoginSubmit(email: String, password: String) {

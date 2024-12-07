@@ -12,7 +12,6 @@ import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -93,36 +92,26 @@ object AppThemeColors {
 
 
     val startingGradient = Brush.verticalGradient(
-        listOf(violet1, yellow3),
-        startY = 0.00f,
-        endY = Float.POSITIVE_INFINITY
+        listOf(violet1, yellow3)
     )
     val mainGradient = Brush.verticalGradient(
         0.00f to Color(0xFFB08FA2),
         0.26f to Color(0xFFE3B9B9),
-        1.00f to white,
-        startY = 0.00f,
-        endY = 1.00f
+        1.00f to white
     )
     val notificationIconGradient = Brush.verticalGradient(
-        colors = listOf(Color(0xFFDC9991), Color(0xFFFFB5A7)),
-        startY = 0.00f,
-        endY = 1.00f
+        colors = listOf(Color(0xFFDC9991), Color(0xFFFFB5A7))
     )
 
     val authGradient = Brush.linearGradient(
         0.13f to white,
         0.56f to Color(0xFFFCFCFC),
         0.74f to Color(0xFFFFF3EE),
-        1.00f to Color(0xFFE1C7D3),
-        start = Offset(0.0f, Float.POSITIVE_INFINITY),
-        end = Offset(Float.POSITIVE_INFINITY, 0.0f)
+        1.00f to Color(0xFFE1C7D3)
     )
     val homeGradient = Brush.verticalGradient(
         0.0f to Color(0xFFB08FA2),
-        0.26f to Color(0xFFE3B9B9),
-        startY = 0.0f,
-        endY = Float.POSITIVE_INFINITY
+        0.26f to Color(0xFFE3B9B9)
     )
 
     val navigationGradient = Brush.verticalGradient(

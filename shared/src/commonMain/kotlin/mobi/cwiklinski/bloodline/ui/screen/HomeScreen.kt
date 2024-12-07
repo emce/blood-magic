@@ -105,7 +105,7 @@ class HomeScreen : AppScreen() {
         val hero = if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
         VerticalScaffold { paddingValues ->
             Column(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues).background(AppThemeColors.mainGradient)
             ) {
                 Box(
                     modifier = Modifier.height(180.dp).fillMaxWidth()
@@ -114,8 +114,7 @@ class HomeScreen : AppScreen() {
                     Image(
                         painterResource(Res.drawable.home_stars),
                         stringResource(Res.string.homeTitle),
-                        modifier = Modifier.padding(20.dp).align(Alignment.Center)
-                            .offset(x = 62.dp)
+                        modifier = Modifier.padding(20.dp).align(Alignment.CenterEnd)
                     )
                     val name = profile.name.ifEmpty { hero }
                     Text(

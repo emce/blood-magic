@@ -200,7 +200,6 @@ compose.desktop {
 }
 
 buildConfig {
-    className("FirebaseConfig")   // forces the class name. Defaults to 'BuildConfig'
     packageName("mobi.cwiklinski.bloodline.config")
     useKotlinOutput { internalVisibility = true }
     val properties = localPropertiesFile.readLines().associate {
@@ -216,6 +215,7 @@ buildConfig {
     val firebaseStorageBucket = properties["firebaseStorageBucket"].toString()
     val firebaseProjectId = properties["firebaseProjectId"].toString()
     val firebaseDatabaseUrl = properties["firebaseDatabaseUrl"].toString()
+    val mapsApiKey = properties["mapsApiKey"].toString()
 
     buildConfigField("String", "FIREBASE_ANDROID_API_KEY", firebaseAndroidApiKey)
     buildConfigField("String", "FIREBASE_IOS_API_KEY", firebaseIosApiKey)
@@ -224,4 +224,5 @@ buildConfig {
     buildConfigField("String", "FIREBASE_STORAGE_BUCKET", firebaseStorageBucket)
     buildConfigField("String", "FIREBASE_PROJECT_ID", firebaseProjectId)
     buildConfigField("String", "FIREBASE_DATABASE_URL", firebaseDatabaseUrl)
+    buildConfigField("String", "MAPS_API_KEY", mapsApiKey)
 }

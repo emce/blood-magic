@@ -58,7 +58,7 @@ abstract class AppScreen : Screen, KoinComponent {
     fun VerticalScaffold(
         modifier: Modifier = Modifier,
         topBar: @Composable () -> Unit = {},
-        backgroundColor: Color = Color.Transparent,
+        backgroundColor: Color = AppThemeColors.white,
         content: @Composable (PaddingValues) -> Unit
     ) {
         val bottomNavigator = LocalBottomSheetNavigator.current

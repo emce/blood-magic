@@ -26,7 +26,7 @@ val uiModule = buildList {
         factory { SplashScreenModel(authService = get()) }
         factory { SetupScreenModel(profileService = get(), centerService = get(), storageService = get()) }
         factory { HomeScreenModel(profileService = get(), donationService = get(), storageService = get()) }
-        factory { LoginScreenModel(authService = get(), profileService = get(), storageService = get()) }
+        factory { LoginScreenModel(authService = get(), storageService = get()) }
         factory { RegisterScreenModel(authService = get(), profileService = get(), storageService = get()) }
         factory { ResetScreenModel(authService = get()) }
         factory { ProfileScreenModel(authService = get(), profileService = get(), storageService = get(), centerService = get()) }
