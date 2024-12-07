@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -51,54 +52,16 @@ import org.jetbrains.compose.resources.stringResource
 class DonationsScreen : AppScreen() {
 
     @Composable
+    override fun Content() {
+        super.Content()
+    }
+
+    @Composable
     override fun verticalView() {
-        val navigator = LocalNavigator.currentOrThrow
-        val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
-        val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
-        val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
-        var donationToDelete: Donation? by remember { mutableStateOf(null) }
-        if (state == DonationState.Deleted) {
-            donationToDelete = null
-        }
         Box(
             modifier = Modifier.background(AppThemeColors.homeGradient)
                 .padding(top = 20.dp)
         ) {
-            if (donationToDelete != null) {
-                AlertDialog(
-                    onDismissRequest = { },
-                    title = {
-                        Text(
-                            stringResource(Res.string.donationsDeleteTitle),
-                            style = contentTitle()
-                        )
-                    },
-                    text = {
-                        Text(
-                            stringResource(Res.string.donationsDeleteMessage),
-                            style = contentText()
-                        )
-                   },
-                    confirmButton = {
-                        SubmitButton(
-                            onClick = {
-                                donationToDelete?.let {
-                                    screenModel.deleteDonation(it)
-                                }
-                            },
-                            text = stringResource(Res.string.donationsDelete)
-                        )
-                    },
-                    dismissButton = {
-                        SecondaryButton(
-                            onClick = {
-                                donationToDelete = null
-                            },
-                            text = stringResource(Res.string.close)
-                        )
-                    }
-                )
-            }
             VerticalScaffold(
                 backgroundColor = Color.Transparent,
                 topBar = {
@@ -119,37 +82,89 @@ class DonationsScreen : AppScreen() {
                         )
                     }
                 },
-            ) { paddingValue ->
-                Box(
-                    modifier = Modifier.padding(paddingValue)
-                        .background(
-                            SolidColor(AppThemeColors.background),
-                            RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                        )
-                ) {
-                    LazyVerticalGrid(
-                        modifier = Modifier.fillMaxWidth()
-                            .background(AppThemeColors.background)
-                            .padding(vertical = 5.dp),
-                        columns = getDonationGridSize(),
-                        verticalArrangement = Arrangement.Top
-                    ) {
-                        items(donations) { donation ->
-                            DonationItem(
-                                donation,
-                                { navigator.push(EditDonationScreen(donation)) },
-                                { donationToDelete = donation },
-                                { }
-                            )
-                        }
-                    }
-                }
+            ) { paddingValues ->
+                DonationsView(paddingValues)
             }
         }
     }
 
     @Composable
     override fun horizontalView() {
-        verticalView()
+        HorizontalScaffold(
+            title = stringResource(Res.string.donationsTitle)
+        ) { paddingValues ->
+            DonationsView(paddingValues)
+        }
+    }
+
+    @Composable
+    fun DonationsView(paddingValues: PaddingValues) {
+        val navigator = LocalNavigator.currentOrThrow
+        val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
+        val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
+        val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
+        var donationToDelete: Donation? by remember { mutableStateOf(null) }
+        if (state == DonationState.Deleted) {
+            donationToDelete = null
+        }
+        if (donationToDelete != null) {
+            AlertDialog(
+                onDismissRequest = { },
+                title = {
+                    Text(
+                        stringResource(Res.string.donationsDeleteTitle),
+                        style = contentTitle()
+                    )
+                },
+                text = {
+                    Text(
+                        stringResource(Res.string.donationsDeleteMessage),
+                        style = contentText()
+                    )
+                },
+                confirmButton = {
+                    SubmitButton(
+                        onClick = {
+                            donationToDelete?.let {
+                                screenModel.deleteDonation(it)
+                            }
+                        },
+                        text = stringResource(Res.string.donationsDelete)
+                    )
+                },
+                dismissButton = {
+                    SecondaryButton(
+                        onClick = {
+                            donationToDelete = null
+                        },
+                        text = stringResource(Res.string.close)
+                    )
+                }
+            )
+        }
+        Box(
+            modifier = Modifier.padding(paddingValues)
+                .background(
+                    SolidColor(AppThemeColors.background),
+                    RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+                )
+        ) {
+            LazyVerticalGrid(
+                modifier = Modifier.fillMaxWidth()
+                    .background(AppThemeColors.background)
+                    .padding(vertical = 5.dp),
+                columns = getDonationGridSize(),
+                verticalArrangement = Arrangement.Top
+            ) {
+                items(donations) { donation ->
+                    DonationItem(
+                        donation,
+                        { navigator.push(EditDonationScreen(donation)) },
+                        { donationToDelete = donation },
+                        { }
+                    )
+                }
+            }
+        }
     }
 }

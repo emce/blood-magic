@@ -2,10 +2,6 @@ package mobi.cwiklinski.bloodline.common
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlin.math.abs
-import kotlin.math.floor
-import kotlin.math.pow
-import kotlin.math.roundToInt
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +15,10 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlin.math.abs
+import kotlin.math.floor
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -80,6 +80,11 @@ fun String.removeDiacritics(): String {
 fun String.isValidEmail(): Boolean {
     val emailRegex = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex()
     return this.matches(emailRegex)
+}
+
+fun String.isValidUrl(): Boolean {
+    val urlRegex = """^(https?|ftp)://[\w\-]+(\.[\w\-]+)+[/#?]?.*$""".toRegex()
+    return urlRegex.matches(this)
 }
 
 fun CoroutineScope.launchUI(block: suspend CoroutineScope.() -> Unit): Job =

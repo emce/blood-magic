@@ -40,6 +40,7 @@ import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.common.isValidUrl
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.getDonationGridSize
 import mobi.cwiklinski.bloodline.resources.Res
@@ -48,6 +49,7 @@ import mobi.cwiklinski.bloodline.resources.homeTitle
 import mobi.cwiklinski.bloodline.resources.home_stars
 import mobi.cwiklinski.bloodline.resources.icon_poland
 import mobi.cwiklinski.bloodline.resources.loading
+import mobi.cwiklinski.bloodline.ui.event.Events
 import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
@@ -132,7 +134,11 @@ class CentersScreen : AppScreen() {
                                 }
                                 CenterItemView(center, modifier = Modifier
                                     .fillMaxWidth().clickable {
-                                    bottomNavigator.show(CenterScreen(center))
+                                    bottomNavigator.show(CenterScreen(center) { link ->
+                                        if (link.isValidUrl()) {
+                                            screenModel.postEvent(Events.OpenBrowser(url = link))
+                                        }
+                                    })
                                 })
                             }
                         }
@@ -203,7 +209,12 @@ class CentersScreen : AppScreen() {
                         }
                         .fillMaxWidth(.7f)) {
                     CenterView(
-                        center = selectedCenter
+                        center = selectedCenter,
+                        onSiteClick = { link ->
+                            if (link.isValidUrl()) {
+                                screenModel.postEvent(Events.OpenBrowser(url = link))
+                            }
+                        }
                     )
                 }
             }
