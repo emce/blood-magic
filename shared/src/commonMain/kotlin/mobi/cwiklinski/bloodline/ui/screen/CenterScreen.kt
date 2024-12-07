@@ -25,7 +25,7 @@ import mobi.cwiklinski.bloodline.ui.widget.CenterView
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-class CenterScreen(val center: Center) : Screen {
+class CenterScreen(val center: Center, private val onSiteClick: ((link: String) -> Unit)? = null) : Screen {
 
     @Composable
     override fun Content() {
@@ -69,7 +69,13 @@ class CenterScreen(val center: Center) : Screen {
             sheetPeekHeight = 0.dp,
             sheetContent = { },
         ) {
-            CenterView(center, modifier = Modifier.fillMaxWidth())
+            CenterView(
+                center = center,
+                modifier = Modifier.fillMaxWidth(),
+                onSiteClick = {
+                    onSiteClick?.invoke(center.site)
+                }
+            )
         }
     }
 }

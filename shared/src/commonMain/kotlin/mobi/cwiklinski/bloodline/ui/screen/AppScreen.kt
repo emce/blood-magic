@@ -138,12 +138,7 @@ abstract class AppScreen : Screen, KoinComponent {
                             BottomNavigationItem.PROFILE -> ProfileScreen()
                         })
                     },
-                    selected = when (this@AppScreen) {
-                        is DonationsScreen -> BottomNavigationItem.LIST
-                        is CentersScreen -> BottomNavigationItem.CENTER
-                        is ProfileScreen -> BottomNavigationItem.PROFILE
-                        else -> BottomNavigationItem.HOME
-                    },
+                    selected = getSelected(),
                     floatingActionButton = {
                         NavigationRailItem(
                             selected = false,
@@ -165,10 +160,13 @@ abstract class AppScreen : Screen, KoinComponent {
                 )
                 HorizontalTitleAppBar(
                     modifier.constrainAs(bar) {
-                        start.linkTo(navigation.end)
+                        start.linkTo(navigation.end, 2.dp)
                         top.linkTo(parent.top)
                         end.linkTo(parent.end)
                         width = Dimension.fillToConstraints
+                        if (title == null) {
+                            height = Dimension.value(0.dp)
+                        }
                     },
                     title = title,
                 )
@@ -176,7 +174,7 @@ abstract class AppScreen : Screen, KoinComponent {
                     modifier = Modifier
                         .background(AppThemeColors.white)
                         .constrainAs(content) {
-                            start.linkTo(navigation.end)
+                            start.linkTo(navigation.end, 2.dp)
                             top.linkTo(bar.bottom)
                             end.linkTo(parent.end)
                             bottom.linkTo(parent.bottom)
@@ -188,6 +186,14 @@ abstract class AppScreen : Screen, KoinComponent {
                 }
             }
         }
+    }
+
+    @Composable
+    fun getSelected() = when (this) {
+        is DonationsScreen -> BottomNavigationItem.LIST
+        is CentersScreen -> BottomNavigationItem.CENTER
+        is ProfileScreen -> BottomNavigationItem.PROFILE
+        else -> BottomNavigationItem.HOME
     }
 
     companion object {
