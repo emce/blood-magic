@@ -3,6 +3,7 @@
     <string name="languageCode">pl</string>
     <string name="idShare">BloodMagic</string>
     <string name="appName">Magia Krwi</string>
+    <string name="soon">Już wkrótce będzie dostępne!</string>
     <string name="goBack">Wróć</string>
     <string name="seeAll">więcej</string>
     <string name="milliliter">ml</string>
@@ -89,6 +90,7 @@
     <string name="resetInformation">Wprowadź adres email podany podczas rejestracji. Wyślemy na niego wiadomość z linkiem do zresetowania hasła.</string>
     <string name="resetSubmitButton">Wyślij wiadomość z linkiem</string>
     <string name="resetError">Wystąpił błąd przy wysyłaniu formularza</string>
+    <string name="resetSuccessful">Wiadomość jest już w drodze! Sprawdź skrzynkę swą pocztową, i kliknij w magiczny link, aby zmienić hasło.</string>
 
     // SETUP
     <string name="setupTitle">Witaj, Wędrowcze</string>
@@ -188,6 +190,7 @@
     <string name="centerAddress">Kropelkowania adres</string>
     <string name="centerContact">Namiary</string>
     <string name="centerInfo">Przydatne aspekty</string>
+    <string name="centerSearchLabel">Wybieraj miejsca...</string>
 
     // SETTINGS
     <string name="settingsTitle">Poukładanki</string>

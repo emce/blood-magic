@@ -4,9 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.NavigationRailItem
@@ -64,7 +67,9 @@ abstract class AppScreen : Screen, KoinComponent {
         val bottomNavigator = LocalBottomSheetNavigator.current
         val navigator = LocalNavigator.currentOrThrow
         Scaffold(
-            modifier = modifier.background(AppThemeColors.homeGradient),
+            modifier = modifier
+                .windowInsetsPadding(WindowInsets.safeDrawing)
+                .background(AppThemeColors.homeGradient),
             topBar = topBar,
             backgroundColor = backgroundColor,
             floatingActionButton = {
@@ -115,7 +120,8 @@ abstract class AppScreen : Screen, KoinComponent {
         val bottomNavigator = LocalBottomSheetNavigator.current
         val navigator = LocalNavigator.currentOrThrow
         Scaffold(
-            modifier = modifier.padding(4.dp),
+            modifier = modifier.padding(4.dp)
+                .windowInsetsPadding(WindowInsets.safeDrawing),
             backgroundColor = AppThemeColors.background,
         ) { paddingValues ->
             ConstraintLayout(

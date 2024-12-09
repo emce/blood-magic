@@ -2,10 +2,12 @@ package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.common.isValidEmail
+import kotlin.time.Duration.Companion.seconds
 
 class ResetScreenModel(
     private val authService: AuthenticationService
@@ -16,11 +18,12 @@ class ResetScreenModel(
     }
 
     fun onPasswordReset(email: String) {
-        clearError()
+        resetState()
         mutableState.value = ResetState.Sending
         if (email.isValidEmail()) {
             screenModelScope.launch {
                 authService.resetPassword(email)
+                    .debounce(2.seconds.inWholeMilliseconds)
                     .collectLatest {
                         when (it) {
                             is AuthResult.Dismissed -> mutableState.value =
@@ -37,7 +40,7 @@ class ResetScreenModel(
         }
     }
 
-    private fun clearError() {
+    fun resetState() {
         mutableState.value = ResetState.Idle
     }
 
