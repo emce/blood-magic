@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.util.BottomNavigationItem
@@ -41,14 +42,17 @@ fun LeftNavigation(
         BottomNavigationItem.entries.forEach { item ->
             NavigationRailItem(
                 modifier = Modifier.padding(vertical = 5.dp),
-                selected = item == selected,
+                selected = item.icon == selected.icon,
                 onClick = {
                     onClicked.invoke(item)
                 },
                 icon = {
                     Image(
                         painterResource(item.icon),
-                        contentDescription = stringResource(item.title)
+                        contentDescription = stringResource(item.title),
+                        colorFilter = ColorFilter.tint(
+                            if (item == selected) AppThemeColors.black else AppThemeColors.white
+                        )
                     )
                 },
                 alwaysShowLabel = false,

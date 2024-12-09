@@ -111,13 +111,13 @@
     <string name="homeCarouselAmountTitle">%d pobrań</string>
     <string name="homeCarouselAmountSubtitle">leczniczej krwi</string>
     <string name="homeCarouselTotalAmountTitle">oddanej krwi</string>
-    <string name="homeCarouselBadge1Title">Brązowa Tarcza</string>
+    <string name="homeCarouselBadge1Title">Brązowy\nOrder</string>
     <string name="homeCarouselBadge1Subtitle"> </string>
-    <string name="homeCarouselBadge2Title">Srebrna Tarcza</string>
+    <string name="homeCarouselBadge2Title">Srebrny\nOrder</string>
     <string name="homeCarouselBadge2Subtitle"> </string>
-    <string name="homeCarouselBadge3Title">Złotej Tarcza</string>
+    <string name="homeCarouselBadge3Title">Złoty\nOrder</string>
     <string name="homeCarouselBadge3Subtitle"> </string>
-    <string name="homeCarouselBadgeFinalTitle">Platynowa Tarcza</string>
+    <string name="homeCarouselBadgeFinalTitle">Platynowy\nOrder</string>
     <string name="homeCarouselBadgeFinalSubtitle"> </string>
     <string name="homeNextDonationReadyTitle">To jest Magia!</string>
     <string name="homeNextDonationReadySubtitle">Pobór krwi pełnej jest już MOŻLIWY</string>

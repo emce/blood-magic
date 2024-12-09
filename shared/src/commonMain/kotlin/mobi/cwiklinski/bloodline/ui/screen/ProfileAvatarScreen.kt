@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -36,6 +36,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -70,11 +72,14 @@ class ProfileAvatarScreen : AppProfileScreen() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
-        if (screenModel.state.value == ProfileState.Saved) {
-            bottomSheetNavigator.hide()
-        }
         val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
         var avatar by remember { mutableStateOf(Avatar.byName(profile.avatar)) }
+        val density = LocalDensity.current
+        var cellHeight by remember { mutableStateOf(0.dp) }
+        val state by screenModel.state.collectAsStateWithLifecycle(ProfileState.Idle)
+        if (state == ProfileState.Saved) {
+            bottomSheetNavigator.hide()
+        }
         Column(
             modifier = Modifier.background(AppThemeColors.homeGradient)
         ) {
@@ -160,12 +165,17 @@ class ProfileAvatarScreen : AppProfileScreen() {
                     items(Avatar.entries.size) { index ->
                         val listAvatar = Avatar.entries[index]
                         Column(
-                            modifier = Modifier.width(124.dp).wrapContentHeight(),
+                            modifier = Modifier.width(124.dp).wrapContentHeight()
+                                .onGloballyPositioned {
+                                    cellHeight = with(density) {
+                                        it.size.height.toDp()
+                                    }
+                                },
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Box(
-                                modifier = Modifier.width(80.dp).height(80.dp)
+                                modifier = Modifier.fillMaxSize()
                                     .selectable(
                                         selected = profile.avatar == listAvatar.name,
                                         interactionSource = MutableInteractionSource(),
@@ -201,12 +211,14 @@ class ProfileAvatarScreen : AppProfileScreen() {
                     }
                     item {
                         Column(
-                            modifier = Modifier.width(124.dp).fillMaxHeight(),
+                            modifier = Modifier.width(124.dp).height(cellHeight),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             if (screenModel.state.value != ProfileState.Saving) {
-                                Box(
+                                Image(
+                                    painterResource(Res.drawable.avatar_submit),
+                                    stringResource(Res.string.profileDataSubmitButton),
                                     modifier = Modifier.width(80.dp).height(80.dp).clickable {
                                         screenModel.onProfileDataUpdate(
                                             profile.name,
@@ -217,22 +229,7 @@ class ProfileAvatarScreen : AppProfileScreen() {
                                             profile.starting,
                                             profile.centerId
                                         )
-                                    },
-                                    contentAlignment = Alignment.BottomCenter
-                                ) {
-                                    Image(
-                                        painterResource(Res.drawable.avatar_submit),
-                                        stringResource(Res.string.profileDataSubmitButton),
-                                        modifier = Modifier.width(60.dp).height(60.dp)
-                                    )
-                                }
-                                Text(
-                                    "",
-                                    style = getTypography().headlineMedium.copy(
-                                        color = AppThemeColors.black70,
-                                        textAlign = TextAlign.Center
-                                    ),
-                                    modifier = Modifier.fillMaxWidth()
+                                    }
                                 )
                             } else {
                                 FormProgress()
@@ -240,6 +237,7 @@ class ProfileAvatarScreen : AppProfileScreen() {
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(100.dp))
             }
         }
     }

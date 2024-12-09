@@ -109,6 +109,7 @@ abstract class AppScreen : Screen, KoinComponent {
     fun HorizontalScaffold(
         modifier: Modifier = Modifier,
         title: String? = null,
+        actions: @Composable (() -> Unit)? = null,
         desiredContent: @Composable (PaddingValues) -> Unit
     ) {
         val bottomNavigator = LocalBottomSheetNavigator.current
@@ -169,6 +170,7 @@ abstract class AppScreen : Screen, KoinComponent {
                         }
                     },
                     title = title,
+                    actions = actions
                 )
                 Box(
                     modifier = Modifier
