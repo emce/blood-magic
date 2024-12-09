@@ -116,6 +116,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
             modifier = Modifier.background(AppThemeColors.homeGradient)
         ) {
             VerticalScaffold(
+                backgroundColor = Color.Transparent,
                 modifier = Modifier.nestedScroll(behaviour.nestedScrollConnection),
                 topBar = {
                     TopAppBar(
@@ -226,7 +227,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(50.dp)
+                        .padding(30.dp)
                         .wrapContentSize(),
                 ) {
                     Text(

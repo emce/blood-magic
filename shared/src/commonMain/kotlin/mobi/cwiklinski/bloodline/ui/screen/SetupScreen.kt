@@ -135,7 +135,7 @@ class SetupScreen : AppScreen() {
             }
             var notification by remember { mutableStateOf(profile.notification) }
             var emailValue by remember { mutableStateOf(profile.email.ifEmpty { email }) }
-            var avatar by remember { mutableStateOf(Avatar.valueOf(profile.avatar)) }
+            var avatar by remember { mutableStateOf(Avatar.byName(profile.avatar)) }
             val scrollState = rememberScrollState()
             screenModel.screenModelScope.launch {
                 screenModel.profile.collectLatest { fetchedProfile ->

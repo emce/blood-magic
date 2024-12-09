@@ -18,7 +18,7 @@ enum class Avatar(val icon: DrawableResource) {
     KING(Res.drawable.avatar_king);
 
     companion object {
-        fun byIcon(icon: DrawableResource) = entries.firstOrNull { it.icon == icon } ?: Avatar.PEGASUS
-        fun byName(name: String?) = entries.firstOrNull { it.name == name } ?: Avatar.PEGASUS
+        fun byIcon(icon: DrawableResource) = entries.firstOrNull { it.icon == icon } ?: PEGASUS
+        fun byName(name: String?) = entries.firstOrNull { it.name == name } ?: PEGASUS
     }
 }

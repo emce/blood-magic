@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.domain.model.Center
@@ -37,6 +39,9 @@ import mobi.cwiklinski.bloodline.resources.centerContact
 import mobi.cwiklinski.bloodline.resources.centerInfo
 import mobi.cwiklinski.bloodline.resources.centerRegion
 import mobi.cwiklinski.bloodline.resources.centersEmpty
+import mobi.cwiklinski.bloodline.resources.ic_address
+import mobi.cwiklinski.bloodline.resources.ic_browser
+import mobi.cwiklinski.bloodline.resources.ic_phone
 import mobi.cwiklinski.bloodline.resources.icon_poland
 import mobi.cwiklinski.bloodline.resources.placeholder_center
 import mobi.cwiklinski.bloodline.resources.placeholder_map
@@ -51,9 +56,8 @@ import org.jetbrains.compose.resources.stringResource
 fun CenterView(center: Center, modifier: Modifier = Modifier, onSiteClick: ((link: String) -> Unit)? = null) {
     val density = LocalDensity.current
     var centerImageWidth by remember { mutableStateOf(0.dp) }
-    var mapContentScale by remember { mutableStateOf(ContentScale.Inside) }
-    var centerContentScale by remember { mutableStateOf(ContentScale.Inside) }
     val margin = 10.dp
+    val iconSize = 16.dp
     LazyColumn(
         modifier = modifier.wrapContentHeight().padding(20.dp),
     ) {
@@ -94,10 +98,7 @@ fun CenterView(center: Center, modifier: Modifier = Modifier, onSiteClick: ((lin
                         description = center.name,
                         error = Res.drawable.placeholder_center,
                         placeHolder = Res.drawable.placeholder_center,
-                        contentScale = centerContentScale,
-                        onSuccess = {
-                            centerContentScale = ContentScale.FillHeight
-                        }
+                        contentScale = ContentScale.FillHeight
                     )
                     RemoteImage(
                         modifier = Modifier
@@ -113,10 +114,7 @@ fun CenterView(center: Center, modifier: Modifier = Modifier, onSiteClick: ((lin
                         description = center.getFullAddress(),
                         error = Res.drawable.placeholder_map,
                         placeHolder = Res.drawable.placeholder_map,
-                        contentScale = mapContentScale,
-                        onSuccess = {
-                            mapContentScale = ContentScale.FillWidth
-                        }
+                        contentScale = ContentScale.FillWidth
                     )
                 }
             }
@@ -147,12 +145,25 @@ fun CenterView(center: Center, modifier: Modifier = Modifier, onSiteClick: ((lin
                 HeaderText(stringResource(Res.string.centerAddress))
             }
             item {
-                Text(
-                    center.getFullAddress(),
-                    style = itemTitle(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Icon(
+                        painterResource(Res.drawable.ic_address),
+                        contentDescription = center.getFullAddress(),
+                        modifier = Modifier.size(iconSize)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        center.getFullAddress(),
+                        style = itemTitle(),
+                        modifier = Modifier
+                            .weight(1.0f)
+                    )
+
+                }
             }
             if (center.phone.isNotEmpty() || center.site.isNotEmpty()) {
                 item {
@@ -160,27 +171,52 @@ fun CenterView(center: Center, modifier: Modifier = Modifier, onSiteClick: ((lin
                 }
                 if (center.site.isNotEmpty()) {
                     item {
-                        Text(
-                            center.site,
-                            style = itemTitle().copy(
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            Icon(
+                                painterResource(Res.drawable.ic_browser),
+                                contentDescription = center.getFullAddress(),
+                                modifier = Modifier.size(iconSize)
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(
+                                center.site,
+                                style = itemTitle().copy(
+                                    textDecoration = TextDecoration.Underline
+                                ),
+                                modifier = Modifier
+                                    .clickable {
+                                        onSiteClick?.invoke(center.site)
+                                    }
+                                    .weight(1.0f)
+                            )
 
-                            ),
-                            modifier = Modifier
-                                .clickable {
-                                    onSiteClick?.invoke(center.site)
-                                }
-                                .fillMaxWidth()
-                        )
+                        }
                     }
                 }
                 if (center.phone.isNotEmpty()) {
                     item {
-                        Text(
-                            center.phone,
-                            style = itemTitle(),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            Icon(
+                                painterResource(Res.drawable.ic_phone),
+                                contentDescription = center.getFullAddress(),
+                                modifier = Modifier.size(iconSize)
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(
+                                center.phone,
+                                style = itemTitle(),
+                                modifier = Modifier
+                                    .weight(1.0f)
+                            )
+                        }
                     }
                 }
             }

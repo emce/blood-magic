@@ -5,13 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -33,6 +32,7 @@ import mobi.cwiklinski.bloodline.resources.loginEmailLabel
 import mobi.cwiklinski.bloodline.resources.resetError
 import mobi.cwiklinski.bloodline.resources.resetInformation
 import mobi.cwiklinski.bloodline.resources.resetSubmitButton
+import mobi.cwiklinski.bloodline.resources.resetSuccessful
 import mobi.cwiklinski.bloodline.resources.resetTitle
 import mobi.cwiklinski.bloodline.ui.model.ResetError
 import mobi.cwiklinski.bloodline.ui.model.ResetScreenModel
@@ -41,6 +41,7 @@ import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
+import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -49,17 +50,32 @@ class ResetScreen() : AppScreen() {
 
     @Composable
     override fun verticalView() {
+        Scaffold {
+            ResetView()
+        }
+    }
 
+    @Composable
+    override fun horizontalView() {
+        Scaffold {
+            ResetView()
+        }
+    }
+
+    @Composable
+    fun ResetView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<ResetScreenModel>()
         var email by remember { mutableStateOf("") }
-        if (screenModel.state.value == ResetState.Sent) {
-            navigator.pop()
+        val state by screenModel.state.collectAsStateWithLifecycle(ResetState.Idle)
+        if (state == ResetState.Sent) {
+            screenModel.resetState()
+            navigator.replaceAll(LoginScreen(LoginScreenState.Info(stringResource(Res.string.resetSuccessful))))
         }
         Column(
-            Modifier.wrapContentHeight().fillMaxWidth().background(
+            Modifier.fillMaxSize().background(
                 AppThemeColors.authGradient
-            ).verticalScroll(rememberScrollState()),
+            ),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -91,47 +107,36 @@ class ResetScreen() : AppScreen() {
                     text = email,
                     onValueChanged = { email = it },
                     label = stringResource(Res.string.loginEmailLabel),
-                    enabled = screenModel.state.value != ResetState.Sending,
-                    error = screenModel.state.value is ResetState.Error,
+                    enabled = state != ResetState.Sending,
+                    error = state is ResetState.Error,
                     errorMessage = getError(listOf(ResetError.EMAIL_ERROR))
                 )
                 Spacer(Modifier.height(30.dp))
-                if (screenModel.state.value is ResetState.Error) {
+                if (state is ResetState.Error) {
                     Text(
-                        getError((screenModel.state.value as ResetState.Error).errors),
+                        getError((state as ResetState.Error).errors),
                         style = getTypography().displaySmall.copy(
                             color = AppThemeColors.red1
                         )
                     )
                     Spacer(Modifier.height(30.dp))
                 }
-                if (screenModel.state.value == ResetState.Sending) {
+                if (state == ResetState.Sending) {
                     FormProgress()
                 } else {
                     SubmitButton(
                         onClick = { screenModel.onPasswordReset(email) },
                         text = stringResource(Res.string.resetSubmitButton),
-                        enabled = screenModel.state.value != ResetState.Sending,
+                        enabled = state != ResetState.Sending,
                     )
                 }
                 Spacer(Modifier.height(10.dp))
-                SubmitButton(
+                SecondaryButton(
                     onClick = { navigator.pop() },
-                    text = stringResource(Res.string.goBack),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = AppThemeColors.rose4,
-                        contentColor = AppThemeColors.rose1,
-                        disabledContainerColor = AppThemeColors.rose4.copy(alpha = 0.7f),
-                        disabledContentColor = AppThemeColors.rose1
-                    )
+                    text = stringResource(Res.string.goBack)
                 )
             }
         }
-    }
-
-    @Composable
-    override fun horizontalView() {
-        verticalView()
     }
 
     @Composable

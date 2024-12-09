@@ -39,7 +39,7 @@ abstract class AppModel<S>(initialState: S) : StateScreenModel<S>(initialState),
         screenModelScope.launch { _event.emit(event) }
     }
 
-    protected fun postSideEffect(sideEffect: SideEffect) {
+    fun postSideEffect(sideEffect: SideEffect) {
         screenModelScope.launch {
             _sideEffect.send(sideEffect)
         }
