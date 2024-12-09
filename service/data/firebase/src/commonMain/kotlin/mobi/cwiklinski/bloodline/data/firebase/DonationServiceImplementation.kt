@@ -2,6 +2,7 @@ package mobi.cwiklinski.bloodline.data.firebase
 
 import dev.gitlive.firebase.FirebaseException
 import dev.gitlive.firebase.auth.FirebaseAuth
+import dev.gitlive.firebase.database.DatabaseException
 import dev.gitlive.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combineTransform
@@ -39,9 +40,13 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
                     it.value<Map<String, FirebaseDonation>>().values.toList()
                 }
         ) { centers, donations ->
-            emit(donations.map { donation ->
-                donation.toDonation(centers.first { it.id == donation.centerId }.toCenter())
-            }.sortedByDescending { it.date })
+            try {
+                emit(donations.map { donation ->
+                    donation.toDonation(centers.first { it.id == donation.centerId }.toCenter())
+                }.sortedByDescending { it.date })
+            } catch (e: DatabaseException) {
+                emit(emptyList())
+            }
         }
 
     override fun getDonation(id: String) =

@@ -2,6 +2,7 @@ package mobi.cwiklinski.bloodline.data.firebase
 
 import dev.gitlive.firebase.FirebaseException
 import dev.gitlive.firebase.auth.FirebaseAuth
+import dev.gitlive.firebase.database.DatabaseException
 import dev.gitlive.firebase.database.FirebaseDatabase
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import mobi.cwiklinski.bloodline.common.Either
@@ -20,6 +22,7 @@ import mobi.cwiklinski.bloodline.data.api.ProfileUpdate
 import mobi.cwiklinski.bloodline.data.api.ProfileUpdateState
 import mobi.cwiklinski.bloodline.data.firebase.model.FirebaseSettings
 import mobi.cwiklinski.bloodline.domain.Sex
+import mobi.cwiklinski.bloodline.domain.model.Profile
 
 class ProfileServiceImplementation(
     db: FirebaseDatabase,
@@ -28,7 +31,8 @@ class ProfileServiceImplementation(
 
     private val mainRef = db.reference("settings").child(auth.currentUser?.uid ?: "-")
 
-    private val _profileData = mainRef.valueEvents
+    private val _profileData = try {
+        mainRef.valueEvents
             .map {
                 Napier.d { it.toString() }
                 it.value<FirebaseSettings>()
@@ -37,6 +41,9 @@ class ProfileServiceImplementation(
                 Napier.d { it.toString() }
                 it.toProfile(auth.currentUser?.uid ?: "")
             }
+        } catch (e: DatabaseException) {
+            flowOf(Profile(""))
+    }
 
     override fun updateProfileData(
         name: String,

@@ -2,12 +2,10 @@ package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.Constants
@@ -22,7 +20,6 @@ import mobi.cwiklinski.bloodline.data.filed.withEmail
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import kotlin.time.Duration.Companion.seconds
 
 class ProfileScreenModel(
     private val profileService: ProfileService,
@@ -141,24 +138,10 @@ class ProfileScreenModel(
 
     fun logout() {
         mutableState.value = ProfileState.LoggingOut
-        screenModelScope.launch {
-            authService.logOut()
-                .map {
-                    delay(1.seconds.inWholeMilliseconds)
-                    if (it) {
-                        storageService.clearAll()
-                        authService.logOut()
-                    }
-                    it
-                }
-                .collectLatest {
-                    delay(2.seconds.inWholeMilliseconds)
-                    mutableState.value = if (it)
-                        ProfileState.LoggedOut
-                    else
-                        ProfileState.Idle
-                }
-        }
+    }
+
+    fun resetState() {
+        mutableState.value = ProfileState.Idle
     }
 }
 
@@ -175,8 +158,6 @@ sealed class ProfileState {
     data object ToLoggedOut : ProfileState()
 
     data object LoggingOut : ProfileState()
-
-    data object LoggedOut : ProfileState()
 
 }
 

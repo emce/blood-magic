@@ -80,7 +80,6 @@ fun CarouselItem(
                             fontSize = 22.sp,
                             color = AppThemeColors.black,
                         ),
-                        maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.fillMaxWidth()
                     )

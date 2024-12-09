@@ -6,6 +6,7 @@ import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.HomeScreenModel
 import mobi.cwiklinski.bloodline.ui.model.LoginScreenModel
+import mobi.cwiklinski.bloodline.ui.model.LogoutScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.RegisterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ResetScreenModel
@@ -32,6 +33,7 @@ val uiModule = buildList {
         factory { ProfileScreenModel(authService = get(), profileService = get(), storageService = get(), centerService = get()) }
         factory { DonationScreenModel(donationService = get(), centerService = get(), profileService = get()) }
         factory { CenterScreenModel(centerService = get()) }
+        factory { LogoutScreenModel(authService = get(), storageService = get()) }
     })
 }
 
