@@ -14,6 +14,9 @@ interface Platform {
 expect fun getPlatform(): Platform
 
 @Composable
+expect fun isTablet(): Boolean
+
+@Composable
 expect fun getOrientation(): Orientation
 
 @Composable

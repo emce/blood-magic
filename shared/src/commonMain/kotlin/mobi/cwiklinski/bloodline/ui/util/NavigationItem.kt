@@ -12,7 +12,7 @@ import mobi.cwiklinski.bloodline.resources.profileTitle
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 
-enum class BottomNavigationItem(val icon: DrawableResource, val title: StringResource) {
+enum class NavigationItem(val icon: DrawableResource, val title: StringResource) {
     HOME(Res.drawable.nav_icon_home, Res.string.homeTitle),
     LIST(Res.drawable.nav_icon_text, Res.string.donationsTitle),
     CENTER(Res.drawable.nav_icon_center, Res.string.centersTitle),

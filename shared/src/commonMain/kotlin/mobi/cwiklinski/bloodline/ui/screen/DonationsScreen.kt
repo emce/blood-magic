@@ -53,12 +53,10 @@ import org.jetbrains.compose.resources.stringResource
 class DonationsScreen : AppScreen() {
 
     @Composable
-    override fun Content() {
-        super.Content()
-    }
+    override fun defaultView() = portraitView()
 
     @Composable
-    override fun verticalView() {
+    override fun portraitView() {
         Box(
             modifier = Modifier.background(AppThemeColors.homeGradient)
                 .padding(top = 20.dp)
@@ -90,7 +88,7 @@ class DonationsScreen : AppScreen() {
     }
 
     @Composable
-    override fun horizontalView() {
+    override fun landscapeView() {
         HorizontalScaffold(
             title = stringResource(Res.string.donationsTitle)
         ) { paddingValues ->

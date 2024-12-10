@@ -32,3 +32,13 @@ actual fun getScreenHeight(): Dp = LocalConfiguration.current.screenHeightDp.dp
 @Composable
 actual fun getDonationGridSize(): GridCells =
     GridCells.Fixed(if (getOrientation().isHorizontal()) 2 else 1)
+
+@Composable
+actual fun isTablet(): Boolean {
+    val configuration = LocalConfiguration.current
+    return if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        configuration.screenWidthDp > 840
+    } else {
+        configuration.screenWidthDp > 600
+    }
+}

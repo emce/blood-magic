@@ -108,7 +108,10 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
     AppProfileScreen() {
 
     @Composable
-    override fun verticalView() {
+    override fun defaultView() = portraitView()
+
+    @Composable
+    override fun portraitView() {
         val behaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
@@ -151,7 +154,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
     }
 
     @Composable
-    override fun horizontalView() {
+    override fun landscapeView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
         HorizontalScaffold(

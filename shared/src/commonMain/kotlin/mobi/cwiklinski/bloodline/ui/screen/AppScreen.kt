@@ -24,17 +24,17 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import mobi.cwiklinski.bloodline.getOrientation
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationNewTitle
 import mobi.cwiklinski.bloodline.resources.nav_icon_drop
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.util.BottomNavigationItem
+import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
 import mobi.cwiklinski.bloodline.ui.widget.BottomBar
+import mobi.cwiklinski.bloodline.ui.widget.DesktopNavigation
 import mobi.cwiklinski.bloodline.ui.widget.HorizontalTitleAppBar
 import mobi.cwiklinski.bloodline.ui.widget.LeftNavigation
-import mobi.cwiklinski.bloodline.ui.widget.isHorizontal
+import mobi.cwiklinski.bloodline.ui.widget.MultiWindowSizeLayout
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.component.KoinComponent
@@ -43,18 +43,39 @@ abstract class AppScreen : Screen, KoinComponent {
 
     @Composable
     override fun Content() {
-        if (getOrientation().isHorizontal()) {
-            horizontalView()
-        } else {
-            verticalView()
-        }
+        MultiWindowSizeLayout(
+            default = @Composable {
+                defaultView()
+            },
+            desktop = @Composable {
+                landscapeView()
+            },
+            tablet = @Composable  {
+                portraitView()
+            },
+            phonePortrait = @Composable {
+                verticalTablet()
+            },
+            phoneLandscape = @Composable {
+                verticalPhone()
+            }
+        )
     }
 
     @Composable
-    abstract fun verticalView()
+    abstract fun defaultView()
 
     @Composable
-    abstract fun horizontalView()
+    abstract fun portraitView()
+
+    @Composable
+    abstract fun landscapeView()
+
+    @Composable
+    open fun verticalTablet() = portraitView()
+
+    @Composable
+    open fun verticalPhone() = portraitView()
 
 
     @Composable
@@ -92,17 +113,17 @@ abstract class AppScreen : Screen, KoinComponent {
                 BottomBar(
                     onClicked = { item ->
                         navigator.push(when (item) {
-                            BottomNavigationItem.HOME -> HomeScreen()
-                            BottomNavigationItem.LIST -> DonationsScreen()
-                            BottomNavigationItem.CENTER -> CentersScreen()
-                            BottomNavigationItem.PROFILE -> ProfileScreen()
+                            NavigationItem.HOME -> HomeScreen()
+                            NavigationItem.LIST -> DonationsScreen()
+                            NavigationItem.CENTER -> CentersScreen()
+                            NavigationItem.PROFILE -> ProfileScreen()
                         })
                     },
                     selected = when (this) {
-                        is DonationsScreen -> BottomNavigationItem.LIST
-                        is CentersScreen -> BottomNavigationItem.CENTER
-                        is ProfileScreen -> BottomNavigationItem.PROFILE
-                        else -> BottomNavigationItem.HOME
+                        is DonationsScreen -> NavigationItem.LIST
+                        is CentersScreen -> NavigationItem.CENTER
+                        is ProfileScreen -> NavigationItem.PROFILE
+                        else -> NavigationItem.HOME
                     }
                 )
             },
@@ -139,10 +160,10 @@ abstract class AppScreen : Screen, KoinComponent {
                         },
                     onClicked = { item ->
                         navigator.push(when (item) {
-                            BottomNavigationItem.HOME -> HomeScreen()
-                            BottomNavigationItem.LIST -> DonationsScreen()
-                            BottomNavigationItem.CENTER -> CentersScreen()
-                            BottomNavigationItem.PROFILE -> ProfileScreen()
+                            NavigationItem.HOME -> HomeScreen()
+                            NavigationItem.LIST -> DonationsScreen()
+                            NavigationItem.CENTER -> CentersScreen()
+                            NavigationItem.PROFILE -> ProfileScreen()
                         })
                     },
                     selected = getSelected(),
@@ -197,11 +218,41 @@ abstract class AppScreen : Screen, KoinComponent {
     }
 
     @Composable
+    fun DesktopNavigationScaffold(
+        topBar: @Composable () -> Unit = {},
+        selected: NavigationItem = NavigationItem.HOME,
+        onNavigationClicked: (NavigationItem) -> Unit,
+        desiredContent: @Composable () -> Unit
+    ) {
+        Scaffold(
+            topBar = topBar
+        ) { paddingValues ->
+            DesktopNavigation(
+                modifier = Modifier.padding(paddingValues),
+                onClicked = onNavigationClicked,
+                selected = selected,
+                content = desiredContent
+            )
+        }
+    }
+
+    @Composable
+    fun DesktopScaffold(
+        topBar: @Composable () -> Unit = {},
+        desiredContent: @Composable (PaddingValues) -> Unit
+    ) {
+        Scaffold(
+            topBar = topBar,
+            content = desiredContent
+        )
+    }
+
+    @Composable
     fun getSelected() = when (this) {
-        is DonationsScreen -> BottomNavigationItem.LIST
-        is CentersScreen -> BottomNavigationItem.CENTER
-        is ProfileScreen -> BottomNavigationItem.PROFILE
-        else -> BottomNavigationItem.HOME
+        is DonationsScreen -> NavigationItem.LIST
+        is CentersScreen -> NavigationItem.CENTER
+        is ProfileScreen -> NavigationItem.PROFILE
+        else -> NavigationItem.HOME
     }
 
     companion object {

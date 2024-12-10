@@ -1,5 +1,4 @@
-import org.gradle.kotlin.dsl.android
-import org.gradle.kotlin.dsl.kotlin
+
 import org.jetbrains.compose.internal.utils.localPropertiesFile
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -81,6 +80,7 @@ buildConfig {
 
     val firebaseAndroidApiKey = properties["firebaseAndroidApiKey"].toString()
     val firebaseIosApiKey = properties["firebaseIosApiKey"].toString()
+    val firebaseWebApiKey = properties["firebaseWebApiKey"].toString()
     val firebaseMessagingSenderId = properties["firebaseGcmSenderId"].toString()
     val firebaseAppId = properties["firebaseApplicationId"].toString()
     val firebaseStorageBucket = properties["firebaseStorageBucket"].toString()
@@ -89,6 +89,7 @@ buildConfig {
 
     buildConfigField("String", "FIREBASE_ANDROID_API_KEY", firebaseAndroidApiKey)
     buildConfigField("String", "FIREBASE_IOS_API_KEY", firebaseIosApiKey)
+    buildConfigField("String", "FIREBASE_WEB_API_KEY", firebaseWebApiKey)
     buildConfigField("String", "FIREBASE_MESSAGING_SENDER_ID", firebaseMessagingSenderId)
     buildConfigField("String", "FIREBASE_APP_ID", firebaseAppId)
     buildConfigField("String", "FIREBASE_STORAGE_BUCKET", firebaseStorageBucket)

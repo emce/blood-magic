@@ -79,6 +79,7 @@ import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
+import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import mobi.cwiklinski.bloodline.ui.widget.CarouselItem
 import mobi.cwiklinski.bloodline.ui.widget.DonationItem
 import mobi.cwiklinski.bloodline.ui.widget.HomeCard
@@ -103,7 +104,10 @@ class HomeScreen : AppScreen() {
     }
 
     @Composable
-    override fun verticalView() {
+    override fun defaultView() = portraitView()
+
+    @Composable
+    override fun portraitView() {
         Napier.d("Home Screen started vertically")
         VerticalScaffold { paddingValues ->
             HomeView(paddingValues)
@@ -111,11 +115,31 @@ class HomeScreen : AppScreen() {
     }
 
     @Composable
-    override fun horizontalView() {
+    override fun landscapeView() {
         Napier.d("Home Screen started horizontally")
-        HorizontalScaffold { paddingValues ->
-            HomeView(paddingValues)
-        }
+        val navigator = LocalNavigator.currentOrThrow
+        DesktopNavigationScaffold(
+            topBar = { },
+            onNavigationClicked = { navigationItem ->
+                when (navigationItem) {
+                    NavigationItem.LIST -> {
+                        navigator.push(DonationsScreen())
+                    }
+                    NavigationItem.CENTER -> {
+                        navigator.push(CentersScreen())
+                    }
+                    NavigationItem.PROFILE -> {
+                        navigator.push(ProfileScreen())
+                    }
+                    else -> {
+                        navigator.push(HomeScreen())
+                    }
+                }
+            },
+            desiredContent = {
+                HomeView(PaddingValues(0.dp))
+            }
+        )
     }
 
     @Composable

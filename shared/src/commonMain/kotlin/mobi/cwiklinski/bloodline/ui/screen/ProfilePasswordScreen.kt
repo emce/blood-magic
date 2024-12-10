@@ -77,9 +77,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 class ProfilePasswordScreen : AppProfileScreen() {
 
+    @Composable
+    override fun defaultView() = portraitView()
+
     @Preview
     @Composable
-    override fun verticalView() {
+    override fun portraitView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
@@ -328,7 +331,7 @@ class ProfilePasswordScreen : AppProfileScreen() {
     }
 
     @Composable
-    override fun horizontalView() {
-        verticalView()
+    override fun landscapeView() {
+        portraitView()
     }
 }

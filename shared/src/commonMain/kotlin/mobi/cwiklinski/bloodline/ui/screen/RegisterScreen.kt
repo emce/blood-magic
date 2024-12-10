@@ -69,7 +69,10 @@ import org.jetbrains.compose.resources.stringResource
 class RegisterScreen : AppScreen() {
 
     @Composable
-    override fun verticalView() {
+    override fun defaultView() = portraitView()
+
+    @Composable
+    override fun portraitView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<RegisterScreenModel>()
         var email by remember { mutableStateOf("") }
@@ -231,8 +234,8 @@ class RegisterScreen : AppScreen() {
     }
 
     @Composable
-    override fun horizontalView() {
-        verticalView()
+    override fun landscapeView() {
+        portraitView()
     }
 
     @Composable
