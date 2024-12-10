@@ -15,10 +15,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.isMobile
+import mobi.cwiklinski.bloodline.isTablet
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.placeholder_center
+import mobi.cwiklinski.bloodline.resources.placeholder_map
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTitle
@@ -41,7 +46,7 @@ fun CenterItemView(center: Center, modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Row(
-                modifier = modifier.padding(6.dp),
+                modifier = modifier,
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
@@ -51,17 +56,32 @@ fun CenterItemView(center: Center, modifier: Modifier = Modifier) {
                     description = center.name,
                     error = Res.drawable.placeholder_center,
                     placeHolder = Res.drawable.placeholder_center,
+                    contentScale = ContentScale.FillWidth
                 )
                 Column(
                     modifier = Modifier.weight(1.0f).padding(start = 6.dp)
                 ) {
                     Text(
                         center.name,
-                        style = itemTitle()
+                        style = itemTitle(),
+                        minLines = 2,
+                        maxLines = 2,
                     )
                     Text(
                         center.getFullAddress(),
                         style = itemSubTitle(),
+                        minLines = 2,
+                        maxLines = 2,
+                    )
+                }
+                if (isTablet() || !isMobile()) {
+                    RemoteImage(
+                        modifier = Modifier.size(width = 120.dp, height = 90.dp),
+                        url = Constants.MAP_URL.replace("%id", center.id),
+                        description = center.getFullAddress(),
+                        error = Res.drawable.placeholder_map,
+                        placeHolder = Res.drawable.placeholder_map,
+                        contentScale = ContentScale.FillWidth
                     )
                 }
             }

@@ -19,23 +19,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.home_card_star
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.cardTitle
 import mobi.cwiklinski.bloodline.ui.theme.contentText
-import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HomeCard(
+    modifier: Modifier = Modifier,
     title: String,
     subTitle: String,
-    subSubTitle: String? = null
+    subSubTitle: @Composable () -> Unit = {}
 ) {
-    Box(modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(20.dp)) {
+    Box(modifier = modifier.fillMaxWidth().wrapContentHeight().padding(20.dp)) {
         Card(
             modifier = Modifier.fillMaxWidth().wrapContentHeight().align(Alignment.TopCenter)
                 .offset(y = 12.dp),
@@ -47,16 +44,14 @@ fun HomeCard(
             elevation = CardDefaults.cardElevation(3.dp)
         ) {
             Column(
-                modifier = Modifier.padding(50.dp),
+                modifier = Modifier.padding(50.dp).fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(title, style = cardTitle())
                 Spacer(Modifier.height(20.dp))
                 Text(subTitle, style = contentText())
-                subSubTitle?.let {
-                    Text(it, style = itemSubTitle())
-                }
+                subSubTitle.invoke()
             }
         }
         Image(
@@ -65,10 +60,4 @@ fun HomeCard(
             modifier = Modifier.align(Alignment.TopCenter)
         )
     }
-}
-
-@Preview
-@Composable
-fun HomeCardPreview() {
-    HomeCard(stringResource(Res.string.appName), stringResource(Res.string.appName))
 }

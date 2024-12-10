@@ -7,6 +7,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.sp
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.quicksand_bold
@@ -174,7 +175,8 @@ fun itemTitle() = TextStyle(
     fontSize = 13.sp,
     color = AppThemeColors.black,
     fontWeight = FontWeight.SemiBold,
-    lineHeight = 18.sp
+    lineHeight = 18.sp,
+    lineBreak = LineBreak.Paragraph
 )
 
 @Composable
@@ -183,7 +185,8 @@ fun itemSubTitle() = TextStyle(
     fontSize = 11.sp,
     color = AppThemeColors.black70,
     fontWeight = FontWeight.Medium,
-    lineHeight = 16.sp
+    lineHeight = 16.sp,
+    lineBreak = LineBreak.Paragraph
 )
 
 @Composable

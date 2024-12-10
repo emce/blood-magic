@@ -2,6 +2,7 @@ package mobi.cwiklinski.bloodline.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,7 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -79,6 +82,7 @@ import mobi.cwiklinski.bloodline.ui.model.HomeScreenModel
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
+import mobi.cwiklinski.bloodline.ui.theme.itemTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
@@ -200,6 +204,7 @@ class HomeScreen : AppScreen() {
     @Composable
     fun HomeView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle()
         val profile by screenModel.profile.collectAsStateWithLifecycle()
@@ -276,22 +281,42 @@ class HomeScreen : AppScreen() {
                         )
                     }
                     HomeCard(
-                        stringResource(Res.string.homeSectionNextDonationEmptyTitle),
-                        stringResource(Res.string.homeSectionNextDonationEmptyText)
+                        title = stringResource(Res.string.homeSectionNextDonationEmptyTitle),
+                        subTitle = stringResource(Res.string.homeSectionNextDonationEmptyText),
                     )
-                    Box(
-                        modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                    ConstraintLayout(
+                        modifier = Modifier.fillMaxWidth().wrapContentHeight(),
                     ) {
+                        val (card, image) = createRefs()
                         HomeCard(
-                            stringResource(Res.string.homeSectionHistoryEmptyTitle),
-                            stringResource(Res.string.homeSectionHistoryEmptyText),
-                            stringResource(Res.string.homeSectionHistoryAddDonationEmptyText)
+                            modifier = Modifier.constrainAs(card) {
+                                top.linkTo(parent.top)
+                                bottom.linkTo(parent.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                            },
+                            title = stringResource(Res.string.homeSectionHistoryEmptyTitle),
+                            subTitle = stringResource(Res.string.homeSectionHistoryEmptyText),
+                            subSubTitle = {
+                                Text(
+                                    stringResource(Res.string.homeSectionHistoryAddDonationEmptyText),
+                                    style = itemTitle().copy(
+                                        textDecoration = TextDecoration.Underline
+                                    ),
+                                    modifier = Modifier.padding(top = 10.dp).clickable {
+                                        bottomSheetNavigator.show(NewDonationScreen())
+                                    }
+                                )
+                            }
                         )
                         if (isMobile() && !isTablet()) {
                             Image(
                                 painterResource(Res.drawable.home_arrow),
                                 stringResource(Res.string.homeTitle),
-                                modifier = Modifier.align(Alignment.Center)
+                                modifier = Modifier.constrainAs(image) {
+                                    centerHorizontallyTo(parent)
+                                    bottom.linkTo(parent.bottom)
+                                }
                                     .offset(x = 70.dp, y = 100.dp)
                             )
                         }
