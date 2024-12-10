@@ -26,8 +26,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,10 +34,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -84,20 +80,22 @@ import mobi.cwiklinski.bloodline.ui.model.ProfileError
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
-import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.util.Avatar
+import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
 import mobi.cwiklinski.bloodline.ui.util.filter
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.Break
 import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
+import mobi.cwiklinski.bloodline.ui.widget.DesktopNavigationTitleScaffold
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
+import mobi.cwiklinski.bloodline.ui.widget.MobileLandscapeNavigationTitleLayout
+import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationTitleLayout
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
@@ -108,74 +106,98 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
     AppProfileScreen() {
 
     @Composable
-    override fun defaultView() = portraitView()
-
-    @Composable
-    override fun portraitView() {
-        val behaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
-        val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
-        Box(
-            modifier = Modifier.background(AppThemeColors.homeGradient)
-        ) {
-            VerticalScaffold(
-                backgroundColor = Color.Transparent,
-                modifier = Modifier.nestedScroll(behaviour.nestedScrollConnection),
-                topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(
-                                stringResource(Res.string.profileTitle),
-                                style = toolbarTitle()
-                            )
-                        },
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = Color.Transparent,
-                            titleContentColor = AppThemeColors.black,
-                            navigationIconContentColor = AppThemeColors.black
-                        ),
-                        scrollBehavior = behaviour,
-                        actions = {
-                            Text(
-                                stringResource(Res.string.settingsLogoutTitle),
-                                style = contentAction(),
-                                modifier = Modifier.clickable {
-                                    screenModel.loggingOut()
-                                }
-                            )
-                            Spacer(Modifier.width(30.dp))
-                        }
-                    )
-                },
-            ) { paddingValues ->
-                ProfileView(paddingValues)
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        MobilePortraitNavigationTitleLayout(
+            title = stringResource(Res.string.profileTitle),
+            selected = NavigationItem.PROFILE,
+            navigationAction = { navigationItem ->
+                when (navigationItem) {
+                    NavigationItem.LIST -> {
+                        navigator.push(DonationsScreen())
+                    }
+                    NavigationItem.CENTER -> {
+                        navigator.push(CentersScreen())
+                    }
+                    NavigationItem.PROFILE -> {
+                        navigator.push(ProfileScreen())
+                    }
+                    else -> {
+                        navigator.push(HomeScreen())
+                    }
+                }
+            },
+            floatingAction = {
+                bottomSheetNavigator.show(NewDonationScreen())
             }
+        ) { paddingValues ->
+            ProfileView(paddingValues)
         }
     }
 
     @Composable
-    override fun landscapeView() {
+    override fun tabletView() {
         val navigator = LocalNavigator.currentOrThrow
-        val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
-        HorizontalScaffold(
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        MobileLandscapeNavigationTitleLayout(
             title = stringResource(Res.string.profileTitle),
-            actions = {
-                Text(
-                    stringResource(Res.string.settingsLogoutTitle),
-                    style = contentAction(),
-                    modifier = Modifier.clickable {
-                        screenModel.loggingOut()
+            selected = NavigationItem.PROFILE,
+            navigationAction = { navigationItem ->
+                when (navigationItem) {
+                    NavigationItem.LIST -> {
+                        navigator.push(DonationsScreen())
                     }
-                )
-                Spacer(Modifier.width(30.dp))
+                    NavigationItem.CENTER -> {
+                        navigator.push(CentersScreen())
+                    }
+                    NavigationItem.PROFILE -> {
+                        navigator.push(ProfileScreen())
+                    }
+                    else -> {
+                        navigator.push(HomeScreen())
+                    }
+                }
+            },
+            floatingAction = {
+                bottomSheetNavigator.show(NewDonationScreen())
+            },
+            desiredContent = {
+                ProfileView(PaddingValues(0.dp))
             }
-        ) { paddingValues ->
-            Box(
-                modifier = Modifier.background(AppThemeColors.homeGradient)
-            ) {
-                ProfileView(paddingValues)
+        )
+    }
+
+    @Composable
+    override fun desktopView() {
+        val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        DesktopNavigationTitleScaffold(
+            title = stringResource(Res.string.profileTitle),
+            selected = NavigationItem.PROFILE,
+            navigationAction = { navigationItem ->
+                when (navigationItem) {
+                    NavigationItem.LIST -> {
+                        navigator.push(DonationsScreen())
+                    }
+                    NavigationItem.CENTER -> {
+                        navigator.push(CentersScreen())
+                    }
+                    NavigationItem.PROFILE -> {
+                        navigator.push(ProfileScreen())
+                    }
+                    else -> {
+                        navigator.push(HomeScreen())
+                    }
+                }
+            },
+            floatingAction = {
+                bottomSheetNavigator.show(NewDonationScreen())
+            },
+            desiredContent = {
+                ProfileView(PaddingValues(0.dp))
             }
-        }
+        )
     }
 
     @Composable

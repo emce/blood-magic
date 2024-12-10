@@ -68,10 +68,7 @@ import org.jetbrains.compose.resources.stringResource
 class ProfileAvatarScreen : AppProfileScreen() {
 
     @Composable
-    override fun defaultView() = portraitView()
-
-    @Composable
-    override fun portraitView() {
+    override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
@@ -243,10 +240,5 @@ class ProfileAvatarScreen : AppProfileScreen() {
                 Spacer(modifier = Modifier.height(100.dp))
             }
         }
-    }
-
-    @Composable
-    override fun landscapeView() {
-        portraitView()
     }
 }

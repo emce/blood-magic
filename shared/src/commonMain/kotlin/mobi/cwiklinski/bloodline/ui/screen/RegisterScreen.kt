@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.icon_apple
 import mobi.cwiklinski.bloodline.resources.icon_facebook
@@ -59,6 +62,7 @@ import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
 import mobi.cwiklinski.bloodline.ui.widget.LinkedText
+import mobi.cwiklinski.bloodline.ui.widget.MobileLayout
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SocialIconButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
@@ -66,13 +70,41 @@ import mobi.cwiklinski.bloodline.ui.widget.TextWithLinks
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-class RegisterScreen : AppScreen() {
+class RegisterScreen(val state: RegisterState = RegisterState.Idle) : AppScreen() {
 
     @Composable
-    override fun defaultView() = portraitView()
+    override fun defaultView() {
+        val snackBarHostState = remember { SnackbarHostState() }
+        handleSnackBars<RegisterState, RegisterScreenModel>(snackBarHostState)
+        MobileLayout(
+            snackBarState = snackBarHostState,
+            desiredContent = { paddingValues ->
+                RegisterView(paddingValues)
+            }
+        )
+    }
 
     @Composable
-    override fun portraitView() {
+    override fun tabletView() {
+        val width = getScreenWidth()
+        val snackBarHostState = remember { SnackbarHostState() }
+        handleSnackBars<RegisterState, RegisterScreenModel>(snackBarHostState)
+        MobileLayout(
+            snackBarState = snackBarHostState,
+            desiredContent = { paddingValues ->
+                val newPaddingValues = PaddingValues(
+                    top = paddingValues.calculateTopPadding(),
+                    bottom = paddingValues.calculateBottomPadding(),
+                    start = width / 4,
+                    end = width / 4
+                )
+                RegisterView(newPaddingValues)
+            }
+        )
+    }
+
+    @Composable
+    fun RegisterView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<RegisterScreenModel>()
         var email by remember { mutableStateOf("") }
@@ -84,7 +116,7 @@ class RegisterScreen : AppScreen() {
         Column(
             Modifier.wrapContentHeight().fillMaxWidth().background(
                 AppThemeColors.authGradient
-            ).verticalScroll(rememberScrollState()),
+            ).padding(paddingValues).verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -231,11 +263,6 @@ class RegisterScreen : AppScreen() {
                 }
             }
         }
-    }
-
-    @Composable
-    override fun landscapeView() {
-        portraitView()
     }
 
     @Composable

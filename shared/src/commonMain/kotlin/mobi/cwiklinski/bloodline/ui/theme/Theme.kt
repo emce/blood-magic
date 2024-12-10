@@ -201,9 +201,8 @@ object AppThemeColors {
     fun topBarColors() = TopAppBarDefaults.topAppBarColors(
         containerColor = Color.Transparent,
         scrolledContainerColor = Color.Transparent,
-        navigationIconContentColor = rose1,
-        titleContentColor = rose1,
-        actionIconContentColor = rose1
+        titleContentColor = black,
+        navigationIconContentColor = black
     )
 
     @Composable

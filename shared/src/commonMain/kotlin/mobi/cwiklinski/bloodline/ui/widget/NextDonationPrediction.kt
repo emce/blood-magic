@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -89,7 +88,7 @@ fun NextDonationPrediction(lastDonation: Donation?) {
                     offsetY = 3.dp,
                     blurRadius = 20f
                 )
-                .background(SolidColor(AppThemeColors.white), shape = RoundedCornerShape(8.dp))
+                .background(AppThemeColors.white, shape = RoundedCornerShape(8.dp))
                 .padding(horizontal = 20.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start

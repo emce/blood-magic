@@ -49,6 +49,8 @@ actual fun getScreenHeight(): Dp = with(LocalDensity.current) {
 actual fun getDonationGridSize(): GridCells =
     GridCells.Fixed(if (getOrientation().isHorizontal()) 2 else 1)
 
-actual fun isTablet(): Boolean {
-    return UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
-}
+@Composable
+actual fun isTablet() = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
+
+@Composable
+actual fun isMobile() = true

@@ -190,12 +190,17 @@ class DonationScreenModel(
     fun clearError() {
         mutableState.value = DonationState.Idle
     }
+
+    fun markToDelete(donation: Donation) {
+        mutableState.value = DonationState.ToDelete(donation)
+    }
 }
 
 sealed class DonationState {
     data object Idle : DonationState()
     data object Saving : DonationState()
     data object Saved : DonationState()
+    data class ToDelete(val donation: Donation) : DonationState()
     data object Deleted : DonationState()
     data class Error(val error: DonationError) : DonationState()
 }

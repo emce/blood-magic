@@ -34,3 +34,6 @@ actual fun getDonationGridSize(): GridCells = GridCells.Fixed(2)
 
 @Composable
 actual fun isTablet() = false
+
+@Composable
+actual fun isMobile() = false
