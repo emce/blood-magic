@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -37,7 +37,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.common.isValidUrl
-import mobi.cwiklinski.bloodline.getDonationGridSize
+import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.centerSearchLabel
 import mobi.cwiklinski.bloodline.resources.centersTitle
@@ -262,52 +262,34 @@ class CentersScreen : AppScreen() {
         val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
         val centers by screenModel.filteredCenters.collectAsStateWithLifecycle(emptyList())
         if (centers.isNotEmpty()) {
-            LazyVerticalGrid(
+            LazyColumn(
                 modifier = Modifier.fillMaxSize()
                     .padding(paddingValues)
                     .background(
                         SolidColor(AppThemeColors.background),
                         RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
                     ),
-                columns = getDonationGridSize(),
                 verticalArrangement = Arrangement.Top
             ) {
                 itemsIndexed(centers) { index, center ->
-                    if (index > 0) {
+                    if (index == 0) {
+                        RegionHeader(center)
+                    } else {
                         centers.getOrNull(index - 1)?.let { previous ->
                             if (center.voivodeship != previous.voivodeship) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(AppThemeColors.grey1)
-                                        .padding(10.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Start
-                                ) {
-                                    Image(
-                                        painterResource(Res.drawable.icon_poland),
-                                        contentDescription = center.voivodeship,
-                                        modifier = Modifier.size(16.dp),
-                                        colorFilter = ColorFilter.tint(AppThemeColors.black70)
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text(
-                                        center.voivodeship.toUpperCase(Locale.current),
-                                        style = itemSubTitle()
-                                    )
-                                }
+                                RegionHeader(center)
                             }
                         }
-                        CenterItemView(
-                            center, modifier = Modifier
-                                .fillMaxWidth().clickable {
-                                    bottomNavigator.show(CenterScreen(center) { link ->
-                                        if (link.isValidUrl()) {
-                                            screenModel.postEvent(Events.OpenBrowser(url = link))
-                                        }
-                                    })
-                                })
                     }
+                    CenterItemView(
+                        center, modifier = Modifier
+                            .fillMaxWidth().clickable {
+                                bottomNavigator.show(CenterScreen(center) { link ->
+                                    if (link.isValidUrl()) {
+                                        screenModel.postEvent(Events.OpenBrowser(url = link))
+                                    }
+                                })
+                            })
                 }
             }
         } else {
@@ -325,6 +307,30 @@ class CentersScreen : AppScreen() {
                 Spacer(Modifier.height(10.dp))
                 Text(stringResource(Res.string.loading))
             }
+        }
+    }
+
+    @Composable
+    fun RegionHeader(center: Center) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(AppThemeColors.grey1)
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Image(
+                painterResource(Res.drawable.icon_poland),
+                contentDescription = center.voivodeship,
+                modifier = Modifier.size(16.dp),
+                colorFilter = ColorFilter.tint(AppThemeColors.black70)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                center.voivodeship.toUpperCase(Locale.current),
+                style = itemSubTitle()
+            )
         }
     }
 }
