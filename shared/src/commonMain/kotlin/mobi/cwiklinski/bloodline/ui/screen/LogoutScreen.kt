@@ -34,10 +34,10 @@ import org.jetbrains.compose.resources.stringResource
 class LogoutScreen : AppScreen() {
 
     @Composable
-    override fun defaultView() = portraitView()
+    override fun defaultView() = portraitPhoneView()
 
     @Composable
-    override fun portraitView() {
+    override fun portraitPhoneView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<LogoutScreenModel>()
         val state by screenModel.state.collectAsStateWithLifecycle()
@@ -68,5 +68,5 @@ class LogoutScreen : AppScreen() {
     }
 
     @Composable
-    override fun landscapeView() = portraitView()
+    override fun tabletView() = portraitPhoneView()
 }

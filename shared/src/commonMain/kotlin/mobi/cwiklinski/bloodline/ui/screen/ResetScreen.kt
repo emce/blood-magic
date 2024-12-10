@@ -4,12 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.goBack
 import mobi.cwiklinski.bloodline.resources.icon_reset
@@ -40,6 +42,7 @@ import mobi.cwiklinski.bloodline.ui.model.ResetState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
+import mobi.cwiklinski.bloodline.ui.widget.MobileLayout
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
@@ -49,24 +52,38 @@ import org.jetbrains.compose.resources.stringResource
 class ResetScreen() : AppScreen() {
 
     @Composable
-    override fun defaultView() = portraitView()
-
-    @Composable
-    override fun portraitView() {
-        Scaffold {
-            ResetView()
-        }
+    override fun defaultView() {
+        val snackBarHostState = remember { SnackbarHostState() }
+        handleSnackBars<ResetState, ResetScreenModel>(snackBarHostState)
+        MobileLayout(
+            snackBarState = snackBarHostState,
+            desiredContent = { paddingValues ->
+                ResetView(paddingValues)
+            }
+        )
     }
 
     @Composable
-    override fun landscapeView() {
-        Scaffold {
-            ResetView()
-        }
+    override fun tabletView() {
+        val width = getScreenWidth()
+        val snackBarHostState = remember { SnackbarHostState() }
+        handleSnackBars<ResetState, ResetScreenModel>(snackBarHostState)
+        MobileLayout(
+            snackBarState = snackBarHostState,
+            desiredContent = { paddingValues ->
+                val newPaddingValues = PaddingValues(
+                    top = paddingValues.calculateTopPadding(),
+                    bottom = paddingValues.calculateBottomPadding(),
+                    start = width / 4,
+                    end = width / 4
+                )
+                ResetView(newPaddingValues)
+            }
+        )
     }
 
     @Composable
-    fun ResetView() {
+    fun ResetView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<ResetScreenModel>()
         var email by remember { mutableStateOf("") }
@@ -78,7 +95,7 @@ class ResetScreen() : AppScreen() {
         Column(
             Modifier.fillMaxSize().background(
                 AppThemeColors.authGradient
-            ),
+            ).padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {

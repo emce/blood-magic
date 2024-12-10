@@ -37,13 +37,21 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
             mainRef
                 .valueEvents
                 .map {
-                    it.value<Map<String, FirebaseDonation>>().values.toList()
+                    if (it.value != null) {
+                        it.value<Map<String, FirebaseDonation>>().values.toList()
+                    } else {
+                        emptyList()
+                    }
                 }
         ) { centers, donations ->
             try {
-                emit(donations.map { donation ->
-                    donation.toDonation(centers.first { it.id == donation.centerId }.toCenter())
-                }.sortedByDescending { it.date })
+                if(donations.isEmpty()) {
+                    emit(emptyList())
+                } else {
+                    emit(donations.map { donation ->
+                        donation.toDonation(centers.first { it.id == donation.centerId }.toCenter())
+                    }.sortedByDescending { it.date })
+                }
             } catch (e: DatabaseException) {
                 emit(emptyList())
             }

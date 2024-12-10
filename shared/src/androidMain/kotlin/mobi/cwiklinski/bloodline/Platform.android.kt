@@ -42,3 +42,6 @@ actual fun isTablet(): Boolean {
         configuration.screenWidthDp > 600
     }
 }
+
+@Composable
+actual fun isMobile() = true

@@ -24,9 +24,12 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun FormProgress(
+    modifier: Modifier = Modifier,
     filter: ColorFilter? = null
 ) {
-    BoxWithConstraints {
+    BoxWithConstraints(
+        modifier = modifier
+    ) {
         val infiniteTransition = rememberInfiniteTransition()
         val largeAngle by infiniteTransition.animateFloat(
             initialValue = 0F,

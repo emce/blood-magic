@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,9 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,11 +36,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.icon_apple
@@ -62,7 +59,6 @@ import mobi.cwiklinski.bloodline.resources.loginSocialSectionTitle
 import mobi.cwiklinski.bloodline.resources.loginSubmitButton
 import mobi.cwiklinski.bloodline.resources.loginTitle
 import mobi.cwiklinski.bloodline.resources.soon
-import mobi.cwiklinski.bloodline.ui.event.HandleSideEffect
 import mobi.cwiklinski.bloodline.ui.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.LoginError
 import mobi.cwiklinski.bloodline.ui.model.LoginScreenModel
@@ -74,6 +70,7 @@ import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTrailing
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
+import mobi.cwiklinski.bloodline.ui.widget.MobileLayout
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SocialIconButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
@@ -93,42 +90,44 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
     }
 
     @Composable
-    override fun defaultView() = portraitView()
-
-    @Composable
-    override fun portraitView() {
+    override fun defaultView() {
         val snackBarHostState = remember { SnackbarHostState() }
-        handleSnackBars(snackBarHostState)
-        Scaffold(
-            snackbarHost = { SnackbarHost(snackBarHostState) },
-        ) {
-            LoginView()
-        }
+        handleSnackBars<LoginState, LoginScreenModel>(snackBarHostState)
+        MobileLayout(
+            snackBarState = snackBarHostState,
+            desiredContent = { paddingValues ->
+                LoginView(paddingValues)
+            }
+        )
     }
 
     @Composable
-    override fun landscapeView() {
+    override fun tabletView() {
         val width = getScreenWidth()
         val snackBarHostState = remember { SnackbarHostState() }
-        handleSnackBars(snackBarHostState)
-        Scaffold(
-            modifier = Modifier
-                .padding(horizontal = width / 6),
-            snackbarHost = { SnackbarHost(snackBarHostState) },
-        ) {
-            LoginView()
-        }
+        handleSnackBars<LoginState, LoginScreenModel>(snackBarHostState)
+        MobileLayout(
+            snackBarState = snackBarHostState,
+            desiredContent = { paddingValues ->
+                val newPaddingValues = PaddingValues(
+                    top = paddingValues.calculateTopPadding(),
+                    bottom = paddingValues.calculateBottomPadding(),
+                    start = width / 4,
+                    end = width / 4
+                )
+                LoginView(newPaddingValues)
+            }
+        )
     }
 
     @Composable
-    fun LoginView() {
+    fun LoginView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<LoginScreenModel>()
         val state by screenModel.state.collectAsStateWithLifecycle()
         if (state == LoginState.LoggedIn) {
             navigator.replaceAll(SetupScreen())
         }
-        val padding = 10.dp
         val focusManager = LocalFocusManager.current
         var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
@@ -137,7 +136,7 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
         Column(
             Modifier.wrapContentHeight().fillMaxWidth().background(
                 AppThemeColors.authGradient
-            ).verticalScroll(rememberScrollState()),
+            ).padding(paddingValues).verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -309,19 +308,6 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
                         textDecoration = TextDecoration.None,
                     )
                 }
-            }
-        }
-    }
-
-    @Composable
-    fun handleSnackBars(state: SnackbarHostState) {
-        val navigator = LocalNavigator.currentOrThrow
-        val screenModel = navigator.koinNavigatorScreenModel<LoginScreenModel>()
-        HandleSideEffect(screenModel) {
-            if (it is SideEffects.Snackbar) {
-                val snackBar = it
-                screenModel.screenModelScope.launch {
-                    state.showSnackbar(snackBar.text) }
             }
         }
     }

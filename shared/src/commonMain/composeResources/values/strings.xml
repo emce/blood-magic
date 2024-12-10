@@ -56,6 +56,13 @@
         <item>grudnia</item>
     </string-array>
 
+    // NAVIGATION
+    <string name="navHome">Tu, gdzie Magia</string>
+    <string name="navCenters">Miejsca Kropelkowania</string>
+    <string name="navDonations">Magiczne Kropelki</string>
+    <string name="navProfile">Twoja Postać</string>
+    <string name="navAdd">Nowe Kropelki</string>
+
     // LOGIN SCREEN
     <string name="loginTitle">Witaj ponownie!</string>
     <string name="loginEmailLabel">Email</string>

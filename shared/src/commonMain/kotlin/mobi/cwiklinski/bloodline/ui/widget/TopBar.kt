@@ -11,7 +11,39 @@ import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 
 @Composable
-fun HorizontalTitleAppBar(
+fun DesktopTitleBar(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    actions: @Composable (() -> Unit)? = null
+) {
+    TopAppBar(
+        modifier = modifier,
+        title = {
+            if (title != null) {
+                Text(
+                    title,
+                    style = toolbarTitle()
+                )
+            }
+        },
+        navigationIcon = {
+            navigationIcon?.invoke()
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent,
+            titleContentColor = AppThemeColors.black,
+            navigationIconContentColor = AppThemeColors.black
+        ),
+        actions = {
+            actions?.invoke()
+        }
+    )
+}
+
+
+@Composable
+fun MobileTitleBar(
     modifier: Modifier = Modifier,
     title: String? = null,
     navigationIcon: @Composable (() -> Unit)? = null,

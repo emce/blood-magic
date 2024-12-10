@@ -2,6 +2,7 @@ package mobi.cwiklinski.bloodline.ui.widget
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,7 +25,7 @@ fun LeftNavigation(
     onClicked: (NavigationItem) -> Unit,
     modifier: Modifier = Modifier,
     selected: NavigationItem = NavigationItem.HOME,
-    floatingActionButton: @Composable (() -> Unit)? = null,
+    floatingActionButton: @Composable (ColumnScope.() -> Unit)? = null,
 ) {
     NavigationRail(
         modifier = modifier
@@ -35,10 +36,12 @@ fun LeftNavigation(
                 ),
                 RoundedCornerShape(8.dp)
             ),
+        header = floatingActionButton,
         elevation = 0.dp,
         contentColor = AppThemeColors.rose4,
         backgroundColor = Color.Transparent
     ) {
+        Spacer(modifier = Modifier.height(10.dp))
         NavigationItem.entries.forEach { item ->
             NavigationRailItem(
                 modifier = Modifier.padding(vertical = 5.dp),
@@ -60,8 +63,5 @@ fun LeftNavigation(
                 unselectedContentColor = AppThemeColors.white
             )
         }
-        Spacer(Modifier.weight(1f))
-        floatingActionButton?.invoke()
-        Spacer(Modifier.height(20.dp))
     }
 }

@@ -17,6 +17,9 @@ expect fun getPlatform(): Platform
 expect fun isTablet(): Boolean
 
 @Composable
+expect fun isMobile(): Boolean
+
+@Composable
 expect fun getOrientation(): Orientation
 
 @Composable

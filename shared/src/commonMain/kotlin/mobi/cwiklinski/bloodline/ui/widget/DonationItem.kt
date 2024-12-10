@@ -28,7 +28,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Donation
-import mobi.cwiklinski.bloodline.getPlatform
+import mobi.cwiklinski.bloodline.isMobile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationFullBlood
 import mobi.cwiklinski.bloodline.resources.donationPacked
@@ -136,7 +136,7 @@ fun DonationItem(
                     },
                     contentAlignment = Alignment.Center
                 ) {
-                    if (getPlatform().isMobile()) {
+                    if (isMobile()) {
                         Image(
                             painterResource(Res.drawable.icon_share),
                             stringResource(Res.string.donationsEdit),

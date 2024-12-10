@@ -3,9 +3,9 @@ package mobi.cwiklinski.bloodline.ui.event
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import mobi.cwiklinski.bloodline.ui.manager.PlatformManager
-import mobi.cwiklinski.bloodline.ui.model.AppModel
 import org.jetbrains.compose.resources.DrawableResource
 
 interface SideEffect
@@ -40,12 +40,12 @@ suspend fun shareText(platformManager: PlatformManager, text: String) =
     platformManager.shareText(content = text)
 
 @Composable
-fun <S> HandleSideEffect(
-    viewModel: AppModel<S>,
+fun HandleSideEffect(
+    sideEffects: Flow<SideEffect>,
     handler: suspend CoroutineScope.(sideEffect: SideEffect) -> Unit = {}
 ) {
     LaunchedEffect(Unit) {
-        viewModel.sideEffect.collectLatest {
+        sideEffects.collectLatest {
             handler.invoke(this, it)
         }
     }

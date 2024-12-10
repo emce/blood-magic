@@ -1,14 +1,16 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,19 +18,16 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.getDonationGridSize
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.close
@@ -36,77 +35,128 @@ import mobi.cwiklinski.bloodline.resources.donationsDelete
 import mobi.cwiklinski.bloodline.resources.donationsDeleteMessage
 import mobi.cwiklinski.bloodline.resources.donationsDeleteTitle
 import mobi.cwiklinski.bloodline.resources.donationsTitle
-import mobi.cwiklinski.bloodline.resources.homeTitle
-import mobi.cwiklinski.bloodline.resources.home_stars
+import mobi.cwiklinski.bloodline.resources.homeSectionHistoryAddDonationEmptyText
+import mobi.cwiklinski.bloodline.resources.homeSectionHistoryEmptyText
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
-import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
+import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
+import mobi.cwiklinski.bloodline.ui.util.NavigationItem
+import mobi.cwiklinski.bloodline.ui.widget.DesktopNavigationTitleScaffold
 import mobi.cwiklinski.bloodline.ui.widget.DonationItem
+import mobi.cwiklinski.bloodline.ui.widget.MobileLandscapeNavigationTitleLayout
+import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationTitleLayout
 import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 class DonationsScreen : AppScreen() {
 
     @Composable
-    override fun defaultView() = portraitView()
-
-    @Composable
-    override fun portraitView() {
-        Box(
-            modifier = Modifier.background(AppThemeColors.homeGradient)
-                .padding(top = 20.dp)
-        ) {
-            VerticalScaffold(
-                backgroundColor = Color.Transparent,
-                topBar = {
-                    Box(
-                        modifier = Modifier.height(100.dp)
-                            .fillMaxWidth()
-                            .background(Color.Transparent)
-                    ) {
-                        Image(
-                            painterResource(Res.drawable.home_stars),
-                            stringResource(Res.string.homeTitle),
-                            modifier = Modifier.padding(20.dp).align(Alignment.CenterEnd)
-                        )
-                        Text(
-                            stringResource(Res.string.donationsTitle),
-                            style = toolbarTitle(),
-                            modifier = Modifier.align(Alignment.CenterStart).padding(20.dp)
-                        )
+    override fun defaultView() {
+        val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        MobilePortraitNavigationTitleLayout(
+            title = stringResource(Res.string.donationsTitle),
+            selected = NavigationItem.LIST,
+            navigationAction = { navigationItem ->
+                when (navigationItem) {
+                    NavigationItem.LIST -> {
+                        navigator.push(DonationsScreen())
                     }
-                },
-            ) { paddingValues ->
-                DonationsView(paddingValues)
+                    NavigationItem.CENTER -> {
+                        navigator.push(CentersScreen())
+                    }
+                    NavigationItem.PROFILE -> {
+                        navigator.push(ProfileScreen())
+                    }
+                    else -> {
+                        navigator.push(HomeScreen())
+                    }
+                }
+            },
+            floatingAction = {
+                bottomSheetNavigator.show(NewDonationScreen())
             }
-        }
-    }
-
-    @Composable
-    override fun landscapeView() {
-        HorizontalScaffold(
-            title = stringResource(Res.string.donationsTitle)
         ) { paddingValues ->
             DonationsView(paddingValues)
         }
     }
 
     @Composable
+    override fun tabletView() {
+        val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        MobileLandscapeNavigationTitleLayout(
+            title = stringResource(Res.string.donationsTitle),
+            selected = NavigationItem.LIST,
+            navigationAction = { navigationItem ->
+                when (navigationItem) {
+                    NavigationItem.LIST -> {
+                        navigator.push(DonationsScreen())
+                    }
+                    NavigationItem.CENTER -> {
+                        navigator.push(CentersScreen())
+                    }
+                    NavigationItem.PROFILE -> {
+                        navigator.push(ProfileScreen())
+                    }
+                    else -> {
+                        navigator.push(HomeScreen())
+                    }
+                }
+            },
+            floatingAction = {
+                bottomSheetNavigator.show(NewDonationScreen())
+            },
+            desiredContent = {
+                DonationsView(PaddingValues(0.dp))
+            }
+        )
+    }
+
+    @Composable
+    override fun desktopView() {
+        val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        DesktopNavigationTitleScaffold(
+            title = stringResource(Res.string.donationsTitle),
+            selected = NavigationItem.LIST,
+            navigationAction = { navigationItem ->
+                when (navigationItem) {
+                    NavigationItem.LIST -> {
+                        navigator.push(DonationsScreen())
+                    }
+                    NavigationItem.CENTER -> {
+                        navigator.push(CentersScreen())
+                    }
+                    NavigationItem.PROFILE -> {
+                        navigator.push(ProfileScreen())
+                    }
+                    else -> {
+                        navigator.push(HomeScreen())
+                    }
+                }
+            },
+            floatingAction = {
+                bottomSheetNavigator.show(NewDonationScreen())
+            },
+            desiredContent = {
+                DonationsView(PaddingValues(0.dp))
+            }
+        )
+    }
+
+    @Composable
     fun DonationsView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
         val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
-        var donationToDelete: Donation? by remember { mutableStateOf(null) }
-        if (state == DonationState.Deleted) {
-            donationToDelete = null
-        }
-        if (donationToDelete != null) {
+        if (state is DonationState.ToDelete) {
             AlertDialog(
                 onDismissRequest = { },
                 title = {
@@ -124,9 +174,7 @@ class DonationsScreen : AppScreen() {
                 confirmButton = {
                     SubmitButton(
                         onClick = {
-                            donationToDelete?.let {
-                                screenModel.deleteDonation(it)
-                            }
+                            screenModel.deleteDonation((state as DonationState.ToDelete).donation)
                         },
                         text = stringResource(Res.string.donationsDelete)
                     )
@@ -134,7 +182,7 @@ class DonationsScreen : AppScreen() {
                 dismissButton = {
                     SecondaryButton(
                         onClick = {
-                            donationToDelete = null
+                            screenModel.clearError()
                         },
                         text = stringResource(Res.string.close)
                     )
@@ -152,16 +200,41 @@ class DonationsScreen : AppScreen() {
                 modifier = Modifier.fillMaxWidth()
                     .background(AppThemeColors.background)
                     .padding(vertical = 5.dp),
-                columns = getDonationGridSize(),
+                columns = if (donations.isNotEmpty()) getDonationGridSize() else GridCells.Fixed(1),
                 verticalArrangement = Arrangement.Top
             ) {
-                items(donations) { donation ->
-                    DonationItem(
-                        donation,
-                        { navigator.push(EditDonationScreen(donation)) },
-                        { donationToDelete = donation },
-                        { }
-                    )
+                if (donations.isNotEmpty()) {
+                    items(donations) { donation ->
+                        DonationItem(
+                            donation,
+                            { navigator.push(EditDonationScreen(donation)) },
+                            { screenModel.markToDelete(donation) },
+                            { }
+                        )
+                    }
+                } else {
+                    item {
+                        Column(
+                            modifier = Modifier.fillMaxWidth().height(400.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                stringResource(Res.string.homeSectionHistoryEmptyText),
+                                style = contentTitle(),
+                                modifier = Modifier.padding(10.dp)
+                            )
+                            Text(
+                                stringResource(Res.string.homeSectionHistoryAddDonationEmptyText),
+                                style = toolbarSubTitle().copy(
+                                    textDecoration = TextDecoration.Underline
+                                ),
+                                modifier = Modifier.padding(10.dp).clickable {
+                                    bottomSheetNavigator.show(NewDonationScreen())
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }

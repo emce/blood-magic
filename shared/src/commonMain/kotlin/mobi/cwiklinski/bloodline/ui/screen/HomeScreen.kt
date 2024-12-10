@@ -30,9 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import io.github.aakira.napier.Napier
 import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.isMobile
+import mobi.cwiklinski.bloodline.isTablet
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.homeCarouselAmountSubtitle
 import mobi.cwiklinski.bloodline.resources.homeCarouselAmountTitle
@@ -81,8 +83,11 @@ import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import mobi.cwiklinski.bloodline.ui.widget.CarouselItem
+import mobi.cwiklinski.bloodline.ui.widget.DesktopNavigationScaffold
 import mobi.cwiklinski.bloodline.ui.widget.DonationItem
 import mobi.cwiklinski.bloodline.ui.widget.HomeCard
+import mobi.cwiklinski.bloodline.ui.widget.MobileLandscapeNavigationLayout
+import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationLayout
 import mobi.cwiklinski.bloodline.ui.widget.NextDonationPrediction
 import mobi.cwiklinski.bloodline.ui.widget.capacity
 import org.jetbrains.compose.resources.painterResource
@@ -96,7 +101,7 @@ class HomeScreen : AppScreen() {
         val navigator = LocalNavigator.currentOrThrow
         val platformManager = rememberPlatformManager()
         val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
-        HandleSideEffect(screenModel) {
+        HandleSideEffect(screenModel.sideEffect) {
             if (it is SideEffects.ShareText) {
                 shareText(platformManager, it.text)
             }
@@ -104,23 +109,11 @@ class HomeScreen : AppScreen() {
     }
 
     @Composable
-    override fun defaultView() = portraitView()
-
-    @Composable
-    override fun portraitView() {
-        Napier.d("Home Screen started vertically")
-        VerticalScaffold { paddingValues ->
-            HomeView(paddingValues)
-        }
-    }
-
-    @Composable
-    override fun landscapeView() {
-        Napier.d("Home Screen started horizontally")
+    override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
-        DesktopNavigationScaffold(
-            topBar = { },
-            onNavigationClicked = { navigationItem ->
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        MobilePortraitNavigationLayout(
+            navigationAction = { navigationItem ->
                 when (navigationItem) {
                     NavigationItem.LIST -> {
                         navigator.push(DonationsScreen())
@@ -135,6 +128,68 @@ class HomeScreen : AppScreen() {
                         navigator.push(HomeScreen())
                     }
                 }
+            },
+            floatingAction = {
+                bottomSheetNavigator.show(NewDonationScreen())
+            }
+        ) { paddingValues ->
+            HomeView(paddingValues)
+        }
+    }
+
+    @Composable
+    override fun tabletView() {
+        val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        MobileLandscapeNavigationLayout(
+            navigationAction = { navigationItem ->
+                when (navigationItem) {
+                    NavigationItem.LIST -> {
+                        navigator.push(DonationsScreen())
+                    }
+                    NavigationItem.CENTER -> {
+                        navigator.push(CentersScreen())
+                    }
+                    NavigationItem.PROFILE -> {
+                        navigator.push(ProfileScreen())
+                    }
+                    else -> {
+                        navigator.push(HomeScreen())
+                    }
+                }
+            },
+            floatingAction = {
+                bottomSheetNavigator.show(NewDonationScreen())
+            },
+            desiredContent = {
+                HomeView(PaddingValues(0.dp))
+            }
+        )
+    }
+
+    @Composable
+    override fun desktopView() {
+        val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        DesktopNavigationScaffold(
+            navigationAction = { navigationItem ->
+                when (navigationItem) {
+                    NavigationItem.LIST -> {
+                        navigator.push(DonationsScreen())
+                    }
+                    NavigationItem.CENTER -> {
+                        navigator.push(CentersScreen())
+                    }
+                    NavigationItem.PROFILE -> {
+                        navigator.push(ProfileScreen())
+                    }
+                    else -> {
+                        navigator.push(HomeScreen())
+                    }
+                }
+            },
+            floatingAction = {
+                bottomSheetNavigator.show(NewDonationScreen())
             },
             desiredContent = {
                 HomeView(PaddingValues(0.dp))
@@ -232,12 +287,14 @@ class HomeScreen : AppScreen() {
                             stringResource(Res.string.homeSectionHistoryEmptyText),
                             stringResource(Res.string.homeSectionHistoryAddDonationEmptyText)
                         )
-                        Image(
-                            painterResource(Res.drawable.home_arrow),
-                            stringResource(Res.string.homeTitle),
-                            modifier = Modifier.align(Alignment.Center)
-                                .offset(x = 70.dp, y = 100.dp)
-                        )
+                        if (isMobile() && !isTablet()) {
+                            Image(
+                                painterResource(Res.drawable.home_arrow),
+                                stringResource(Res.string.homeTitle),
+                                modifier = Modifier.align(Alignment.Center)
+                                    .offset(x = 70.dp, y = 100.dp)
+                            )
+                        }
                     }
                 } else {
                     Row(
