@@ -49,14 +49,17 @@ import org.jetbrains.compose.resources.stringResource
 class ResetScreen() : AppScreen() {
 
     @Composable
-    override fun verticalView() {
+    override fun defaultView() = portraitView()
+
+    @Composable
+    override fun portraitView() {
         Scaffold {
             ResetView()
         }
     }
 
     @Composable
-    override fun horizontalView() {
+    override fun landscapeView() {
         Scaffold {
             ResetView()
         }

@@ -15,15 +15,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.util.BottomNavigationItem
+import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LeftNavigation(
-    onClicked: (BottomNavigationItem) -> Unit,
+    onClicked: (NavigationItem) -> Unit,
     modifier: Modifier = Modifier,
-    selected: BottomNavigationItem = BottomNavigationItem.HOME,
+    selected: NavigationItem = NavigationItem.HOME,
     floatingActionButton: @Composable (() -> Unit)? = null,
 ) {
     NavigationRail(
@@ -39,7 +39,7 @@ fun LeftNavigation(
         contentColor = AppThemeColors.rose4,
         backgroundColor = Color.Transparent
     ) {
-        BottomNavigationItem.entries.forEach { item ->
+        NavigationItem.entries.forEach { item ->
             NavigationRailItem(
                 modifier = Modifier.padding(vertical = 5.dp),
                 selected = item.icon == selected.icon,

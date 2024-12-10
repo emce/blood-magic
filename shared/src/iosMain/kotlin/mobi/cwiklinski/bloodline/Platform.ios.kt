@@ -14,6 +14,7 @@ import platform.UIKit.UIInterfaceOrientationLandscapeLeft
 import platform.UIKit.UIInterfaceOrientationLandscapeRight
 import platform.UIKit.UIInterfaceOrientationPortrait
 import platform.UIKit.UIInterfaceOrientationPortraitUpsideDown
+import platform.UIKit.UIUserInterfaceIdiomPad
 import platform.UIKit.UIWindow
 
 class IOSPlatform: Platform {
@@ -47,3 +48,7 @@ actual fun getScreenHeight(): Dp = with(LocalDensity.current) {
 @Composable
 actual fun getDonationGridSize(): GridCells =
     GridCells.Fixed(if (getOrientation().isHorizontal()) 2 else 1)
+
+actual fun isTablet(): Boolean {
+    return UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
+}

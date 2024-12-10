@@ -20,14 +20,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.util.BottomNavigationItem
+import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun BottomBar(
-    onClicked: (BottomNavigationItem) -> Unit,
+    onClicked: (NavigationItem) -> Unit,
     modifier: Modifier = Modifier.fillMaxWidth().wrapContentHeight(),
-    selected: BottomNavigationItem = BottomNavigationItem.HOME
+    selected: NavigationItem = NavigationItem.HOME
 ) {
     val componentHeight = 78.dp
     BottomAppBar(
@@ -51,7 +51,7 @@ fun BottomBar(
                     )
                 ),
         ) {
-            BottomNavigationItem.entries.forEach { item ->
+            NavigationItem.entries.forEach { item ->
                 BottomNavigationItem(
                     selected = item == selected,
                     enabled = item != selected,
@@ -67,7 +67,7 @@ fun BottomBar(
                     onClick = {
                         onClicked.invoke(item)
                     })
-                if (item == BottomNavigationItem.LIST) {
+                if (item == NavigationItem.LIST) {
                     Spacer(Modifier.weight(1.0f))
                 }
             }

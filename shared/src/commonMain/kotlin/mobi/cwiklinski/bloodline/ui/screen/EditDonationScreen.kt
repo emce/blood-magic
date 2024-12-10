@@ -6,12 +6,15 @@ import mobi.cwiklinski.bloodline.domain.model.Donation
 class EditDonationScreen(val donation: Donation) : AppScreen() {
 
     @Composable
-    override fun verticalView() {
+    override fun defaultView() = portraitView()
+
+    @Composable
+    override fun portraitView() {
         TODO("Not yet implemented")
     }
 
     @Composable
-    override fun horizontalView() {
-        verticalView()
+    override fun landscapeView() {
+        portraitView()
     }
 }

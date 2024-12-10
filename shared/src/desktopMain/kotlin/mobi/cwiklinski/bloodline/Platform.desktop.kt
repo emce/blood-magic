@@ -31,3 +31,6 @@ actual fun getScreenHeight(): Dp = with(LocalDensity.current) {
 
 @Composable
 actual fun getDonationGridSize(): GridCells = GridCells.Fixed(2)
+
+@Composable
+actual fun isTablet() = false

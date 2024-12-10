@@ -7,8 +7,6 @@ import dev.gitlive.firebase.FirebaseOptions
 import dev.gitlive.firebase.initialize
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
 import mobi.cwiklinski.bloodline.config.FirebaseConfig
 import mobi.cwiklinski.bloodline.storage.api.StorageService
@@ -22,7 +20,30 @@ actual class AuthenticationInitializerImpl actual constructor(
 
     override fun run() {
         try {
-            FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
+            FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform(){
+                val storage = mutableMapOf<String,String>()
+                override fun clear(key: String) {
+                    storage.remove(key)
+                }
+
+                override fun log(msg: String) {
+                    println(msg)
+                }
+
+                override fun retrieve(key: String): String? {
+                    return storage[key]
+                }
+
+                override fun store(key: String, value: String) {
+                    storage[key] = value
+                }
+            })
+            /*FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
+                init {
+                    coroutineScope.launch {
+                        storageService.clearAll()
+                    }
+                }
                 override fun clear(key: String) {
                     coroutineScope.launch {
                         storageService.clearAll()
@@ -42,11 +63,11 @@ actual class AuthenticationInitializerImpl actual constructor(
                         storageService.storeString(key, value)
                     }
                 }
-            })
+            })*/
             Firebase.initialize(
                 Context(), options = FirebaseOptions(
                     applicationId = FirebaseConfig.FIREBASE_APP_ID,
-                    apiKey = FirebaseConfig.FIREBASE_IOS_API_KEY,
+                    apiKey = FirebaseConfig.FIREBASE_ANDROID_API_KEY,
                     databaseUrl = FirebaseConfig.FIREBASE_DATABASE_URL,
                     storageBucket = FirebaseConfig.FIREBASE_STORAGE_BUCKET,
                     projectId = FirebaseConfig.FIREBASE_PROJECT_ID,

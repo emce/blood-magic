@@ -93,7 +93,10 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
     }
 
     @Composable
-    override fun verticalView() {
+    override fun defaultView() = portraitView()
+
+    @Composable
+    override fun portraitView() {
         val snackBarHostState = remember { SnackbarHostState() }
         handleSnackBars(snackBarHostState)
         Scaffold(
@@ -104,13 +107,13 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
     }
 
     @Composable
-    override fun horizontalView() {
+    override fun landscapeView() {
         val width = getScreenWidth()
         val snackBarHostState = remember { SnackbarHostState() }
         handleSnackBars(snackBarHostState)
         Scaffold(
             modifier = Modifier
-                .padding(horizontal = width / 2),
+                .padding(horizontal = width / 6),
             snackbarHost = { SnackbarHost(snackBarHostState) },
         ) {
             LoginView()
@@ -125,6 +128,7 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
         if (state == LoginState.LoggedIn) {
             navigator.replaceAll(SetupScreen())
         }
+        val padding = 10.dp
         val focusManager = LocalFocusManager.current
         var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }

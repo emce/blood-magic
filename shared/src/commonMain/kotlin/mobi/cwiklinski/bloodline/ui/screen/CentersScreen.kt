@@ -71,7 +71,10 @@ import org.jetbrains.compose.resources.stringResource
 class CentersScreen : AppScreen() {
 
     @Composable
-    override fun verticalView() {
+    override fun defaultView() = portraitView()
+
+    @Composable
+    override fun portraitView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
@@ -203,7 +206,7 @@ class CentersScreen : AppScreen() {
     }
 
     @Composable
-    override fun horizontalView() {
+    override fun landscapeView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
         val centers by screenModel.filteredCenters.collectAsStateWithLifecycle(emptyList())

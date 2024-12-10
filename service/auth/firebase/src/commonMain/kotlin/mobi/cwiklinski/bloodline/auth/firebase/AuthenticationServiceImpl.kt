@@ -1,6 +1,5 @@
 package mobi.cwiklinski.bloodline.auth.firebase
 
-import androidx.compose.ui.text.intl.Locale
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.FirebaseException
 import dev.gitlive.firebase.auth.FirebaseAuth
@@ -32,7 +31,6 @@ class AuthenticationServiceImpl(private val coroutineScope: CoroutineScope) : Au
     override val authenticationState: Flow<AuthenticationState> = _authenticationState
 
     init {
-        firebaseAuth.languageCode = Locale.current.language
         coroutineScope.launch {
             firebaseAuth.authStateChanged.collect(this@AuthenticationServiceImpl)
         }

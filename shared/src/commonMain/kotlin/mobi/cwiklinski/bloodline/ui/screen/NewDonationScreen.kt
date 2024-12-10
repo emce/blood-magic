@@ -89,7 +89,10 @@ class NewDonationScreen(
 ) : AppScreen() {
 
     @Composable
-    override fun verticalView() {
+    override fun defaultView() = portraitView()
+
+    @Composable
+    override fun portraitView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val focusManager = LocalFocusManager.current
@@ -302,8 +305,8 @@ class NewDonationScreen(
     }
 
     @Composable
-    override fun horizontalView() {
-        verticalView()
+    override fun landscapeView() {
+        portraitView()
     }
 
     @Composable

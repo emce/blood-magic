@@ -36,7 +36,10 @@ import org.jetbrains.compose.resources.stringResource
 class SplashScreen() : AppScreen() {
 
     @Composable
-    override fun verticalView() {
+    override fun defaultView() = portraitView()
+
+    @Composable
+    override fun portraitView() {
         Napier.d("Splash Screen started")
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<SplashScreenModel>()
@@ -81,7 +84,7 @@ class SplashScreen() : AppScreen() {
     }
 
     @Composable
-    override fun horizontalView() {
-        verticalView()
+    override fun landscapeView() {
+        portraitView()
     }
 }
