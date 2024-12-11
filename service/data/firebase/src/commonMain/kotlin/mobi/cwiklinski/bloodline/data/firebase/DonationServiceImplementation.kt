@@ -45,7 +45,7 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
                 }
         ) { centers, donations ->
             try {
-                if(donations.isEmpty()) {
+                if (donations.isEmpty()) {
                     emit(emptyList())
                 } else {
                     emit(donations.map { donation ->
@@ -106,8 +106,21 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
                         )
                     )
                 } finally {
-                    val newDonation = getDonation(id)
-                    emit(Either.Left(newDonation.first()))
+                    emit(
+                        Either.Left(
+                            Donation(
+                                id,
+                                date,
+                                type,
+                                amount,
+                                hemoglobin,
+                                systolic,
+                                diastolic,
+                                disqualification,
+                                center
+                            )
+                        )
+                    )
                 }
             } else {
                 emit(Either.Right(Exception()))

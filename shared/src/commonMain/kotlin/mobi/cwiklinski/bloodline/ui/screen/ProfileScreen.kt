@@ -76,6 +76,9 @@ import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
 import mobi.cwiklinski.bloodline.resources.settingsReminderLabel
 import mobi.cwiklinski.bloodline.resources.settingsSexLabel
 import mobi.cwiklinski.bloodline.resources.settingsStartingLabel
+import mobi.cwiklinski.bloodline.ui.event.HandleSideEffect
+import mobi.cwiklinski.bloodline.ui.event.SideEffects
+import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileError
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
@@ -104,6 +107,19 @@ import org.jetbrains.compose.resources.stringResource
 
 class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString()) :
     AppProfileScreen() {
+
+    @Composable
+    override fun Content() {
+        super.Content()
+        val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
+        HandleSideEffect(screenModel.sideEffect) { effect ->
+            if (effect is SideEffects.InformationDialog) {
+                bottomSheetNavigator.show(InformationScreen(title = effect.title, message = effect.message))
+            }
+        }
+    }
 
     @Composable
     override fun defaultView() {

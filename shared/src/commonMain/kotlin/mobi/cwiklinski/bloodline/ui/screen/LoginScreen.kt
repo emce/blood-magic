@@ -85,7 +85,7 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<LoginScreenModel>()
         if (state is LoginScreenState.Info) {
-            screenModel.postSideEffect(SideEffects.Snackbar(state.text))
+            screenModel.postSideEffect(SideEffects.SnackBar(state.text))
         }
     }
 
@@ -265,7 +265,7 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
                         icon = Res.drawable.icon_facebook,
                         iconDescription = "Facebook",
                         onClicked = {
-                            screenModel.postSideEffect(SideEffects.Snackbar(soon))
+                            screenModel.postSideEffect(SideEffects.SnackBar(soon))
                         },
                         enabled = state != LoginState.LoggingIn,
                     )
@@ -274,7 +274,7 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
                         icon = Res.drawable.icon_google,
                         iconDescription = "Google",
                         onClicked = {
-                            screenModel.postSideEffect(SideEffects.Snackbar(soon))
+                            screenModel.postSideEffect(SideEffects.SnackBar(soon))
                         },
                         enabled = state != LoginState.LoggingIn,
                     )
@@ -283,7 +283,7 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
                         icon = Res.drawable.icon_apple,
                         iconDescription = "Apple",
                         onClicked = {
-                            screenModel.postSideEffect(SideEffects.Snackbar(soon))
+                            screenModel.postSideEffect(SideEffects.SnackBar(soon))
                         },
                         enabled = state != LoginState.LoggingIn,
                     )

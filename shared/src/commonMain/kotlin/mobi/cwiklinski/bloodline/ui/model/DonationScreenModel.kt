@@ -78,7 +78,7 @@ class DonationScreenModel(
         disqualification: Boolean = false
     ) {
         mutableState.value = DonationState.Saving
-        _validateDonation(
+        validateDonation(
             amount,
             date,
             center,
@@ -101,7 +101,6 @@ class DonationScreenModel(
                                 is Either.Left -> {
                                     mutableState.value = DonationState.Saved
                                 }
-
                                 is Either.Right -> {
                                     mutableState.value =
                                         DonationState.Error(DonationError.DONATION_ERROR)
@@ -117,7 +116,7 @@ class DonationScreenModel(
         id: String,
         amount: Int,
         date: LocalDate,
-        center: Center?,
+        center: Center,
         type: Int,
         hemoglobin: Int,
         systolic: Int,
@@ -125,43 +124,41 @@ class DonationScreenModel(
         disqualification: Boolean
     ) {
         mutableState.value = DonationState.Saving
-        _validateDonation(
+        validateDonation(
             amount,
             date,
             center,
             type
         ) {
             screenModelScope.launch {
-                center?.let { center ->
-                    donationService.updateDonation(
-                        id,
-                        date,
-                        DonationType.byType(type),
-                        amount,
-                        hemoglobin.toFloat(),
-                        systolic,
-                        diastolic,
-                        disqualification,
-                        center
-                    )
-                        .collectLatest {
-                            when (it) {
-                                is Either.Left -> {
-                                    mutableState.value = DonationState.Saved
-                                }
+                donationService.updateDonation(
+                    id,
+                    date,
+                    DonationType.byType(type),
+                    amount,
+                    hemoglobin.toFloat(),
+                    systolic,
+                    diastolic,
+                    disqualification,
+                    center
+                )
+                    .collectLatest {
+                        when (it) {
+                            is Either.Left -> {
+                                mutableState.value = DonationState.Saved
+                            }
 
-                                is Either.Right -> {
-                                    mutableState.value =
-                                        DonationState.Error(DonationError.DONATION_ERROR)
-                                }
+                            is Either.Right -> {
+                                mutableState.value =
+                                    DonationState.Error(DonationError.DONATION_ERROR)
                             }
                         }
+                    }
                 }
-            }
         }
     }
 
-    private fun _validateDonation(
+    private fun validateDonation(
         amount: Int,
         date: LocalDate,
         center: Center?,

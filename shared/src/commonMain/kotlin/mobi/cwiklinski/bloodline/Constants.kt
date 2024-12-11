@@ -41,4 +41,7 @@ object Constants {
     // Centers
     const val CENTER_URL = "https://krwiodawca.cwiklin.ski/storage/images/center/%id.jpg"
     const val MAP_URL = "https://krwiodawca.cwiklin.ski/storage/images/maps/%id.png"
+
+    // Animations
+    const val ANIMATION_SPEED = 1000
 }
