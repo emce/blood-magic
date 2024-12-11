@@ -175,6 +175,8 @@
     <string name="donationNewCenterLabel">Centrum Krwiodawstwa</string>
     <string name="donationNewCenterError">Nie wybrane zostało Centrum Krwiodawstwa!</string>
     <string name="donationNewDisqualificationLabel">Dyskwalifikacja</string>
+    <string name="donationNewInformationTitle">Magicznie!</string>
+    <string name="donationNewInformationMessage">Nowe kropelki zostały zapisane!</string>
 
     // EDIT DONATION
     <string name="donationEditTitle">Edycja donacji</string>

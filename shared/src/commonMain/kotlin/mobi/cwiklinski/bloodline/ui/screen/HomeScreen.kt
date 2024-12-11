@@ -103,11 +103,15 @@ class HomeScreen : AppScreen() {
     override fun Content() {
         super.Content()
         val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val platformManager = rememberPlatformManager()
         val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
-        HandleSideEffect(screenModel.sideEffect) {
-            if (it is SideEffects.ShareText) {
-                shareText(platformManager, it.text)
+        HandleSideEffect(screenModel.sideEffect) { effect ->
+            if (effect is SideEffects.ShareText) {
+                shareText(platformManager, effect.text)
+            }
+            if (effect is SideEffects.InformationDialog) {
+                bottomSheetNavigator.show(InformationScreen(title = effect.title, message = effect.message))
             }
         }
     }

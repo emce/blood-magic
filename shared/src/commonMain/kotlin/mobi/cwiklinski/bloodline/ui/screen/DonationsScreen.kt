@@ -18,6 +18,9 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
@@ -37,6 +40,9 @@ import mobi.cwiklinski.bloodline.resources.donationsDeleteTitle
 import mobi.cwiklinski.bloodline.resources.donationsTitle
 import mobi.cwiklinski.bloodline.resources.homeSectionHistoryAddDonationEmptyText
 import mobi.cwiklinski.bloodline.resources.homeSectionHistoryEmptyText
+import mobi.cwiklinski.bloodline.ui.event.HandleSideEffect
+import mobi.cwiklinski.bloodline.ui.event.SideEffects
+import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
@@ -46,6 +52,7 @@ import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import mobi.cwiklinski.bloodline.ui.widget.DesktopNavigationTitleScaffold
 import mobi.cwiklinski.bloodline.ui.widget.DonationItem
+import mobi.cwiklinski.bloodline.ui.widget.InformationDialog
 import mobi.cwiklinski.bloodline.ui.widget.MobileLandscapeNavigationTitleLayout
 import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationTitleLayout
 import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
@@ -53,6 +60,19 @@ import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.stringResource
 
 class DonationsScreen : AppScreen() {
+
+    @Composable
+    override fun Content() {
+        super.Content()
+        val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
+        HandleSideEffect(screenModel.sideEffect) { effect ->
+            if (effect is SideEffects.InformationDialog) {
+                bottomSheetNavigator.show(InformationScreen(title = effect.title, message = effect.message))
+            }
+        }
+    }
 
     @Composable
     override fun defaultView() {
@@ -156,6 +176,15 @@ class DonationsScreen : AppScreen() {
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
         val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
+        var informationTitle by remember { mutableStateOf("") }
+        var informationMessage by remember { mutableStateOf("") }
+        var informationShow by remember { mutableStateOf(false) }
+        InformationDialog(
+            title = informationTitle,
+            message = informationMessage,
+            show = informationShow) {
+            informationShow = false
+        }
         if (state is DonationState.ToDelete) {
             AlertDialog(
                 onDismissRequest = { },

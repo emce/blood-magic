@@ -67,11 +67,15 @@ class CentersScreen : AppScreen() {
     override fun Content() {
         super.Content()
         val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
         val platformManager = rememberPlatformManager()
-        HandleSideEffect(screenModel.sideEffect) {
-            if (it is SideEffects.OpenBrowser) {
-                platformManager.openBrowser(it.url, it.openSystemBrowser)
+        HandleSideEffect(screenModel.sideEffect) { effect ->
+            if (effect is SideEffects.OpenBrowser) {
+                platformManager.openBrowser(effect.url, effect.openSystemBrowser)
+            }
+            if (effect is SideEffects.InformationDialog) {
+                bottomSheetNavigator.show(InformationScreen(title = effect.title, message = effect.message))
             }
         }
     }

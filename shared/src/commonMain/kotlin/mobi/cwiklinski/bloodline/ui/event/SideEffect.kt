@@ -6,7 +6,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import mobi.cwiklinski.bloodline.ui.manager.PlatformManager
-import org.jetbrains.compose.resources.DrawableResource
 
 interface SideEffect
 
@@ -17,14 +16,13 @@ interface SideEffectWithEvent : SideEffect {
 class SideEffects : SideEffect {
     open class SideEffectEvent(override val event: Event) : SideEffectWithEvent
     data class OpenBrowser(val url: String, val openSystemBrowser: Boolean = false) : SideEffect
-    data class Snackbar(val text: String) : SideEffect
-    data class ErrorSnackbar(val error: Throwable, val errorReport: String? = null) :
+    data class SnackBar(val text: String) : SideEffect
+    data class ErrorSnackBar(val error: Throwable, val errorReport: String? = null) :
         SideEffect
 
-    data class Dialog(
-        val title: String? = null,
-        val message: String,
-        val icon: DrawableResource? = null
+    data class InformationDialog(
+        val title: String,
+        val message: String
     ) : SideEffect
 
     data class ErrorDialog constructor(val error: Throwable, val errorReport: String? = null) :

@@ -57,7 +57,7 @@ abstract class AppScreen : Screen, KoinComponent {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<T>()
         HandleSideEffect(screenModel.sideEffect) {
-            if (it is SideEffects.Snackbar) {
+            if (it is SideEffects.SnackBar) {
                 val snackBar = it
                 screenModel.screenModelScope.launch {
                     state.showSnackbar(snackBar.text)

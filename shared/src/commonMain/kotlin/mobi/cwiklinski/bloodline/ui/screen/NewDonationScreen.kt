@@ -58,11 +58,14 @@ import mobi.cwiklinski.bloodline.resources.donationNewDateError
 import mobi.cwiklinski.bloodline.resources.donationNewDateLabel
 import mobi.cwiklinski.bloodline.resources.donationNewDisqualificationLabel
 import mobi.cwiklinski.bloodline.resources.donationNewError
+import mobi.cwiklinski.bloodline.resources.donationNewInformationMessage
+import mobi.cwiklinski.bloodline.resources.donationNewInformationTitle
 import mobi.cwiklinski.bloodline.resources.donationNewSubmit
 import mobi.cwiklinski.bloodline.resources.donationNewTitle
 import mobi.cwiklinski.bloodline.resources.donationNewTypeError
 import mobi.cwiklinski.bloodline.resources.donationNewTypeLabel
 import mobi.cwiklinski.bloodline.resources.icon_close
+import mobi.cwiklinski.bloodline.ui.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.DonationError
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
@@ -89,10 +92,7 @@ class NewDonationScreen(
 ) : AppScreen() {
 
     @Composable
-    override fun defaultView() = portraitPhoneView()
-
-    @Composable
-    override fun portraitPhoneView() {
+    override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val focusManager = LocalFocusManager.current
@@ -102,7 +102,12 @@ class NewDonationScreen(
         val centerSearch by screenModel.query.collectAsStateWithLifecycle("")
         val centerList by screenModel.filteredCenters.collectAsStateWithLifecycle(emptyList())
         if (state == DonationState.Saved) {
-            bottomSheetNavigator.pop()
+            bottomSheetNavigator.hide()
+            screenModel.clearError()
+            screenModel.postSideEffect(SideEffects.InformationDialog(
+                title = stringResource(Res.string.donationNewInformationTitle),
+                message = stringResource(Res.string.donationNewInformationMessage),
+            ))
         }
         val calendarState = rememberDatePickerState(
             initialSelectedDateMillis = Clock.System.now().toEpochMilliseconds(),
