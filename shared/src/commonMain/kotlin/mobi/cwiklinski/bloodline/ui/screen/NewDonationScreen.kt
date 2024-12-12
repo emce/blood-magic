@@ -2,7 +2,6 @@ package mobi.cwiklinski.bloodline.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -50,19 +49,14 @@ import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.close
-import mobi.cwiklinski.bloodline.resources.donationNewAmountError
 import mobi.cwiklinski.bloodline.resources.donationNewAmountLabel
-import mobi.cwiklinski.bloodline.resources.donationNewCenterError
 import mobi.cwiklinski.bloodline.resources.donationNewCenterLabel
-import mobi.cwiklinski.bloodline.resources.donationNewDateError
 import mobi.cwiklinski.bloodline.resources.donationNewDateLabel
 import mobi.cwiklinski.bloodline.resources.donationNewDisqualificationLabel
-import mobi.cwiklinski.bloodline.resources.donationNewError
 import mobi.cwiklinski.bloodline.resources.donationNewInformationMessage
 import mobi.cwiklinski.bloodline.resources.donationNewInformationTitle
 import mobi.cwiklinski.bloodline.resources.donationNewSubmit
 import mobi.cwiklinski.bloodline.resources.donationNewTitle
-import mobi.cwiklinski.bloodline.resources.donationNewTypeError
 import mobi.cwiklinski.bloodline.resources.donationNewTypeLabel
 import mobi.cwiklinski.bloodline.resources.icon_close
 import mobi.cwiklinski.bloodline.ui.event.SideEffects
@@ -89,7 +83,9 @@ import org.jetbrains.compose.resources.stringResource
 
 class NewDonationScreen(
     override val key: ScreenKey = Clock.System.now().toEpochMilliseconds().toString()
-) : AppScreen() {
+) : AppDonationScreen() {
+
+    override val supportDialogs = false
 
     @Composable
     override fun defaultView() {
@@ -102,12 +98,14 @@ class NewDonationScreen(
         val centerSearch by screenModel.query.collectAsStateWithLifecycle("")
         val centerList by screenModel.filteredCenters.collectAsStateWithLifecycle(emptyList())
         if (state == DonationState.Saved) {
-            bottomSheetNavigator.hide()
             screenModel.clearError()
-            screenModel.postSideEffect(SideEffects.InformationDialog(
-                title = stringResource(Res.string.donationNewInformationTitle),
-                message = stringResource(Res.string.donationNewInformationMessage),
-            ))
+            screenModel.postSideEffect(
+                SideEffects.InformationDialog(
+                    title = stringResource(Res.string.donationNewInformationTitle),
+                    message = stringResource(Res.string.donationNewInformationMessage),
+                )
+            )
+            bottomSheetNavigator.hide()
         }
         val calendarState = rememberDatePickerState(
             initialSelectedDateMillis = Clock.System.now().toEpochMilliseconds(),
@@ -176,9 +174,10 @@ class NewDonationScreen(
             },
             sheetPeekHeight = 100.dp,
             sheetContent = {
-                Box(
+                Column(
                     modifier = Modifier.fillMaxWidth().padding(20.dp),
-                    contentAlignment = Alignment.Center
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (state != DonationState.Saving) {
                         SubmitButton(
@@ -226,6 +225,7 @@ class NewDonationScreen(
                     enabled = state != DonationState.Saving,
                     queryLabel = stringResource(Res.string.donationNewCenterLabel),
                     onQueryChanged = { updatedSymbol ->
+                        screenModel.clearError()
                         screenModel.query.value = updatedSymbol
                     },
                     predictions = centerList,
@@ -242,9 +242,15 @@ class NewDonationScreen(
                         onDone = {
                             focusManager.clearFocus()
                         }
-                    )
+                    ),
+                    errorMessage = if (state is DonationState.Error && (state as DonationState.Error).error == DonationError.CENTER_ERROR) getError(
+                        (state as DonationState.Error).error
+                    ) else null
                 ) { center, index ->
-                    CenterSelectItem(center = center, previous = if (index > 0) centerList[index - 1] else null)
+                    CenterSelectItem(
+                        center = center,
+                        previous = if (index > 0) centerList[index - 1] else null
+                    )
                 }
                 OutlinedInput(
                     modifier = Modifier.fillMaxWidth(),
@@ -308,20 +314,4 @@ class NewDonationScreen(
             }
         }
     }
-
-    @Composable
-    override fun tabletView() {
-        portraitPhoneView()
-    }
-
-    @Composable
-    fun getError(error: DonationError) = stringResource(
-        when (error) {
-            DonationError.DATE_IN_FUTURE_ERROR -> Res.string.donationNewDateError
-            DonationError.AMOUNT_ERROR -> Res.string.donationNewAmountError
-            DonationError.CENTER_ERROR -> Res.string.donationNewCenterError
-            DonationError.TYPE_ERROR -> Res.string.donationNewTypeError
-            else -> Res.string.donationNewError
-        }
-    )
 }

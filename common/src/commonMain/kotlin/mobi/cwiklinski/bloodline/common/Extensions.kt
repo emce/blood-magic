@@ -52,6 +52,10 @@ fun LocalDate.isAfter(date: LocalDate) =
     )
         .toInstant(TimeZone.currentSystemDefault())
 
+fun LocalDate.toMillis() =
+    LocalDateTime(this.year, this.month, this.dayOfMonth, 12, 0, 0)
+        .toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+
 fun Double.toPrecision(precision: Int) =
     if (precision < 1) {
         "${this.roundToInt()}"

@@ -74,11 +74,9 @@ import mobi.cwiklinski.bloodline.resources.liter
 import mobi.cwiklinski.bloodline.resources.milliliter
 import mobi.cwiklinski.bloodline.resources.seeAll
 import mobi.cwiklinski.bloodline.ui.event.Events
-import mobi.cwiklinski.bloodline.ui.event.HandleSideEffect
 import mobi.cwiklinski.bloodline.ui.event.SideEffects
-import mobi.cwiklinski.bloodline.ui.event.shareText
-import mobi.cwiklinski.bloodline.ui.manager.rememberPlatformManager
 import mobi.cwiklinski.bloodline.ui.model.HomeScreenModel
+import mobi.cwiklinski.bloodline.ui.model.HomeState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
@@ -98,23 +96,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 class HomeScreen : AppScreen() {
-
-    @Composable
-    override fun Content() {
-        super.Content()
-        val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
-        val platformManager = rememberPlatformManager()
-        val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
-        HandleSideEffect(screenModel.sideEffect) { effect ->
-            if (effect is SideEffects.ShareText) {
-                shareText(platformManager, effect.text)
-            }
-            if (effect is SideEffects.InformationDialog) {
-                bottomSheetNavigator.show(InformationScreen(title = effect.title, message = effect.message))
-            }
-        }
-    }
 
     @Composable
     override fun defaultView() {
@@ -213,6 +194,7 @@ class HomeScreen : AppScreen() {
         val donations by screenModel.donations.collectAsStateWithLifecycle()
         val profile by screenModel.profile.collectAsStateWithLifecycle()
         val hero = if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
+        handleSideEffects<HomeState, HomeScreenModel>()
         Column(
             modifier = Modifier.padding(paddingValues).background(AppThemeColors.mainGradient)
         ) {

@@ -18,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -91,10 +90,8 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
 
     @Composable
     override fun defaultView() {
-        val snackBarHostState = remember { SnackbarHostState() }
-        handleSnackBars<LoginState, LoginScreenModel>(snackBarHostState)
+        handleSideEffects<LoginState, LoginScreenModel>()
         MobileLayout(
-            snackBarState = snackBarHostState,
             desiredContent = { paddingValues ->
                 LoginView(paddingValues)
             }
@@ -104,10 +101,8 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
     @Composable
     override fun tabletView() {
         val width = getScreenWidth()
-        val snackBarHostState = remember { SnackbarHostState() }
-        handleSnackBars<LoginState, LoginScreenModel>(snackBarHostState)
+        handleSideEffects<LoginState, LoginScreenModel>()
         MobileLayout(
-            snackBarState = snackBarHostState,
             desiredContent = { paddingValues ->
                 val newPaddingValues = PaddingValues(
                     top = paddingValues.calculateTopPadding(),
@@ -133,6 +128,7 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
         var password by remember { mutableStateOf("") }
         val showPassword = remember { mutableStateOf(false) }
         val soon = stringResource(Res.string.soon)
+        handleSideEffects<LoginState, LoginScreenModel>()
         Column(
             Modifier.wrapContentHeight().fillMaxWidth().background(
                 AppThemeColors.authGradient

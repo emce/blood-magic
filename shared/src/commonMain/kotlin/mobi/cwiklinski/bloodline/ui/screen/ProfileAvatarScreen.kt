@@ -67,6 +67,8 @@ import org.jetbrains.compose.resources.stringResource
 
 class ProfileAvatarScreen : AppProfileScreen() {
 
+    override val supportDialogs = false
+
     @Composable
     override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow

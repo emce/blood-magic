@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -74,10 +73,8 @@ class RegisterScreen(val state: RegisterState = RegisterState.Idle) : AppScreen(
 
     @Composable
     override fun defaultView() {
-        val snackBarHostState = remember { SnackbarHostState() }
-        handleSnackBars<RegisterState, RegisterScreenModel>(snackBarHostState)
+        handleSideEffects<RegisterState, RegisterScreenModel>()
         MobileLayout(
-            snackBarState = snackBarHostState,
             desiredContent = { paddingValues ->
                 RegisterView(paddingValues)
             }
@@ -87,10 +84,8 @@ class RegisterScreen(val state: RegisterState = RegisterState.Idle) : AppScreen(
     @Composable
     override fun tabletView() {
         val width = getScreenWidth()
-        val snackBarHostState = remember { SnackbarHostState() }
-        handleSnackBars<RegisterState, RegisterScreenModel>(snackBarHostState)
+        handleSideEffects<RegisterState, RegisterScreenModel>()
         MobileLayout(
-            snackBarState = snackBarHostState,
             desiredContent = { paddingValues ->
                 val newPaddingValues = PaddingValues(
                     top = paddingValues.calculateTopPadding(),

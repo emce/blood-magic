@@ -2,6 +2,8 @@ package mobi.cwiklinski.bloodline.ui.di
 
 import androidx.constraintlayout.compose.platform.annotation.SuppressWarnings
 import mobi.cwiklinski.bloodline.storage.datastore.createStorageModule
+import mobi.cwiklinski.bloodline.ui.manager.AppCallbackManager
+import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.HomeScreenModel
@@ -24,16 +26,17 @@ val uiModule = buildList {
     add(createStorageModule())
     add(lazyModule {
         // Models
-        factory { SplashScreenModel(authService = get()) }
-        factory { SetupScreenModel(profileService = get(), centerService = get(), storageService = get()) }
-        factory { HomeScreenModel(profileService = get(), donationService = get(), storageService = get()) }
-        factory { LoginScreenModel(authService = get(), storageService = get()) }
-        factory { RegisterScreenModel(authService = get(), profileService = get(), storageService = get()) }
-        factory { ResetScreenModel(authService = get()) }
-        factory { ProfileScreenModel(authService = get(), profileService = get(), storageService = get(), centerService = get()) }
-        factory { DonationScreenModel(donationService = get(), centerService = get(), profileService = get()) }
-        factory { CenterScreenModel(centerService = get()) }
-        factory { LogoutScreenModel(authService = get(), storageService = get()) }
+        single<CallbackManager> { AppCallbackManager(get()) }
+        single { SplashScreenModel(callbackManager = get(), authService = get()) }
+        single { SetupScreenModel(callbackManager = get(), profileService = get(), centerService = get(), storageService = get()) }
+        single { HomeScreenModel(callbackManager = get(), profileService = get(), donationService = get(), storageService = get()) }
+        single { LoginScreenModel(callbackManager = get(), authService = get(), storageService = get()) }
+        single { RegisterScreenModel(callbackManager = get(), authService = get(), profileService = get(), storageService = get()) }
+        single { ResetScreenModel(callbackManager = get(), authService = get()) }
+        single { ProfileScreenModel(callbackManager = get(), authService = get(), profileService = get(), storageService = get(), centerService = get()) }
+        single { DonationScreenModel(callbackManager = get(), donationService = get(), centerService = get(), profileService = get()) }
+        single { CenterScreenModel(callbackManager = get(), centerService = get()) }
+        single { LogoutScreenModel(callbackManager = get(), authService = get(), storageService = get()) }
     })
 }
 

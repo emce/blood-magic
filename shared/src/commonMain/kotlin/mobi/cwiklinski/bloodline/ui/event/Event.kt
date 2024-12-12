@@ -1,11 +1,5 @@
 package mobi.cwiklinski.bloodline.ui.event
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collectLatest
-import mobi.cwiklinski.bloodline.ui.model.AppModel
-
 interface Event
 
 interface EventWithSideEffect : Event {
@@ -19,16 +13,4 @@ class Events : Event {
             get() = SideEffects.OpenBrowser(url)
     }
 
-}
-
-@Composable
-fun <S> HandleEvent(
-    viewModel: AppModel<S>,
-    handler: suspend CoroutineScope.(event: Event) -> Unit = {}
-) {
-    LaunchedEffect(Unit) {
-        viewModel.event.collectLatest {
-            handler.invoke(this, it)
-        }
-    }
 }

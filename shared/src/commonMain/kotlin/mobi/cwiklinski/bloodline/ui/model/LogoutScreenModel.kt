@@ -7,12 +7,14 @@ import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.storage.api.StorageService
+import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 import kotlin.time.Duration.Companion.seconds
 
 class LogoutScreenModel(
+    callbackManager: CallbackManager,
     private val authService: AuthenticationService,
     private val storageService: StorageService
-) : AppModel<AuthenticationState>(AuthenticationState.Idle) {
+) : AppModel<AuthenticationState>(AuthenticationState.Idle, callbackManager) {
 
     init {
         bootstrap()

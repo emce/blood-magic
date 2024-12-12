@@ -20,13 +20,15 @@ import mobi.cwiklinski.bloodline.data.filed.withEmail
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.storage.api.StorageService
+import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 
 class ProfileScreenModel(
+    callbackManager: CallbackManager,
     private val profileService: ProfileService,
     centerService: CenterService,
     private val authService: AuthenticationService,
     private val storageService: StorageService
-) : AppModel<ProfileState>(ProfileState.Idle) {
+) : AppModel<ProfileState>(ProfileState.Idle, callbackManager) {
 
     val profile = profileService.getProfile()
 

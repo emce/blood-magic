@@ -14,13 +14,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
@@ -33,51 +29,36 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.getDonationGridSize
 import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.resources.close
-import mobi.cwiklinski.bloodline.resources.donationsDelete
-import mobi.cwiklinski.bloodline.resources.donationsDeleteMessage
-import mobi.cwiklinski.bloodline.resources.donationsDeleteTitle
+import mobi.cwiklinski.bloodline.resources.donationsDeleteConfirmationMessage
+import mobi.cwiklinski.bloodline.resources.donationsDeleteConfirmationTitle
+import mobi.cwiklinski.bloodline.resources.donationsShare
 import mobi.cwiklinski.bloodline.resources.donationsTitle
 import mobi.cwiklinski.bloodline.resources.homeSectionHistoryAddDonationEmptyText
 import mobi.cwiklinski.bloodline.resources.homeSectionHistoryEmptyText
-import mobi.cwiklinski.bloodline.ui.event.HandleSideEffect
+import mobi.cwiklinski.bloodline.resources.liter
+import mobi.cwiklinski.bloodline.resources.milliliter
 import mobi.cwiklinski.bloodline.ui.event.SideEffects
-import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import mobi.cwiklinski.bloodline.ui.widget.DesktopNavigationTitleScaffold
+import mobi.cwiklinski.bloodline.ui.widget.DonationDeleteDialog
 import mobi.cwiklinski.bloodline.ui.widget.DonationItem
-import mobi.cwiklinski.bloodline.ui.widget.InformationDialog
 import mobi.cwiklinski.bloodline.ui.widget.MobileLandscapeNavigationTitleLayout
 import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationTitleLayout
-import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
-import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
+import mobi.cwiklinski.bloodline.ui.widget.capacity
 import org.jetbrains.compose.resources.stringResource
 
 class DonationsScreen : AppScreen() {
 
     @Composable
-    override fun Content() {
-        super.Content()
-        val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
-        val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
-        HandleSideEffect(screenModel.sideEffect) { effect ->
-            if (effect is SideEffects.InformationDialog) {
-                bottomSheetNavigator.show(InformationScreen(title = effect.title, message = effect.message))
-            }
-        }
-    }
-
-    @Composable
     override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        handleSideEffects<DonationState, DonationScreenModel>()
         MobilePortraitNavigationTitleLayout(
             title = stringResource(Res.string.donationsTitle),
             selected = NavigationItem.LIST,
@@ -86,12 +67,15 @@ class DonationsScreen : AppScreen() {
                     NavigationItem.LIST -> {
                         navigator.push(DonationsScreen())
                     }
+
                     NavigationItem.CENTER -> {
                         navigator.push(CentersScreen())
                     }
+
                     NavigationItem.PROFILE -> {
                         navigator.push(ProfileScreen())
                     }
+
                     else -> {
                         navigator.push(HomeScreen())
                     }
@@ -109,6 +93,7 @@ class DonationsScreen : AppScreen() {
     override fun tabletView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        handleSideEffects<DonationState, DonationScreenModel>()
         MobileLandscapeNavigationTitleLayout(
             title = stringResource(Res.string.donationsTitle),
             selected = NavigationItem.LIST,
@@ -117,12 +102,15 @@ class DonationsScreen : AppScreen() {
                     NavigationItem.LIST -> {
                         navigator.push(DonationsScreen())
                     }
+
                     NavigationItem.CENTER -> {
                         navigator.push(CentersScreen())
                     }
+
                     NavigationItem.PROFILE -> {
                         navigator.push(ProfileScreen())
                     }
+
                     else -> {
                         navigator.push(HomeScreen())
                     }
@@ -141,6 +129,7 @@ class DonationsScreen : AppScreen() {
     override fun desktopView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        handleSideEffects<DonationState, DonationScreenModel>()
         DesktopNavigationTitleScaffold(
             title = stringResource(Res.string.donationsTitle),
             selected = NavigationItem.LIST,
@@ -149,12 +138,15 @@ class DonationsScreen : AppScreen() {
                     NavigationItem.LIST -> {
                         navigator.push(DonationsScreen())
                     }
+
                     NavigationItem.CENTER -> {
                         navigator.push(CentersScreen())
                     }
+
                     NavigationItem.PROFILE -> {
                         navigator.push(ProfileScreen())
                     }
+
                     else -> {
                         navigator.push(HomeScreen())
                     }
@@ -176,47 +168,21 @@ class DonationsScreen : AppScreen() {
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
         val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
-        var informationTitle by remember { mutableStateOf("") }
-        var informationMessage by remember { mutableStateOf("") }
-        var informationShow by remember { mutableStateOf(false) }
-        InformationDialog(
-            title = informationTitle,
-            message = informationMessage,
-            show = informationShow) {
-            informationShow = false
-        }
+        val milliliter = stringResource(Res.string.milliliter)
+        val liter = stringResource(Res.string.liter)
+        val deletionTitle = stringResource(Res.string.donationsDeleteConfirmationTitle)
+        val deletionMessage = stringResource(Res.string.donationsDeleteConfirmationMessage)
         if (state is DonationState.ToDelete) {
-            AlertDialog(
-                onDismissRequest = { },
-                title = {
-                    Text(
-                        stringResource(Res.string.donationsDeleteTitle),
-                        style = contentTitle()
-                    )
-                },
-                text = {
-                    Text(
-                        stringResource(Res.string.donationsDeleteMessage),
-                        style = contentText()
-                    )
-                },
-                confirmButton = {
-                    SubmitButton(
-                        onClick = {
-                            screenModel.deleteDonation((state as DonationState.ToDelete).donation)
-                        },
-                        text = stringResource(Res.string.donationsDelete)
-                    )
-                },
-                dismissButton = {
-                    SecondaryButton(
-                        onClick = {
-                            screenModel.clearError()
-                        },
-                        text = stringResource(Res.string.close)
-                    )
-                }
-            )
+            DonationDeleteDialog(
+                (state as DonationState.ToDelete).donation,
+                { screenModel.clearError() }
+            ) { donation ->
+                screenModel.deleteDonation(donation)
+                screenModel.postSideEffect(SideEffects.InformationDialog(
+                    title = deletionTitle,
+                    message = deletionMessage
+                ))
+            }
         }
         Box(
             modifier = Modifier.fillMaxSize().padding(paddingValues)
@@ -234,11 +200,16 @@ class DonationsScreen : AppScreen() {
             ) {
                 if (donations.isNotEmpty()) {
                     items(donations) { donation ->
+                        val shareText = stringResource(Res.string.donationsShare)
+                            .replace("%s", donation.amount.capacity(milliliter, liter))
+                            .replace("%p", donation.center.name)
                         DonationItem(
-                            donation,
-                            { navigator.push(EditDonationScreen(donation)) },
-                            { screenModel.markToDelete(donation) },
-                            { }
+                            donation = donation,
+                            onEdit = { bottomSheetNavigator.show(EditDonationScreen(donation)) },
+                            onDelete = { screenModel.markToDelete(donation) },
+                            onShare = {
+                                screenModel.postSideEffect(SideEffects.ShareText(shareText))
+                            }
                         )
                     }
                 } else {

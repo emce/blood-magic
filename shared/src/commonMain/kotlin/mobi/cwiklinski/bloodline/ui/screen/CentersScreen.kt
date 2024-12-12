@@ -45,10 +45,8 @@ import mobi.cwiklinski.bloodline.resources.ic_search
 import mobi.cwiklinski.bloodline.resources.icon_poland
 import mobi.cwiklinski.bloodline.resources.loading
 import mobi.cwiklinski.bloodline.ui.event.Events
-import mobi.cwiklinski.bloodline.ui.event.HandleSideEffect
-import mobi.cwiklinski.bloodline.ui.event.SideEffects
-import mobi.cwiklinski.bloodline.ui.manager.rememberPlatformManager
 import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
+import mobi.cwiklinski.bloodline.ui.model.CenterState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
@@ -62,23 +60,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 class CentersScreen : AppScreen() {
-
-    @Composable
-    override fun Content() {
-        super.Content()
-        val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
-        val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
-        val platformManager = rememberPlatformManager()
-        HandleSideEffect(screenModel.sideEffect) { effect ->
-            if (effect is SideEffects.OpenBrowser) {
-                platformManager.openBrowser(effect.url, effect.openSystemBrowser)
-            }
-            if (effect is SideEffects.InformationDialog) {
-                bottomSheetNavigator.show(InformationScreen(title = effect.title, message = effect.message))
-            }
-        }
-    }
 
     @Composable
     override fun defaultView() {
@@ -206,6 +187,7 @@ class CentersScreen : AppScreen() {
         val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
         val query by screenModel.query.collectAsStateWithLifecycle("")
         var showSearch by remember { mutableStateOf(false) }
+        handleSideEffects<CenterState, CenterScreenModel>()
         DesktopNavigationTitleScaffold(
             title = stringResource(Res.string.centersTitle),
             selected = NavigationItem.CENTER,
@@ -265,6 +247,7 @@ class CentersScreen : AppScreen() {
         val bottomNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
         val centers by screenModel.filteredCenters.collectAsStateWithLifecycle(emptyList())
+        handleSideEffects<CenterState, CenterScreenModel>()
         if (centers.isNotEmpty()) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize()

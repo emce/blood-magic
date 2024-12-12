@@ -12,11 +12,13 @@ import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.storage.api.StorageService
+import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 
 class LoginScreenModel(
+    callbackManager: CallbackManager,
     private val authService: AuthenticationService,
     private val storageService: StorageService
-) : AppModel<LoginState>(LoginState.Idle) {
+) : AppModel<LoginState>(LoginState.Idle, callbackManager) {
 
     val authState = authService.authenticationState.stateIn(
         screenModelScope,

@@ -12,13 +12,15 @@ import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
+import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 
 
 class HomeScreenModel(
+    callbackManager: CallbackManager,
     profileService: ProfileService,
     donationService: DonationService,
     storageService: StorageService
-) : AppModel<HomeState>(HomeState.Idle) {
+) : AppModel<HomeState>(HomeState.Idle, callbackManager) {
 
     val donations: StateFlow<List<Donation>> = donationService.getDonations()
         .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), emptyList())

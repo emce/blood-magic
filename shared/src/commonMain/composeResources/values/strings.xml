@@ -182,6 +182,7 @@
     <string name="donationEditTitle">Edycja donacji</string>
     <string name="donationEditIdError">Nieprawidłowe ID donacji</string>
     <string name="donationEditSubmit">Zapisz zmiany</string>
+    <string name="donationEditInformationMessage">Dane o kropelkach zostały zapisane!</string>
 
     // DONATIONS
     <string name="donationsTitle">Twoje magiczne kropelki</string>
@@ -190,7 +191,9 @@
     <string name="donationsDeleteTitle">Usunięcie danych donacji</string>
     <string name="donationsDeleteMessage">Dane donacji zostaną bezpowrotnie usunięte!\nCzy chcesz kontynuować?</string>
     <string name="donationsDeleteError">Wystąpił błąd przy usuwaniu donacji.</string>
-    <string name="donationsShare">Kolejne Magiczne Kropelki poleciały!\nTym razem fiolka, a w niej %s</string>
+    <string name="donationsShare">Kolejne Magiczne Kropelki poleciały! Tym razem całe %s w %p</string>
+    <string name="donationsDeleteConfirmationTitle">Magiczne Kropelki zniknęły...</string>
+    <string name="donationsDeleteConfirmationMessage">To znak, że trzeba zdobyć nowe!</string>
 
     // CENTERS
     <string name="centersTitle">Miejsca kropelkowania</string>

@@ -7,11 +7,13 @@ import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.common.isValidEmail
+import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 import kotlin.time.Duration.Companion.seconds
 
 class ResetScreenModel(
+    callbackManager: CallbackManager,
     private val authService: AuthenticationService
-) : AppModel<ResetState>(ResetState.Idle) {
+) : AppModel<ResetState>(ResetState.Idle, callbackManager) {
 
     init {
         bootstrap()

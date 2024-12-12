@@ -12,7 +12,6 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.google.services)
     alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.buildconfig)
 }
 
 java {
@@ -198,32 +197,4 @@ compose.desktop {
             }
         }
     }
-}
-
-buildConfig {
-    packageName("mobi.cwiklinski.bloodline.config")
-    useKotlinOutput { internalVisibility = true }
-    val properties = localPropertiesFile.readLines().associate {
-        if (it.startsWith("#") || !it.contains("=")) return@associate "" to ""
-        val (key, value) = it.split("=", limit = 2)
-        key to value
-    }
-
-    val firebaseAndroidApiKey = properties["firebaseAndroidApiKey"].toString()
-    val firebaseIosApiKey = properties["firebaseIosApiKey"].toString()
-    val firebaseWebApiKey = properties["firebaseWebApiKey"].toString()
-    val firebaseMessagingSenderId = properties["firebaseGcmSenderId"].toString()
-    val firebaseAppId = properties["firebaseApplicationId"].toString()
-    val firebaseStorageBucket = properties["firebaseStorageBucket"].toString()
-    val firebaseProjectId = properties["firebaseProjectId"].toString()
-    val firebaseDatabaseUrl = properties["firebaseDatabaseUrl"].toString()
-
-    buildConfigField("String", "FIREBASE_ANDROID_API_KEY", firebaseAndroidApiKey)
-    buildConfigField("String", "FIREBASE_IOS_API_KEY", firebaseIosApiKey)
-    buildConfigField("String", "FIREBASE_WEB_API_KEY", firebaseWebApiKey)
-    buildConfigField("String", "FIREBASE_MESSAGING_SENDER_ID", firebaseMessagingSenderId)
-    buildConfigField("String", "FIREBASE_APP_ID", firebaseAppId)
-    buildConfigField("String", "FIREBASE_STORAGE_BUCKET", firebaseStorageBucket)
-    buildConfigField("String", "FIREBASE_PROJECT_ID", firebaseProjectId)
-    buildConfigField("String", "FIREBASE_DATABASE_URL", firebaseDatabaseUrl)
 }

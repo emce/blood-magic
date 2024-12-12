@@ -16,13 +16,15 @@ import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
+import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 
 class DonationScreenModel(
+    callbackManager: CallbackManager,
     private val donationService: DonationService,
     centerService: CenterService,
     profileService: ProfileService
 ) :
-    AppModel<DonationState>(DonationState.Idle) {
+    AppModel<DonationState>(DonationState.Idle, callbackManager) {
 
     val query = MutableStateFlow("")
 

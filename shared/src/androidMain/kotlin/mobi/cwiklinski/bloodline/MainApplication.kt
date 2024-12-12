@@ -5,7 +5,6 @@ import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import org.koin.core.lazyModules
 
 class MainApplication: Application()/*, Configuration.Provider*/ {
 
@@ -18,9 +17,6 @@ class MainApplication: Application()/*, Configuration.Provider*/ {
         super.onCreate()
         startKoin {
             androidContext(this@MainApplication)
-            //workManagerFactory()
-            lazyModules(createAppLazyModule())
-            modules(createAppModule())
         }
         if (BuildConfig.DEBUG) {
             Napier.base(DebugAntilog())

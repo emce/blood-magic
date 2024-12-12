@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import mobi.cwiklinski.bloodline.LocalSnackBar
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 
@@ -104,6 +106,9 @@ fun DesktopScaffold(
         modifier = modifier,
         backgroundColor = backgroundColor,
         topBar = topBar,
+        snackbarHost = {
+            SnackbarHost(LocalSnackBar.current)
+        },
         content = desiredContent
     )
 }

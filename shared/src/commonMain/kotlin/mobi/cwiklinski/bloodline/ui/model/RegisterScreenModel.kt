@@ -1,9 +1,7 @@
 package mobi.cwiklinski.bloodline.ui.model
 
-import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
@@ -11,12 +9,14 @@ import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.storage.api.StorageService
+import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 
 class RegisterScreenModel(
+    callbackManager: CallbackManager,
     private val authService: AuthenticationService,
     private val profileService: ProfileService,
     private val storageService: StorageService
-) : AppModel<RegisterState>(RegisterState.Idle) {
+) : AppModel<RegisterState>(RegisterState.Idle, callbackManager) {
 
     init {
         bootstrap()

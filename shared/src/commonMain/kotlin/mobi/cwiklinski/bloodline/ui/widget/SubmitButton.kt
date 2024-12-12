@@ -8,12 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.getTypography
-import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
 import mobi.cwiklinski.bloodline.ui.theme.secondaryButton
 import mobi.cwiklinski.bloodline.ui.theme.submitButton
 
@@ -26,7 +22,7 @@ fun SubmitButton(
     colors: ButtonColors = AppThemeColors.submitButtonColors()
 ) {
     Button(
-        modifier = Modifier
+        modifier = modifier
             .shadow(
                 elevation = 8.dp,
                 spotColor = AppThemeColors.rose3,

@@ -45,6 +45,7 @@ fun <T> AutoCompleteTextView(
     onItemClick: (T) -> Unit = {},
     enabled: Boolean = true,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    errorMessage: String? = null,
     itemContent: @Composable (T, Int) -> Unit
 ) {
     val borderColor = AppThemeColors.grey3
@@ -61,6 +62,8 @@ fun <T> AutoCompleteTextView(
         readOnly = false,
         onValueChanged = onQueryChanged,
         label = queryLabel,
+        errorMessage = errorMessage ?: "",
+        error = errorMessage != null,
         trailingIcon = {
             if (hasFocus) {
                 IconButton(onClick = {

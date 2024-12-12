@@ -6,10 +6,12 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
+import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 
 class SplashScreenModel(
+    callbackManager: CallbackManager,
     private val authService: AuthenticationService
-) : AppModel<AuthenticationState>(AuthenticationState.Idle) {
+) : AppModel<AuthenticationState>(AuthenticationState.Idle, callbackManager) {
 
     init {
         bootstrap()

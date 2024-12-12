@@ -75,6 +75,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 class ProfilePasswordScreen : AppProfileScreen() {
+    override val supportDialogs = false
 
     @Composable
     override fun defaultView() {

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -53,10 +52,8 @@ class ResetScreen() : AppScreen() {
 
     @Composable
     override fun defaultView() {
-        val snackBarHostState = remember { SnackbarHostState() }
-        handleSnackBars<ResetState, ResetScreenModel>(snackBarHostState)
+        handleSideEffects<ResetState, ResetScreenModel>()
         MobileLayout(
-            snackBarState = snackBarHostState,
             desiredContent = { paddingValues ->
                 ResetView(paddingValues)
             }
@@ -66,10 +63,8 @@ class ResetScreen() : AppScreen() {
     @Composable
     override fun tabletView() {
         val width = getScreenWidth()
-        val snackBarHostState = remember { SnackbarHostState() }
-        handleSnackBars<ResetState, ResetScreenModel>(snackBarHostState)
+        handleSideEffects<ResetState, ResetScreenModel>()
         MobileLayout(
-            snackBarState = snackBarHostState,
             desiredContent = { paddingValues ->
                 val newPaddingValues = PaddingValues(
                     top = paddingValues.calculateTopPadding(),

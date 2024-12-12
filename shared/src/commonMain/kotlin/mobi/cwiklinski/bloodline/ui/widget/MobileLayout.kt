@@ -14,12 +14,11 @@ import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHost
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import mobi.cwiklinski.bloodline.LocalSnackBar
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationNewTitle
 import mobi.cwiklinski.bloodline.resources.nav_icon_drop
@@ -38,7 +37,6 @@ fun MobilePortraitNavigationTitleLayout(
     floatingAction: () -> Unit = {},
     navigationAction: (NavigationItem) -> Unit,
     selected: NavigationItem = NavigationItem.HOME,
-    snackBarState: SnackbarHostState = remember { SnackbarHostState() },
     desiredContent: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -72,7 +70,7 @@ fun MobilePortraitNavigationTitleLayout(
                 selected = selected
             )
         },
-        snackbarHost = { SnackbarHost(snackBarState) },
+        snackbarHost = { SnackbarHost(LocalSnackBar.current) },
         content = desiredContent
     )
 }
@@ -85,7 +83,6 @@ fun MobilePortraitNavigationLayout(
     floatingAction: () -> Unit = {},
     navigationAction: (NavigationItem) -> Unit,
     selected: NavigationItem = NavigationItem.HOME,
-    snackBarState: SnackbarHostState = remember { SnackbarHostState() },
     desiredContent: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -114,7 +111,7 @@ fun MobilePortraitNavigationLayout(
                 selected = selected
             )
         },
-        snackbarHost = { SnackbarHost(snackBarState) },
+        snackbarHost = { SnackbarHost(LocalSnackBar.current) },
         content = desiredContent
     )
 }
@@ -129,7 +126,6 @@ fun MobileLandscapeNavigationTitleLayout(
     floatingAction: () -> Unit = {},
     navigationAction: (NavigationItem) -> Unit,
     selected: NavigationItem = NavigationItem.HOME,
-    snackBarState: SnackbarHostState = remember { SnackbarHostState() },
     desiredContent: @Composable () -> Unit
 ) {
     MobileLandscapeNavigationLayout(
@@ -144,7 +140,6 @@ fun MobileLandscapeNavigationTitleLayout(
         floatingAction = floatingAction,
         navigationAction = navigationAction,
         selected = selected,
-        snackBarState = snackBarState,
         desiredContent = desiredContent
     )
 }
@@ -158,7 +153,6 @@ fun MobileLandscapeNavigationLayout(
     floatingAction: () -> Unit = {},
     navigationAction: (NavigationItem) -> Unit,
     selected: NavigationItem = NavigationItem.HOME,
-    snackBarState: SnackbarHostState = remember { SnackbarHostState() },
     desiredContent: @Composable () -> Unit
 ) {
     Scaffold(
@@ -166,7 +160,7 @@ fun MobileLandscapeNavigationLayout(
             .windowInsetsPadding(WindowInsets.safeDrawing)
             .background(AppThemeColors.homeGradient),
         backgroundColor = backgroundColor,
-        snackbarHost = { SnackbarHost(snackBarState) },
+        snackbarHost = { SnackbarHost(LocalSnackBar.current) },
     ) { paddingValues ->
         Row(
             modifier = Modifier.padding(paddingValues),
@@ -197,7 +191,6 @@ fun MobileLayoutWithTitle(
     backgroundColor: Color = AppThemeColors.white,
     title: String,
     actions: @Composable (() -> Unit)? = null,
-    snackBarState: SnackbarHostState = remember { SnackbarHostState() },
     desiredContent: @Composable (PaddingValues) -> Unit
 ) {
     MobileLayout(
@@ -210,7 +203,6 @@ fun MobileLayoutWithTitle(
             )
         },
         backgroundColor = backgroundColor,
-        snackBarState = snackBarState,
         desiredContent = desiredContent
     )
 }
@@ -220,7 +212,6 @@ fun MobileLayout(
     modifier: Modifier = Modifier,
     backgroundColor: Color = AppThemeColors.white,
     topBar: @Composable () -> Unit = {},
-    snackBarState: SnackbarHostState = remember { SnackbarHostState() },
     desiredContent: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -228,7 +219,7 @@ fun MobileLayout(
             .windowInsetsPadding(WindowInsets.safeDrawing),
         topBar = topBar,
         backgroundColor = backgroundColor,
-        snackbarHost = { SnackbarHost(snackBarState) },
+        snackbarHost = { SnackbarHost(LocalSnackBar.current) },
         content = desiredContent
     )
 }
