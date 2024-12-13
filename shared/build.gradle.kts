@@ -182,10 +182,15 @@ compose.desktop {
     application {
         mainClass = "mobi.cwiklinski.bloodline.MainWindowKt"
 
+        buildTypes.release.proguard {
+            obfuscate.set(true)
+            configurationFiles.from(project.file("desktop.pro"))
+        }
+
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "mobi.cwiklinski.bloodline"
-            packageVersion = "1.0.$gitCommitsCount"
+            packageVersion = "1.1.$gitCommitsCount"
 
             val iconsRoot = project.file("icons")
             macOS {
