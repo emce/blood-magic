@@ -15,17 +15,22 @@ actual class AuthenticationInitializerImpl actual constructor(
     coroutineScope: CoroutineScope
 ) : AuthenticationInitializer {
 
+    private var initialized = false
+
     override fun run() {
-        Firebase.initialize(
-            Unit, options = FirebaseOptions(
-                applicationId = FirebaseConfig.FIREBASE_APP_ID,
-                apiKey = FirebaseConfig.FIREBASE_IOS_API_KEY,
-                databaseUrl = FirebaseConfig.FIREBASE_DATABASE_URL,
-                storageBucket = FirebaseConfig.FIREBASE_STORAGE_BUCKET,
-                projectId = FirebaseConfig.FIREBASE_PROJECT_ID,
-                gcmSenderId = FirebaseConfig.FIREBASE_MESSAGING_SENDER_ID
+        if (!initialized) {
+            Firebase.initialize(
+                Unit, options = FirebaseOptions(
+                    applicationId = FirebaseConfig.FIREBASE_APP_ID,
+                    apiKey = FirebaseConfig.FIREBASE_IOS_API_KEY,
+                    databaseUrl = FirebaseConfig.FIREBASE_DATABASE_URL,
+                    storageBucket = FirebaseConfig.FIREBASE_STORAGE_BUCKET,
+                    projectId = FirebaseConfig.FIREBASE_PROJECT_ID,
+                    gcmSenderId = FirebaseConfig.FIREBASE_MESSAGING_SENDER_ID
+                )
             )
-        )
+            initialized = true
+        }
     }
 
 }

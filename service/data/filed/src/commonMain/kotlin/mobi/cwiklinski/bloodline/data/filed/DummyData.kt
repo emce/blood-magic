@@ -5,8 +5,8 @@ import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
+import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.domain.model.Profile
-import kotlin.random.Random
 
 object DummyData {
 
@@ -3489,6 +3489,69 @@ object DummyData {
             84,
             false,
             CENTERS.first { it.id == "66f041e16a60928b05a7e228a89c3799" },
+        )
+    )
+
+    val NOTIFICATIONS = listOf(
+        Notification(
+            "fhfghffghfg",
+            1,
+            LocalDate(
+                2023,
+                12,
+                1
+            ),
+            "Notyfikacja 1",
+            "To jest treść pierwszej notyfikacji. To jest automatycznie wygenerowany tekst.",
+            "Warszawa"
+        ),
+        Notification(
+            "gfghfyu76",
+            1,
+            LocalDate(
+                2024,
+                1,
+                1
+            ),
+            "Notyfikacja 2",
+            "To jest treść drugiej notyfikacji. To jest automatycznie wygenerowany tekst.",
+            "Polska"
+        ),
+        Notification(
+            "u56u5jdghj",
+            2,
+            LocalDate(
+                2024,
+                4,
+                10
+            ),
+            "Notyfikacja 3",
+            "To jest treść trzeciej notyfikacji. To jest automatycznie wygenerowany tekst.",
+            "Gdańsk"
+        ),
+        Notification(
+            "hdrghf7t77",
+            1,
+            LocalDate(
+                2024,
+                5,
+                11
+            ),
+            "Notyfikacja 4",
+            "To jest treść czwartej notyfikacji. To jest automatycznie wygenerowany tekst.",
+            "Kraków"
+        ),
+        Notification(
+            "342jk4j234kh234",
+            1,
+            LocalDate(
+                2024,
+                6,
+                21
+            ),
+            "Notyfikacja 5",
+            "To jest treść piątej notyfikacji. To jest automatycznie wygenerowany tekst.",
+            "Polska"
         )
     )
 

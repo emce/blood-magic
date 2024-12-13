@@ -91,6 +91,7 @@ import mobi.cwiklinski.bloodline.ui.widget.HomeCard
 import mobi.cwiklinski.bloodline.ui.widget.MobileLandscapeNavigationLayout
 import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationLayout
 import mobi.cwiklinski.bloodline.ui.widget.NextDonationPrediction
+import mobi.cwiklinski.bloodline.ui.widget.NotificationsButton
 import mobi.cwiklinski.bloodline.ui.widget.capacity
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -193,33 +194,52 @@ class HomeScreen : AppScreen() {
         val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle()
         val profile by screenModel.profile.collectAsStateWithLifecycle()
+        val unreadNotification by screenModel.notifications.collectAsStateWithLifecycle(emptyList())
         val hero = if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
         handleSideEffects<HomeState, HomeScreenModel>()
         Column(
             modifier = Modifier.padding(paddingValues).background(AppThemeColors.mainGradient)
         ) {
-            Box(
+            ConstraintLayout(
                 modifier = Modifier.height(180.dp).fillMaxWidth()
                     .background(Color.Transparent)
             ) {
+                val (titleRef, subTitleRef, starsRef, bellRef) = createRefs()
+                NotificationsButton(
+                    modifier = Modifier
+                        .constrainAs(bellRef) {
+                            top.linkTo(parent.top, 40.dp)
+                            end.linkTo(parent.end, 10.dp)
+                        },
+                    onClick = {
+                        navigator.push(NotificationsScreen())
+                    },
+                    newNotifications = unreadNotification.any { it.read }
+                )
                 Image(
                     painterResource(Res.drawable.home_stars),
                     stringResource(Res.string.homeTitle),
-                    modifier = Modifier.padding(20.dp).align(Alignment.CenterEnd)
+                    modifier = Modifier.padding(20.dp).constrainAs(starsRef){
+                        top.linkTo(bellRef.top)
+                        end.linkTo(bellRef.start, 10.dp)
+                        bottom.linkTo(parent.bottom, 30.dp)
+                    }
                 )
                 val name = profile.name.ifEmpty { hero }
                 Text(
                     stringResource(Res.string.homeTitle).replace("%s", name),
-                    modifier = Modifier.align(Alignment.CenterStart).offset(y = 15.dp)
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
+                    modifier = Modifier.constrainAs(titleRef) {
+                        bottom.linkTo(subTitleRef.top, 20.dp)
+                        start.linkTo(parent.start, 20.dp)
+                    },
                     style = toolbarTitle()
                 )
                 Text(
                     stringResource(Res.string.homeSubTitle),
-                    modifier = Modifier.align(Alignment.CenterStart).offset(y = 50.dp)
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
+                    modifier = Modifier.constrainAs(subTitleRef) {
+                        bottom.linkTo(parent.bottom, 20.dp)
+                        start.linkTo(parent.start, 20.dp)
+                    },
                     style = toolbarSubTitle()
                 )
             }

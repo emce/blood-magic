@@ -20,21 +20,26 @@ actual class AuthenticationInitializerImpl actual constructor(
     val coroutineScope: CoroutineScope
 ) : AuthenticationInitializer {
 
+    private var initialized = false
+
     override fun run() {
-        try {
-            initPersistence()
-            Firebase.initialize(
-                Context(), options = FirebaseOptions(
-                    applicationId = FirebaseConfig.FIREBASE_APP_ID,
-                    apiKey = FirebaseConfig.FIREBASE_ANDROID_API_KEY,
-                    databaseUrl = FirebaseConfig.FIREBASE_DATABASE_URL,
-                    storageBucket = FirebaseConfig.FIREBASE_STORAGE_BUCKET,
-                    projectId = FirebaseConfig.FIREBASE_PROJECT_ID,
-                    gcmSenderId = FirebaseConfig.FIREBASE_MESSAGING_SENDER_ID
+        if (!initialized) {
+            try {
+                initPersistence()
+                Firebase.initialize(
+                    Context(), options = FirebaseOptions(
+                        applicationId = FirebaseConfig.FIREBASE_APP_ID,
+                        apiKey = FirebaseConfig.FIREBASE_ANDROID_API_KEY,
+                        databaseUrl = FirebaseConfig.FIREBASE_DATABASE_URL,
+                        storageBucket = FirebaseConfig.FIREBASE_STORAGE_BUCKET,
+                        projectId = FirebaseConfig.FIREBASE_PROJECT_ID,
+                        gcmSenderId = FirebaseConfig.FIREBASE_MESSAGING_SENDER_ID
+                    )
                 )
-            )
-        } catch (e: IllegalStateException) {
-            Napier.e("Firebase initialization", e)
+                initialized = true
+            } catch (e: IllegalStateException) {
+                Napier.e("Firebase initialization", e)
+            }
         }
     }
 

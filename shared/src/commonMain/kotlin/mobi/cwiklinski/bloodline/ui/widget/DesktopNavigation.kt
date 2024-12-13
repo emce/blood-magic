@@ -51,7 +51,7 @@ fun DesktopNavigation(
                 drawerContainerColor = Color.Transparent,
                 drawerContentColor = Color.Transparent,
             ) {
-                NavigationItem.entries.forEach { item ->
+                NavigationItem.entries.filter { it != NavigationItem.OTHER }.forEach { item ->
                     val label = stringResource(item.title)
                     NavigationDrawerItem(
                         selected = item == selected,

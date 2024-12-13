@@ -32,6 +32,7 @@ import org.jetbrains.compose.resources.stringResource
 fun MobilePortraitNavigationTitleLayout(
     modifier: Modifier = Modifier,
     backgroundColor: Color = AppThemeColors.white,
+    navigationIcon: @Composable (() -> Unit)? = null,
     title: String,
     actions: @Composable (() -> Unit)? = null,
     floatingAction: () -> Unit = {},
@@ -45,6 +46,7 @@ fun MobilePortraitNavigationTitleLayout(
             .background(AppThemeColors.homeGradient),
         topBar = {
             MobileTitleBar(
+                navigationIcon = navigationIcon,
                 title = title,
                 actions = actions
             )
@@ -121,6 +123,7 @@ fun MobilePortraitNavigationLayout(
 fun MobileLandscapeNavigationTitleLayout(
     modifier: Modifier = Modifier,
     backgroundColor: Color = AppThemeColors.white,
+    navigationIcon: @Composable (() -> Unit)? = null,
     title: String,
     actions: @Composable (() -> Unit)? = null,
     floatingAction: () -> Unit = {},
@@ -133,6 +136,7 @@ fun MobileLandscapeNavigationTitleLayout(
         backgroundColor = backgroundColor,
         topBar = {
             MobileTitleBar(
+                navigationIcon = navigationIcon,
                 title = title,
                 actions = actions
             )
@@ -189,6 +193,7 @@ fun MobileLandscapeNavigationLayout(
 fun MobileLayoutWithTitle(
     modifier: Modifier = Modifier,
     backgroundColor: Color = AppThemeColors.white,
+    navigationIcon: @Composable (() -> Unit)? = null,
     title: String,
     actions: @Composable (() -> Unit)? = null,
     desiredContent: @Composable (PaddingValues) -> Unit
@@ -198,6 +203,7 @@ fun MobileLayoutWithTitle(
             .windowInsetsPadding(WindowInsets.safeDrawing),
         topBar = {
             MobileTitleBar(
+                navigationIcon = navigationIcon,
                 title = title,
                 actions = actions
             )

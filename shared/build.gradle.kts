@@ -78,6 +78,7 @@ kotlin {
             api(compose.components.resources)
             api(compose.components.uiToolingPreview)
             api(libs.jetbrains.androidx.lifecycle.runtime.compose)
+            implementation(libs.bundles.markdown.common)
             api(libs.bundles.voyager)
             api(libs.bundles.koin.common)
             api(libs.bundles.coil.common)
@@ -92,6 +93,7 @@ kotlin {
             //implementation(projects.service.notification.fcm)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.markdown)
         }
         commonTest.dependencies {
             implementation(libs.bundles.tests)

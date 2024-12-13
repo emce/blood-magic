@@ -1,6 +1,5 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DatePicker
@@ -48,7 +46,6 @@ import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.resources.close
 import mobi.cwiklinski.bloodline.resources.donationNewAmountLabel
 import mobi.cwiklinski.bloodline.resources.donationNewCenterLabel
 import mobi.cwiklinski.bloodline.resources.donationNewDateLabel
@@ -58,18 +55,17 @@ import mobi.cwiklinski.bloodline.resources.donationNewInformationTitle
 import mobi.cwiklinski.bloodline.resources.donationNewSubmit
 import mobi.cwiklinski.bloodline.resources.donationNewTitle
 import mobi.cwiklinski.bloodline.resources.donationNewTypeLabel
-import mobi.cwiklinski.bloodline.resources.icon_close
 import mobi.cwiklinski.bloodline.ui.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.DonationError
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.calendarPickerColors
-import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.textButtonColors
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
+import mobi.cwiklinski.bloodline.ui.widget.CloseButton
 import mobi.cwiklinski.bloodline.ui.widget.DonationTypeItem
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
@@ -78,7 +74,6 @@ import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import mobi.cwiklinski.bloodline.ui.widget.getIcon
 import mobi.cwiklinski.bloodline.ui.widget.getName
 import mobi.cwiklinski.bloodline.ui.widget.toLocalDate
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 class NewDonationScreen(
@@ -122,9 +117,13 @@ class NewDonationScreen(
         )
         var donationType by remember { mutableStateOf(DonationType.FULL_BLOOD) }
         var centerLabel by remember {
-            mutableStateOf(
-                centerList.firstOrNull { it.id == profile.centerId }?.name ?: ""
-            )
+            if (profile.centerId.isNotEmpty()) {
+                mutableStateOf(
+                    centerList.firstOrNull { it.id == profile.centerId }?.name ?: ""
+                )
+            } else {
+                mutableStateOf("")
+            }
         }
         var centerSelected by remember { mutableStateOf(centerList.firstOrNull { it.id == profile.centerId }) }
         var amountLabel by remember { mutableStateOf("") }
@@ -145,24 +144,16 @@ class NewDonationScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
                     },
-                    modifier = Modifier,
+                    modifier = Modifier.padding(horizontal = 6.dp),
                     actions = {
-                        Button(
-                            onClick = {
-                                screenModel.query.value = ""
-                                amountValue = 0
-                                amountLabel = ""
-                                donationType = DonationType.FULL_BLOOD
-                                disqualificationValue = 0
-                                centerSelected = null
-                                bottomSheetNavigator.hide()
-                            },
-                            colors = textButtonColors()
-                        ) {
-                            Image(
-                                painterResource(Res.drawable.icon_close),
-                                stringResource(Res.string.close)
-                            )
+                        CloseButton {
+                            screenModel.query.value = ""
+                            amountValue = 0
+                            amountLabel = ""
+                            donationType = DonationType.FULL_BLOOD
+                            disqualificationValue = 0
+                            centerSelected = null
+                            bottomSheetNavigator.hide()
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(

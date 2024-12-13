@@ -1,9 +1,9 @@
 package mobi.cwiklinski.bloodline.ui.widget
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -23,6 +23,7 @@ import mobi.cwiklinski.bloodline.resources.ic_search
 import mobi.cwiklinski.bloodline.resources.icon_close
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
+import mobi.cwiklinski.bloodline.ui.util.clickWithRipple
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -64,9 +65,12 @@ fun SearchView(
                 painterResource(Res.drawable.icon_close),
                 stringResource(Res.string.clear),
                 colorFilter = ColorFilter.tint(AppThemeColors.grey),
-                modifier = Modifier.size(24.dp).clickable {
-                    onClose.invoke()
-                }
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(5.dp)
+                    .clickWithRipple {
+                        onClose.invoke()
+                    }
             )
         },
         isError = false,

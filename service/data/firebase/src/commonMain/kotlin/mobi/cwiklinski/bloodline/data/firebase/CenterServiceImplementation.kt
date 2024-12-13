@@ -6,7 +6,7 @@ import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.data.firebase.model.FirebaseCenter
 import mobi.cwiklinski.bloodline.domain.sortByRegion
 
-class CenterServiceImplementation(val db: FirebaseDatabase) : CenterService {
+class CenterServiceImplementation(db: FirebaseDatabase) : CenterService {
 
     private val mainRef = db.reference("center")
 

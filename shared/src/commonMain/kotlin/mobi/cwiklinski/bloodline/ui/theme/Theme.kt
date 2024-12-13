@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mikepenz.markdown.model.DefaultMarkdownColors
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.appColors
 
 @Composable
@@ -121,6 +122,14 @@ object AppThemeColors {
         endY = Float.POSITIVE_INFINITY
     )
 
+    val notificationButtonGradient = Brush.verticalGradient(
+        0.0f to Color(0xFFDC9991),
+        1f to Color(0xFFFFB5A7),
+        startY = 0.0f,
+        endY = Float.POSITIVE_INFINITY
+    )
+
+
     @Composable
     fun textButtonColors() = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
@@ -186,6 +195,26 @@ object AppThemeColors {
         disabledUncheckedTrackColor = white,
         disabledUncheckedBorderColor = grey1,
         disabledUncheckedIconColor = white
+    )
+
+    fun notificationRichTextColors() = DefaultMarkdownColors(
+        text = grey3,
+        codeText = black70,
+        inlineCodeText = grey3,
+        linkText = violet3,
+        codeBackground = background,
+        inlineCodeBackground = background,
+        dividerColor = grey,
+    )
+
+    fun dialogRichTextColors() = DefaultMarkdownColors(
+        text = black,
+        codeText = black70,
+        inlineCodeText = black,
+        linkText = violet4,
+        codeBackground = background,
+        inlineCodeBackground = background,
+        dividerColor = grey,
     )
 
     @Composable

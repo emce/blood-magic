@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.widget
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -7,6 +8,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 
@@ -18,7 +20,7 @@ fun DesktopTitleBar(
     actions: @Composable (() -> Unit)? = null
 ) {
     TopAppBar(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 6.dp),
         title = {
             if (title != null) {
                 Text(
@@ -51,7 +53,7 @@ fun MobileTitleBar(
     behaviour: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 ) {
     TopAppBar(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 6.dp),
         title = {
             if (title != null) {
                 Text(

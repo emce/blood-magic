@@ -1,5 +1,10 @@
 package mobi.cwiklinski.bloodline.ui.util
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.material.ripple
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
@@ -11,9 +16,17 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.LocalDate
+import kotlinx.serialization.json.Json
+import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.common.removeDiacritics
 import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.domain.model.Notification
+import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.monthGenitives
+import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
+import org.jetbrains.compose.resources.stringArrayResource
 
 fun Modifier.topBorder(strokeWidth: Dp, color: Color, cornerRadiusDp: Dp) = composed(
     factory = {
@@ -216,6 +229,17 @@ internal fun Modifier.avatarShadow(
     }
 )
 
+fun Modifier.clickWithRipple(
+    color: Color = AppThemeColors.black70,
+    onClick: () -> Unit
+): Modifier = composed {
+    this.clickable(
+        interactionSource = remember { MutableInteractionSource() },
+        indication = ripple(color = color),
+        onClick = onClick
+    )
+}
+
 fun List<Center>.filter(query: String) = filter {
     it.name.lowercase().removeDiacritics()
         .contains(query.lowercase().removeDiacritics()) or
@@ -224,4 +248,31 @@ fun List<Center>.filter(query: String) = filter {
             it.street.lowercase().removeDiacritics().contains(
                 query.lowercase().removeDiacritics()
             )
+}
+
+fun Notification.getType() = NavigationType.fromType(this.type)
+
+@Composable
+fun LocalDate.toLocalizedString(): String {
+    val months = stringArrayResource(Res.array.monthGenitives)
+    return "${this.dayOfMonth} ${months[this.monthNumber - 1]} ${this.year}"
+}
+
+fun List<Notification>.fillWithRead(readList: List<String>): List<Notification> {
+    val filledList = mutableListOf<Notification>()
+    this.forEach { notification ->
+        filledList.add(notification.copy(
+            read = readList.contains(notification.id)
+        ))
+    }
+    return filledList.toList()
+}
+
+suspend fun StorageService.getReadList(): List<String> {
+    val current = this.getString(Constants.NOTIFICATIONS_READ, "")
+    return if (current.isEmpty()) {
+        emptyList()
+    } else {
+        Json.decodeFromString<List<String>>(current)
+    }
 }

@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -85,14 +86,17 @@ class CentersScreen : AppScreen() {
                         placeholder = stringResource(Res.string.centerSearchLabel)
                     )
                 } else {
-                    Icon(
-                        painterResource(Res.drawable.ic_search),
-                        stringResource(Res.string.centerSearchLabel),
-                        tint = AppThemeColors.grey,
-                        modifier = Modifier.size(36.dp).clickable {
+                    IconButton(
+                        onClick = {
                             showSearch = true
                         }
-                    )
+                    ) {
+                        Icon(
+                            painterResource(Res.drawable.ic_search),
+                            stringResource(Res.string.centerSearchLabel),
+                            tint = AppThemeColors.black70
+                        )
+                    }
                 }
             },
             selected = NavigationItem.CENTER,

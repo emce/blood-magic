@@ -1,6 +1,5 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DatePicker
@@ -48,7 +46,6 @@ import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.resources.close
 import mobi.cwiklinski.bloodline.resources.donationEditInformationMessage
 import mobi.cwiklinski.bloodline.resources.donationEditSubmit
 import mobi.cwiklinski.bloodline.resources.donationEditTitle
@@ -58,18 +55,17 @@ import mobi.cwiklinski.bloodline.resources.donationNewDateLabel
 import mobi.cwiklinski.bloodline.resources.donationNewDisqualificationLabel
 import mobi.cwiklinski.bloodline.resources.donationNewInformationTitle
 import mobi.cwiklinski.bloodline.resources.donationNewTypeLabel
-import mobi.cwiklinski.bloodline.resources.icon_close
 import mobi.cwiklinski.bloodline.ui.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.DonationError
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.calendarPickerColors
-import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.textButtonColors
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
+import mobi.cwiklinski.bloodline.ui.widget.CloseButton
 import mobi.cwiklinski.bloodline.ui.widget.DonationTypeItem
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
@@ -78,7 +74,6 @@ import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import mobi.cwiklinski.bloodline.ui.widget.getIcon
 import mobi.cwiklinski.bloodline.ui.widget.getName
 import mobi.cwiklinski.bloodline.ui.widget.toLocalDate
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 class EditDonationScreen(
@@ -149,18 +144,9 @@ class EditDonationScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
                     },
-                    modifier = Modifier,
                     actions = {
-                        Button(
-                            onClick = {
-                                bottomSheetNavigator.hide()
-                            },
-                            colors = textButtonColors()
-                        ) {
-                            Image(
-                                painterResource(Res.drawable.icon_close),
-                                stringResource(Res.string.close)
-                            )
+                        CloseButton {
+                            bottomSheetNavigator.hide()
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(

@@ -21,7 +21,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -50,7 +49,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.close
-import mobi.cwiklinski.bloodline.resources.icon_close
 import mobi.cwiklinski.bloodline.resources.icon_eye_closed
 import mobi.cwiklinski.bloodline.resources.icon_eye_opened
 import mobi.cwiklinski.bloodline.resources.profileAvatarTitle
@@ -68,6 +66,7 @@ import mobi.cwiklinski.bloodline.ui.theme.getFontFamily
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
+import mobi.cwiklinski.bloodline.ui.widget.CloseButton
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
@@ -141,15 +140,8 @@ class ProfilePasswordScreen : AppProfileScreen() {
                     stringResource(Res.string.profileAvatarTitle),
                     modifier = Modifier.width(184.dp).height(184.dp).avatarShadow()
                 )
-                Button(
-                    onClick = { bottomSheetNavigator.hide() },
-                    colors = AppThemeColors.textButtonColors(),
-                    modifier = Modifier.align(Alignment.TopEnd)
-                ) {
-                    Image(
-                        painterResource(Res.drawable.icon_close),
-                        stringResource(Res.string.close)
-                    )
+                CloseButton(modifier = Modifier.align(Alignment.TopEnd)) {
+                    bottomSheetNavigator.hide()
                 }
             }
             Column(

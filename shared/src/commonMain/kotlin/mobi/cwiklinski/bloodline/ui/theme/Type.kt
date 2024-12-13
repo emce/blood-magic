@@ -217,22 +217,26 @@ fun alertTitle() = TextStyle(
 )
 
 @Composable
-fun alertMessage() = TextStyle(
-    fontFamily = getFontFamily(AppFontFamily.REGULAR),
+fun notificationTitle() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.SEMIBOLD),
     fontSize = 16.sp,
+    color = AppThemeColors.black,
+    fontWeight = FontWeight.SemiBold,
+    lineHeight = 20.sp
+)
+
+@Composable
+fun notificationInfo() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.REGULAR),
+    fontSize = 12.sp,
     color = AppThemeColors.black70,
     fontWeight = FontWeight.Normal,
-    lineHeight = 20.sp
+    lineHeight = 16.sp
 )
 
 @Composable
 fun secondaryButton() = submitButton().copy(
     color = AppThemeColors.rose1,
-)
-
-@Composable
-fun standardButton() = submitButton().copy(
-    color = AppThemeColors.black,
 )
 
 @Composable

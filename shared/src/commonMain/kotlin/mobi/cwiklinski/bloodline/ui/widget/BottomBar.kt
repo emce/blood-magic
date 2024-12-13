@@ -51,7 +51,7 @@ fun BottomBar(
                     )
                 ),
         ) {
-            NavigationItem.entries.forEach { item ->
+            NavigationItem.entries.filter { it != NavigationItem.OTHER }.forEach { item ->
                 BottomNavigationItem(
                     selected = item == selected,
                     enabled = item != selected,

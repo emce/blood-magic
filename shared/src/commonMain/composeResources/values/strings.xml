@@ -132,6 +132,22 @@
     <string name="homeNextDonationReadySubtitle">Pobór krwi pełnej jest już MOŻLIWY</string>
     <string name="homeNextDonationPendingTitle">Następny możliwy pobór krwi pełnej (%s)</string>
 
+    // NOTIFICATIONS
+    <string name="notificationsTitle">Nowinki! Nowinki!</string>
+    <string name="notificationsUnreadTabTitle">Świeże Nowinki</string>
+    <string name="notificationsReadTabTitle">Dawne Nowinki</string>
+    <string name="notificationsMarkAsRead">Oznacz jako dawne</string>
+    <string name="notificationsMarkAllAsRead">Oznacz Wszystkie jako dawne</string>
+    <string name="notificationsTypeStandard">Ważność normalna</string>
+    <string name="notificationsTypeUrgent">Ważność wysoka</string>
+    <string name="notificationsLocationDescription">Miejsce nowinkowania</string>
+    <string name="notificationsNoUnreadInformation">Brak Świeżych Nowinek</string>
+    <string name="notificationsNoReadInformation">Brak Dawnych Nowinek</string>
+    <string name="notificationsMarkAllAsReadTitle">Oznacz Wszystkie jako dawne</string>
+    <string name="notificationsMarkAllAsReadMessage">Aby oznaczyć Wszystkie Nowinki jako dawne, kliknij magiczny przycisk **Oznacz**</string>
+    <string name="notificationsMarkAllAsReadButton">Oznacz</string>
+    <string name="notificationsMarkAllAsReadConfirmation">Wszystkie Nowinki zostały ozanczone jako dawne!</string>
+
     // PROFILE
     <string name="profileTitle">Twój profil</string>
     <string name="profileAvatarFenix">nieposkromiony feniks</string>

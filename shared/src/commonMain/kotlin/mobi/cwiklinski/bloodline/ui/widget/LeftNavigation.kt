@@ -42,7 +42,7 @@ fun LeftNavigation(
         backgroundColor = Color.Transparent
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        NavigationItem.entries.forEach { item ->
+        NavigationItem.entries.filter { it != NavigationItem.OTHER }.forEach { item ->
             NavigationRailItem(
                 modifier = Modifier.padding(vertical = 5.dp),
                 selected = item.icon == selected.icon,
