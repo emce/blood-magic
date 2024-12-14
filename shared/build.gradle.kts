@@ -12,6 +12,13 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.google.services)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.play.publisher)
+}
+
+val properties = localPropertiesFile.readLines().associate {
+    if (it.startsWith("#") || !it.contains("=")) return@associate "" to ""
+    val (key, value) = it.split("=", limit = 2)
+    key to value
 }
 
 java {
@@ -138,17 +145,12 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 700 + gitCommitsCount
-        versionName = "5.0.$gitCommitsCount"
+        versionName = "5.1.$gitCommitsCount"
         vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
         create("release") {
-            val properties = localPropertiesFile.readLines().associate {
-                if (it.startsWith("#") || !it.contains("=")) return@associate "" to ""
-                val (key, value) = it.split("=", limit = 2)
-                key to value
-            }
             storeFile = file(properties["bloodlineReleaseKeystore"].toString())
             storePassword = properties["bloodlineReleasePassword"].toString()
             keyAlias = properties["bloodlineReleaseAlias"].toString()
@@ -178,6 +180,11 @@ android {
     }
 }
 
+play {
+    serviceAccountCredentials.set(file("../play_config.json"))
+    track.set("internal")
+}
+
 compose.desktop {
     application {
         mainClass = "mobi.cwiklinski.bloodline.MainWindowKt"
@@ -188,13 +195,36 @@ compose.desktop {
         }
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "mobi.cwiklinski.bloodline"
-            packageVersion = "1.1.$gitCommitsCount"
+            packageVersion = "5.1.$gitCommitsCount"
+            outputBaseDir.set(layout.buildDirectory.asFile.get().resolve("release"))
+            targetFormats(TargetFormat.Deb, TargetFormat.Dmg, TargetFormat.Msi)
 
             val iconsRoot = project.file("icons")
             macOS {
+                bundleID = "mobi.cwiklinski.bloodline"
                 iconFile.set(iconsRoot.resolve("bloodmagic.icns"))
+
+                signing {
+                    properties["appleIdentity"]?.let {
+                        sign.set(true)
+                        identity.set(it)
+                    }
+                }
+
+                notarization {
+                    properties["appleId"]?.let {
+                        appleID.set(it)
+                    }
+                    properties["applePassword"]?.let {
+                        password.set(it)
+                    }
+                    properties["appleTeamId"]?.let {
+                        teamID.set(it)
+                    }
+                }
+                entitlementsFile.set(project.file("../entitlements.plist"))
+                runtimeEntitlementsFile.set(project.file("../runtime-entitlements.plist"))
             }
             windows {
                 iconFile.set(iconsRoot.resolve("bloodmagic.ico"))

@@ -1,0 +1,82 @@
+name: Desktop MacOS Release
+on:
+  workflow_run:
+    workflows: ["Desktop MacOS Testflight Release"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: macos-15
+    timeout-minutes: 40
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup environment
+        uses: ./.github/actions/setup-gradle
+        with:
+          gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+
+      # Developer ID Application
+      - name: Import signing certificate
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+          p12-password: ${{ secrets.secrets.CERTIFICATES_PASSWORD }}
+
+      - name: Create path variables
+        id: path_variables
+        run: |
+          tag=$(git describe --tags --abbrev=0 --match "*-desktop")
+          version=$(echo "$tag" | sed 's/-desktop$//')
+          name="Blood-Magic-${version}.dmg"
+          path="shared/build/release/main-release/dmg/${name}"
+          echo "TAG=$tag" >> $GITHUB_ENV
+          echo "VERSION=$version" >> $GITHUB_ENV
+          echo "RELEASE_PATH=$path" >> $GITHUB_ENV
+
+      - name: Create Properties file
+        run: |
+          echo "is_release=true" >> desktopApp/src/jvmMain/resources/props.properties
+          echo "sentry_dns=$SENTRY_DNS" >> desktopApp/src/jvmMain/resources/props.properties
+          echo "version=$VERSION" >> desktopApp/src/jvmMain/resources/props.properties
+        env:
+          SENTRY_DNS: ${{ secrets.SENTRY_DNS }}
+          VERSION: ${{ env.VERSION }}
+
+      - name: Create DMG
+        run: ./gradlew packageReleaseDmg
+
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            **/build/compose/logs/*  
+
+      - name: Notarization
+        run: |
+          xcrun notarytool submit $RELEASE_PATH --apple-id $APPLE_ID_NOTARIZATION --password $NOTARIZATION_PWD --team-id $APPSTORE_TEAM_ID --wait
+          xcrun stapler staple $RELEASE_PATH
+        env:
+          APPLE_ID_NOTARIZATION: ${{ secrets.APPLE_ID_NOTARIZATION }}
+          APPSTORE_TEAM_ID: ${{ secrets.APPSTORE_TEAM_ID }}
+          NOTARIZATION_PWD: ${{ secrets.NOTARIZATION_PWD }}
+          RELEASE_PATH: ${{ env.RELEASE_PATH }}
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ env.RELEASE_PATH }}
+          tag: ${{ env.TAG }}
+          overwrite: true
+          draft: true
+          body: "Release ${{ env.VERSION }}"

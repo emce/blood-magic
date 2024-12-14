@@ -55,6 +55,7 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 composeBom = "2024.12.01"
 markdown = "0.27.0"
+play-publisher = "3.12.1"
 
 [libraries]
 test-core = { module = "androidx.test:core", version.ref = "tests" }
@@ -290,3 +291,4 @@ kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 androidx-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidx-navigation" }
 buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+play-publisher = { id = "com.github.triplet.play", version.ref="play-publisher" }
