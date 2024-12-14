@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: macos-15
+    runs-on: self-hosted
     timeout-minutes: 40
     permissions:
       contents: write

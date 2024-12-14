@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: macos-15
+    runs-on: self-hosted
     timeout-minutes: 40
     permissions:
       contents: write
