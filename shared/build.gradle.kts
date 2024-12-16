@@ -34,6 +34,8 @@ private val gitCommitsCount: Int by lazy {
     }
     stdout.toString().trim().toInt()
 }
+private val globalVersionCode = 700 + gitCommitsCount
+private val globalVersionName = "5.1.$globalVersionCode"
 
 kotlin {
     androidTarget {
@@ -144,8 +146,9 @@ android {
         applicationId = "mobi.cwiklinski.bloodline"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 700 + gitCommitsCount
-        versionName = "5.1.$gitCommitsCount"
+        versionCode = globalVersionCode
+        versionName = globalVersionName
+        setProperty("archivesBaseName", "Blood-Magic($globalVersionName)")
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -161,11 +164,12 @@ android {
         getByName("debug") {
             isDebuggable = true
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
             signingConfig = signingConfigs.getByName("release")
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.pro")
         }
     }
 
@@ -191,12 +195,12 @@ compose.desktop {
 
         buildTypes.release.proguard {
             obfuscate.set(true)
-            configurationFiles.from(project.file("desktop.pro"))
+            configurationFiles.from(project.file("proguard.pro"))
         }
 
         nativeDistributions {
             packageName = "mobi.cwiklinski.bloodline"
-            packageVersion = "5.1.$gitCommitsCount"
+            packageVersion = globalVersionName
             outputBaseDir.set(layout.buildDirectory.asFile.get().resolve("release"))
             targetFormats(TargetFormat.Deb, TargetFormat.Dmg, TargetFormat.Msi)
 
@@ -234,4 +238,8 @@ compose.desktop {
             }
         }
     }
+}
+
+tasks.create("printVersionName") {
+    doLast { println(globalVersionName) }
 }
