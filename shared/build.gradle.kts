@@ -199,8 +199,10 @@ compose.desktop {
         }
 
         nativeDistributions {
-            packageName = "mobi.cwiklinski.bloodline"
+            packageName = "BloodMagic"
             packageVersion = globalVersionName
+            //description = "Application for keeping records of donations for Honorary Blood Donors in Poland"
+            //copyright = "© 2016 mobiGEEK Michal Cwiklinski. All rights reserved."
             outputBaseDir.set(layout.buildDirectory.asFile.get().resolve("release"))
             targetFormats(TargetFormat.Deb, TargetFormat.Dmg, TargetFormat.Msi)
 
@@ -210,21 +212,12 @@ compose.desktop {
                 iconFile.set(iconsRoot.resolve("bloodmagic.icns"))
 
                 signing {
-                    properties["appleIdentity"]?.let {
+                    properties["appleIdentity"]?.let { appleIdentity ->
                         sign.set(true)
-                        identity.set(it)
-                    }
-                }
-
-                notarization {
-                    properties["appleId"]?.let {
-                        appleID.set(it)
-                    }
-                    properties["applePassword"]?.let {
-                        password.set(it)
-                    }
-                    properties["appleTeamId"]?.let {
-                        teamID.set(it)
+                        identity.set(appleIdentity)
+                        properties["appleKeychain"]?.let { appleKeychain ->
+                            keychain.set(appleKeychain)
+                        }
                     }
                 }
                 entitlementsFile.set(project.file("../entitlements.plist"))
