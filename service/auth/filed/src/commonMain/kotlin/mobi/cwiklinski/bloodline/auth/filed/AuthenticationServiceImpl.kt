@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.auth.api.AuthError
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
@@ -88,5 +87,9 @@ class AuthenticationServiceImpl(private val storageService: StorageService) :
                 users
             )
         )
+    }
+
+    override fun removeAccount() = flow {
+        emit(true)
     }
 }

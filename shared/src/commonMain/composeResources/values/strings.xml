@@ -176,6 +176,11 @@
     <string name="profileAvatarTitle">Wybierz postać</string>
     <string name="profilePasswordChangeTitle">Zmiana hasła użytkownika</string>
     <string name="profileUpdateError">Błąd aktualizacji profilu</string>
+    <string name="profileDeleteTitle">Usunięcie konta</string>
+    <string name="profileDeleteContent">Rozpoczynasz proces usuwania konta.\n\nWszystkie Twoje dane użytkownika, łącznie z danymi dotyczącymi donacji, zostaną **trwale usuniętę!!!** \n\n\n\nAby kontynuować proces usuwania konta, naciśnij przycisk *%s* </string>
+    <string name="profileDeleteButton">Trwale Usuń Konto</string>
+    <string name="profileDeleteDonationsMessage">Usuwanie Magicznych Kropelek...</string>
+    <string name="profileDeleteProfileMessage">Usuwanie Profilu...</string>
 
     // NEW DONATION
     <string name="donationNewTitle">Nowa donacja</string>

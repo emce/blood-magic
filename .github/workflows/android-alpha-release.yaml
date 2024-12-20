@@ -28,9 +28,8 @@ jobs:
           BLOODLINE_RELEASE_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           BLOODLINE_RELEASE_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
 
-      - name: Create Firebase json
+      - name: Create Firebase config in local.properties
         run: |
-          echo '${{ secrets.FIREBASE_DATABASE_URL }}' > local.properties
           echo 'firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"' > local.properties
           echo 'firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"' > local.properties
           echo 'firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"' > local.properties
@@ -47,4 +46,4 @@ jobs:
           PLAY_CONFIG_JSON: ${{ secrets.PLAY_CONFIG }}
 
       - name: Distribute app to Alpha track
-        run: ./gradlew :androidApp:bundleGooglePlayRelease :androidApp:publishGooglePlayReleaseBundle
+        run: ./gradlew :shared:bundleGooglePlayRelease :shared:publishGooglePlayReleaseBundle

@@ -21,6 +21,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
+import mobi.cwiklinski.bloodline.resources.profileDeleteDonationsMessage
+import mobi.cwiklinski.bloodline.resources.profileDeleteProfileMessage
 import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
 import mobi.cwiklinski.bloodline.resources.splash_logo
 import mobi.cwiklinski.bloodline.ui.model.ExitScreenModel
@@ -31,7 +33,7 @@ import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-class LogoutScreen : AppScreen() {
+class DeleteScreen : AppScreen() {
 
     override val supportDialogs = false
 
@@ -43,6 +45,16 @@ class LogoutScreen : AppScreen() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<ExitScreenModel>()
         val state by screenModel.state.collectAsStateWithLifecycle()
+        when (state) {
+            ExitState.Deleted -> {
+                navigator.replaceAll(LoginScreen())
+            }
+            ExitState.Error -> {
+
+                navigator.pop()
+            }
+            else -> {}
+        }
         if (state == ExitState.LoggedOut) {
             navigator.replaceAll(LoginScreen())
         }
@@ -60,7 +72,13 @@ class LogoutScreen : AppScreen() {
                 )
                 Spacer(Modifier.height(20.dp))
                 Text(
-                    stringResource(Res.string.settingsLogoutTitle),
+                    stringResource(
+                        when (state) {
+                            ExitState.DonationsDeleted -> Res.string.profileDeleteDonationsMessage
+                            ExitState.ProfileDeleted -> Res.string.profileDeleteProfileMessage
+                            else -> Res.string.settingsLogoutTitle
+                        }
+                    ),
                     style = hugeTitle()
                 )
                 Spacer(Modifier.height(20.dp))

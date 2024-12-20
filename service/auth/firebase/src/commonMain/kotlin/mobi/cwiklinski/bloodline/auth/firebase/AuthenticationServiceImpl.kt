@@ -77,6 +77,15 @@ class AuthenticationServiceImpl(private val coroutineScope: CoroutineScope) : Au
         _authenticationState.value =
             if (value != null) AuthenticationState.Logged else AuthenticationState.NotLogged
     }
+
+    override fun removeAccount() = callbackFlow {
+        try {
+            firebaseAuth.currentUser?.delete()
+            trySend(firebaseAuth.currentUser == null)
+        } catch (e: FirebaseException) {
+            trySend(false)
+        }
+    }
 }
 
 fun send(

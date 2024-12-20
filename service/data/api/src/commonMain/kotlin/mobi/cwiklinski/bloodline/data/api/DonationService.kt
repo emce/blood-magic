@@ -40,4 +40,6 @@ interface DonationService {
     ): Flow<Either<Donation, Throwable>>
 
     fun deleteDonation(id: String): Flow<Either<Boolean, Throwable>>
+
+    fun deleteData(): Flow<Either<Boolean, Throwable>>
 }

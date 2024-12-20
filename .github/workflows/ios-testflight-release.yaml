@@ -36,7 +36,6 @@ jobs:
 
       - name: Create Firebase Plist
         run: |
-          echo '${{ secrets.FIREBASE_DATABASE_URL }}' > local.properties
           echo 'firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"' > local.properties
           echo 'firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"' > local.properties
           echo 'firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"' > local.properties

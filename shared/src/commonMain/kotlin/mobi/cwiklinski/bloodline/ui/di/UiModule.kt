@@ -6,9 +6,9 @@ import mobi.cwiklinski.bloodline.ui.manager.AppCallbackManager
 import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
+import mobi.cwiklinski.bloodline.ui.model.ExitScreenModel
 import mobi.cwiklinski.bloodline.ui.model.HomeScreenModel
 import mobi.cwiklinski.bloodline.ui.model.LoginScreenModel
-import mobi.cwiklinski.bloodline.ui.model.LogoutScreenModel
 import mobi.cwiklinski.bloodline.ui.model.NotificationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.RegisterScreenModel
@@ -81,9 +81,11 @@ val uiModule = buildList {
         }
         single { CenterScreenModel(callbackManager = get(), centerService = get()) }
         single {
-            LogoutScreenModel(
+            ExitScreenModel(
                 callbackManager = get(),
                 authService = get(),
+                donationService = get(),
+                profileService = get(),
                 storageService = get()
             )
         }

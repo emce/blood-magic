@@ -46,8 +46,8 @@ jobs:
         run: |
           tag=$(git describe --tags --abbrev=0 --match "*-desktop")
           version=$(echo "$tag" | sed 's/-desktop$//')
-          name="Blood-Magic-${version}.pkg"
-          path="shared/build/release/main-release/pkg/${name}"
+          name="Blood-Magic-${version}.dmg"
+          path="shared/build/release/main-release/dmg/${name}"
           echo "TAG=$tag" >> $GITHUB_ENV
           echo "VERSION=$version" >> $GITHUB_ENV
           echo "RELEASE_PATH=$path" >> $GITHUB_ENV
@@ -60,8 +60,8 @@ jobs:
         env:
           VERSION: ${{ env.VERSION }}
 
-      - name: Create PKG
-        run: ./gradlew packageReleasePkg -PmacOsAppStoreRelease=true
+      - name: Create DMG
+        run: ./gradlew packageReleaseDmg -PmacOsAppStoreRelease=true
 
       - name: Upload reports
         if: failure()

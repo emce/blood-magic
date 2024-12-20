@@ -83,4 +83,9 @@ class DonationServiceImplementation() : DonationService {
         _memory.removeAll { it.id == id }
         emit(Either.Left(true))
     }
+
+    override fun deleteData() = flow<Either<Boolean, Throwable>> {
+        _memory.clear()
+        emit(Either.Left(true))
+    }
 }

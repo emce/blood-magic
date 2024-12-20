@@ -21,9 +21,8 @@ jobs:
         with:
           gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 
-      - name: Create dummy Firebase json
+      - name: Create Firebase config in local.properties
         run: |
-          echo '${{ secrets.FIREBASE_DATABASE_URL }}' > local.properties
           echo 'firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"' > local.properties
           echo 'firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"' > local.properties
           echo 'firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"' > local.properties
@@ -55,9 +54,8 @@ jobs:
       - name: Setup environment
         uses: ./.github/actions/setup-gradle
 
-      - name: Create dummy Firebase json
+      - name: Create Firebase config in local.properties
         run: |
-          echo '${{ secrets.FIREBASE_DATABASE_URL }}' > local.properties
           echo 'firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"' > local.properties
           echo 'firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"' > local.properties
           echo 'firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"' > local.properties
@@ -67,7 +65,7 @@ jobs:
           echo 'firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"' > local.properties
 
       - name: Build Android Sample
-        run: ./gradlew :androidApp:assembleGooglePlayDebug
+        run: ./gradlew :shared:assembleGooglePlayDebug
 
   build-desktop-app:
     name: Build Desktop App
@@ -82,7 +80,7 @@ jobs:
         uses: ./.github/actions/setup-gradle
 
       - name: Build Desktop App
-        run: ./gradlew :desktopApp:packageDistributionForCurrentOS
+        run: ./gradlew :shared:packageDistributionForCurrentOS
 
   build-ios-app:
     name: Build iOS App
@@ -108,9 +106,8 @@ jobs:
       - name: Setup environment
         uses: ./.github/actions/setup-gradle
 
-      - name: Create Dummy Firebase Plist
+      - name: Create Firebase config in local.properties
         run: |
-          echo '${{ secrets.FIREBASE_DATABASE_URL }}' > local.properties
           echo 'firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"' > local.properties
           echo 'firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"' > local.properties
           echo 'firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"' > local.properties

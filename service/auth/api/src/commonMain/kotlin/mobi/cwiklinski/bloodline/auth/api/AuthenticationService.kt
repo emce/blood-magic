@@ -19,4 +19,6 @@ interface AuthenticationService {
     fun logOut(): Flow<Boolean>
 
     fun resetPassword(email: String): Flow<AuthResult>
+
+    fun removeAccount(): Flow<Boolean>
 }

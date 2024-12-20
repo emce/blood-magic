@@ -9,6 +9,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.sp
+import com.mikepenz.markdown.m3.markdownTypography
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.quicksand_bold
 import mobi.cwiklinski.bloodline.resources.quicksand_light
@@ -199,6 +200,15 @@ fun itemTrailing() = TextStyle(
 )
 
 @Composable
+fun itemDelete() = TextStyle(
+    fontFamily = getFontFamily(AppFontFamily.BOLD),
+    fontSize = 13.sp,
+    color = AppThemeColors.alertRed,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 18.sp
+)
+
+@Composable
 fun submitButton() = TextStyle(
     fontFamily = getFontFamily(AppFontFamily.BOLD),
     fontSize = 12.sp,
@@ -237,6 +247,11 @@ fun notificationInfo() = TextStyle(
 @Composable
 fun secondaryButton() = submitButton().copy(
     color = AppThemeColors.rose1,
+)
+
+@Composable
+fun richTextTypography() = markdownTypography(
+    text = contentText()
 )
 
 @Composable

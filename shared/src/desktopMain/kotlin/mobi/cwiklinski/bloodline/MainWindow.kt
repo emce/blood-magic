@@ -12,6 +12,8 @@ import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.splash_logo
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.core.context.startKoin
+import org.koin.core.lazyModules
 import java.awt.Dimension
 
 fun main() = application {
@@ -26,6 +28,10 @@ fun main() = application {
         focusable = true,
         onKeyEvent = { false }
     ) {
+        startKoin {
+            lazyModules(createAppLazyModule())
+            modules(createAppModule())
+        }
         window.minimumSize = Dimension(600, 500)
         MagicApp()
     }

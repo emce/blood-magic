@@ -77,4 +77,8 @@ class ProfileServiceImplementation(
         flowOf(Either.Left(ProfileUpdate(listOf(ProfileUpdateState.PASSWORD))))
 
     override fun getProfile(): StateFlow<Profile> = _memory.asStateFlow()
+
+    override fun deleteProfile() = flow<Either<Boolean, Throwable>> {
+        emit(Either.Left(true))
+    }
 }

@@ -24,8 +24,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,12 +64,14 @@ import mobi.cwiklinski.bloodline.resources.heroGenitive
 import mobi.cwiklinski.bloodline.resources.heroinGenitive
 import mobi.cwiklinski.bloodline.resources.ic_sex_female
 import mobi.cwiklinski.bloodline.resources.ic_sex_male
+import mobi.cwiklinski.bloodline.resources.icon_logout
 import mobi.cwiklinski.bloodline.resources.male
 import mobi.cwiklinski.bloodline.resources.profileAvatarTitle
 import mobi.cwiklinski.bloodline.resources.profileDataEmailLabel
 import mobi.cwiklinski.bloodline.resources.profileDataNameLabel
 import mobi.cwiklinski.bloodline.resources.profileDataSubmitButton
 import mobi.cwiklinski.bloodline.resources.profileDataTitle
+import mobi.cwiklinski.bloodline.resources.profileDeleteTitle
 import mobi.cwiklinski.bloodline.resources.profilePasswordChangeTitle
 import mobi.cwiklinski.bloodline.resources.profileTitle
 import mobi.cwiklinski.bloodline.resources.settingsDefaultCenterLabel
@@ -80,9 +85,11 @@ import mobi.cwiklinski.bloodline.ui.model.ProfileError
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
+import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
+import mobi.cwiklinski.bloodline.ui.theme.itemDelete
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
@@ -109,8 +116,19 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
     override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
         MobilePortraitNavigationTitleLayout(
             title = stringResource(Res.string.profileTitle),
+            actions = {
+                IconButton(onClick = {
+                    screenModel.loggingOut()
+                }) {
+                    Icon(
+                        painterResource(Res.drawable.icon_logout),
+                        contentDescription = stringResource(Res.string.settingsLogoutTitle)
+                    )
+                }
+            },
             selected = NavigationItem.PROFILE,
             navigationAction = { navigationItem ->
                 when (navigationItem) {
@@ -140,9 +158,19 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
     override fun tabletView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
         MobileLandscapeNavigationTitleLayout(
             title = stringResource(Res.string.profileTitle),
             selected = NavigationItem.PROFILE,
+            actions = {
+                TextButton(onClick = {
+                    screenModel.loggingOut()
+                }) {
+                    Text(
+                        stringResource(Res.string.settingsLogoutTitle)
+                    )
+                }
+            },
             navigationAction = { navigationItem ->
                 when (navigationItem) {
                     NavigationItem.LIST -> {
@@ -172,9 +200,20 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
     override fun desktopView() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
         DesktopNavigationTitleScaffold(
             title = stringResource(Res.string.profileTitle),
             selected = NavigationItem.PROFILE,
+            actions = {
+                TextButton(onClick = {
+                    screenModel.loggingOut()
+                }) {
+                    Text(
+                        stringResource(Res.string.settingsLogoutTitle),
+                        style = contentAction()
+                    )
+                }
+            },
             navigationAction = { navigationItem ->
                 when (navigationItem) {
                     NavigationItem.LIST -> {
@@ -487,10 +526,20 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                     enabled = state != ProfileState.Saving,
                     colors = AppThemeColors.switchColors()
                 )
-                Box(
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    JustTextButton(
+                        text = stringResource(Res.string.profileDeleteTitle),
+                        onClicked = {
+                            bottomSheetNavigator.show(ProfileDeleteScreen())
+                        },
+                        enabled = state != ProfileState.Saving,
+                        textStyle = itemDelete(),
+                        textColor = AppThemeColors.alertRed
+                    )
                     JustTextButton(
                         text = stringResource(Res.string.profilePasswordChangeTitle),
                         onClicked = {

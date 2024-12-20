@@ -26,16 +26,16 @@ interface ProfileService {
     ): Flow<Either<ProfileUpdate, Throwable>>
 
     fun getProfile(): Flow<Profile>
+
+    fun deleteProfile(): Flow<Either<Boolean, Throwable>>
 }
 
 data class ProfileUpdate(val updated: List<ProfileUpdateState>)
 
 enum class ProfileUpdateState {
     NOTHING,
-    NAME,
     EMAIL,
     PASSWORD,
-    DATA,
     ALL
 }
 

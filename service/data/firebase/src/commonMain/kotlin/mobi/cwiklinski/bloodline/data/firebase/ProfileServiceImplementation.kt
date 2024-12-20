@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -31,7 +32,7 @@ class ProfileServiceImplementation(
 
     private val mainRef = db.reference("settings").child(auth.currentUser?.uid ?: "-")
 
-    private val _profileData = try {
+    private val _profileData = if (auth.currentUser != null) try {
         mainRef.valueEvents
             .map {
                 Napier.d { it.toString() }
@@ -43,7 +44,7 @@ class ProfileServiceImplementation(
             }
         } catch (e: DatabaseException) {
             flowOf(Profile(""))
-    }
+        } else flowOf(Profile(null))
 
     override fun updateProfileData(
         name: String,
@@ -106,4 +107,13 @@ class ProfileServiceImplementation(
     }
 
     override fun getProfile() = _profileData
+
+    override fun deleteProfile() = flow {
+        try {
+            mainRef.removeValue()
+            emit(Either.Left(true))
+        } catch (e: FirebaseException) {
+            emit(Either.Right(e))
+        }
+    }
 }

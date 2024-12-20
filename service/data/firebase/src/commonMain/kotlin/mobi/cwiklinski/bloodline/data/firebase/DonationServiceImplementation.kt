@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
 import mobi.cwiklinski.bloodline.common.Either
@@ -27,35 +28,35 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
     private val mainRef = db.reference("donation").child(auth.currentUser?.uid ?: "-")
 
 
-    override fun getDonations() =
-        combineTransform(
-            centerRef
-                .valueEvents
-                .map {
-                    it.value<Map<String, FirebaseCenter>>().values.toList()
-                },
-            mainRef
-                .valueEvents
-                .map {
-                    if (it.value != null) {
-                        it.value<Map<String, FirebaseDonation>>().values.toList()
-                    } else {
-                        emptyList()
+    override fun getDonations() = if (auth.currentUser != null) combineTransform(
+                centerRef
+                    .valueEvents
+                    .map {
+                        it.value<Map<String, FirebaseCenter>>().values.toList()
+                    },
+                mainRef
+                    .valueEvents
+                    .map {
+                        if (it.value != null) {
+                            it.value<Map<String, FirebaseDonation>>().values.toList()
+                        } else {
+                            emptyList()
+                        }
                     }
-                }
-        ) { centers, donations ->
-            try {
-                if (donations.isEmpty()) {
+            ) { centers, donations ->
+                try {
+                    if (donations.isEmpty()) {
+                        emit(emptyList())
+                    } else {
+                        emit(donations.map { donation ->
+                            donation.toDonation(centers.first { it.id == donation.centerId }.toCenter())
+                        }.sortedByDescending { it.date })
+                    }
+                } catch (e: DatabaseException) {
                     emit(emptyList())
-                } else {
-                    emit(donations.map { donation ->
-                        donation.toDonation(centers.first { it.id == donation.centerId }.toCenter())
-                    }.sortedByDescending { it.date })
                 }
-            } catch (e: DatabaseException) {
-                emit(emptyList())
-            }
-        }
+            } else flowOf(emptyList())
+
 
     override fun getDonation(id: String) =
         mainRef
@@ -171,6 +172,15 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
             mainRef
                 .child(id)
                 .removeValue()
+            emit(Either.Left(true))
+        } catch (e: FirebaseException) {
+            emit(Either.Right(e))
+        }
+    }
+
+    override fun deleteData() = flow {
+        try {
+            mainRef.removeValue()
             emit(Either.Left(true))
         } catch (e: FirebaseException) {
             emit(Either.Right(e))

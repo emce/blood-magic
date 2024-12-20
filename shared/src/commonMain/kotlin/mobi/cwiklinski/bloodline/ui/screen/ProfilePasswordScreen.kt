@@ -4,8 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -39,7 +36,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
@@ -60,15 +56,14 @@ import mobi.cwiklinski.bloodline.resources.profilePasswordChangeTitle
 import mobi.cwiklinski.bloodline.ui.model.ProfileError
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
-import mobi.cwiklinski.bloodline.ui.theme.AppFontFamily
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.getFontFamily
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
 import mobi.cwiklinski.bloodline.ui.widget.CloseButton
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
+import mobi.cwiklinski.bloodline.ui.widget.ProfileModal
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -144,35 +139,10 @@ class ProfilePasswordScreen : AppProfileScreen() {
                     bottomSheetNavigator.hide()
                 }
             }
-            Column(
-                modifier = Modifier.fillMaxWidth().wrapContentHeight()
-                    .background(AppThemeColors.white)
-                    .scrollable(
-                        rememberScrollState(), Orientation.Vertical
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top,
+            ProfileModal(
+                profile = profile,
+                title = stringResource(Res.string.profilePasswordChangeTitle)
             ) {
-                Text(
-                    profile.name,
-                    style = getTypography().displayMedium.copy(color = AppThemeColors.black)
-                )
-                Text(
-                    "⎯⎯  ${getAvatarName(profile.avatar)}  ⎯⎯",
-                    style = getTypography().displaySmall.copy(
-                        color = AppThemeColors.black70,
-                        fontFamily = getFontFamily(AppFontFamily.REGULAR)
-                    ),
-                )
-                Text(
-                    stringResource(Res.string.profilePasswordChangeTitle),
-                    style = getTypography().displaySmall.copy(
-                        color = AppThemeColors.black,
-                        textAlign = TextAlign.Start
-                    ),
-                    modifier = Modifier.fillMaxWidth().padding(20.dp)
-                )
-                Spacer(Modifier.height(20.dp))
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
