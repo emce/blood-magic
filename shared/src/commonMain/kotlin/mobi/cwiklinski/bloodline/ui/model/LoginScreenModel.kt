@@ -1,15 +1,12 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.auth.api.AuthError
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
-import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
@@ -19,12 +16,6 @@ class LoginScreenModel(
     private val authService: AuthenticationService,
     private val storageService: StorageService
 ) : AppModel<LoginState>(LoginState.Idle, callbackManager) {
-
-    val authState = authService.authenticationState.stateIn(
-        screenModelScope,
-        SharingStarted.Eagerly,
-        AuthenticationState.Idle
-    )
 
     init {
         bootstrap()

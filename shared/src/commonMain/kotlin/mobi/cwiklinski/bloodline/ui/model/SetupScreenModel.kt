@@ -14,6 +14,7 @@ import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 import mobi.cwiklinski.bloodline.ui.util.Avatar
@@ -25,7 +26,8 @@ class SetupScreenModel(
     private val storageService: StorageService
 ) : AppModel<SetupState>(SetupState.Loading, callbackManager) {
 
-    val profile = profileService.getProfile()
+    private val _profile = MutableStateFlow(Profile(null))
+    val profile = _profile.asStateFlow()
 
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
@@ -37,6 +39,7 @@ class SetupScreenModel(
         bootstrap()
         screenModelScope.launch {
             profileService.getProfile().collectLatest {
+                _profile.value = it
                 mutableState.value = SetupState.Idle
                 if (it.name.isEmpty() || it.email.isEmpty()) {
                     mutableState.value = SetupState.NeedSetup

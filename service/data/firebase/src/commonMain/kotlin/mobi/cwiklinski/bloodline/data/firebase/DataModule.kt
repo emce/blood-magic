@@ -27,7 +27,7 @@ fun createDataModule() = buildList {
     add(lazyModule {
         single<CenterService> { CenterServiceImplementation(get()) }
         single<DonationService> { DonationServiceImplementation(get(), get()) }
-        single<ProfileService> { ProfileServiceImplementation(get(), get()) }
+        single<ProfileService> { ProfileServiceImplementation(get(), get(), get()) }
         single<NotificationService> { NotificationServiceImplementation(get()) }
     })
 }

@@ -82,11 +82,7 @@
     <string name="registerRepeatError">Nieprawidłowe bądź za krótkie potwórzenie hasła!</string>
     <string name="registerRepeatComparisonError">Hasło i jego potwórzenie nie są jednakowe!</string>
     <string name="registerError">Proces rejestracji nieudany!</string>
-    <string name="registerTermsPrivacyPolicy">Politykę prywatności</string>
-    <string name="registerTermsPrivacyPolicyLink"> </string>
-    <string name="registerTermsRules">Regulamin</string>
-    <string name="registerTermsRulesLink"> </string>
-    <string name="registerTerms">Tworząc konto, wyrażasz zgodę na $registerTermsPrivacyPolicy oraz $registerTermsRules.</string>
+    <string name="registerTerms">Tworząc konto, wyrażasz zgodę na [Politykę prywatności](https://krwiodawca.cwiklin.ski/privacy_policy/) oraz [Regulamin](https://krwiodawca.cwiklin.ski/terms_conditions/).</string>
     <string name="registerSubmitButton">Zarejestruj się</string>
     <string name="registerLoginText">Masz już konto?</string>
     <string name="registerLoginButton">Zaloguj się</string>

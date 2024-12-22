@@ -125,7 +125,8 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 }) {
                     Icon(
                         painterResource(Res.drawable.icon_logout),
-                        contentDescription = stringResource(Res.string.settingsLogoutTitle)
+                        contentDescription = stringResource(Res.string.settingsLogoutTitle),
+                        modifier = Modifier.padding(5.dp)
                     )
                 }
             },

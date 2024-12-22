@@ -48,13 +48,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.getScreenWidth
@@ -76,6 +72,7 @@ import mobi.cwiklinski.bloodline.resources.settingsStartingLabel
 import mobi.cwiklinski.bloodline.resources.setupInformation
 import mobi.cwiklinski.bloodline.resources.setupTitle
 import mobi.cwiklinski.bloodline.resources.skip
+import mobi.cwiklinski.bloodline.ui.model.ProfileState
 import mobi.cwiklinski.bloodline.ui.model.SetupError
 import mobi.cwiklinski.bloodline.ui.model.SetupScreenModel
 import mobi.cwiklinski.bloodline.ui.model.SetupState
@@ -107,7 +104,7 @@ class SetupScreen : AppScreen() {
     override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<SetupScreenModel>()
-        val state by screenModel.state.collectAsStateWithLifecycle()
+        val state by screenModel.state.collectAsStateWithLifecycle(ProfileState.Idle)
         val behaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
         if (state == SetupState.SavedData || state == SetupState.AlreadySetup) {
             navigator.replaceAll(HomeScreen())
@@ -150,10 +147,10 @@ class SetupScreen : AppScreen() {
     fun SetupView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<SetupScreenModel>()
-        val centerList by screenModel.centers.collectAsStateWithLifecycle()
-        val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
-        val state by screenModel.state.collectAsStateWithLifecycle()
-        val email by screenModel.email.collectAsStateWithLifecycle()
+        val centerList by screenModel.centers.collectAsStateWithLifecycle(emptyList())
+        val state by screenModel.state.collectAsStateWithLifecycle(SetupState.Idle)
+        val email by screenModel.email.collectAsStateWithLifecycle("")
+        val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(null))
         val avatarSize = 75.dp
         var name by remember { mutableStateOf(profile.name) }
         var sex by remember { mutableStateOf(profile.sex) }
@@ -168,22 +165,6 @@ class SetupScreen : AppScreen() {
         var emailValue by remember { mutableStateOf(profile.email.ifEmpty { email }) }
         var avatar by remember { mutableStateOf(Avatar.byName(profile.avatar)) }
         val scrollState = rememberScrollState()
-        screenModel.screenModelScope.launch {
-            screenModel.profile.collectLatest { fetchedProfile ->
-                name = fetchedProfile.name
-                if (fetchedProfile.email.isNotEmpty() && fetchedProfile.email.isValidEmail()) {
-                    emailValue = fetchedProfile.email
-                }
-                avatar = Avatar.byName(fetchedProfile.avatar)
-                sex = fetchedProfile.sex
-                notification = fetchedProfile.notification
-                starting = fetchedProfile.starting
-                if (center == null && fetchedProfile.centerId.isNotEmpty()) {
-                    center = centerList.firstOrNull { it.id == fetchedProfile.centerId }
-                    query = center?.toSelection() ?: ""
-                }
-            }
-        }
         if (state == SetupState.SavingData) {
             BasicAlertDialog(
                 onDismissRequest = { }

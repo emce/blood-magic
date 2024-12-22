@@ -4,16 +4,18 @@ import dev.gitlive.firebase.FirebaseException
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.database.DatabaseException
 import dev.gitlive.firebase.database.FirebaseDatabase
-import io.github.aakira.napier.Napier
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.common.isValidEmail
@@ -27,7 +29,8 @@ import mobi.cwiklinski.bloodline.domain.model.Profile
 
 class ProfileServiceImplementation(
     db: FirebaseDatabase,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val coroutineScope: CoroutineScope
 ) : ProfileService {
 
     private val mainRef = db.reference("settings").child(auth.currentUser?.uid ?: "-")
@@ -35,11 +38,14 @@ class ProfileServiceImplementation(
     private val _profileData = if (auth.currentUser != null) try {
         mainRef.valueEvents
             .map {
-                Napier.d { it.toString() }
-                it.value<FirebaseSettings>()
+                if (it.exists) {
+                    it.value<FirebaseSettings>()
+                } else {
+                    createNode()
+                    FirebaseSettings()
+                }
             }
             .map {
-                Napier.d { it.toString() }
                 it.toProfile(auth.currentUser?.uid ?: "")
             }
         } catch (e: DatabaseException) {
@@ -57,6 +63,9 @@ class ProfileServiceImplementation(
     ): Flow<ProfileServiceState> = callbackFlow {
         try {
             withContext(Dispatchers.Default) {
+                try {
+                    mainRef.push()
+                } catch (_: IllegalArgumentException) { }
                 mainRef.setValue(
                     FirebaseSettings(
                         name,
@@ -107,6 +116,23 @@ class ProfileServiceImplementation(
     }
 
     override fun getProfile() = _profileData
+
+    private fun createNode() {
+        coroutineScope.launch {
+            if (!mainRef.valueEvents.first().exists) {
+                mainRef.push()
+                mainRef.setValue(FirebaseSettings(
+                    "",
+                    auth.currentUser?.email ?: "",
+                    Sex.MALE.sex,
+                    0,
+                    "",
+                    0,
+                    "WIZARD"
+                ))
+            }
+        }
+    }
 
     override fun deleteProfile() = flow {
         try {

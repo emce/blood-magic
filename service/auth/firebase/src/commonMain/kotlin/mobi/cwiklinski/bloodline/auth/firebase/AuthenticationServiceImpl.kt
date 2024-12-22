@@ -44,10 +44,11 @@ class AuthenticationServiceImpl(private val coroutineScope: CoroutineScope) : Au
     override fun registerWithEmailAndPassWord(email: String, password: String): Flow<AuthResult> =
         send(
             authFunction = {
-                firebaseAuth.createUserWithEmailAndPassword(
+                val result = firebaseAuth.createUserWithEmailAndPassword(
                     email,
                     password
-                ).user != null
+                )
+                result.user != null
             },
             sideEffect = { _authenticationState.value = AuthenticationState.Logged }
         )
