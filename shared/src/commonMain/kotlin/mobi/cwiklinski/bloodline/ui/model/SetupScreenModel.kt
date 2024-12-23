@@ -1,10 +1,8 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -14,7 +12,6 @@ import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
-import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 import mobi.cwiklinski.bloodline.ui.util.Avatar
@@ -26,11 +23,7 @@ class SetupScreenModel(
     private val storageService: StorageService
 ) : AppModel<SetupState>(SetupState.Loading, callbackManager) {
 
-    private val _profile = MutableStateFlow(Profile(null))
-    val profile = _profile.asStateFlow()
-
-    private val _email = MutableStateFlow("")
-    val email = _email.asStateFlow()
+    val profile = profileService.getProfile()
 
     val centers: StateFlow<List<Center>> = centerService.getCenters()
         .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), emptyList())
@@ -39,22 +32,19 @@ class SetupScreenModel(
         bootstrap()
         screenModelScope.launch {
             profileService.getProfile().collectLatest {
-                _profile.value = it
+                var profile = it
+                if (it.email.isEmpty()) {
+                    profile = profile.withEmail(storageService.getString(Constants.EMAIL_KEY, it.email))
+                }
                 mutableState.value = SetupState.Idle
-                if (it.name.isEmpty() || it.email.isEmpty()) {
+                if (profile.name.isEmpty()) {
                     mutableState.value = SetupState.NeedSetup
                 } else {
-                    _email.value = it.email
                     mutableState.value = SetupState.AlreadySetup
-                }
-                if (it.email.isEmpty()) {
-                    _email.value = storageService.getString(Constants.EMAIL_KEY, it.email)
                 }
             }
         }
     }
-
-
 
     fun onSetup(
         newName: String,

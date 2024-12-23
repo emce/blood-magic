@@ -218,6 +218,11 @@ object AppThemeColors {
     )
 
     @Composable
+    fun datePickerColors() = DatePickerDefaults.colors(
+        containerColor = AppThemeColors.white,
+    )
+
+    @Composable
     fun checkboxColors() = CheckboxDefaults.colors(
         checkedColor = rose1,
         uncheckedColor = grey3.copy(alpha = 0.6f),

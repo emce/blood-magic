@@ -16,7 +16,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
@@ -60,12 +59,12 @@ import mobi.cwiklinski.bloodline.ui.model.DonationError
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.calendarPickerColors
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
 import mobi.cwiklinski.bloodline.ui.widget.CloseButton
+import mobi.cwiklinski.bloodline.ui.widget.DateField
 import mobi.cwiklinski.bloodline.ui.widget.DonationTypeItem
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
@@ -271,13 +270,16 @@ class NewDonationScreen(
                     stringResource(Res.string.donationNewDateLabel),
                     style = contentText()
                 )
-                DatePicker(
-                    state = calendarState,
-                    title = null,
-                    showModeToggle = false,
-                    headline = null,
-                    colors = calendarPickerColors(),
-                    modifier = Modifier.padding(16.dp)
+                DateField(
+                    modifier = Modifier.fillMaxWidth(),
+                    calendarState,
+                    error = state is DonationState.Error && (state as DonationState.Error).error == DonationError.DATE_IN_FUTURE_ERROR,
+                    errorMessage = getError(DonationError.DATE_IN_FUTURE_ERROR),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus()
+                        }
+                    ),
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(

@@ -18,6 +18,8 @@ data class Profile(
 ) {
     fun toJson() = Json.encodeToString(this)
 
+    fun withEmail(newEmail: String) = copy(email = newEmail)
+
     companion object {
         fun fromJson(data: String) =
             if (data != "profile") Json.decodeFromString<Profile>(data) else null

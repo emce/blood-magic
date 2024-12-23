@@ -8,8 +8,10 @@ import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.data.api.ProfileService
+import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.ui.util.Avatar
 
 class RegisterScreenModel(
     callbackManager: CallbackManager,
@@ -45,6 +47,15 @@ class RegisterScreenModel(
                                         is AuthResult.Failure -> mutableState.value =
                                             RegisterState.Error(listOf(RegisterError.REGISTER_ERROR))
                                         is AuthResult.Success -> {
+                                            profileService.updateProfileData(
+                                                name = email.split("@").first(),
+                                                email = email,
+                                                avatar = Avatar.WIZARD.name,
+                                                sex = Sex.MALE,
+                                                notification = false,
+                                                starting = 0,
+                                                centerId = ""
+                                            )
                                             storageService.storeString(Constants.EMAIL_KEY, email)
                                             mutableState.value = RegisterState.Registered
                                         }

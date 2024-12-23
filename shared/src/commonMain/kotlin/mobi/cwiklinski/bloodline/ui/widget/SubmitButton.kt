@@ -22,7 +22,7 @@ fun SubmitButton(
     colors: ButtonColors = AppThemeColors.submitButtonColors()
 ) {
     Button(
-        modifier = modifier
+        modifier = Modifier
             .shadow(
                 elevation = 8.dp,
                 spotColor = AppThemeColors.rose3,
