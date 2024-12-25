@@ -4,6 +4,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.Constants
@@ -23,7 +24,13 @@ class SetupScreenModel(
     private val storageService: StorageService
 ) : AppModel<SetupState>(SetupState.Loading, callbackManager) {
 
-    val profile = profileService.getProfile()
+    val profile = profileService.getProfile().map {
+        var profile = it
+        if (it.email.isEmpty()) {
+            profile = profile.withEmail(storageService.getString(Constants.EMAIL_KEY, it.email))
+        }
+        profile
+    }
 
     val centers: StateFlow<List<Center>> = centerService.getCenters()
         .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), emptyList())

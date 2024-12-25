@@ -10,21 +10,21 @@ class FirebaseSettings(
     val name: String = "",
     val email: String = "",
     val sex: String = "",
-    val reminder: Int = 0,
+    private val reminder: Int = 0,
     @SerialName("center_id")
     val centerId: String = "",
     val starting: Int = 0,
     val avatar: String = "",
 ) {
 
-    fun toProfile(id: String) = Profile(
+    fun toProfile(id: String, email: String) = Profile(
         id,
-        name,
+        this.name,
         email,
-        avatar,
-        Sex.fromSex(sex),
-        reminder == 1,
-        starting,
-        centerId
+        this.avatar,
+        Sex.fromSex(this.sex),
+        this.reminder == 1,
+        this.starting,
+        this.centerId
     )
 }

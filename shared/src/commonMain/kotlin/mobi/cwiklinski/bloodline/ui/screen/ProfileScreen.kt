@@ -32,7 +32,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -43,16 +44,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
+import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
-import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.button_edit
 import mobi.cwiklinski.bloodline.resources.close
@@ -237,44 +241,50 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
         )
     }
 
+    @OptIn(ExperimentalVoyagerApi::class)
     @Composable
     fun ProfileView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
-        val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
-        val centerList by screenModel.centers.collectAsStateWithLifecycle()
-        val state by screenModel.state.collectAsStateWithLifecycle()
+        val centerList by screenModel.centers.collectAsStateWithLifecycle(emptyList())
+        val state by screenModel.state.collectAsStateWithLifecycle(ProfileState.Idle)
         handleSideEffects<ProfileState, ProfileScreenModel>()
+        var name by rememberSaveable { mutableStateOf("") }
+        var sex by rememberSaveable { mutableStateOf(Sex.MALE) }
+        var starting by rememberSaveable { mutableStateOf(0) }
+        var center by rememberSaveable { mutableStateOf<Center?>(null) }
+        var query by rememberSaveable { mutableStateOf("") }
+        var notification by rememberSaveable { mutableStateOf(false) }
+        var email by rememberSaveable { mutableStateOf("") }
+        val heroGenitive = stringResource(Res.string.heroGenitive)
+        val heroinGenitive = stringResource(Res.string.heroinGenitive)
+        var hero by rememberSaveable { mutableStateOf(heroGenitive) }
+        var avatar by rememberSaveable { mutableStateOf(Avatar.WIZARD) }
+        LifecycleEffectOnce {
+            screenModel.screenModelScope.launch {
+                screenModel.profile.collectLatest { latestProfile ->
+                    name = latestProfile.name
+                    email = latestProfile.email
+                    sex = latestProfile.sex
+                    starting = latestProfile.starting
+                    notification = latestProfile.notification
+                    if (latestProfile.centerId.isNotEmpty()) {
+                        centerList.firstOrNull { it.id == latestProfile.centerId }?.let {
+                            center = it
+                            query = it.toSelection()
+                        }
+                    }
+                    hero = if (latestProfile.sex.isFemale()) heroinGenitive else heroGenitive
+                    avatar = Avatar.byName(latestProfile.avatar)
+                }
+            }
+        }
         if (state == ProfileState.LoggingOut) {
             screenModel.resetState()
             navigator.replaceAll(LogoutScreen())
         }
-        val name = remember { mutableStateOf("") }
-        val sex = remember { mutableStateOf(Sex.MALE) }
-        val starting = remember { mutableStateOf(0) }
-        val center = remember { mutableStateOf<Center?>(null) }
-        val query = remember { mutableStateOf("") }
-        val notification = remember { mutableStateOf(false) }
-        val email = remember { mutableStateOf("") }
-        val hero = stringResource(
-            if (profile.sex.isFemale()) Res.string.heroinGenitive else
-                Res.string.heroGenitive
-        )
         val scrollState = rememberScrollState()
-        if (!profile.id.isNullOrEmpty()) {
-            name.value = profile.name
-            if (profile.email.isNotEmpty() && profile.email.isValidEmail()) {
-                email.value = profile.email
-            }
-            sex.value = profile.sex
-            notification.value = profile.notification
-            starting.value = profile.starting
-            if (center.value == null && profile.centerId.isNotEmpty()) {
-                center.value = centerList.firstOrNull { it.id == profile.centerId }
-                query.value = center.value?.toSelection() ?: ""
-            }
-        }
         if (state == ProfileState.ToLoggedOut) {
             BasicAlertDialog(
                 onDismissRequest = {
@@ -366,7 +376,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painterResource(Avatar.byName(profile.avatar).icon),
+                    painterResource(avatar.icon),
                     stringResource(Res.string.profileAvatarTitle),
                     modifier = Modifier
                         .width(184.dp)
@@ -382,11 +392,11 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 )
             }
             Text(
-                name.value,
+                name,
                 style = contentTitle()
             )
             Text(
-                "⎯⎯  ${getAvatarName(profile.avatar)}  ⎯⎯",
+                "⎯⎯  ${getAvatarName(avatar.name)}  ⎯⎯",
                 style = contentText(),
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -401,8 +411,8 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 )
                 Break()
                 OutlinedInput(
-                    text = name.value,
-                    onValueChanged = { name.value = it },
+                    text = name,
+                    onValueChanged = { name = it },
                     label = stringResource(Res.string.profileDataNameLabel),
                     enabled = state != ProfileState.Saving,
                     error = state is ProfileState.Error
@@ -411,8 +421,8 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 )
                 Break()
                 OutlinedInput(
-                    text = email.value,
-                    onValueChanged = { email.value = it },
+                    text = email,
+                    onValueChanged = { email = it },
                     label = stringResource(Res.string.profileDataEmailLabel),
                     enabled = state != ProfileState.Saving,
                     error = state is ProfileState.Error &&
@@ -432,13 +442,13 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                         modifier = Modifier
                             .size(40.dp)
                             .background(
-                                if (sex.value.isFemale()) AppThemeColors.grey3 else AppThemeColors.background,
+                                if (sex.isFemale()) AppThemeColors.grey3 else AppThemeColors.background,
                                 shape = RoundedCornerShape(10.dp)
                             )
                             .selectable(
-                                selected = (sex.value == Sex.FEMALE),
+                                selected = (sex == Sex.FEMALE),
                                 onClick = {
-                                    sex.value = Sex.FEMALE
+                                    sex = Sex.FEMALE
                                 },
                                 role = Role.RadioButton
                             ),
@@ -448,7 +458,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             painterResource(Res.drawable.ic_sex_female),
                             stringResource(Res.string.female),
                             colorFilter = ColorFilter.tint(
-                                if (sex.value.isFemale())
+                                if (sex.isFemale())
                                     AppThemeColors.white
                                 else
                                     AppThemeColors.violet2
@@ -461,13 +471,13 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                         modifier = Modifier
                             .size(40.dp)
                             .background(
-                                if (!sex.value.isFemale()) AppThemeColors.grey else AppThemeColors.background,
+                                if (!sex.isFemale()) AppThemeColors.grey else AppThemeColors.background,
                                 shape = RoundedCornerShape(10.dp)
                             )
                             .selectable(
-                                selected = (sex.value == Sex.MALE),
+                                selected = (sex == Sex.MALE),
                                 onClick = {
-                                    sex.value = Sex.MALE
+                                    sex = Sex.MALE
                                 },
                                 role = Role.RadioButton
                             ),
@@ -477,7 +487,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             painterResource(Res.drawable.ic_sex_male),
                             stringResource(Res.string.male),
                             colorFilter = ColorFilter.tint(
-                                if (!sex.value.isFemale())
+                                if (!sex.isFemale())
                                     AppThemeColors.white
                                 else
                                     AppThemeColors.violet2
@@ -489,28 +499,28 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 Break()
                 AutoCompleteTextView(
                     modifier = Modifier.fillMaxWidth(),
-                    query = query.value,
+                    query = query,
                     enabled = state != ProfileState.Saving,
                     queryLabel = stringResource(Res.string.settingsDefaultCenterLabel),
                     onQueryChanged = { newQuery ->
-                        query.value = newQuery
+                        query = newQuery
                     },
-                    predictions = centerList.filter(query.value),
+                    predictions = centerList.filter(query),
                     onClearClick = {
-                        query.value = ""
+                        query = ""
                     },
                     onItemClick = { selectedCenter ->
-                        center.value = selectedCenter
-                        query.value = selectedCenter.toSelection()
+                        center = selectedCenter
+                        query = selectedCenter.toSelection()
                     }
                 ) { center, index ->
                     CenterSelectItem(center = center, previous = if (index > 0) centerList[index - 1] else null)
                 }
                 Break()
                 OutlinedInput(
-                    text = starting.value.toString(),
+                    text = starting.toString(),
                     onValueChanged = {
-                        starting.value = it.toIntOrNull() ?: 0
+                        starting = it.toIntOrNull() ?: 0
                     },
                     label = stringResource(Res.string.settingsStartingLabel),
                     enabled = state != ProfileState.Saving,
@@ -525,9 +535,9 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                     style = itemSubTitle()
                 )
                 Switch(
-                    checked = notification.value,
+                    checked = notification,
                     onCheckedChange = {
-                        notification.value = it
+                        notification = it
                     },
                     enabled = state != ProfileState.Saving,
                     colors = AppThemeColors.switchColors()
@@ -568,13 +578,13 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                     SubmitButton(
                         onClick = {
                             screenModel.onProfileDataUpdate(
-                                name.value,
-                                email.value,
-                                profile.avatar,
-                                sex.value,
-                                notification.value,
-                                starting.value,
-                                center.value?.id ?: ""
+                                name,
+                                email,
+                                avatar.name,
+                                sex,
+                                notification,
+                                starting,
+                                center?.id ?: ""
                             )
                         },
                         text = stringResource(Res.string.profileDataSubmitButton),

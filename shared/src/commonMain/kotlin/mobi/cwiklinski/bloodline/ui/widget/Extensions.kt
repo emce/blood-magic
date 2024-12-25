@@ -17,6 +17,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import mobi.cwiklinski.bloodline.common.toPrecision
+import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationFullBlood
@@ -96,9 +97,12 @@ fun DonationType.getIcon() = when (this) {
 fun String.camelCase() = this.split(' ')
     .joinToString(" ") { it.replaceFirstChar(Char::uppercaseChar) }
 
-fun Long.toLocalDate() =
-    Instant.fromEpochMilliseconds(this)
-        .toLocalDateTime(TimeZone.currentSystemDefault()).date
+fun Long?.toLocalDate() = if (this != null) {
+        Instant.fromEpochMilliseconds(this)
+            .toLocalDateTime(TimeZone.currentSystemDefault()).date
+    } else {
+        today()
+    }
 
 fun getAsyncImageLoader(context: PlatformContext) =
     ImageLoader.Builder(context)

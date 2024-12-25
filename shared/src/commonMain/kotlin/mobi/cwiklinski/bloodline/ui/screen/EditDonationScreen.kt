@@ -122,7 +122,7 @@ class EditDonationScreen(
         }
         var centerSelected by remember { mutableStateOf(donation.center) }
         var amountLabel by remember { mutableStateOf(donation.amount.toString()) }
-        var amountValue by remember { mutableStateOf(donation.amount) }
+        var amountValue by remember { mutableStateOf(donation.amount.toString()) }
         var disqualificationValue by remember { mutableStateOf(if (donation.disqualification) 1 else 0) }
         centerSelected = donation.center
         centerLabel = donation.center.toSelection()
@@ -165,9 +165,10 @@ class EditDonationScreen(
                     if (state != DonationState.Saving) {
                         SubmitButton(
                             onClick = {
-                                screenModel.addDonation(
-                                    amount = amountValue,
-                                    date = (calendarState.selectedDateMillis ?: 0).toLocalDate(),
+                                screenModel.updateDonation(
+                                    id = donation.id,
+                                    amount = amountValue.toInt(),
+                                    date = calendarState.selectedDateMillis.toLocalDate(),
                                     center = centerSelected,
                                     type = donationType.type,
                                     disqualification = disqualificationValue == 1
@@ -247,7 +248,7 @@ class EditDonationScreen(
                         try {
                             val amount = it.toInt()
                             amountLabel = amount.toString()
-                            amountValue = amount
+                            amountValue = amount.toString()
                         } catch (e: Exception) {
                             Napier.d("Error parsing amount for: $it")
                         }

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.Constants
@@ -16,7 +17,6 @@ import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
-import mobi.cwiklinski.bloodline.data.filed.withEmail
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.storage.api.StorageService
@@ -30,7 +30,13 @@ class ProfileScreenModel(
     private val storageService: StorageService
 ) : AppModel<ProfileState>(ProfileState.Idle, callbackManager) {
 
-    val profile = profileService.getProfile()
+    val profile = profileService.getProfile().map {
+        var profile = it
+        if (it.email.isEmpty()) {
+            profile = profile.withEmail(storageService.getString(Constants.EMAIL_KEY, it.email))
+        }
+        profile
+    }
 
     val centers: StateFlow<List<Center>> = centerService.getCenters()
         .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), emptyList())

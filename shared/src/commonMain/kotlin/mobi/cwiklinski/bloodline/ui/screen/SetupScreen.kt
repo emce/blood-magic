@@ -33,7 +33,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -47,15 +48,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.domain.Sex
-import mobi.cwiklinski.bloodline.domain.model.Profile
+import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.female
@@ -148,41 +151,38 @@ class SetupScreen : AppScreen() {
         }
     }
 
+    @OptIn(ExperimentalVoyagerApi::class)
     @Composable
     fun SetupView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<SetupScreenModel>()
         val centerList by screenModel.centers.collectAsStateWithLifecycle(emptyList())
         val state by screenModel.state.collectAsStateWithLifecycle(SetupState.Idle)
-        val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(null))
         val avatarSize = 75.dp
-        val name = remember { mutableStateOf(profile.name) }
-        val sex = remember { mutableStateOf(profile.sex) }
-        val starting = remember { mutableStateOf(profile.starting) }
-        val center =
-            remember { mutableStateOf(centerList.firstOrNull { it.id == profile.centerId }) }
-        val query = remember {
-            mutableStateOf(
-                centerList.firstOrNull { it.id == profile.centerId }?.toSelection() ?: ""
-            )
-        }
-        val notification = remember { mutableStateOf(profile.notification) }
-        val email = remember { mutableStateOf(profile.email.ifEmpty { profile.email }) }
-        val avatar = remember { mutableStateOf(Avatar.byName(profile.avatar)) }
+        var name by rememberSaveable { mutableStateOf("") }
+        var sex by rememberSaveable { mutableStateOf(Sex.MALE) }
+        var starting by rememberSaveable { mutableStateOf(0) }
+        var center by rememberSaveable { mutableStateOf<Center?>(null) }
+        var query by rememberSaveable { mutableStateOf("") }
+        var notification by rememberSaveable { mutableStateOf(false) }
+        var email by rememberSaveable { mutableStateOf("") }
+        var avatar by rememberSaveable { mutableStateOf(Avatar.WIZARD) }
         val scrollState = rememberScrollState()
-        screenModel.screenModelScope.launch {
-            screenModel.profile.firstOrNull()?.let { fetchedProfile ->
-                name.value = fetchedProfile.name
-                if (fetchedProfile.email.isNotEmpty() && fetchedProfile.email.isValidEmail()) {
-                    email.value = fetchedProfile.email
-                }
-                avatar.value = Avatar.byName(fetchedProfile.avatar)
-                sex.value = fetchedProfile.sex
-                notification.value = fetchedProfile.notification
-                starting.value = fetchedProfile.starting
-                if (center.value == null && fetchedProfile.centerId.isNotEmpty()) {
-                    center.value = centerList.firstOrNull { it.id == fetchedProfile.centerId }
-                    query.value = center.value?.toSelection() ?: ""
+        LifecycleEffectOnce {
+            screenModel.screenModelScope.launch {
+                screenModel.profile.collectLatest { fetchedProfile ->
+                    name = fetchedProfile.name
+                    if (fetchedProfile.email.isNotEmpty() && fetchedProfile.email.isValidEmail()) {
+                        email = fetchedProfile.email
+                    }
+                    avatar = Avatar.byName(fetchedProfile.avatar)
+                    sex = fetchedProfile.sex
+                    notification = fetchedProfile.notification
+                    starting = fetchedProfile.starting
+                    if (center == null && fetchedProfile.centerId.isNotEmpty()) {
+                        center = centerList.firstOrNull { it.id == fetchedProfile.centerId }
+                        query = center?.toSelection() ?: ""
+                    }
                 }
             }
         }
@@ -239,8 +239,8 @@ class SetupScreen : AppScreen() {
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painterResource(avatar.value.icon),
-                    getAvatarName(avatar.value),
+                    painterResource(avatar.icon),
+                    getAvatarName(avatar),
                     modifier = Modifier
                         .width(184.dp)
                         .height(184.dp)
@@ -262,8 +262,8 @@ class SetupScreen : AppScreen() {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedInput(
-                    text = name.value,
-                    onValueChanged = { name.value = it },
+                    text = name,
+                    onValueChanged = { name = it },
                     label = stringResource(Res.string.profileDataNameLabel),
                     enabled = state != SetupState.SavingData,
                     error = state is SetupState.Error
@@ -272,7 +272,7 @@ class SetupScreen : AppScreen() {
                 )
                 Break()
                 OutlinedInput(
-                    text = email.value,
+                    text = email,
                     onValueChanged = { },
                     label = stringResource(Res.string.profileDataEmailLabel),
                     enabled = false,
@@ -297,9 +297,9 @@ class SetupScreen : AppScreen() {
                         ConstraintLayout(
                             modifier = Modifier.wrapContentSize()
                                 .selectable(
-                                    selected = (item == avatar.value),
+                                    selected = (item == avatar),
                                     onClick = {
-                                        avatar.value = item
+                                        avatar = item
                                     },
                                     role = Role.RadioButton
                                 )
@@ -318,7 +318,7 @@ class SetupScreen : AppScreen() {
                                     }
                             )
                             RadioButton(
-                                selected = (item == avatar.value),
+                                selected = (item == avatar),
                                 onClick = null,
                                 colors = RadioButtonDefaults.colors(
                                     selectedColor = AppThemeColors.violet4.copy(alpha = 0.4f),
@@ -359,13 +359,13 @@ class SetupScreen : AppScreen() {
                         modifier = Modifier
                             .size(40.dp)
                             .background(
-                                if (sex.value.isFemale()) AppThemeColors.grey3 else AppThemeColors.background,
+                                if (sex.isFemale()) AppThemeColors.grey3 else AppThemeColors.background,
                                 shape = RoundedCornerShape(10.dp)
                             )
                             .selectable(
-                                selected = (sex.value == Sex.FEMALE),
+                                selected = (sex == Sex.FEMALE),
                                 onClick = {
-                                    sex.value = Sex.FEMALE
+                                    sex = Sex.FEMALE
                                 },
                                 role = Role.RadioButton
                             ),
@@ -375,7 +375,7 @@ class SetupScreen : AppScreen() {
                             painterResource(Res.drawable.ic_sex_female),
                             stringResource(Res.string.female),
                             colorFilter = ColorFilter.tint(
-                                if (sex.value.isFemale())
+                                if (sex.isFemale())
                                     AppThemeColors.white
                                 else
                                     AppThemeColors.violet2
@@ -388,13 +388,13 @@ class SetupScreen : AppScreen() {
                         modifier = Modifier
                             .size(40.dp)
                             .background(
-                                if (!sex.value.isFemale()) AppThemeColors.grey else AppThemeColors.background,
+                                if (!sex.isFemale()) AppThemeColors.grey else AppThemeColors.background,
                                 shape = RoundedCornerShape(10.dp)
                             )
                             .selectable(
-                                selected = (sex.value == Sex.MALE),
+                                selected = (sex == Sex.MALE),
                                 onClick = {
-                                    sex.value = Sex.MALE
+                                    sex = Sex.MALE
                                 },
                                 role = Role.RadioButton
                             ),
@@ -404,7 +404,7 @@ class SetupScreen : AppScreen() {
                             painterResource(Res.drawable.ic_sex_male),
                             stringResource(Res.string.male),
                             colorFilter = ColorFilter.tint(
-                                if (!sex.value.isFemale())
+                                if (!sex.isFemale())
                                     AppThemeColors.white
                                 else
                                     AppThemeColors.violet2
@@ -416,19 +416,19 @@ class SetupScreen : AppScreen() {
                 Break()
                 AutoCompleteTextView(
                     modifier = Modifier.fillMaxWidth(),
-                    query = query.value,
+                    query = query,
                     enabled = state != SetupState.SavingData,
                     queryLabel = stringResource(Res.string.settingsDefaultCenterLabel),
                     onQueryChanged = { newQuery ->
-                        query.value = newQuery
+                        query = newQuery
                     },
-                    predictions = centerList.filter(query.value),
+                    predictions = centerList.filter(query),
                     onClearClick = {
-                        query.value = ""
+                        query = ""
                     },
                     onItemClick = { selectedCenter ->
-                        center.value = selectedCenter
-                        query.value = selectedCenter.toSelection()
+                        center = selectedCenter
+                        query = selectedCenter.toSelection()
                     }
                 ) { center, index ->
                     CenterSelectItem(
@@ -438,9 +438,9 @@ class SetupScreen : AppScreen() {
                 }
                 Break()
                 OutlinedInput(
-                    text = starting.value.toString(),
+                    text = starting.toString(),
                     onValueChanged = {
-                        starting.value = it.toIntOrNull() ?: 0
+                        starting = it.toIntOrNull() ?: 0
                     },
                     label = stringResource(Res.string.settingsStartingLabel),
                     enabled = state != SetupState.SavingData,
@@ -455,9 +455,9 @@ class SetupScreen : AppScreen() {
                     style = itemSubTitle()
                 )
                 Switch(
-                    checked = notification.value,
+                    checked = notification,
                     onCheckedChange = {
-                        notification.value = it
+                        notification = it
                     },
                     enabled = state != SetupState.SavingData,
                     colors = AppThemeColors.switchColors()
@@ -485,13 +485,13 @@ class SetupScreen : AppScreen() {
                     SubmitButton(
                         onClick = {
                             screenModel.onSetup(
-                                name.value,
-                                email.value,
-                                avatar.value,
-                                sex.value,
-                                notification.value,
-                                starting.value,
-                                center.value
+                                name,
+                                email,
+                                avatar,
+                                sex,
+                                notification,
+                                starting,
+                                center
                             )
                         },
                         text = stringResource(Res.string.profileDataSubmitButton),

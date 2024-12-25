@@ -25,7 +25,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,17 +33,22 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
+import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import mobi.cwiklinski.bloodline.common.isAfter
 import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.domain.DonationType
-import mobi.cwiklinski.bloodline.domain.model.Profile
+import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationNewAmountLabel
 import mobi.cwiklinski.bloodline.resources.donationNewCenterLabel
@@ -81,6 +86,7 @@ class NewDonationScreen(
 
     override val supportDialogs = false
 
+    @OptIn(ExperimentalVoyagerApi::class)
     @Composable
     override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
@@ -88,7 +94,6 @@ class NewDonationScreen(
         val focusManager = LocalFocusManager.current
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
         val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
-        val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
         val centerSearch by screenModel.query.collectAsStateWithLifecycle("")
         val centerList by screenModel.filteredCenters.collectAsStateWithLifecycle(emptyList())
         if (state == DonationState.Saved) {
@@ -114,20 +119,24 @@ class NewDonationScreen(
                 }
             }
         )
-        var donationType by remember { mutableStateOf(DonationType.FULL_BLOOD) }
-        var centerLabel by remember {
-            if (profile.centerId.isNotEmpty()) {
-                mutableStateOf(
-                    centerList.firstOrNull { it.id == profile.centerId }?.name ?: ""
-                )
-            } else {
-                mutableStateOf("")
+        var donationType by rememberSaveable { mutableStateOf(DonationType.FULL_BLOOD) }
+        var centerLabel by rememberSaveable { mutableStateOf("") }
+        var centerSelected by rememberSaveable { mutableStateOf<Center?>(null) }
+        var amountLabel by rememberSaveable { mutableStateOf("") }
+        var amountValue by rememberSaveable { mutableStateOf(0) }
+        var disqualificationValue by rememberSaveable { mutableStateOf(0) }
+        LifecycleEffectOnce {
+            screenModel.screenModelScope.launch {
+                screenModel.profile.collectLatest { latestProfile ->
+                    if (latestProfile.centerId.isNotEmpty()) {
+                        centerList.firstOrNull { it.id == latestProfile.centerId }?.let {
+                            centerLabel = it.toSelection()
+                            centerSelected = it
+                        }
+                    }
+                }
             }
         }
-        var centerSelected by remember { mutableStateOf(centerList.firstOrNull { it.id == profile.centerId }) }
-        var amountLabel by remember { mutableStateOf("") }
-        var amountValue by remember { mutableStateOf(0) }
-        var disqualificationValue by remember { mutableStateOf(0) }
         BottomSheetScaffold(
             modifier = Modifier
                 .padding(top = 10.dp),

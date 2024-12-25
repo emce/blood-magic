@@ -120,9 +120,9 @@ class DonationScreenModel(
         date: LocalDate,
         center: Center,
         type: Int,
-        hemoglobin: Int,
-        systolic: Int,
-        diastolic: Int,
+        hemoglobin: Int = 0,
+        systolic: Int = 0,
+        diastolic: Int = 0,
         disqualification: Boolean
     ) {
         mutableState.value = DonationState.Saving

@@ -46,7 +46,11 @@ class ProfileServiceImplementation(
                 }
             }
             .map {
-                it.toProfile(auth.currentUser?.uid ?: "")
+                try {
+                    it.toProfile(auth.currentUser?.uid ?: "", auth.currentUser?.email ?: "")
+                } catch (e: NotImplementedError) {
+                    it.toProfile(auth.currentUser?.uid ?: "", "")
+                }
             }
         } catch (e: DatabaseException) {
             flowOf(Profile(""))

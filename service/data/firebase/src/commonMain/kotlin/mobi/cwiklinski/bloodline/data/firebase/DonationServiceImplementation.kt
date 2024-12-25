@@ -6,7 +6,6 @@ import dev.gitlive.firebase.database.DatabaseException
 import dev.gitlive.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combineTransform
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -143,25 +142,23 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
         center: Center
     ) = flow<Either<Donation, Throwable>> {
         try {
+            val updatedDonation = FirebaseDonation(
+                id,
+                date.year,
+                date.monthNumber,
+                date.dayOfMonth,
+                type.type,
+                amount,
+                hemoglobin,
+                center.id,
+                systolic,
+                diastolic,
+                disqualification
+            )
             mainRef
                 .child(id)
-                .setValue(
-                    FirebaseDonation(
-                        id,
-                        date.year,
-                        date.monthNumber,
-                        date.dayOfMonth,
-                        type.type,
-                        amount,
-                        hemoglobin,
-                        center.id,
-                        systolic,
-                        diastolic,
-                        disqualification
-                    )
-                )
-            val updatedDonation = getDonation(id)
-            emit(Either.Left(updatedDonation.first()))
+                .setValue(updatedDonation)
+            emit(Either.Left(updatedDonation.toDonation(center)))
         } catch (e: FirebaseException) {
             emit(Either.Right(e))
         }
