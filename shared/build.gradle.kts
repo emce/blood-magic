@@ -220,6 +220,8 @@ compose.desktop {
                         }
                     }
                 }
+                provisioningProfile.set(project.file("embedded.provisionprofile"))
+                runtimeProvisioningProfile.set(project.file("runtime.provisionprofile"))
                 entitlementsFile.set(project.file("../entitlements.plist"))
                 runtimeEntitlementsFile.set(project.file("../runtime-entitlements.plist"))
             }

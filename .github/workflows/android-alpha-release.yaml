@@ -28,7 +28,7 @@ jobs:
           BLOODLINE_RELEASE_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           BLOODLINE_RELEASE_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
 
-      - name: Create Firebase config in local.properties
+      - name: Create Firebase config
         run: |
           echo 'firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"' > local.properties
           echo 'firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"' > local.properties
@@ -37,6 +37,8 @@ jobs:
           echo 'firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"' > local.properties
           echo 'firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"' > local.properties
           echo 'firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"' > local.properties
+          echo "$FIREBASE_JSON" > shared/google-services.json.b64
+          base64 -d -i shared/google-services.json.b64 > shared/google-services.json
 
       - name: Create Google Play Config file
         run: |
