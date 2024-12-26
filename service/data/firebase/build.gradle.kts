@@ -56,6 +56,7 @@ kotlin {
             api(projects.service.data.api)
             api(libs.google.firebase.auth)
             api(libs.google.firebase.database)
+            api(project.dependencies.platform(libs.google.firebase.bom))
             api(libs.bundles.kotlinx.datetime.common)
             api(libs.bundles.kotlinx.coroutines.common)
             api(libs.bundles.koin.common)

@@ -56,6 +56,7 @@ kotlin {
             api(projects.service.storage.api)
             api(libs.google.firebase.common)
             api(libs.google.firebase.auth)
+            api(project.dependencies.platform(libs.google.firebase.bom))
             api(libs.bundles.koin.common)
             api(libs.bundles.kotlinx.coroutines.common)
             api(libs.napier)

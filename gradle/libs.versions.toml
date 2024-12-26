@@ -42,6 +42,7 @@ koin-compose = "4.0.0"
 constraintlayout-compose-multiplatform = "0.4.0"
 napier = "2.7.1"
 google-firebase-kmm = "2.1.0"
+firebase = "33.7.0"
 voyager = "1.1.0-beta03"
 uiDesktop = "1.7.0"
 buildConfig = "4.2.0"
@@ -128,6 +129,7 @@ google-firebase-common = { module = "dev.gitlive:firebase-common", version.ref =
 google-firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "google-firebase-kmm" }
 google-firebase-database = { module = "dev.gitlive:firebase-database", version.ref = "google-firebase-kmm" }
 google-firebase-messaging = { module = "dev.gitlive:firebase-messaging", version.ref = "google-firebase-kmm" }
+google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
