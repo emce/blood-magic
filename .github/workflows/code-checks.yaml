@@ -32,8 +32,7 @@ jobs:
           firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
           ' > local.properties
-          echo "$FIREBASE_JSON" > shared/google-services.json.b64
-          base64 -d -i shared/google-services.json.b64 > shared/google-services.json
+          echo "$FIREBASE_JSON" > shared/google-services.json
 
       - name: Run Checks
         run: ./gradlew check
@@ -69,8 +68,7 @@ jobs:
           firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
           ' > local.properties
-          echo "$FIREBASE_JSON" > shared/google-services.json.b64
-          base64 -d -i shared/google-services.json.b64 > shared/google-services.json
+          echo "$FIREBASE_JSON" > shared/google-services.json
 
       - name: Build Android Sample
         run: ./gradlew :shared:assembleGooglePlayDebug
