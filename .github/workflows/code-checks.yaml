@@ -21,15 +21,17 @@ jobs:
         with:
           gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 
-      - name: Create Firebase config in local.properties
+      - name: Create Firebase config
         run: |
-          echo 'firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"' > local.properties
-          echo 'firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"' > local.properties
-          echo 'firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"' > local.properties
-          echo 'firebaseApplicationId="${{ secrets.FIREBASE_APPLICATION_ID }}"' > local.properties
-          echo 'firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"' > local.properties
-          echo 'firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"' > local.properties
-          echo 'firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"' > local.properties
+          echo '
+          firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"
+          firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"
+          firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"
+          firebaseApplicationId="${{ secrets.FIREBASE_APPLICATION_ID }}"
+          firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
+          firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
+          firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          ' > local.properties
 
       - name: Run Checks
         run: ./gradlew check
@@ -54,15 +56,17 @@ jobs:
       - name: Setup environment
         uses: ./.github/actions/setup-gradle
 
-      - name: Create Firebase config in local.properties
+      - name: Create Firebase config
         run: |
-          echo 'firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"' > local.properties
-          echo 'firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"' > local.properties
-          echo 'firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"' > local.properties
-          echo 'firebaseApplicationId="${{ secrets.FIREBASE_APPLICATION_ID }}"' > local.properties
-          echo 'firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"' > local.properties
-          echo 'firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"' > local.properties
-          echo 'firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"' > local.properties
+          echo '
+          firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"
+          firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"
+          firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"
+          firebaseApplicationId="${{ secrets.FIREBASE_APPLICATION_ID }}"
+          firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
+          firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
+          firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          ' > local.properties
 
       - name: Build Android Sample
         run: ./gradlew :shared:assembleGooglePlayDebug
@@ -108,13 +112,15 @@ jobs:
 
       - name: Create Firebase config in local.properties
         run: |
-          echo 'firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"' > local.properties
-          echo 'firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"' > local.properties
-          echo 'firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"' > local.properties
-          echo 'firebaseApplicationId="${{ secrets.FIREBASE_APPLICATION_ID }}"' > local.properties
-          echo 'firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"' > local.properties
-          echo 'firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"' > local.properties
-          echo 'firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"' > local.properties
+          echo '
+          firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"
+          firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"
+          firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"
+          firebaseApplicationId="${{ secrets.FIREBASE_APPLICATION_ID }}"
+          firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
+          firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
+          firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          ' > local.properties
 
       - name: Build iOS Sample
         run: |
