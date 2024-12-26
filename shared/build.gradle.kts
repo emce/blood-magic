@@ -70,6 +70,7 @@ kotlin {
             api(libs.bundles.compose.android)
             api(libs.accompanist.permissions)
             api(libs.bundles.koin.android)
+            api(libs.ktor.android)
         }
         commonMain.dependencies {
             api(projects.domain)
@@ -105,7 +106,7 @@ kotlin {
             implementation(libs.markdown)
         }
         commonTest.dependencies {
-            implementation(libs.bundles.tests)
+            implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
             implementation(projects.commonTest)
             implementation(libs.turbine)
@@ -114,6 +115,10 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.androidx.ui.desktop)
+            implementation(libs.ktor.jvm)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.apple)
         }
     }
 

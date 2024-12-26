@@ -56,6 +56,7 @@ lifecycleRuntimeKtx = "2.8.7"
 composeBom = "2024.12.01"
 markdown = "0.27.0"
 play-publisher = "3.12.1"
+ktor = "3.0.2"
 
 [libraries]
 test-core = { module = "androidx.test:core", version.ref = "tests" }
@@ -111,7 +112,10 @@ jetbrains-androidx-lifecycle-viewmodel-compose = { module = "org.jetbrains.andro
 jetbrains-androidx-core-bundle = { module = "org.jetbrains.androidx.core:core-bundle", version.ref = "jetbrains-androidx-core-bundle" }
 jetbrains-androidx-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrains-androidx-lifecycle-viewmodel-compose" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-coil-compose-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref="coil" }
+coil-compose-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref="coil" }
+ktor-android = { module = "io.ktor:ktor-client-android" , version.ref = "ktor" }
+ktor-jvm = { module = "io.ktor:ktor-client-java" , version.ref = "ktor" }
+ktor-apple = { module = "io.ktor:ktor-client-darwin" , version.ref = "ktor" }
 coil-compose-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref="coil" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
@@ -184,7 +188,7 @@ koin-common = [
 ]
 coil-common = [
     "coil-compose",
-    "coil-compose-okhttp",
+    "coil-compose-ktor",
     "coil-compose-svg"
 ]
 constraintlayout-common = [
