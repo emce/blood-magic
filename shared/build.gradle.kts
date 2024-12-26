@@ -1,4 +1,3 @@
-
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.internal.utils.localPropertiesFile
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
@@ -67,12 +66,12 @@ kotlin {
         pod("FirebaseAuth", linkOnly = true)
         pod("FirebaseDatabase", linkOnly = true)
     }
-    
+
     jvm("desktop")
-    
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             api(libs.notifier)
             api(libs.androidx.browser)

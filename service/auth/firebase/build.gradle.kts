@@ -106,3 +106,14 @@ buildConfig {
     buildConfigField("String", "FIREBASE_PROJECT_ID", firebaseProjectId)
     buildConfigField("String", "FIREBASE_DATABASE_URL", firebaseDatabaseUrl)
 }
+
+afterEvaluate {
+    tasks.findByName("generateDebugUnitTestLintModel")?.dependsOn(
+        tasks.getByName("generateAndroidUnitTestDebugNonAndroidBuildConfig"),
+        tasks.getByName("generateAndroidUnitTestNonAndroidBuildConfig"),
+    )
+    tasks.findByName("lintAnalyzeDebugUnitTest")?.dependsOn(
+        tasks.getByName("generateAndroidUnitTestDebugNonAndroidBuildConfig"),
+        tasks.getByName("generateAndroidUnitTestNonAndroidBuildConfig"),
+    )
+}
