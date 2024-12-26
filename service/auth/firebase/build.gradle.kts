@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.buildconfig)
+    alias(libs.plugins.kotlinCocoapods)
 }
 
 java {
@@ -31,6 +32,16 @@ kotlin {
         iosTarget.binaries.framework {
             isStatic = true
         }
+    }
+
+    cocoapods {
+        version = "1.0.0"
+        ios.deploymentTarget = "15.1"
+        framework {
+            baseName = "auth"
+        }
+        pod("FirebaseCore", linkOnly = true)
+        pod("FirebaseAuth", linkOnly = true)
     }
 
     jvm("desktop")

@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.play.publisher)
+    alias(libs.plugins.kotlinCocoapods)
 }
 
 val properties = localPropertiesFile.readLines().associate {
@@ -44,7 +45,7 @@ kotlin {
             jvmTarget.set(JvmTarget.fromTarget(libs.versions.jdk.get()))
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -54,6 +55,17 @@ kotlin {
             baseName = "Blood Magic"
             isStatic = true
         }
+    }
+
+    cocoapods {
+        version = "1.0.0"
+        ios.deploymentTarget = "15.1"
+        framework {
+            baseName = "shared"
+        }
+        pod("FirebaseCore", linkOnly = true)
+        pod("FirebaseAuth", linkOnly = true)
+        pod("FirebaseDatabase", linkOnly = true)
     }
     
     jvm("desktop")
