@@ -1,12 +1,14 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import app.cash.turbine.test
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
+import mobi.cwiklinski.bloodline.ui.manager.AppCallbackManager
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -20,6 +22,8 @@ class LoginScreenModelTest {
     private val profile = UiTestTools.generateProfile()
     private val storageService = UiTestTools.getStorageService()
     private val testDispatcher = UnconfinedTestDispatcher()
+    private val scope = CoroutineScope(testDispatcher)
+    private val callbackManager = AppCallbackManager(scope)
 
     @BeforeTest
     fun setUp() = runTest {
@@ -30,7 +34,7 @@ class LoginScreenModelTest {
     @Test
     fun `return error with incorrect email address`() = runTest {
         val model = getDefaultModel()
-        val email1 = "sfdd@afaf"
+        val email1 = "sfdd.afaf-io"
         val password = "5qe313434342"
         model.onLoginSubmit(email1, password)
         model.state.test {
@@ -114,6 +118,7 @@ class LoginScreenModelTest {
         authResult: AuthResult = AuthResult.Success(),
         authSecond: Boolean = true
     ) = LoginScreenModel(
+        callbackManager,
         UiTestTools.getAuthService(authResult, authSecond),
         UiTestTools.getStorageService()
     )

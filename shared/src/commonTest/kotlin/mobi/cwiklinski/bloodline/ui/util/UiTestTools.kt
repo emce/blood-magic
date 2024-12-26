@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
-import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
@@ -31,6 +30,7 @@ object UiTestTools {
         override fun registerWithEmailAndPassWord(email: String, password: String) = flowOf(result)
         override fun logOut(): Flow<Boolean> = flowOf(secondResult)
         override fun resetPassword(email: String) = flowOf(result)
+        override fun removeAccount() = flowOf(secondResult)
     }
 
     fun getStorageService()  = object : StorageService {
@@ -78,7 +78,7 @@ object UiTestTools {
         }
 
         override suspend fun getProfile(): Profile?  =
-            Profile.fromJson(storage.getOrElse("profile") { "" })
+            Profile.fromJson(storage.getOrElse("profile") { DummyData.generateProfile().toJson() })
 
         override suspend fun deleteProfile(): Boolean {
             storage.remove("profile")

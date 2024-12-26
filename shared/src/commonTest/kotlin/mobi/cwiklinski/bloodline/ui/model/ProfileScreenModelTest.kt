@@ -13,6 +13,7 @@ import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.data.filed.CenterServiceImplementation
 import mobi.cwiklinski.bloodline.data.filed.DummyData
 import mobi.cwiklinski.bloodline.test.CommonTestTools
+import mobi.cwiklinski.bloodline.ui.manager.AppCallbackManager
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -29,6 +30,7 @@ class ProfileScreenModelTest {
     private val scope = CoroutineScope(dispatcher)
     private val storageService = UiTestTools.getStorageService()
     private lateinit var model: ProfileScreenModel
+    private val callbackManager = AppCallbackManager(scope)
 
     @BeforeTest
     fun setUp() = runTest {
@@ -37,6 +39,7 @@ class ProfileScreenModelTest {
             storageService.storeProfile(profile)
         }
         model = ProfileScreenModel(
+            callbackManager,
             UiTestTools.getProfileService(storageService, scope),
             CenterServiceImplementation(),
             UiTestTools.getAuthService(AuthResult.Success(), false),

@@ -1,16 +1,16 @@
 package mobi.cwiklinski.bloodline.ui.model
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
-import mobi.cwiklinski.bloodline.data.api.ProfileUpdate
 import mobi.cwiklinski.bloodline.data.filed.DummyData
-import mobi.cwiklinski.bloodline.domain.model.Profile
+import mobi.cwiklinski.bloodline.ui.manager.AppCallbackManager
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -18,6 +18,10 @@ import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 class ResetScreenModelTest {
+    private val scheduler = TestCoroutineScheduler()
+    private val dispatcher = UnconfinedTestDispatcher(scheduler)
+    private val scope = CoroutineScope(dispatcher)
+    private val callbackManager = AppCallbackManager(scope)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeTest
@@ -48,6 +52,7 @@ class ResetScreenModelTest {
         authResult: AuthResult = AuthResult.Success(),
         authSecond: Boolean = true
     ) = ResetScreenModel(
+        callbackManager,
         UiTestTools.getAuthService(authResult, authSecond),
     )
 

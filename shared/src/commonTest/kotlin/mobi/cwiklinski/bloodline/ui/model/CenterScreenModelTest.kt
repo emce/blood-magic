@@ -11,6 +11,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.data.filed.CenterServiceImplementation
+import mobi.cwiklinski.bloodline.ui.manager.AppCallbackManager
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -21,6 +22,7 @@ class CenterScreenModelTest {
     private val scheduler = TestCoroutineScheduler()
     private val dispatcher = UnconfinedTestDispatcher(scheduler)
     private val scope = CoroutineScope(dispatcher)
+    private val callbackManager = AppCallbackManager(scope)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeTest
@@ -30,7 +32,7 @@ class CenterScreenModelTest {
 
     @Test
     fun `loads data on bootstrap`() = runTest {
-        val model = CenterScreenModel(CenterServiceImplementation())
+        val model = CenterScreenModel(callbackManager, CenterServiceImplementation())
         model.centers.stateIn(scope, SharingStarted.Lazily, emptyList()).test {
             assertEquals(193, awaitItem().size)
         }
@@ -38,7 +40,7 @@ class CenterScreenModelTest {
 
     @Test
     fun `searches centers based on query`() = runTest {
-        val model = CenterScreenModel(CenterServiceImplementation())
+        val model = CenterScreenModel(callbackManager, CenterServiceImplementation())
         model.centers.stateIn(scope, SharingStarted.Lazily, emptyList()).test {
             assertEquals(193, awaitItem().size)
         }

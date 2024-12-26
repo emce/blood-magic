@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.auth.filed.AuthData
 import mobi.cwiklinski.bloodline.auth.filed.AuthenticationServiceImpl
+import mobi.cwiklinski.bloodline.ui.manager.AppCallbackManager
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -23,6 +24,7 @@ class SplashScreenModelTest {
     private val scheduler = TestCoroutineScheduler()
     private val dispatcher = StandardTestDispatcher(scheduler)
     private val scope = CoroutineScope(dispatcher)
+    private val callbackManager = AppCallbackManager(scope)
 
     @BeforeTest
     fun setUp() {
@@ -37,7 +39,8 @@ class SplashScreenModelTest {
         val credentials = AuthData.users.entries.last()
         authService.loginWithEmailAndPassword(credentials.key, credentials.value).launchIn(scope)
         testScheduler.advanceUntilIdle()
-        val model = SplashScreenModel(authService)
+        val model = SplashScreenModel(callbackManager, authService)
+        model.start()
         testScheduler.advanceTimeBy(SplashScreenModel.SPLASH_DELAY * 2)
         model.state.test {
             assertIs<AuthenticationState.Logged>(awaitItem())
@@ -48,7 +51,8 @@ class SplashScreenModelTest {
     fun `redirects to login is user is not logged`() = runTest {
         val storage = UiTestTools.getStorageService()
         val authService = AuthenticationServiceImpl(storage)
-        val model = SplashScreenModel(authService)
+        val model = SplashScreenModel(callbackManager, authService)
+        model.start()
         testScheduler.advanceTimeBy(SplashScreenModel.SPLASH_DELAY * 2)
         model.state.test {
             assertIs<AuthenticationState.NotLogged>(awaitItem())
