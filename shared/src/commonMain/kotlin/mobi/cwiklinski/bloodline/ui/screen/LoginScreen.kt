@@ -40,6 +40,7 @@ import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.datetime.Clock
+import kotlinx.serialization.Serializable
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.icon_apple
@@ -314,6 +315,7 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
             .joinToString("\n")
 }
 
+@Serializable
 sealed class LoginScreenState {
     data object Idle : LoginScreenState()
     data class Info(val text: String) : LoginScreenState()

@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -221,8 +222,10 @@ class DonationsScreen : AppScreen() {
                         ) {
                             Text(
                                 stringResource(Res.string.homeSectionHistoryEmptyText),
-                                style = contentTitle(),
-                                modifier = Modifier.padding(10.dp)
+                                style = contentTitle().copy(
+                                    textAlign = TextAlign.Center
+                                ),
+                                modifier = Modifier.fillMaxWidth().padding(10.dp)
                             )
                             Text(
                                 stringResource(Res.string.homeSectionHistoryAddDonationEmptyText),

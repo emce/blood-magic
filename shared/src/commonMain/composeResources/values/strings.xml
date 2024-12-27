@@ -108,26 +108,26 @@
     <string name="homeSubTitle">Twoja krew ma magiczną moc</string>
     <string name="homeSectionTitle">Oby tak dalej, %s!</string>
     <string name="homeSectionEmptyTitle">Zacznij działać, %s!</string>
-    <string name="homeSectionNextDonationEmptyTitle">Następny pobór krwi</string>
-    <string name="homeSectionNextDonationEmptyText">Tutaj pojawi się informacja o następnym możliwym terminie poboru krwi.</string>
-    <string name="homeSectionHistoryEmptyTitle">Historia donacji</string>
-    <string name="homeSectionHistoryEmptyText">Tutaj pojawią się dokonane przez Ciebie donacje.</string>
+    <string name="homeSectionNextDonationEmptyTitle">Następny pobór Kropelek</string>
+    <string name="homeSectionNextDonationEmptyText">Tutaj pojawi się informacja o następnym możliwym terminie kropelkowania.</string>
+    <string name="homeSectionHistoryEmptyTitle">Historia Kropelkowania</string>
+    <string name="homeSectionHistoryEmptyText">Tutaj pojawią się oddane przez Ciebie Kropelki.</string>
     <string name="homeSectionHistoryAddDonationEmptyText">Dodaj donację.</string>
-    <string name="homeDonationHistory">Historia donacji</string>
+    <string name="homeDonationHistory">Historia Kropelkowania</string>
     <string name="homeCarouselAmountTitle">%d pobrań</string>
-    <string name="homeCarouselAmountSubtitle">leczniczej krwi</string>
-    <string name="homeCarouselTotalAmountTitle">oddanej krwi</string>
-    <string name="homeCarouselBadge1Title">Brązowy\nOrder</string>
-    <string name="homeCarouselBadge1Subtitle"> </string>
-    <string name="homeCarouselBadge2Title">Srebrny\nOrder</string>
-    <string name="homeCarouselBadge2Subtitle"> </string>
-    <string name="homeCarouselBadge3Title">Złoty\nOrder</string>
-    <string name="homeCarouselBadge3Subtitle"> </string>
+    <string name="homeCarouselAmountSubtitle">leczniczych Kropelek</string>
+    <string name="homeCarouselTotalAmountTitle">oddanych Kropelek</string>
+    <string name="homeCarouselBadge1Title">Gratulacje! Posiadasz</string>
+    <string name="homeCarouselBadge1Subtitle">Brązowy\nOrder</string>
+    <string name="homeCarouselBadge2Title">Gratulacje! Posiadasz</string>
+    <string name="homeCarouselBadge2Subtitle">Srebrny\nOrder</string>
+    <string name="homeCarouselBadge3Title">Gratulacje! Posiadasz</string>
+    <string name="homeCarouselBadge3Subtitle">Złoty\nOrder</string>
     <string name="homeCarouselBadgeFinalTitle">Platynowy\nOrder</string>
     <string name="homeCarouselBadgeFinalSubtitle"> </string>
     <string name="homeNextDonationReadyTitle">To jest Magia!</string>
-    <string name="homeNextDonationReadySubtitle">Pobór krwi pełnej jest już MOŻLIWY</string>
-    <string name="homeNextDonationPendingTitle">Następny możliwy pobór krwi pełnej (%s)</string>
+    <string name="homeNextDonationReadySubtitle">Pobór Pełnych Kropelek jest już MOŻLIWY</string>
+    <string name="homeNextDonationPendingTitle">Następny możliwy pobór Pełnych Kropelek (%s)</string>
 
     // NOTIFICATIONS
     <string name="notificationsTitle">Nowinki! Nowinki!</string>
@@ -154,62 +154,62 @@
     <string name="profileAvatarKing">niepokonany władca</string>
     <string name="profileAvatarWizard">potężny mag</string>
     <string name="profileDataTitle">Dane %s</string>
-    <string name="profileDataNameLabel">Nazwa użytkownika</string>
-    <string name="profileDataNameError">Błąd przy zmianie nazwy</string>
-    <string name="profileDataEmailLabel">Email</string>
-    <string name="profileDataEmailError">Błąd przy zmianie adresu email</string>
-    <string name="profileDataCurrentPasswordLabel">Aktualne hasło</string>
-    <string name="profileDataPasswordLabel">Nowe hasło</string>
-    <string name="profileDataPasswordRepeatLabel">Potwórzenie nowego hasła</string>
-    <string name="profileDataCurrentPasswordError">Za krótkie lub niepoprawne aktualne hasło!</string>
-    <string name="profileDataPasswordError">Nieprawidłowy format hasła (co najmniej 5 znaków)</string>
-    <string name="profileDataPasswordRepeatError">Powtórzenie hasła nie jest jednakowe z nowym hasłem!</string>
-    <string name="profileDataUpdateError">Wystąpił błąd przy aktualizacji danych profilu.</string>
-    <string name="profileDataPasswordUpdateError">Wystąpił błąd przy aktualizacji hasła.</string>
-    <string name="profileDataEmailUpdateError">Wystąpił błąd przy aktualizacji adresu email.</string>
-    <string name="profileDataUpdateSuccess">Dane profilu zostały zmienione.</string>
-    <string name="profileDataPasswordUpdateSuccess">Nowe hasło zostało ustawione.</string>
+    <string name="profileDataNameLabel">Magiczne imię</string>
+    <string name="profileDataNameError">Błąd przy zmianie imienia</string>
+    <string name="profileDataEmailLabel">Magiczny adres</string>
+    <string name="profileDataEmailError">Błąd przy zmianie adresu</string>
+    <string name="profileDataCurrentPasswordLabel">Tajemne zaklęcie</string>
+    <string name="profileDataPasswordLabel">Nowe tajemne zaklęcie</string>
+    <string name="profileDataPasswordRepeatLabel">Potwórzenie tajemnego zaklęcia</string>
+    <string name="profileDataCurrentPasswordError">Za krótkie lub niepoprawne aktualne zaklęcie!</string>
+    <string name="profileDataPasswordError">Nieprawidłowy format zaklęcia (co najmniej 5 znaków)</string>
+    <string name="profileDataPasswordRepeatError">Powtórzenie zaklęcia nie jest jednakowe z nowym!</string>
+    <string name="profileDataUpdateError">Wystąpił błąd przy aktualizacji Twoich magicznych danych.</string>
+    <string name="profileDataPasswordUpdateError">Wystąpił błąd przy aktualizacji zaklęcia.</string>
+    <string name="profileDataEmailUpdateError">Wystąpił błąd przy aktualizacji magicznego adresu.</string>
+    <string name="profileDataUpdateSuccess">Dane profilu zostały zaczarowane!</string>
+    <string name="profileDataPasswordUpdateSuccess">Nowe zaklęcie zostało ustawione.</string>
     <string name="profileDataSubmitButton">Edytuj dane</string>
     <string name="profileAvatarTitle">Wybierz postać</string>
-    <string name="profilePasswordChangeTitle">Zmiana hasła użytkownika</string>
-    <string name="profileUpdateError">Błąd aktualizacji profilu</string>
+    <string name="profilePasswordChangeTitle">Zmiana magicznego zaklęcia</string>
+    <string name="profileUpdateError">Ojej - jakiś błąd przy aktualizacji profilu</string>
     <string name="profileDeleteTitle">Usunięcie konta</string>
-    <string name="profileDeleteContent">Rozpoczynasz proces usuwania konta.\n\nWszystkie Twoje dane użytkownika, łącznie z danymi dotyczącymi donacji, zostaną **trwale usuniętę!!!** \n\n\n\nAby kontynuować proces usuwania konta, naciśnij przycisk *%s* </string>
+    <string name="profileDeleteContent">Rozpoczynasz proces usuwania konta.\n\nWszystkie dane Twojego profilu, wszystkie informacje o Kropelkach, zostaną **trwale usuniętę!!!** \n\n\n\nAby kontynuować proces usuwania konta, naciśnij przycisk *%s* </string>
     <string name="profileDeleteButton">Trwale Usuń Konto</string>
     <string name="profileDeleteDonationsMessage">Usuwanie Magicznych Kropelek...</string>
     <string name="profileDeleteProfileMessage">Usuwanie Profilu...</string>
 
     // NEW DONATION
-    <string name="donationNewTitle">Nowa donacja</string>
-    <string name="donationNewSubmit">Dodaj donację</string>
-    <string name="donationNewTypeLabel">Typ donacji</string>
-    <string name="donationNewTypeError">Brak type donacji</string>
-    <string name="donationNewAmountLabel">Ilość ml</string>
-    <string name="donationNewAmountError">Nieprawidłowa ilość donacji</string>
-    <string name="donationNewDateLabel">Data donacji</string>
+    <string name="donationNewTitle">Nowe Kropelki</string>
+    <string name="donationNewSubmit">Dodaj Kropelki</string>
+    <string name="donationNewTypeLabel">Rodzaj Kropelek</string>
+    <string name="donationNewTypeError">Brak rodzaju Kropelek</string>
+    <string name="donationNewAmountLabel">Kropelki w ml</string>
+    <string name="donationNewAmountError">Nieprawidłowa ilość Kropelek</string>
+    <string name="donationNewDateLabel">Data kropelkowania</string>
     <string name="donationNewDateSubmit">Wybierz datę</string>
     <string name="donationNewDateError">Data nie może być datą przyszłą</string>
-    <string name="donationNewError">Wystąpił błąd przy zapisie donacji</string>
-    <string name="donationNewCenterLabel">Centrum Krwiodawstwa</string>
-    <string name="donationNewCenterError">Nie wybrane zostało Centrum Krwiodawstwa!</string>
-    <string name="donationNewDisqualificationLabel">Dyskwalifikacja</string>
+    <string name="donationNewError">Wystąpił błąd przy zapisie Kropelek</string>
+    <string name="donationNewCenterLabel">Miejsce Kropelkowania</string>
+    <string name="donationNewCenterError">Nie wybrane zostało Miejsce Kropelkowania!</string>
+    <string name="donationNewDisqualificationLabel">Za mało mocy do Kropelkowania 😔</string>
     <string name="donationNewInformationTitle">Magicznie!</string>
     <string name="donationNewInformationMessage">Nowe kropelki zostały zapisane!</string>
 
     // EDIT DONATION
-    <string name="donationEditTitle">Edycja donacji</string>
-    <string name="donationEditIdError">Nieprawidłowe ID donacji</string>
+    <string name="donationEditTitle">Edycja Kropelek</string>
+    <string name="donationEditIdError">Nieprawidłowy znacznik Kropelek</string>
     <string name="donationEditSubmit">Zapisz zmiany</string>
     <string name="donationEditInformationMessage">Dane o kropelkach zostały zapisane!</string>
 
     // DONATIONS
-    <string name="donationsTitle">Twoje magiczne kropelki</string>
+    <string name="donationsTitle">Twoje Magiczne Kropelki</string>
     <string name="donationsDelete">usuń</string>
     <string name="donationsEdit">edytuj</string>
-    <string name="donationsDeleteTitle">Usunięcie danych donacji</string>
-    <string name="donationsDeleteMessage">Dane donacji zostaną bezpowrotnie usunięte!\nCzy chcesz kontynuować?</string>
-    <string name="donationsDeleteError">Wystąpił błąd przy usuwaniu donacji.</string>
-    <string name="donationsShare">Kolejne Magiczne Kropelki poleciały! Tym razem całe %s w %p</string>
+    <string name="donationsDeleteTitle">Usunięcie zapisanych Kropelek</string>
+    <string name="donationsDeleteMessage">Zapisane Kropelki zostaną bezpowrotnie usunięte!\nCzy chcesz kontynuować?</string>
+    <string name="donationsDeleteError">Wystąpił błąd przy usuwaniu Kropelek.</string>
+    <string name="donationsShare">Kolejne Magiczne Kropelki poleciały! %s zainkasował całe %p Kropelek!</string>
     <string name="donationsDeleteConfirmationTitle">Magiczne Kropelki zniknęły...</string>
     <string name="donationsDeleteConfirmationMessage">To znak, że trzeba zdobyć nowe!</string>
 
@@ -224,14 +224,14 @@
 
     // SETTINGS
     <string name="settingsTitle">Poukładanki</string>
-    <string name="settingsDefaultCenterLabel">Domyślne Centrum Krwiodawstwa</string>
-    <string name="settingsStartingLabel">Początkowa wartość dla sumy donacji</string>
+    <string name="settingsDefaultCenterLabel">Domyślne Miejsce Kropelkowania</string>
+    <string name="settingsStartingLabel">Początkowa wartość dla sumy wszystkich Kropelek</string>
     <string name="settingsSexLabel">Płeć</string>
-    <string name="settingsReminderLabel">Powiadomienia o możliwej donacji</string>
+    <string name="settingsReminderLabel">Powiadomienia o możliwości kropelkowania</string>
     <string name="settingsSubmitButton">Zapisz Poukładanki</string>
     <string name="settingsSavedMessage">Poukładanki zostały zapisane.</string>
-    <string name="settingsLogoutAction">Wyloguj</string>
-    <string name="settingsLogoutTitle">Wylogowanie</string>
-    <string name="settingsLogoutMessage">Zostaniesz wylogowany z aplikacji - nie martw się, Twoje dane są zapisane, ale aby z nich skorzystać, musisz zalogować się ponownie</string>
+    <string name="settingsLogoutAction">Zniknij</string>
+    <string name="settingsLogoutTitle">Znikanie</string>
+    <string name="settingsLogoutMessage">Szkoda, że znikasz - nie martw się, Twoje Kropleki są zapisane, ale aby z nich skorzystać, musisz pojawić się ponownie</string>
 
 </resources>

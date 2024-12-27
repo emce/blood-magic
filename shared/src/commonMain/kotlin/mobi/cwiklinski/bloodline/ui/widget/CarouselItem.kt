@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,6 +44,13 @@ fun CarouselItem(
     icon: DrawableResource,
     title: String,
     subTitle: String,
+    titleStyle: TextStyle = cardTitle().copy(
+        fontSize = 22.sp,
+        color = AppThemeColors.black,
+    ),
+    subTitleStyle: TextStyle = toolbarSubTitle(),
+    titleLines: Int = 1,
+    suBtitleLines: Int = 1
 ) {
     Card(
         modifier = modifier.padding(10.dp).width(300.dp)
@@ -76,17 +84,15 @@ fun CarouselItem(
                 ) {
                     Text(
                         title,
-                        style = cardTitle().copy(
-                            fontSize = 22.sp,
-                            color = AppThemeColors.black,
-                        ),
+                        style = titleStyle,
+                        maxLines = titleLines,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Text(
                         subTitle,
-                        style = toolbarSubTitle(),
-                        maxLines = 1,
+                        style = subTitleStyle,
+                        maxLines = suBtitleLines,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.fillMaxWidth()
                     )

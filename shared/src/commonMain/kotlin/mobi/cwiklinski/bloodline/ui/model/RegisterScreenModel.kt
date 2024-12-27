@@ -22,11 +22,6 @@ class RegisterScreenModel(
 
     init {
         bootstrap()
-        screenModelScope.launch {
-            profileService.getProfile().collectLatest {
-                storageService.storeProfile(it)
-            }
-        }
     }
 
     fun onRegisterSubmit(email: String, password: String, repeat: String) {

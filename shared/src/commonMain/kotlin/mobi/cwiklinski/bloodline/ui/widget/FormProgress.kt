@@ -19,13 +19,14 @@ import mobi.cwiklinski.bloodline.resources.icon_loading_large
 import mobi.cwiklinski.bloodline.resources.icon_loading_small
 import mobi.cwiklinski.bloodline.resources.loading
 import mobi.cwiklinski.bloodline.resources.stillLoading
+import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun FormProgress(
     modifier: Modifier = Modifier,
-    filter: ColorFilter? = null
+    filter: ColorFilter? = ColorFilter.tint(AppThemeColors.red2)
 ) {
     BoxWithConstraints(
         modifier = modifier

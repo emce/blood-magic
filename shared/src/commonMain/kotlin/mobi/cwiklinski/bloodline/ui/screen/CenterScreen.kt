@@ -1,7 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material3.Text
@@ -26,8 +25,6 @@ class CenterScreen(val center: Center, private val onSiteClick: ((link: String) 
     override fun Content() {
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         BottomSheetScaffold(
-            modifier = Modifier
-                .padding(top = 10.dp),
             sheetGesturesEnabled = false,
             sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
             sheetBackgroundColor = AppThemeColors.white,
@@ -40,14 +37,13 @@ class CenterScreen(val center: Center, private val onSiteClick: ((link: String) 
                             modifier = Modifier.fillMaxWidth()
                         )
                     },
-                    modifier = Modifier.padding(horizontal = 6.dp),
                     actions = {
                         CloseButton {
                             bottomSheetNavigator.hide()
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = AppThemeColors.white,
+                        containerColor = AppThemeColors.modalHeader,
                         titleContentColor = AppThemeColors.white,
                         actionIconContentColor = AppThemeColors.white,
                     )

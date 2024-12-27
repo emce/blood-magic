@@ -48,7 +48,7 @@ fun StarsAnimation(
         targetValue = 7,
         typeConverter = Int.VectorConverter,
         animationSpec = infiniteRepeatable(
-            animation = tween(Constants.ANIMATION_SPEED),
+            animation = tween(Constants.ANIMATION_SPEED * 10),
             repeatMode = RepeatMode.Restart
         )
     )

@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Clock
@@ -103,9 +104,11 @@ fun NextDonationPrediction(lastDonation: Donation?) {
             Spacer(Modifier.height(20.dp))
             Text(
                 progressSubtitle,
-                style = contentText(),
+                style = contentText().copy(
+                    textAlign = TextAlign.Center
+                ),
                 modifier = Modifier.fillMaxWidth(),
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(Modifier.height(20.dp))

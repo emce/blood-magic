@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
@@ -78,8 +79,10 @@ import mobi.cwiklinski.bloodline.ui.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.HomeScreenModel
 import mobi.cwiklinski.bloodline.ui.model.HomeState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
+import mobi.cwiklinski.bloodline.ui.theme.cardTitle
 import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
+import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
@@ -389,7 +392,13 @@ class HomeScreen : AppScreen() {
                         CarouselItem(
                             icon = badge,
                             title = badgeTitle,
-                            subTitle = badgeSubTitle
+                            subTitle = badgeSubTitle,
+                            titleStyle = itemSubTitle(),
+                            subTitleStyle = cardTitle().copy(
+                                fontSize = 22.sp,
+                                color = AppThemeColors.black,
+                            ),
+                            suBtitleLines = 2
                         )
                     }
                     NextDonationPrediction(

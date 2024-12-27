@@ -35,17 +35,7 @@ class ProfileScreenModel(
 
     init {
         bootstrap()
-        screenModelScope.launch {
-            val currentProfile = profileService.getProfile().first()
-            var email = currentProfile.email
-            if (email.isEmpty()) {
-                email = storageService.getString(Constants.EMAIL_KEY, email)
-                if (email.isNotEmpty() && email.isValidEmail()) {
-                    storageService.storeProfile(currentProfile.withEmail(email))
-                }
-            }
-            Napier.d(currentProfile.toString())
-        }
+        updateProfile()
     }
 
     fun onProfileDataUpdate(
@@ -62,7 +52,10 @@ class ProfileScreenModel(
                     when (it) {
                         is ProfileServiceState.Error -> mutableState.value = ProfileState.Error(listOf(ProfileError.ERROR))
                         ProfileServiceState.Idle -> {}
-                        ProfileServiceState.Saved -> mutableState.value = ProfileState.Saved
+                        ProfileServiceState.Saved -> {
+                            mutableState.value = ProfileState.Saved
+                            updateProfile()
+                        }
                         ProfileServiceState.Saving -> {}
                     }
                 }
@@ -85,8 +78,10 @@ class ProfileScreenModel(
                                 profileService.updateProfilePassword(newPassword)
                                     .collectLatest {
                                         when (it) {
-                                            is Either.Left -> mutableState.value =
-                                                ProfileState.Saved
+                                            is Either.Left -> {
+                                                mutableState.value = ProfileState.Saved
+                                                updateProfile()
+                                            }
 
                                             is Either.Right -> mutableState.value =
                                                 ProfileState.Error(listOf(ProfileError.PASSWORD))
@@ -118,7 +113,10 @@ class ProfileScreenModel(
                 profileService.updateProfileEmail(newEmail)
                     .collectLatest {
                         when (it) {
-                            is Either.Left -> mutableState.value = ProfileState.Saved
+                            is Either.Left -> {
+                                mutableState.value = ProfileState.Saved
+                                updateProfile()
+                            }
                             is Either.Right -> mutableState.value =
                                 ProfileState.Error(listOf(ProfileError.EMAIL))
                         }
@@ -147,6 +145,21 @@ class ProfileScreenModel(
 
     fun resetState() {
         mutableState.value = ProfileState.Idle
+    }
+
+    private fun updateProfile() {
+        screenModelScope.launch {
+            val currentProfile = profileService.getProfile().first()
+            var email = currentProfile.email
+            if (email.isEmpty()) {
+                email = storageService.getString(Constants.EMAIL_KEY, email)
+                if (email.isNotEmpty() && email.isValidEmail()) {
+                    storageService.storeProfile(currentProfile.withEmail(email))
+                }
+            }
+            Napier.d(currentProfile.toString())
+            _profile.value = currentProfile
+        }
     }
 }
 

@@ -4,9 +4,11 @@ import app.cash.turbine.test
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
@@ -24,12 +26,13 @@ import kotlin.test.assertNotNull
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProfileScreenModelTest {
 
-    private val profile = UiTestTools.generateProfile()
+    private val profile = UiTestTools.generateProfile(email = DummyData.ACCOUNTS.random().first)
     private val scheduler = TestCoroutineScheduler()
     private val dispatcher = UnconfinedTestDispatcher(scheduler)
     private val scope = CoroutineScope(dispatcher)
     private val storageService = UiTestTools.getStorageService()
     private lateinit var model: ProfileScreenModel
+    private val profileService = UiTestTools.getProfileService(profile)
     private val callbackManager = AppCallbackManager(scope)
 
     @BeforeTest
@@ -40,17 +43,20 @@ class ProfileScreenModelTest {
         }
         model = ProfileScreenModel(
             callbackManager,
-            UiTestTools.getProfileService(storageService, scope),
+            profileService,
             CenterServiceImplementation(),
             UiTestTools.getAuthService(AuthResult.Success(), false),
             storageService
         )
+        advanceUntilIdle()
+        profileService.getProfile().first().let {
+            assertEquals(profile.email, it.email)
+        }
     }
 
     @Test
     fun `starts with profile`() = runTest {
-        model.profile.test {
-            val currentProfile = awaitItem()
+        model.profile.first().let { currentProfile ->
             assertNotNull(currentProfile)
             assertEquals(profile.email, currentProfile.email)
         }
@@ -60,28 +66,24 @@ class ProfileScreenModelTest {
     fun `updates profile with data`() = runTest {
         val newProfile =
             UiTestTools.generateProfile(id = profile.id ?: CommonTestTools.randomString(9))
-        runBlocking {
-            model.onProfileDataUpdate(
-                newName = newProfile.name,
-                newEmail = newProfile.email,
-                newAvatar = newProfile.avatar,
-                newSex = newProfile.sex,
-                newNotification = newProfile.notification,
-                newStarting = newProfile.starting,
-                newCenterId = newProfile.centerId
-            )
-        }
-        scheduler.advanceUntilIdle()
+        model.onProfileDataUpdate(
+            newName = newProfile.name,
+            newEmail = newProfile.email,
+            newAvatar = newProfile.avatar,
+            newSex = newProfile.sex,
+            newNotification = newProfile.notification,
+            newStarting = newProfile.starting,
+            newCenterId = newProfile.centerId
+        )
         model.state.test {
-            val state = awaitItem()
-            assertIs<ProfileState.Saved>(state)
+            assertIs<ProfileState.Saved>(awaitItem())
         }
         model.profile.test {
-            val currentProfile = awaitItem()
-            assertNotNull(currentProfile)
-            assertEquals(newProfile.name, currentProfile.name)
-            assertEquals(newProfile.sex, currentProfile.sex)
-            assertEquals(newProfile.centerId, currentProfile.centerId)
+            val profile = awaitItem()
+            assertNotNull(profile)
+            assertEquals(newProfile.name, profile.name)
+            assertEquals(newProfile.sex, profile.sex)
+            assertEquals(newProfile.centerId, profile.centerId)
         }
     }
 
@@ -89,14 +91,15 @@ class ProfileScreenModelTest {
     fun `updates profile with email`() = runTest {
         val newEmail = DummyData.ACCOUNTS.last().first
         model.onProfileEmailUpdate(newEmail)
+        scheduler.advanceUntilIdle()
         model.state.test {
-            val state = awaitItem()
-            assertIs<ProfileState.Saved>(state)
+            assertIs<ProfileState.Saved>(awaitItem())
         }
         model.profile.test {
-            val profile = awaitItem()
-            assertNotNull(profile)
-            assertEquals(newEmail, profile.email)
+            awaitItem().let {
+                assertNotNull(it)
+                assertEquals(newEmail, it.email)
+            }
         }
     }
 
@@ -105,8 +108,7 @@ class ProfileScreenModelTest {
         val newEmail = "354234#adas"
         model.onProfileEmailUpdate(newEmail)
         model.state.test {
-            val state = awaitItem()
-            assertIs<ProfileState.Error>(state)
+            assertIs<ProfileState.Error>(awaitItem())
         }
     }
 

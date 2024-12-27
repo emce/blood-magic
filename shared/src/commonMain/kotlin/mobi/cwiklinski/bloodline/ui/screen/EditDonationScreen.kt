@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -129,8 +130,6 @@ class EditDonationScreen(
         screenModel.query.value = donation.center.toSelection()
         focusManager.clearFocus()
         BottomSheetScaffold(
-            modifier = Modifier
-                .padding(top = 10.dp),
             sheetGesturesEnabled = false,
             sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
             sheetBackgroundColor = AppThemeColors.white,
@@ -149,7 +148,7 @@ class EditDonationScreen(
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = AppThemeColors.white,
+                        containerColor = AppThemeColors.modalHeader,
                         titleContentColor = AppThemeColors.white,
                         actionIconContentColor = AppThemeColors.white,
                     )
@@ -158,7 +157,7 @@ class EditDonationScreen(
             sheetPeekHeight = 100.dp,
             sheetContent = {
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(20.dp),
+                    modifier = Modifier.fillMaxWidth().height(100.dp).background(AppThemeColors.modalHeader).padding(20.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
