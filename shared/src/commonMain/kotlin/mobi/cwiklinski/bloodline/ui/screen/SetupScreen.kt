@@ -48,17 +48,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
-import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
-import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import io.github.aakira.napier.Napier
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.female
@@ -89,6 +86,7 @@ import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
+import mobi.cwiklinski.bloodline.ui.util.clearStack
 import mobi.cwiklinski.bloodline.ui.util.filter
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.Break
@@ -113,7 +111,10 @@ class SetupScreen : AppScreen() {
         val behaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
         when (state) {
             SetupState.SavedData, SetupState.AlreadySetup -> {
+                Napier.d("Redirecting to Home Screen")
+                navigator.clearStack()
                 navigator.replaceAll(HomeScreen())
+                screenModel.resetState()
             }
             SetupState.Loading -> {
                 Box(
@@ -151,13 +152,14 @@ class SetupScreen : AppScreen() {
         }
     }
 
-    @OptIn(ExperimentalVoyagerApi::class)
     @Composable
     fun SetupView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<SetupScreenModel>()
         val centerList by screenModel.centers.collectAsStateWithLifecycle(emptyList())
         val state by screenModel.state.collectAsStateWithLifecycle(SetupState.Idle)
+        val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
+        val emailString by screenModel.email.collectAsStateWithLifecycle("")
         val avatarSize = 75.dp
         var name by remember { mutableStateOf("") }
         var sex by remember { mutableStateOf(Sex.MALE) }
@@ -168,22 +170,21 @@ class SetupScreen : AppScreen() {
         var email by remember { mutableStateOf("") }
         var avatar by remember { mutableStateOf(Avatar.WIZARD) }
         val scrollState = rememberScrollState()
-        LifecycleEffectOnce {
-            screenModel.screenModelScope.launch {
-                screenModel.profile.collectLatest { fetchedProfile ->
-                    name = fetchedProfile.name
-                    if (fetchedProfile.email.isNotEmpty() && fetchedProfile.email.isValidEmail()) {
-                        email = fetchedProfile.email
-                    }
-                    avatar = Avatar.byName(fetchedProfile.avatar)
-                    sex = fetchedProfile.sex
-                    notification = fetchedProfile.notification
-                    starting = fetchedProfile.starting
-                    if (center == null && fetchedProfile.centerId.isNotEmpty()) {
-                        center = centerList.firstOrNull { it.id == fetchedProfile.centerId }
-                        query = center?.toSelection() ?: ""
-                    }
-                }
+        if (emailString.isNotEmpty() && emailString.isValidEmail()) {
+            email = emailString
+        }
+        if (profile.id?.isNotEmpty() == true) {
+            name = profile.name
+            if (profile.email.isNotEmpty() && profile.email.isValidEmail()) {
+                email = profile.email
+            }
+            avatar = Avatar.byName(profile.avatar)
+            sex = profile.sex
+            notification = profile.notification
+            starting = profile.starting
+            if (center == null && profile.centerId.isNotEmpty()) {
+                center = centerList.firstOrNull { it.id == profile.centerId }
+                query = center?.toSelection() ?: ""
             }
         }
         if (state == SetupState.SavingData) {

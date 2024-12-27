@@ -35,9 +35,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import kotlinx.datetime.Clock
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.icon_apple
@@ -76,17 +78,7 @@ import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScreen() {
-
-    @Composable
-    override fun Content() {
-        super.Content()
-        val navigator = LocalNavigator.currentOrThrow
-        val screenModel = navigator.koinNavigatorScreenModel<LoginScreenModel>()
-        if (state is LoginScreenState.Info) {
-            screenModel.postSideEffect(SideEffects.SnackBar(state.text))
-        }
-    }
+class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) : AppScreen() {
 
     @Composable
     override fun defaultView() {
@@ -119,8 +111,9 @@ class LoginScreen(val state: LoginScreenState = LoginScreenState.Idle) : AppScre
     fun LoginView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<LoginScreenModel>()
-        val state by screenModel.state.collectAsStateWithLifecycle()
+        val state by screenModel.state.collectAsStateWithLifecycle(LoginState.Idle)
         if (state == LoginState.LoggedIn) {
+            screenModel.resetState()
             navigator.replaceAll(SetupScreen())
         }
         val focusManager = LocalFocusManager.current

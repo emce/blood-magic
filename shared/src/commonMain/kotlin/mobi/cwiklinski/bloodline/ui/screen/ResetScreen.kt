@@ -35,6 +35,7 @@ import mobi.cwiklinski.bloodline.resources.resetInformation
 import mobi.cwiklinski.bloodline.resources.resetSubmitButton
 import mobi.cwiklinski.bloodline.resources.resetSuccessful
 import mobi.cwiklinski.bloodline.resources.resetTitle
+import mobi.cwiklinski.bloodline.ui.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.ResetError
 import mobi.cwiklinski.bloodline.ui.model.ResetScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ResetState
@@ -85,7 +86,8 @@ class ResetScreen() : AppScreen() {
         val state by screenModel.state.collectAsStateWithLifecycle(ResetState.Idle)
         if (state == ResetState.Sent) {
             screenModel.resetState()
-            navigator.replaceAll(LoginScreen(LoginScreenState.Info(stringResource(Res.string.resetSuccessful))))
+            screenModel.postSideEffect(SideEffects.SnackBar(stringResource(Res.string.resetSuccessful)))
+            navigator.replaceAll(LoginScreen())
         }
         Column(
             Modifier.fillMaxSize().background(

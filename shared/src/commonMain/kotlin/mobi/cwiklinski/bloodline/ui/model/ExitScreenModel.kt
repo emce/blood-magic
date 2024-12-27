@@ -26,9 +26,10 @@ class ExitScreenModel(
         screenModelScope.launch {
             authService.authenticationState
                 .collectLatest {
-                    when (it) {
-                        AuthenticationState.NotLogged -> mutableState.value = ExitState.LoggedOut
-                        else -> {}
+                    if (it == AuthenticationState.NotLogged) {
+                        storageService.clearAll()
+                        delay(2.seconds.inWholeMilliseconds)
+                        mutableState.value = ExitState.LoggedOut
                     }
                 }
         }
@@ -64,6 +65,7 @@ class ExitScreenModel(
                                             mutableState.value = ExitState.ProfileDeleted
                                             delay(1.seconds.inWholeMilliseconds)
                                             authService.removeAccount().collectLatest { accountResult ->
+                                                storageService.clearAll()
                                                 authService.logOut()
                                                 if (accountResult) {
                                                     mutableState.value = ExitState.Deleted

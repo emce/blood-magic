@@ -6,6 +6,6 @@ import org.koin.dsl.lazyModule
 
 
 fun createAuthenticationModule() = lazyModule {
-    factory<AuthenticationService> { AuthenticationServiceImpl(get()) }
-    factory<AuthenticationInitializer> { AuthenticationInitializerImpl(get(), get()) }
+    single<AuthenticationService> { AuthenticationServiceImpl(get()) }
+    single<AuthenticationInitializer> { AuthenticationInitializerImpl(get(), get()) }
 }

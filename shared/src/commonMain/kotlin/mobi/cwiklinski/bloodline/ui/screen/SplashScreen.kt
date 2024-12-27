@@ -15,10 +15,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.aakira.napier.Napier
+import kotlinx.datetime.Clock
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
@@ -31,7 +33,7 @@ import mobi.cwiklinski.bloodline.ui.widget.MobileLayout
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-class SplashScreen() : AppScreen() {
+class SplashScreen(override val key: ScreenKey = Clock.System.now().toString()) : AppScreen() {
 
     @Composable
     override fun Content() {
@@ -46,7 +48,7 @@ class SplashScreen() : AppScreen() {
                 navigator.replaceAll(SetupScreen())
             }
             AuthenticationState.NotLogged -> {
-                Napier.v("Redirecting to LoginScreen")
+                Napier.v("Redirecting to Login Screen")
                 screenModel.resetState()
                 navigator.replaceAll(LoginScreen())
             }

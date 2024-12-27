@@ -51,7 +51,7 @@ import mobi.cwiklinski.bloodline.ui.widget.NotificationView
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-class NotificationsScreen() : AppScreen() {
+class NotificationsScreen : AppScreen() {
 
     override val supportDialogs = false
 

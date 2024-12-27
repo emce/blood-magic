@@ -72,7 +72,7 @@ import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-class RegisterScreen(val state: RegisterState = RegisterState.Idle) : AppScreen() {
+class RegisterScreen : AppScreen() {
 
     @Composable
     override fun defaultView() {

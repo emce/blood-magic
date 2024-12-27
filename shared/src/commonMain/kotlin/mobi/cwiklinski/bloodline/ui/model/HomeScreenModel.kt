@@ -3,16 +3,13 @@ package mobi.cwiklinski.bloodline.ui.model
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.data.api.DonationService
 import mobi.cwiklinski.bloodline.data.api.NotificationService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
-import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
@@ -27,27 +24,24 @@ class HomeScreenModel(
     storageService: StorageService,
 ) : AppModel<HomeState>(HomeState.Idle, callbackManager) {
 
-    val donations: StateFlow<List<Donation>> = donationService.getDonations()
-        .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), emptyList())
-
+    val donations = donationService.getDonations()
     private val _notificationsRead = MutableStateFlow<List<String>>(emptyList())
-
     val notifications = combine(
             notificationService.getNotifications(),
-            _notificationsRead, { notifications, readList ->
-                notifications.fillWithRead(readList)
-            }
-        )
-
-    val profile = profileService.getProfile().stateIn(screenModelScope, SharingStarted.Lazily, Profile(""))
+            _notificationsRead
+    ) { notifications, readList ->
+        notifications.fillWithRead(readList)
+    }
+    private val _profile = MutableStateFlow(Profile(""))
+    val profile = _profile.asStateFlow()
 
     init {
         bootstrap()
         screenModelScope.launch {
-            profileService.getProfile().collectLatest {
-                Napier.d(it.toString())
-                storageService.storeProfile(it)
-            }
+            val currentProfile = profileService.getProfile().first()
+            Napier.d(currentProfile.toString())
+            _profile.value = currentProfile
+            storageService.storeProfile(currentProfile)
             _notificationsRead.emit(storageService.getReadList())
         }
     }

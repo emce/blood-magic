@@ -95,6 +95,7 @@ import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
+import mobi.cwiklinski.bloodline.ui.util.clearStack
 import mobi.cwiklinski.bloodline.ui.util.filter
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.Break
@@ -282,6 +283,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
         }
         if (state == ProfileState.LoggingOut) {
             screenModel.resetState()
+            navigator.clearStack()
             navigator.replaceAll(LogoutScreen())
         }
         val scrollState = rememberScrollState()

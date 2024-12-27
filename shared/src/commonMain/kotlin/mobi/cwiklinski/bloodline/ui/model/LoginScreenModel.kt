@@ -65,6 +65,10 @@ class LoginScreenModel(
         }
     }
 
+    fun resetState() {
+        mutableState.value = LoginState.Idle
+    }
+
 }
 
 sealed class LoginState {

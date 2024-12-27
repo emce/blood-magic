@@ -123,17 +123,23 @@ class ProfileServiceImplementation(
 
     private fun createNode() {
         coroutineScope.launch {
-            if (!mainRef.valueEvents.first().exists) {
-                mainRef.push()
-                mainRef.setValue(FirebaseSettings(
-                    "",
-                    auth.currentUser?.email ?: "",
-                    Sex.MALE.sex,
-                    0,
-                    "",
-                    0,
-                    "WIZARD"
-                ))
+            try {
+                if (!mainRef.valueEvents.first().exists) {
+                    mainRef.push()
+                    mainRef.setValue(
+                        FirebaseSettings(
+                            "",
+                            auth.currentUser?.email ?: "",
+                            Sex.MALE.sex,
+                            0,
+                            "",
+                            0,
+                            "WIZARD"
+                        )
+                    )
+                }
+            } catch (e: FirebaseException) {
+                e.printStackTrace()
             }
         }
     }

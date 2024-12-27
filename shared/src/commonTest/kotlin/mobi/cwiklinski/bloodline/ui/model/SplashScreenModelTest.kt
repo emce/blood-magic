@@ -39,7 +39,7 @@ class SplashScreenModelTest {
         val credentials = AuthData.users.entries.last()
         authService.loginWithEmailAndPassword(credentials.key, credentials.value).launchIn(scope)
         testScheduler.advanceUntilIdle()
-        val model = SplashScreenModel(callbackManager, authService)
+        val model = SplashScreenModel(callbackManager, authService, storage)
         model.start()
         testScheduler.advanceTimeBy(SplashScreenModel.SPLASH_DELAY * 2)
         model.state.test {
@@ -51,7 +51,7 @@ class SplashScreenModelTest {
     fun `redirects to login is user is not logged`() = runTest {
         val storage = UiTestTools.getStorageService()
         val authService = AuthenticationServiceImpl(storage)
-        val model = SplashScreenModel(callbackManager, authService)
+        val model = SplashScreenModel(callbackManager, authService, storage)
         model.start()
         testScheduler.advanceTimeBy(SplashScreenModel.SPLASH_DELAY * 2)
         model.state.test {

@@ -21,6 +21,7 @@ import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import io.github.aakira.napier.Napier
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
@@ -29,6 +30,7 @@ import mobi.cwiklinski.bloodline.ui.model.ExitScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ExitState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
+import mobi.cwiklinski.bloodline.ui.util.clearStack
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -45,9 +47,11 @@ class LogoutScreen : AppScreen() {
     override fun portraitPhoneView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<ExitScreenModel>()
-        val state by screenModel.state.collectAsStateWithLifecycle()
+        val state by screenModel.state.collectAsStateWithLifecycle(ExitState.Idle)
         if (state == ExitState.LoggedOut) {
-            navigator.replaceAll(LoginScreen())
+            navigator.clearStack()
+            Napier.d("Redirecting to Splash Screen")
+            navigator.replaceAll(SplashScreen())
         }
         LifecycleEffectOnce {
             screenModel.logout()

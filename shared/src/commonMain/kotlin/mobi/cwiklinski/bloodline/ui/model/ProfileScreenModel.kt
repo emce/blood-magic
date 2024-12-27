@@ -2,12 +2,10 @@ package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
@@ -18,7 +16,7 @@ import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
 import mobi.cwiklinski.bloodline.domain.Sex
-import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 
@@ -30,28 +28,23 @@ class ProfileScreenModel(
     private val storageService: StorageService
 ) : AppModel<ProfileState>(ProfileState.Idle, callbackManager) {
 
-    val profile = profileService.getProfile().map {
-        var profile = it
-        if (it.email.isEmpty()) {
-            profile = profile.withEmail(storageService.getString(Constants.EMAIL_KEY, it.email))
-        }
-        profile
-    }
+    private val _profile = MutableStateFlow(Profile(""))
+    val profile = _profile.asStateFlow()
 
-    val centers: StateFlow<List<Center>> = centerService.getCenters()
-        .stateIn(screenModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    val centers = centerService.getCenters()
 
     init {
         bootstrap()
         screenModelScope.launch {
-            profileService.getProfile().collectLatest { profile ->
-                var email = profile.email
-                if (email.isEmpty()) {
-                    email = storageService.getString(Constants.EMAIL_KEY, email)
+            val currentProfile = profileService.getProfile().first()
+            var email = currentProfile.email
+            if (email.isEmpty()) {
+                email = storageService.getString(Constants.EMAIL_KEY, email)
+                if (email.isNotEmpty() && email.isValidEmail()) {
+                    storageService.storeProfile(currentProfile.withEmail(email))
                 }
-                Napier.d(profile.toString())
-                storageService.storeProfile(profile.withEmail(email))
             }
+            Napier.d(currentProfile.toString())
         }
     }
 

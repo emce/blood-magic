@@ -8,6 +8,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 
@@ -87,12 +89,14 @@ class StorageServiceImpl(private val store: DataStore<Preferences>) : StorageSer
         }
     }
 
-    override suspend fun getProfile() = Profile.fromJson(store
-        .data
-        .map { preferences ->
-            preferences[stringPreferencesKey(_profileKey)]
-        }
-        .first() ?: "{}")
+    override suspend fun getProfile() = Profile.fromJson(
+        store
+            .data
+            .map { preferences ->
+                preferences[stringPreferencesKey(_profileKey)]
+            }
+            .first() ?: buildJsonObject { put("id", "")}.toString()
+    )
 
     override suspend fun deleteProfile(): Boolean {
         store

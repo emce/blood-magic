@@ -6,11 +6,13 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
+import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 
 class SplashScreenModel(
     callbackManager: CallbackManager,
-    private val authService: AuthenticationService
+    private val authService: AuthenticationService,
+    private val storageService: StorageService,
 ) : AppModel<AuthenticationState>(AuthenticationState.Idle, callbackManager) {
 
     init {
@@ -22,7 +24,11 @@ class SplashScreenModel(
             authService.authenticationState
                 .debounce(SPLASH_DELAY)
                 .collectLatest {
-                    mutableState.value = it
+                    if (storageService.getProfile() != null) {
+                        mutableState.value = it
+                    } else {
+                        mutableState.value = AuthenticationState.NotLogged
+                    }
                 }
         }
     }

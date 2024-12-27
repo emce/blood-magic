@@ -16,6 +16,8 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
+import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.Constants
@@ -274,5 +276,12 @@ suspend fun StorageService.getReadList(): List<String> {
         emptyList()
     } else {
         Json.decodeFromString<List<String>>(current)
+    }
+}
+
+@OptIn(InternalVoyagerApi::class)
+fun Navigator.clearStack() {
+    items.forEach {
+        dispose(it)
     }
 }
