@@ -203,8 +203,8 @@
 
         <!-- DONATIONS -->
     <string name="donationsTitle">Your magic drops</string>
-    <string name="donationsDelete">Delete donation</string>
-    <string name="donationsEdit">Edit donation</string>
+    <string name="donationsDelete">delete</string>
+    <string name="donationsEdit">edit</string>
     <string name="donationsDeleteTitle">Delete donation data</string>
     <string name="donationsDeleteMessage">Donation data will be permanently deleted!\nDo you want to continue?</string>
     <string name="donationsDeleteError">An error occurred while deleting the donation.</string>

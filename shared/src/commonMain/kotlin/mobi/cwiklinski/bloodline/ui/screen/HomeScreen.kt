@@ -36,6 +36,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.isMobile
 import mobi.cwiklinski.bloodline.isTablet
 import mobi.cwiklinski.bloodline.resources.Res
@@ -192,8 +193,8 @@ class HomeScreen : AppScreen() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
-        val donations by screenModel.donations.collectAsStateWithLifecycle()
-        val profile by screenModel.profile.collectAsStateWithLifecycle()
+        val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
+        val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
         val unreadNotification by screenModel.notifications.collectAsStateWithLifecycle(emptyList())
         val hero = if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
         handleSideEffects<HomeState, HomeScreenModel>()

@@ -68,6 +68,7 @@ object AppThemeColors {
     val alertBackground = Color(0xFFFEF6F4)
 
     val cardBackground = Color(0xFFFFF7F2)
+    val topBarBackground = Color(0xFFB08FA2)
 
     val iconOrange = Color(0xFFFF9B54)
     val iconOrangeBackground = Color(0xFFFFEBDD)

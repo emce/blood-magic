@@ -54,7 +54,7 @@ fun MobileTitleBar(
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppThemeColors.rose2,
+            containerColor = AppThemeColors.topBarBackground,
             titleContentColor = AppThemeColors.black,
             navigationIconContentColor = AppThemeColors.black
         ),

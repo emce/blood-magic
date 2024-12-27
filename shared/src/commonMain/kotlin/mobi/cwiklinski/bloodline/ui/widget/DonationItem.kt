@@ -48,7 +48,6 @@ import mobi.cwiklinski.bloodline.resources.icon_share
 import mobi.cwiklinski.bloodline.resources.liter
 import mobi.cwiklinski.bloodline.resources.milliliter
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTrailing
@@ -222,9 +221,7 @@ fun DonationItem(
                         JustTextButton(
                             text = stringResource(Res.string.donationsEdit),
                             onClicked = onEdit,
-                            textStyle = contentAction().copy(
-                                color = AppThemeColors.black
-                            ),
+                            textColor = AppThemeColors.black,
                             textDecoration = TextDecoration.None,
                             leadingIcon = {
                                 Icon(
@@ -239,9 +236,7 @@ fun DonationItem(
                             text = stringResource(Res.string.donationsDelete),
                             onClicked = onDelete,
                             textDecoration = TextDecoration.None,
-                            textStyle = contentAction().copy(
-                                color = AppThemeColors.rose1
-                            ),
+                            textColor = AppThemeColors.rose1,
                             leadingIcon = {
                                 Icon(
                                     painterResource(Res.drawable.icon_delete),
