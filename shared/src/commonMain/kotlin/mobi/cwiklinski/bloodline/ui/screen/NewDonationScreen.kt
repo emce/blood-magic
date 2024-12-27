@@ -25,7 +25,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -119,12 +119,12 @@ class NewDonationScreen(
                 }
             }
         )
-        var donationType by rememberSaveable { mutableStateOf(DonationType.FULL_BLOOD) }
-        var centerLabel by rememberSaveable { mutableStateOf("") }
-        var centerSelected by rememberSaveable { mutableStateOf<Center?>(null) }
-        var amountLabel by rememberSaveable { mutableStateOf("") }
-        var amountValue by rememberSaveable { mutableStateOf(0) }
-        var disqualificationValue by rememberSaveable { mutableStateOf(0) }
+        var donationType by remember { mutableStateOf(DonationType.FULL_BLOOD) }
+        var centerLabel by remember { mutableStateOf("") }
+        var centerSelected by remember { mutableStateOf<Center?>(null) }
+        var amountLabel by remember { mutableStateOf("") }
+        var amountValue by remember { mutableStateOf(0) }
+        var disqualificationValue by remember { mutableStateOf(0) }
         LifecycleEffectOnce {
             screenModel.screenModelScope.launch {
                 screenModel.profile.collectLatest { latestProfile ->

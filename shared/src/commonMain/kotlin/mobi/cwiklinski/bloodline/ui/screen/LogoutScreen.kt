@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -38,6 +40,7 @@ class LogoutScreen : AppScreen() {
     @Composable
     override fun defaultView() = portraitPhoneView()
 
+    @OptIn(ExperimentalVoyagerApi::class)
     @Composable
     override fun portraitPhoneView() {
         val navigator = LocalNavigator.currentOrThrow
@@ -45,6 +48,9 @@ class LogoutScreen : AppScreen() {
         val state by screenModel.state.collectAsStateWithLifecycle()
         if (state == ExitState.LoggedOut) {
             navigator.replaceAll(LoginScreen())
+        }
+        LifecycleEffectOnce {
+            screenModel.logout()
         }
         Scaffold {
             Column(

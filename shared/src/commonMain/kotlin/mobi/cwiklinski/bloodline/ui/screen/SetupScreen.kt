@@ -33,7 +33,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -159,14 +159,14 @@ class SetupScreen : AppScreen() {
         val centerList by screenModel.centers.collectAsStateWithLifecycle(emptyList())
         val state by screenModel.state.collectAsStateWithLifecycle(SetupState.Idle)
         val avatarSize = 75.dp
-        var name by rememberSaveable { mutableStateOf("") }
-        var sex by rememberSaveable { mutableStateOf(Sex.MALE) }
-        var starting by rememberSaveable { mutableStateOf(0) }
-        var center by rememberSaveable { mutableStateOf<Center?>(null) }
-        var query by rememberSaveable { mutableStateOf("") }
-        var notification by rememberSaveable { mutableStateOf(false) }
-        var email by rememberSaveable { mutableStateOf("") }
-        var avatar by rememberSaveable { mutableStateOf(Avatar.WIZARD) }
+        var name by remember { mutableStateOf("") }
+        var sex by remember { mutableStateOf(Sex.MALE) }
+        var starting by remember { mutableStateOf(0) }
+        var center by remember { mutableStateOf<Center?>(null) }
+        var query by remember { mutableStateOf("") }
+        var notification by remember { mutableStateOf(false) }
+        var email by remember { mutableStateOf("") }
+        var avatar by remember { mutableStateOf(Avatar.WIZARD) }
         val scrollState = rememberScrollState()
         LifecycleEffectOnce {
             screenModel.screenModelScope.launch {

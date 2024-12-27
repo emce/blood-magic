@@ -94,7 +94,7 @@ fun DonationItem(
     Box(
         modifier = modifier
             .padding(10.dp)
-            .background(AppThemeColors.background)
+            .background(if (donation.disqualification) AppThemeColors.grey3 else AppThemeColors.background)
     ) {
         Card(
             shape = RoundedCornerShape(4.dp),

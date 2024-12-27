@@ -52,13 +52,12 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Blood Magic"
-            isStatic = true
         }
     }
 
     cocoapods {
         version = "1.0.0"
-        ios.deploymentTarget = "15.1"
+        ios.deploymentTarget = "17.0"
         framework {
             baseName = "shared"
         }
@@ -110,8 +109,6 @@ kotlin {
             implementation(projects.service.data.filed)
             implementation(projects.service.data.firebase)
             implementation(projects.service.storage.datastore)
-            //api(projects.service.notification.api)
-            //implementation(projects.service.notification.fcm)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.markdown)
@@ -167,7 +164,11 @@ android {
         setProperty("archivesBaseName", "Blood-Magic($globalVersionName)")
         vectorDrawables.useSupportLibrary = true
     }
-
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
     signingConfigs {
         create("release") {
             storeFile = file(properties["bloodlineReleaseKeystore"].toString())

@@ -87,6 +87,9 @@ abstract class AppScreen : Screen, KoinComponent {
                 is SideEffects.OpenBrowser -> {
                     platformManager.openBrowser(it.url, it.openSystemBrowser)
                 }
+                is SideEffects.DeleteAccountEffect -> {
+                    navigator.replaceAll(DeleteScreen())
+                }
                 is SideEffects.ShareText -> {
                     shareText(platformManager, it.text)
                 }

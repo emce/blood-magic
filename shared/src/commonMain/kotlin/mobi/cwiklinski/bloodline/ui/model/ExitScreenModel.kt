@@ -23,7 +23,6 @@ class ExitScreenModel(
 
     init {
         bootstrap()
-        logout()
         screenModelScope.launch {
             authService.authenticationState
                 .collectLatest {
@@ -35,7 +34,7 @@ class ExitScreenModel(
         }
     }
 
-    private fun logout() {
+    fun logout() {
         screenModelScope.launch {
             delay(1.seconds.inWholeMilliseconds)
             authService.logOut().collectLatest {
@@ -57,12 +56,15 @@ class ExitScreenModel(
                     is Either.Left -> {
                         if (result.value) {
                             mutableState.value = ExitState.DonationsDeleted
+                            delay(1.seconds.inWholeMilliseconds)
                             profileService.deleteProfile().collectLatest { profileResult ->
                                 when (profileResult) {
                                     is Either.Left -> {
                                         if (profileResult.value) {
                                             mutableState.value = ExitState.ProfileDeleted
+                                            delay(1.seconds.inWholeMilliseconds)
                                             authService.removeAccount().collectLatest { accountResult ->
+                                                authService.logOut()
                                                 if (accountResult) {
                                                     mutableState.value = ExitState.Deleted
                                                 } else {

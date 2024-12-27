@@ -29,7 +29,7 @@ class AppCallbackManager(private val coroutineScope: CoroutineScope) : CallbackM
     private var _bootstrapped: Boolean = false
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
     override val event = _event.asSharedFlow()
-    private val _sideEffect: Channel<SideEffect> = Channel()
+    private val _sideEffect: Channel<SideEffect> = Channel(capacity = 10)
     override val sideEffect = _sideEffect.receiveAsFlow()
 
     override fun bootstrap() {

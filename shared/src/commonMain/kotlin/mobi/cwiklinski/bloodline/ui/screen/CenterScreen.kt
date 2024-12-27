@@ -17,9 +17,11 @@ import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.widget.CenterView
 import mobi.cwiklinski.bloodline.ui.widget.CloseButton
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 class CenterScreen(val center: Center, private val onSiteClick: ((link: String) -> Unit)? = null) : Screen {
 
+    @Preview
     @Composable
     override fun Content() {
         val bottomSheetNavigator = LocalBottomSheetNavigator.current

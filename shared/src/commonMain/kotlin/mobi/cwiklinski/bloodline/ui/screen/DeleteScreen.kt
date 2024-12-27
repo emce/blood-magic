@@ -16,14 +16,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
+import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.profileDeleteDonationsMessage
 import mobi.cwiklinski.bloodline.resources.profileDeleteProfileMessage
-import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
+import mobi.cwiklinski.bloodline.resources.profileDeleteTitle
 import mobi.cwiklinski.bloodline.resources.splash_logo
 import mobi.cwiklinski.bloodline.ui.model.ExitScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ExitState
@@ -40,23 +44,26 @@ class DeleteScreen : AppScreen() {
     @Composable
     override fun defaultView() = portraitPhoneView()
 
+    @OptIn(ExperimentalVoyagerApi::class)
     @Composable
     override fun portraitPhoneView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<ExitScreenModel>()
-        val state by screenModel.state.collectAsStateWithLifecycle()
+        val state by screenModel.state.collectAsStateWithLifecycle(ExitState.Idle)
         when (state) {
             ExitState.Deleted -> {
                 navigator.replaceAll(LoginScreen())
             }
             ExitState.Error -> {
-
                 navigator.pop()
             }
             else -> {}
         }
-        if (state == ExitState.LoggedOut) {
-            navigator.replaceAll(LoginScreen())
+        LifecycleEffectOnce {
+            screenModel.screenModelScope.launch {
+                delay(500)
+                screenModel.delete()
+            }
         }
         Scaffold {
             Column(
@@ -68,7 +75,7 @@ class DeleteScreen : AppScreen() {
             ) {
                 Image(
                     painterResource(Res.drawable.splash_logo),
-                    stringResource(Res.string.appName)
+                    stringResource(Res.string.profileDeleteTitle)
                 )
                 Spacer(Modifier.height(20.dp))
                 Text(
@@ -76,7 +83,7 @@ class DeleteScreen : AppScreen() {
                         when (state) {
                             ExitState.DonationsDeleted -> Res.string.profileDeleteDonationsMessage
                             ExitState.ProfileDeleted -> Res.string.profileDeleteProfileMessage
-                            else -> Res.string.settingsLogoutTitle
+                            else -> Res.string.profileDeleteTitle
                         }
                     ),
                     style = hugeTitle()

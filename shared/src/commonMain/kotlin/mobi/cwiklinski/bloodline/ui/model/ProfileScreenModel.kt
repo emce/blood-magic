@@ -148,6 +148,10 @@ class ProfileScreenModel(
         mutableState.value = ProfileState.LoggingOut
     }
 
+    fun setToDelete() {
+        mutableState.value = ProfileState.ToDelete
+    }
+
     fun resetState() {
         mutableState.value = ProfileState.Idle
     }
@@ -164,6 +168,8 @@ sealed class ProfileState {
     data class Error(val errors: List<ProfileError>) : ProfileState()
 
     data object ToLoggedOut : ProfileState()
+
+    data object ToDelete : ProfileState()
 
     data object LoggingOut : ProfileState()
 

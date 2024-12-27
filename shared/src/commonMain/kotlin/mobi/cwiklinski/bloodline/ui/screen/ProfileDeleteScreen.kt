@@ -39,6 +39,7 @@ import mobi.cwiklinski.bloodline.resources.profileAvatarTitle
 import mobi.cwiklinski.bloodline.resources.profileDeleteButton
 import mobi.cwiklinski.bloodline.resources.profileDeleteContent
 import mobi.cwiklinski.bloodline.resources.profileDeleteTitle
+import mobi.cwiklinski.bloodline.ui.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
@@ -64,8 +65,17 @@ class ProfileDeleteScreen : AppProfileScreen() {
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
         val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
-        if (screenModel.state.value == ProfileState.Saved) {
-            bottomSheetNavigator.hide()
+        val state by screenModel.state.collectAsStateWithLifecycle(ProfileState.Idle)
+        when (state) {
+            ProfileState.Saved -> {
+                bottomSheetNavigator.hide()
+            }
+            ProfileState.ToDelete -> {
+                screenModel.postSideEffect(SideEffects.DeleteAccountEffect())
+                bottomSheetNavigator.hide()
+                screenModel.resetState()
+            }
+            else -> { }
         }
         Column(
             modifier = Modifier.background(AppThemeColors.homeGradient)
@@ -156,7 +166,7 @@ class ProfileDeleteScreen : AppProfileScreen() {
                             )
                             SubmitButton(
                                 onClick = {
-                                    bottomSheetNavigator.hide()
+                                    screenModel.setToDelete()
                                 },
                                 text = stringResource(Res.string.profileDeleteButton),
                             )

@@ -32,7 +32,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -250,17 +250,17 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
         val centerList by screenModel.centers.collectAsStateWithLifecycle(emptyList())
         val state by screenModel.state.collectAsStateWithLifecycle(ProfileState.Idle)
         handleSideEffects<ProfileState, ProfileScreenModel>()
-        var name by rememberSaveable { mutableStateOf("") }
-        var sex by rememberSaveable { mutableStateOf(Sex.MALE) }
-        var starting by rememberSaveable { mutableStateOf(0) }
-        var center by rememberSaveable { mutableStateOf<Center?>(null) }
-        var query by rememberSaveable { mutableStateOf("") }
-        var notification by rememberSaveable { mutableStateOf(false) }
-        var email by rememberSaveable { mutableStateOf("") }
+        var name by remember { mutableStateOf("") }
+        var sex by remember { mutableStateOf(Sex.MALE) }
+        var starting by remember { mutableStateOf(0) }
+        var center by remember { mutableStateOf<Center?>(null) }
+        var query by remember { mutableStateOf("") }
+        var notification by remember { mutableStateOf(false) }
+        var email by remember { mutableStateOf("") }
         val heroGenitive = stringResource(Res.string.heroGenitive)
         val heroinGenitive = stringResource(Res.string.heroinGenitive)
-        var hero by rememberSaveable { mutableStateOf(heroGenitive) }
-        var avatar by rememberSaveable { mutableStateOf(Avatar.WIZARD) }
+        var hero by remember { mutableStateOf(heroGenitive) }
+        var avatar by remember { mutableStateOf(Avatar.WIZARD) }
         LifecycleEffectOnce {
             screenModel.screenModelScope.launch {
                 screenModel.profile.collectLatest { latestProfile ->

@@ -143,7 +143,7 @@
     <string name="notificationsMarkAllAsReadTitle">Oznacz Wszystkie jako dawne</string>
     <string name="notificationsMarkAllAsReadMessage">Aby oznaczyć Wszystkie Nowinki jako dawne, kliknij magiczny przycisk **Oznacz**</string>
     <string name="notificationsMarkAllAsReadButton">Oznacz</string>
-    <string name="notificationsMarkAllAsReadConfirmation">Wszystkie Nowinki zostały ozanczone jako dawne!</string>
+    <string name="notificationsMarkAllAsReadConfirmation">Wszystkie Nowinki zostały oznaczone jako dawne!</string>
 
     // PROFILE
     <string name="profileTitle">Twój profil</string>

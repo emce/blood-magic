@@ -14,6 +14,7 @@ interface SideEffectWithEvent : SideEffect {
 }
 
 class SideEffects : SideEffect {
+    class DeleteAccountEffect : SideEffect
     open class SideEffectEvent(override val event: Event) : SideEffectWithEvent
     data class OpenBrowser(val url: String, val openSystemBrowser: Boolean = false) : SideEffect
     data class SnackBar(val text: String) : SideEffect
@@ -30,9 +31,6 @@ class SideEffects : SideEffect {
 
     data class ShareText(val text: String) : SideEffect
 }
-
-suspend fun openBrowser(platformManager: PlatformManager, url: String, openSystemBrowser: Boolean = false) =
-    platformManager.openBrowser(url = url, openSystemBrowser = openSystemBrowser)
 
 suspend fun shareText(platformManager: PlatformManager, text: String) =
     platformManager.shareText(content = text)

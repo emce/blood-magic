@@ -65,7 +65,6 @@ import mobi.cwiklinski.bloodline.resources.homeTitle
 import mobi.cwiklinski.bloodline.resources.home_arrow
 import mobi.cwiklinski.bloodline.resources.home_carousel_cauldron
 import mobi.cwiklinski.bloodline.resources.home_carousel_wand
-import mobi.cwiklinski.bloodline.resources.home_stars
 import mobi.cwiklinski.bloodline.resources.ic_zdzn
 import mobi.cwiklinski.bloodline.resources.ic_zhdk_1
 import mobi.cwiklinski.bloodline.resources.ic_zhdk_2
@@ -92,6 +91,7 @@ import mobi.cwiklinski.bloodline.ui.widget.MobileLandscapeNavigationLayout
 import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationLayout
 import mobi.cwiklinski.bloodline.ui.widget.NextDonationPrediction
 import mobi.cwiklinski.bloodline.ui.widget.NotificationsButton
+import mobi.cwiklinski.bloodline.ui.widget.StarsAnimation
 import mobi.cwiklinski.bloodline.ui.widget.capacity
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -216,9 +216,7 @@ class HomeScreen : AppScreen() {
                     },
                     newNotifications = unreadNotification.any { it.read }
                 )
-                Image(
-                    painterResource(Res.drawable.home_stars),
-                    stringResource(Res.string.homeTitle),
+                StarsAnimation(
                     modifier = Modifier.padding(20.dp).constrainAs(starsRef){
                         top.linkTo(bellRef.top)
                         end.linkTo(bellRef.start, 10.dp)

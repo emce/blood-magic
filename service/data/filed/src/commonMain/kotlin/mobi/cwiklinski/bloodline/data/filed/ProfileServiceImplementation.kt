@@ -45,14 +45,14 @@ class ProfileServiceImplementation(
     ): Flow<ProfileServiceState>  = callbackFlow {
         try {
             _memory.value.let {
-                val newProfile = it.withData(
-                    name,
-                    email,
-                    avatar,
-                    sex,
-                    notification,
-                    starting,
-                    centerId
+                val newProfile = it.copy(
+                    name = name,
+                    email = email,
+                    avatar = avatar,
+                    sex = sex,
+                    notification = notification,
+                    starting = starting,
+                    centerId = centerId
                 )
                 storageService.storeProfile(newProfile)
                 _memory.value = newProfile

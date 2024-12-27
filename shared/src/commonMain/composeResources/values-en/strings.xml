@@ -1,5 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="language_code">en</string>
+    <string name="idShare">BloodMagic</string>
+    <string name="appName">Blood Magic</string>
+    <string name="soon">Coming soon!</string>
+    <string name="goBack">Go back</string>
+    <string name="confirm">Confirm</string>
+    <string name="seeAll">more</string>
+    <string name="milliliter">ml</string>
+    <string name="liter">l</string>
+    <string name="donationFullBlood">Whole Blood</string>
+    <string name="donationPlasma">Plasma</string>
+    <string name="donationPlatelets">Platelets</string>
+    <string name="donationPacked">Packed RBCs</string>
+    <string name="donationFullBloodGenitive">of whole blood</string>
+    <string name="donationPlasmaGenitive">of plasma</string>
+    <string name="donationPlateletsGenitive">of platelets</string>
+    <string name="donationPackedGenitive">of packed blood</string>
+    <string name="heroGenitive">Hero</string>
+    <string name="heroinGenitive">Heroine</string>
+    <string name="day">day</string>
+    <string name="days">days</string>
+    <string name="close">Close</string>
+    <string name="clear">Clear</string>
+    <string name="skip">Skip</string>
+    <string name="loading">Loading...</string>
+    <string name="stillLoading">Still loading...</string>
+    <string name="male">enchanting man</string>
+    <string name="female">magical woman</string>
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+    <string-array name="monthGenitives">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+        <!-- NAVIGATION -->
+    <string name="navHome">Magic Happens here</string>
+    <string name="navCenters">Donation Spots</string>
+    <string name="navDonations">Magic Drops</string>
+    <string name="navProfile">Your Profile</string>
+    <string name="navAdd">New Drops</string>
+
+        <!-- LOGIN SCREEN -->
+    <string name="loginTitle">Welcome back!</string>
+    <string name="loginEmailLabel">Email</string>
+    <string name="loginPasswordLabel">Password</string>
+    <string name="loginPasswordReminderButton">Forgot your password?</string>
+    <string name="loginSubmitButton">Log in</string>
+    <string name="loginSocialSectionTitle">or continue using</string>
+    <string name="loginRegisterText">Don't have an account?</string>
+    <string name="loginRegisterButton">Sign up</string>
+    <string name="loginEmailError">Invalid email address!</string>
+    <string name="loginPasswordError">Invalid or too short password!</string>
+    <string name="loginError">Login process failed!</string>
+
+        <!-- REGISTER SCREEN -->
+    <string name="registerTitle">Create an account</string>
+    <string name="registerRepeatLabel">Repeat password</string>
+    <string name="registerRepeatError">Invalid or too short repeated password!</string>
+    <string name="registerRepeatComparisonError">Password and its repetition do not match!</string>
+    <string name="registerError">Registration process failed!</string>
+    <string name="registerTerms">By creating an account, you agree to the [Privacy Policy](https://krwiodawca.cwiklin.ski/privacy_policy/) and [Terms and Conditions](https://krwiodawca.cwiklin.ski/terms_conditions/).</string>
+    <string name="registerSubmitButton">Sign up</string>
+    <string name="registerLoginText">Already have an account?</string>
+    <string name="registerLoginButton">Log in</string>
+    <string name="registerSocialSectionTitle">or sign up using</string>
+
+        <!-- RESET -->
+    <string name="resetTitle">Reset password</string>
+    <string name="resetInformation">Enter the email address used during registration. We'll send you a message with a password reset link.</string>
+    <string name="resetSubmitButton">Send reset link</string>
+    <string name="resetError">An error occurred while submitting the form</string>
+    <string name="resetSuccessful">Message is on its way! Check your mailbox and click the magical link to reset your password.</string>
+
+        <!-- SETUP -->
+    <string name="setupTitle">Welcome, Wanderer</string>
+    <string name="setupInformation">You're starting a magical journey, so we need some information about you. It will allow us to neatly calculate magic drops and provide elegant data on your achievements.</string>
+    <string name="setupSave">Save information</string>
+
+        <!-- HOME -->
+    <string name="homeTitle">Hello, %s!</string>
+    <string name="homeHero">Hero</string>
+    <string name="homeHeroin">Heroine</string>
+    <string name="homeSubTitle">Your blood has magical power</string>
+    <string name="homeSectionTitle">Keep it up, %s!</string>
+    <string name="homeSectionEmptyTitle">Start acting, %s!</string>
+    <string name="homeSectionNextDonationEmptyTitle">Next blood donation</string>
+    <string name="homeSectionNextDonationEmptyText">Information about the next possible blood donation date will appear here.</string>
+    <string name="homeSectionHistoryEmptyTitle">Donation history</string>
+    <string name="homeSectionHistoryEmptyText">Your past donations will appear here.</string>
+    <string name="homeSectionHistoryAddDonationEmptyText">Add a donation.</string>
+    <string name="homeDonationHistory">Donation history</string>
+    <string name="homeCarouselAmountTitle">%d donations</string>
+    <string name="homeCarouselAmountSubtitle">of healing blood</string>
+    <string name="homeCarouselTotalAmountTitle">donated blood</string>
+    <string name="homeCarouselBadge1Title">Bronze\nOrder</string>
+    <string name="homeCarouselBadge1Subtitle"> </string>
+    <string name="homeCarouselBadge2Title">Silver\nOrder</string>
+    <string name="homeCarouselBadge2Subtitle"> </string>
+    <string name="homeCarouselBadge3Title">Gold\nOrder</string>
+    <string name="homeCarouselBadge3Subtitle"> </string>
+    <string name="homeCarouselBadgeFinalTitle">Platinum\nOrder</string>
+    <string name="homeCarouselBadgeFinalSubtitle"> </string>
+    <string name="homeNextDonationReadyTitle">This is Magic!</string>
+    <string name="homeNextDonationReadySubtitle">Whole blood donation is now POSSIBLE</string>
+    <string name="homeNextDonationPendingTitle">Next possible whole blood donation (%s)</string>
+
+        <!-- NOTIFICATIONS -->
+    <string name="notificationsTitle">News! News!</string>
+    <string name="notificationsUnreadTabTitle">Fresh News</string>
+    <string name="notificationsReadTabTitle">Old News</string>
+    <string name="notificationsMarkAsRead">Mark as old</string>
+    <string name="notificationsMarkAllAsRead">Mark All as old</string>
+    <string name="notificationsTypeStandard">Normal importance</string>
+    <string name="notificationsTypeUrgent">High importance</string>
+    <string name="notificationsLocationDescription">News location</string>
+    <string name="notificationsNoUnreadInformation">No Fresh News</string>
+    <string name="notificationsNoReadInformation">No Old News</string>
+    <string name="notificationsMarkAllAsReadTitle">Mark All as old</string>
+    <string name="notificationsMarkAllAsReadMessage">To mark all news as old, click the magical **Mark** button</string>
+    <string name="notificationsMarkAllAsReadButton">Mark</string>
+    <string name="notificationsMarkAllAsReadConfirmation">All news marked as old!</string>
+
+        <!-- PROFILE -->
+    <string name="profileTitle">Your profile</string>
+    <string name="profileAvatarFenix">unbridled phoenix</string>
+    <string name="profileAvatarPegasus">determined pegasus</string>
+    <string name="profileAvatarFairy">diligent fairy</string>
+    <string name="profileAvatarNymph">empathetic nymph</string>
+    <string name="profileAvatarKing">unbeatable ruler</string>
+    <string name="profileAvatarWizard">mighty wizard</string>
+    <string name="profileDataTitle">%s's data</string>
+    <string name="profileDataNameLabel">Username</string>
+    <string name="profileDataNameError">Error changing name</string>
+    <string name="profileDataEmailLabel">Email</string>
+    <string name="profileDataEmailError">Error changing email address</string>
+    <string name="profileDataCurrentPasswordLabel">Current password</string>
+    <string name="profileDataPasswordLabel">New password</string>
+    <string name="profileDataPasswordRepeatLabel">Repeat new password</string>
+    <string name="profileDataCurrentPasswordError">Too short or incorrect current password!</string>
+    <string name="profileDataPasswordError">Invalid password format (at least 5 characters)</string>
+    <string name="profileDataPasswordRepeatError">Password repeat does not match the new password!</string>
+    <string name="profileDataUpdateError">An error occurred while updating profile data.</string>
+    <string name="profileDataPasswordUpdateError">An error occurred while updating the password.</string>
+    <string name="profileDataEmailUpdateError">An error occurred while updating the email address.</string>
+    <string name="profileDataUpdateSuccess">Profile data updated successfully.</string>
+    <string name="profileDataPasswordUpdateSuccess">New password has been set.</string>
+    <string name="profileDataSubmitButton">Edit data</string>
+    <string name="profileAvatarTitle">Choose character</string>
+    <string name="profilePasswordChangeTitle">Change user password</string>
+    <string name="profileUpdateError">Profile update error</string>
+    <string name="profileDeleteTitle">Delete account</string>
+    <string name="profileDeleteContent">You are about to delete your account.\n\nAll your user data, including donation data, will be **permanently deleted!!!**\n\n\nTo proceed with deleting your account, press the button *%s* </string>
+    <string name="profileDeleteButton">Permanently Delete Account</string>
+    <string name="profileDeleteDonationsMessage">Deleting Magic Drops...</string>
+    <string name="profileDeleteProfileMessage">Deleting Profile...</string>
+
+        <!-- NEW DONATION -->
+    <string name="donationNewTitle">New donation</string>
+    <string name="donationNewSubmit">Add donation</string>
+    <string name="donationNewTypeLabel">Donation type</string>
+    <string name="donationNewTypeError">No donation type</string>
+    <string name="donationNewAmountLabel">Amount ml</string>
+    <string name="donationNewAmountError">Invalid donation amount</string>
+    <string name="donationNewDateLabel">Donation date</string>
+    <string name="donationNewDateSubmit">Choose date</string>
+    <string name="donationNewDateError">Date cannot be in the future</string>
+    <string name="donationNewError">An error occurred while saving the donation</string>
+    <string name="donationNewCenterLabel">Blood Donation Center</string>
+    <string name="donationNewCenterError">No Blood Donation Center selected!</string>
+    <string name="donationNewDisqualificationLabel">Disqualification</string>
+    <string name="donationNewInformationTitle">Magical!</string>
+    <string name="donationNewInformationMessage">New drops have been saved!</string>
+
+        <!-- EDIT DONATION -->
+    <string name="donationEditTitle">Edit donation</string>
+    <string name="donationEditIdError">Invalid donation ID</string>
+    <string name="donationEditSubmit">Save changes</string>
+    <string name="donationEditInformationMessage">Drop data has been saved!</string>
+
+        <!-- DONATIONS -->
+    <string name="donationsTitle">Your magic drops</string>
+    <string name="donationsDelete">Delete donation</string>
+    <string name="donationsEdit">Edit donation</string>
+    <string name="donationsDeleteTitle">Delete donation data</string>
+    <string name="donationsDeleteMessage">Donation data will be permanently deleted!\nDo you want to continue?</string>
+    <string name="donationsDeleteError">An error occurred while deleting the donation.</string>
+    <string name="donationsShare">Another Magic Drop has flown! This time, the whole %s in %p</string>
+    <string name="donationsDeleteConfirmationTitle">Magic Drops disappeared...</string>
+    <string name="donationsDeleteConfirmationMessage">It means it's time to get new ones!</string>
+
+        <!-- CENTERS -->
+    <string name="centersTitle">Donation spots</string>
+    <string name="centersEmpty">Choose a donation spot to see its details</string>
+    <string name="centerRegion">%s territory</string>
+    <string name="centerAddress">Donation address</string>
+    <string name="centerContact">Contact</string>
+    <string name="centerInfo">Useful details</string>
+    <string name="centerSearchLabel">Choose spots...</string>
+
+        <!-- SETTINGS -->
+    <string name="settingsTitle">Preferences</string>
+    <string name="settingsDefaultCenterLabel">Default Blood Donation Center</string>
+    <string name="settingsStartingLabel">Initial donation total</string>
+    <string name="settingsSexLabel">Gender</string>
+    <string name="settingsReminderLabel">Donation reminders</string>
+    <string name="settingsSubmitButton">Save Preferences</string>
+    <string name="settingsSavedMessage">Preferences have been saved.</string>
+    <string name="settingsLogoutAction">Log out</string>
+    <string name="settingsLogoutTitle">Log out</string>
+    <string name="settingsLogoutMessage">You will be logged out of the app - don't worry, your data is saved, but to access it, you will need to log in again.</string>
 
 </resources>

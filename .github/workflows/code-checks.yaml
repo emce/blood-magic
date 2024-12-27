@@ -87,8 +87,20 @@ jobs:
       - name: Setup environment
         uses: ./.github/actions/setup-gradle
 
+      - name: Create Firebase config
+        run: |
+          echo '
+          firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"
+          firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"
+          firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"
+          firebaseApplicationId="${{ secrets.FIREBASE_APPLICATION_ID }}"
+          firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
+          firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
+          firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          ' > local.properties
+
       - name: Build Desktop App
-        run: ./gradlew :shared:packageDmg
+        run: ./gradlew :shared:packageDistributionForCurrentOS
 
   build-ios-app:
     name: Build iOS App
@@ -129,4 +141,4 @@ jobs:
       - name: Build iOS Sample
         run: |
           cd iosApp
-          xcodebuild -configuration Debug -scheme mobi.cwiklinski.bloodline -sdk iphoneos -destination name='iPhone 16 Pro' build | xcbeautify --renderer github-actions
+          xcodebuild -configuration Debug -scheme iosApp -sdk iphoneos -destination name='iPhone 16 Pro' build | xcbeautify --renderer github-actions

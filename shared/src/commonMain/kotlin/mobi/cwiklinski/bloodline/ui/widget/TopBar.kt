@@ -53,7 +53,12 @@ fun MobileTitleBar(
     behaviour: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 ) {
     TopAppBar(
-        modifier = modifier.padding(horizontal = 6.dp),
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = AppThemeColors.rose2,
+            titleContentColor = AppThemeColors.black,
+            navigationIconContentColor = AppThemeColors.black
+        ),
+        modifier = modifier,
         title = {
             if (title != null) {
                 Text(
@@ -65,11 +70,6 @@ fun MobileTitleBar(
         navigationIcon = {
             navigationIcon?.invoke()
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Transparent,
-            titleContentColor = AppThemeColors.black,
-            navigationIconContentColor = AppThemeColors.black
-        ),
         scrollBehavior = behaviour,
         actions = {
             actions?.invoke()
