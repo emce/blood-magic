@@ -220,7 +220,7 @@ compose.desktop {
             //description = "Application for keeping records of donations for Honorary Blood Donors in Poland"
             //copyright = "© 2016 mobiGEEK Michal Cwiklinski. All rights reserved."
             outputBaseDir.set(layout.buildDirectory.asFile.get().resolve("release"))
-            targetFormats(TargetFormat.Deb, TargetFormat.Dmg, TargetFormat.Msi)
+            targetFormats(TargetFormat.Deb, TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Pkg)
 
             val iconsRoot = project.file("icons")
             macOS {
@@ -236,8 +236,8 @@ compose.desktop {
                         }
                     }
                 }
-                provisioningProfile.set(project.file("embedded.provisionprofile"))
-                runtimeProvisioningProfile.set(project.file("runtime.provisionprofile"))
+                provisioningProfile.set(project.file("../embedded.provisionprofile"))
+                runtimeProvisioningProfile.set(project.file("../runtime.provisionprofile"))
                 entitlementsFile.set(project.file("../entitlements.plist"))
                 runtimeEntitlementsFile.set(project.file("../runtime-entitlements.plist"))
             }

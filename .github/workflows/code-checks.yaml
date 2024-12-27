@@ -48,7 +48,7 @@ jobs:
 
   build-android-app:
     name: Build Android App
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [ checks ]
     steps:
       - uses: actions/checkout@v4
@@ -73,11 +73,11 @@ jobs:
           base64 -d -i shared/google-services.json.b64 > shared/google-services.json
 
       - name: Build Android Sample
-        run: ./gradlew :shared:assembleGooglePlayDebug
+        run: ./gradlew :shared:assembleDebug
 
   build-desktop-app:
     name: Build Desktop App
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [ checks ]
     steps:
       - uses: actions/checkout@v4
@@ -88,7 +88,7 @@ jobs:
         uses: ./.github/actions/setup-gradle
 
       - name: Build Desktop App
-        run: ./gradlew :shared:packageDistributionForCurrentOS
+        run: ./gradlew :shared:packageDmg
 
   build-ios-app:
     name: Build iOS App
