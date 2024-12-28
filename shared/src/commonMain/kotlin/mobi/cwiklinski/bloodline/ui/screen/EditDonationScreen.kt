@@ -35,7 +35,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -62,6 +61,7 @@ import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
+import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
 import mobi.cwiklinski.bloodline.ui.widget.CloseButton

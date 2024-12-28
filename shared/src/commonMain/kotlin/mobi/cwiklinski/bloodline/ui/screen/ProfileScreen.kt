@@ -48,7 +48,6 @@ import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -97,6 +96,7 @@ import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
 import mobi.cwiklinski.bloodline.ui.util.clearStack
 import mobi.cwiklinski.bloodline.ui.util.filter
+import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.Break
 import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem

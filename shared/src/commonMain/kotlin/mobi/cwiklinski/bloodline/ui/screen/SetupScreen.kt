@@ -48,7 +48,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.aakira.napier.Napier
@@ -88,6 +87,7 @@ import mobi.cwiklinski.bloodline.ui.util.Avatar
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
 import mobi.cwiklinski.bloodline.ui.util.clearStack
 import mobi.cwiklinski.bloodline.ui.util.filter
+import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.Break
 import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem

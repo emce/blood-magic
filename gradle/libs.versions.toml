@@ -175,7 +175,8 @@ voyager = [
     "voyager-bottomSheetNavigator",
     "voyager-tabNavigator",
     "voyager-transitions",
-    "voyager-koin"
+    # https://github.com/adrielcafe/voyager/issues/515
+    #"voyager-koin"
 ]
 koin-android = [
     "koin-android",

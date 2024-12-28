@@ -34,7 +34,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.mikepenz.markdown.m3.Markdown
@@ -64,6 +63,7 @@ import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.notificationRichTextColors
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.theme.richTextTypography
+import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
 import mobi.cwiklinski.bloodline.ui.widget.MobileLayout
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput

@@ -36,7 +36,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.datetime.Clock
@@ -70,6 +69,7 @@ import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTrailing
+import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
 import mobi.cwiklinski.bloodline.ui.widget.MobileLayout

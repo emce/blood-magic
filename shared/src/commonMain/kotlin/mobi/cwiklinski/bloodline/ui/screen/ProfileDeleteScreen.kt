@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -48,6 +47,7 @@ import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.theme.richTextTypography
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
+import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.CloseButton
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.ProfileModal

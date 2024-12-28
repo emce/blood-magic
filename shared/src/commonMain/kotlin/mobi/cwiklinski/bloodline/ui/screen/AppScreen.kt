@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.launch
@@ -15,6 +14,7 @@ import mobi.cwiklinski.bloodline.ui.event.shareText
 import mobi.cwiklinski.bloodline.ui.manager.rememberPlatformManager
 import mobi.cwiklinski.bloodline.ui.model.AppModel
 import mobi.cwiklinski.bloodline.ui.util.RenderLayout
+import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.InformationDialog
 import mobi.cwiklinski.bloodline.ui.widget.InformationDialogData
 import org.koin.core.component.KoinComponent

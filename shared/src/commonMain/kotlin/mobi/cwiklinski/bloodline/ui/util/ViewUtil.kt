@@ -4,7 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
@@ -17,6 +19,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
+import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
@@ -29,6 +35,11 @@ import mobi.cwiklinski.bloodline.resources.monthGenitives
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import org.jetbrains.compose.resources.stringArrayResource
+import org.koin.compose.currentKoinScope
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.parameter.emptyParametersHolder
+import org.koin.core.qualifier.Qualifier
+import org.koin.core.scope.Scope
 
 fun Modifier.topBorder(strokeWidth: Dp, color: Color, cornerRadiusDp: Dp) = composed(
     factory = {
@@ -283,5 +294,20 @@ suspend fun StorageService.getReadList(): List<String> {
 fun Navigator.clearStack() {
     items.forEach {
         dispose(it)
+    }
+}
+
+@Composable
+inline fun <reified T : ScreenModel> Navigator.koinNavigatorScreenModel(
+    qualifier: Qualifier? = null,
+    scope: Scope = currentKoinScope(),
+    noinline parameters: ParametersDefinition? = null
+): T {
+    val currentParameters by rememberUpdatedState(parameters)
+    val tag = remember(qualifier, scope) { qualifier?.value }
+    return rememberNavigatorScreenModel(tag = tag) {
+        scope.get(qualifier) {
+            currentParameters?.invoke() ?: emptyParametersHolder()
+        }
     }
 }

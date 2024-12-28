@@ -19,7 +19,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
 import cafe.adriel.voyager.core.model.screenModelScope
-import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.delay
@@ -33,6 +32,7 @@ import mobi.cwiklinski.bloodline.ui.model.ExitScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ExitState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
+import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

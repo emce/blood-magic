@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cafe.adriel.voyager.koin.koinNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -87,6 +86,7 @@ import mobi.cwiklinski.bloodline.ui.theme.itemTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
+import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.CarouselItem
 import mobi.cwiklinski.bloodline.ui.widget.DesktopNavigationScaffold
 import mobi.cwiklinski.bloodline.ui.widget.DonationItem
