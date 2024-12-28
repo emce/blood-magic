@@ -99,6 +99,21 @@ jobs:
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
           ' > local.properties
 
+      - name: Create Entitlements PList
+        run: |
+          echo "${{ secrets.ENTITLEMENTS_PLIST }}" > entitlements.plist.b64
+          base64 -d -i entitlements.plist.b64 > entitlements.plist
+
+      - name: Create Embedded Provision Profile
+        run: |
+          echo "${{ secrets.EMBEDDED_PROVISION }}" > embedded.provisionprofile.b64
+          base64 -d -i embedded.provisionprofile.b64 > embedded.provisionprofile
+
+      - name: Create Runtime Provision Profile
+        run: |
+          echo "${{ secrets.RUNTIME_PROVISION }}" > runtime.provisionprofile.b64
+          base64 -d -i runtime.provisionprofile.b64 > runtime.provisionprofile
+
       - name: Build Desktop App
         run: ./gradlew :shared:packageDistributionForCurrentOS
 

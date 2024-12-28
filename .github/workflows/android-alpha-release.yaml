@@ -50,4 +50,4 @@ jobs:
           PLAY_CONFIG_JSON: ${{ secrets.PLAY_CONFIG_JSON }}
 
       - name: Distribute app to Alpha track
-        run: ./gradlew :shared:bundleGooglePlayRelease :shared:publishGooglePlayReleaseBundle
+        run: ./gradlew :shared:publishApk
