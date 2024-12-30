@@ -1,9 +1,11 @@
 package mobi.cwiklinski.bloodline.domain.model
 
-import kotlinx.serialization.SerialName
+import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Parcelize
 data class Center(
     val id: String = "",
     val name: String = "",
@@ -17,7 +19,7 @@ data class Center(
     val longitude: Double = 0.0,
     val site: String = "",
     val info: String = ""
-) {
+) : Parcelable {
     fun getFullAddress(): String {
         val builder = StringBuilder()
         if (zip.isNotEmpty()) {

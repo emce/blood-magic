@@ -38,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.parcelize.Parcelize
 import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
 import mobi.cwiklinski.bloodline.getScreenWidth
@@ -79,6 +80,7 @@ import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
+@Parcelize
 class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) : AppScreen() {
 
     @Composable

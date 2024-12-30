@@ -54,3 +54,5 @@ actual fun isTablet() = UIDevice.currentDevice.userInterfaceIdiom == UIUserInter
 
 @Composable
 actual fun isMobile() = true
+
+actual interface JavaSerializable

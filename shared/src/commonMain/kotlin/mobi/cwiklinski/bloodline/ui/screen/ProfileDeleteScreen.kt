@@ -31,6 +31,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.mikepenz.markdown.m3.Markdown
+import dev.icerock.moko.parcelize.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.close
@@ -56,6 +57,7 @@ import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
+@Parcelize
 class ProfileDeleteScreen : AppProfileScreen() {
     override val supportDialogs = false
 

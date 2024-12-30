@@ -50,6 +50,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.parcelize.Parcelize
 import io.github.aakira.napier.Napier
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.domain.Sex
@@ -101,6 +102,7 @@ import mobi.cwiklinski.bloodline.ui.widget.getAvatarName
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
+@Parcelize
 class SetupScreen : AppScreen() {
 
     @Composable

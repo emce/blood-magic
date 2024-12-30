@@ -51,6 +51,7 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.parcelize.Parcelize
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -111,6 +112,7 @@ import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
+@Parcelize
 class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString()) :
     AppProfileScreen() {
 

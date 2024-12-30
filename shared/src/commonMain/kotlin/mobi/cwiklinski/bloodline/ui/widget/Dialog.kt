@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.mikepenz.markdown.m3.Markdown
 import kotlinx.serialization.Serializable
+import mobi.cwiklinski.bloodline.JavaSerializable
 import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.close
@@ -102,7 +103,7 @@ fun InformationDialog(
 }
 
 @Serializable
-data class InformationDialogData(val title: String, val message: String)
+data class InformationDialogData(val title: String, val message: String): JavaSerializable
 
 @Composable
 fun DonationDeleteDialog(

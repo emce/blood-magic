@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.play.publisher)
     alias(libs.plugins.kotlinCocoapods)
+    alias(libs.plugins.parcelize)
 }
 
 val properties = localPropertiesFile.readLines().associate {
@@ -104,6 +105,7 @@ kotlin {
             api(libs.bundles.coil.common)
             api(libs.bundles.constraintlayout.common)
             api(libs.napier)
+            api(libs.parcelize)
             implementation(projects.service.auth.filed)
             implementation(projects.service.auth.firebase)
             implementation(projects.service.data.filed)

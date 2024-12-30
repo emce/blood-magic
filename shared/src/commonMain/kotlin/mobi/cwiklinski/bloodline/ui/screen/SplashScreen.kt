@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.parcelize.Parcelize
 import io.github.aakira.napier.Napier
 import kotlinx.datetime.Clock
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
@@ -33,6 +34,7 @@ import mobi.cwiklinski.bloodline.ui.widget.MobileLayout
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
+@Parcelize
 class SplashScreen(override val key: ScreenKey = Clock.System.now().toString()) : AppScreen() {
 
     @Composable

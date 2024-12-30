@@ -45,3 +45,5 @@ actual fun isTablet(): Boolean {
 
 @Composable
 actual fun isMobile() = true
+
+actual typealias JavaSerializable = java.io.Serializable

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.parcelize.Parcelize
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.goBack
@@ -49,7 +50,8 @@ import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-class ResetScreen() : AppScreen() {
+@Parcelize
+class ResetScreen : AppScreen() {
 
     @Composable
     override fun defaultView() {

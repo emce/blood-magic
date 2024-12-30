@@ -44,6 +44,7 @@ turbine = "1.2.0"
 markdown = "0.27.0"
 play-publisher = "3.12.1"
 ktor = "3.0.2"
+parcelize = "0.9.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -107,6 +108,7 @@ notifier = { module = "io.github.mirzemehdi:kmpnotifier", version.ref = "notifie
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 markdown = { module = "com.mikepenz:multiplatform-markdown-renderer", version.ref="markdown" }
 markdown-m3 = { module = "com.mikepenz:multiplatform-markdown-renderer-m3", version.ref = "markdown" }
+parcelize = { module = "dev.icerock.moko:parcelize", version.ref="parcelize" }
 
 [bundles]
 kotlinx-coroutines-common = [
@@ -197,3 +199,4 @@ kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 play-publisher = { id = "com.github.triplet.play", version.ref="play-publisher" }
+parcelize = { id = "kotlin-parcelize" }

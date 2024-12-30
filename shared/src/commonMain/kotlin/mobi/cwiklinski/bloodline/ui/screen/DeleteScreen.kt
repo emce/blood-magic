@@ -21,6 +21,7 @@ import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.parcelize.Parcelize
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.resources.Res
@@ -37,6 +38,7 @@ import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
+@Parcelize
 class DeleteScreen : AppScreen() {
 
     override val supportDialogs = false

@@ -36,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.parcelize.Parcelize
 import mobi.cwiklinski.bloodline.common.isValidUrl
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.resources.Res
@@ -60,6 +61,7 @@ import mobi.cwiklinski.bloodline.ui.widget.SearchView
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
+@Parcelize
 class CentersScreen : AppScreen() {
 
     @Composable

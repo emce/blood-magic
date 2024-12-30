@@ -6,6 +6,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.parcelize.Parcelable
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.LocalSnackBar
 import mobi.cwiklinski.bloodline.ui.event.HandleSideEffect
@@ -19,7 +20,7 @@ import mobi.cwiklinski.bloodline.ui.widget.InformationDialog
 import mobi.cwiklinski.bloodline.ui.widget.InformationDialogData
 import org.koin.core.component.KoinComponent
 
-abstract class AppScreen : Screen, KoinComponent {
+abstract class AppScreen : Screen, KoinComponent, Parcelable {
 
     val showInformation = mutableStateOf<InformationDialogData?>(null)
     protected open val supportDialogs = true

@@ -1,5 +1,4 @@
-import org.gradle.kotlin.dsl.android
-import org.gradle.kotlin.dsl.kotlin
+
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -7,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.parcelize)
 }
 
 java {
@@ -38,6 +38,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.common)
+            api(libs.parcelize)
             api(libs.bundles.kotlinx.serialization.common)
             api(libs.bundles.kotlinx.datetime.common)
         }

@@ -38,6 +38,7 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.parcelize.Parcelize
 import io.github.aakira.napier.Napier
 import mobi.cwiklinski.bloodline.common.isAfter
 import mobi.cwiklinski.bloodline.common.toMillis
@@ -76,6 +77,7 @@ import mobi.cwiklinski.bloodline.ui.widget.getName
 import mobi.cwiklinski.bloodline.ui.widget.toLocalDate
 import org.jetbrains.compose.resources.stringResource
 
+@Parcelize
 class EditDonationScreen(
     val donation: Donation,
     override val key: ScreenKey = donation.id

@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.parcelize.Parcelize
 import mobi.cwiklinski.bloodline.getDonationGridSize
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationsDeleteConfirmationMessage
@@ -53,6 +54,7 @@ import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationTitleLayout
 import mobi.cwiklinski.bloodline.ui.widget.capacity
 import org.jetbrains.compose.resources.stringResource
 
+@Parcelize
 class DonationsScreen : AppScreen() {
 
     @Composable
