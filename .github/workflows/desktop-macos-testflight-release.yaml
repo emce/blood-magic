@@ -27,6 +27,13 @@ jobs:
           p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
           p12-password: ${{ secrets.CERTIFICATES_PASSWORD }}
 
+      - name: Create Entitlements PList
+        run: |
+          echo "${{ secrets.RUNTIME_ENTITLEMENTS_PLIST }}" > entitlements.plist.b64
+          base64 -d -i entitlements.plist.b64 > entitlements.plist
+          echo "${{ secrets.RUNTIME_ENTITLEMENTS_PLIST }}" > runtime_entitlements.plist.b64
+          base64 -d -i runtime_entitlements.plist.b64 > runtime_entitlements.plist
+
       - name: Create Embedded Provision Profile
         run: |
           echo "${{ secrets.EMBEDDED_PROVISION }}" > embedded.provisionprofile.b64

@@ -11,8 +11,6 @@ interface Platform {
     val name: String
 }
 
-expect interface JavaSerializable
-
 expect fun getPlatform(): Platform
 
 @Composable

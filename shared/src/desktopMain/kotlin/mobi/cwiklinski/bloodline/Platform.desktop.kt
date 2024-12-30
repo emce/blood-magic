@@ -37,5 +37,3 @@ actual fun isTablet() = false
 
 @Composable
 actual fun isMobile() = false
-
-actual interface JavaSerializable

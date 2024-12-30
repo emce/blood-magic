@@ -137,11 +137,11 @@ kotlin {
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         freeCompilerArgs = listOf(
-            "-Xopt-in=kotlin.RequiresOptIn",
-            "-Xopt-in=kotlin.OptIn",
-            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-Xopt-in=kotlinx.coroutines.ObsoleteCoroutinesApi",
-            "-Xopt-in=kotlinx.coroutines.FlowPreview",
+            "-opt-in=kotlin.RequiresOptIn",
+            "-opt-in=kotlin.OptIn",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=kotlinx.coroutines.ObsoleteCoroutinesApi",
+            "-opt-in=kotlinx.coroutines.FlowPreview",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
         )
     }
@@ -213,8 +213,11 @@ compose.desktop {
         mainClass = "mobi.cwiklinski.bloodline.MainWindowKt"
 
         buildTypes.release.proguard {
-            obfuscate.set(true)
+            isEnabled.set(false)
+            obfuscate.set(false)
+            optimize.set(false)
             configurationFiles.from(project.file("proguard.pro"))
+            version.set("7.4.0")
         }
 
         nativeDistributions {
