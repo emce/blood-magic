@@ -223,8 +223,8 @@ compose.desktop {
         nativeDistributions {
             packageName = "BloodMagic"
             packageVersion = globalVersionName
-            //description = "Application for keeping records of donations for Honorary Blood Donors in Poland"
-            //copyright = "© 2016 mobiGEEK Michal Cwiklinski. All rights reserved."
+            description = "Application for keeping records of donations for Honorary Blood Donors in Poland"
+            copyright = "© 2016 mobiGEEK Michal Cwiklinski. All rights reserved."
             outputBaseDir.set(layout.buildDirectory.asFile.get().resolve("release"))
             targetFormats(TargetFormat.Deb, TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Pkg)
 
@@ -232,20 +232,27 @@ compose.desktop {
             macOS {
                 bundleID = "mobi.cwiklinski.bloodline"
                 iconFile.set(iconsRoot.resolve("bloodmagic.icns"))
-
                 signing {
                     properties["appleIdentity"]?.let { appleIdentity ->
                         sign.set(true)
                         identity.set(appleIdentity)
-                        properties["appleKeychain"]?.let { appleKeychain ->
-                            keychain.set(appleKeychain)
-                        }
                     }
                 }
                 provisioningProfile.set(project.file("../embedded.provisionprofile"))
                 runtimeProvisioningProfile.set(project.file("../runtime.provisionprofile"))
                 entitlementsFile.set(project.file("../entitlements.plist"))
                 runtimeEntitlementsFile.set(project.file("../runtime-entitlements.plist"))
+                notarization {
+                    properties["appleId"]?.let { appleId ->
+                        appleID.set(appleId)
+                    }
+                    properties["applePassword"]?.let { applePassword ->
+                        password.set(applePassword)
+                    }
+                    properties["appleTeamId"]?.let { appleTeamId ->
+                        teamID.set(appleTeamId)
+                    }
+                }
             }
             windows {
                 iconFile.set(iconsRoot.resolve("bloodmagic.ico"))
