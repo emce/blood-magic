@@ -1,0 +1,76 @@
+name: Desktop MacOS Testflight Release
+on:
+  push:
+    tags:
+      - '*-desktop'
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    timeout-minutes: 40
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup environment
+        uses: ./.github/actions/setup-gradle
+        with:
+          gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+
+      - name: Import Mac App Distribution and Installer certificate
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+          p12-password: ${{ secrets.CERTIFICATES_PASSWORD }}
+
+      - name: Create Entitlements PList
+        run: |
+          echo "${{ secrets.RUNTIME_ENTITLEMENTS_PLIST }}" > entitlements.plist.b64
+          base64 -d -i entitlements.plist.b64 > entitlements.plist
+          echo "${{ secrets.RUNTIME_ENTITLEMENTS_PLIST }}" > runtime_entitlements.plist.b64
+          base64 -d -i runtime_entitlements.plist.b64 > runtime_entitlements.plist
+
+      - name: Create Embedded Provision Profile
+        run: |
+          echo "${{ secrets.EMBEDDED_PROVISION }}" > embedded.provisionprofile.b64
+          base64 -d -i embedded.provisionprofile.b64 > embedded.provisionprofile
+        env:
+          EMBEDDED_PROVISION: ${{ secrets.EMBEDDED_PROVISION }}
+
+      - name: Create Runtime Provision Profile
+        run: |
+          echo "${{ secrets.RUNTIME_PROVISION }}" > runtime.provisionprofile.b64
+          base64 -d -i runtime.provisionprofile.b64 > runtime.provisionprofile
+        env:
+          RUNTIME_PROVISION: ${{ secrets.RUNTIME_PROVISION }}
+
+      - name: Create path variables
+        id: path_variables
+        run: |
+          tag=$(git describe --tags --abbrev=0 --match "*-desktop")
+          version=$(echo "$tag" | sed 's/-desktop$//')
+          name="Blood-Magic-${version}.dmg"
+          path="shared/build/release/main-release/dmg/${name}"
+
+      - name: Create DMG
+        run: ./gradlew packageReleaseDmg -PmacOsAppStoreRelease=true
+
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            **/build/compose/logs/*  
+
+      - uses: Apple-Actions/upload-testflight-build@v1
+        with:
+          app-type: 'osx'
+          app-path: ${{ env.RELEASE_PATH }}
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
