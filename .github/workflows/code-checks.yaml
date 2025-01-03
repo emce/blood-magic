@@ -31,6 +31,9 @@ jobs:
           firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
           firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
+          googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
+          googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
           ' > local.properties
           echo "${{ secrets.FIREBASE_JSON }}" > shared/google-services.json.b64
           base64 -d -i shared/google-services.json.b64 > shared/google-services.json
@@ -68,6 +71,9 @@ jobs:
           firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
           firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
+          googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
+          googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
           ' > local.properties
           echo "${{ secrets.FIREBASE_JSON }}" > shared/google-services.json.b64
           base64 -d -i shared/google-services.json.b64 > shared/google-services.json
@@ -97,6 +103,9 @@ jobs:
           firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
           firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
+          googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
+          googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
           ' > local.properties
 
       - name: Create Entitlements PList
@@ -153,6 +162,9 @@ jobs:
           firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
           firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
+          googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
+          googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
           ' > local.properties
 
       - name: Build iOS Sample

@@ -40,6 +40,9 @@ jobs:
           firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
           firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
+          googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
+          googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
           ' > local.properties
           echo "${{ secrets.FIREBASE_PLIST }}" > iosApp/GoogleService-Info.plist
         env:
