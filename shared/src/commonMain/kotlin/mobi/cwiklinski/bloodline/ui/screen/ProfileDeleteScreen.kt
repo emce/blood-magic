@@ -31,7 +31,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.mikepenz.markdown.m3.Markdown
-import dev.icerock.moko.parcelize.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.close
@@ -40,6 +39,8 @@ import mobi.cwiklinski.bloodline.resources.profileDeleteButton
 import mobi.cwiklinski.bloodline.resources.profileDeleteContent
 import mobi.cwiklinski.bloodline.resources.profileDeleteTitle
 import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
@@ -59,6 +60,8 @@ import org.jetbrains.compose.resources.stringResource
 
 @Parcelize
 class ProfileDeleteScreen : AppProfileScreen() {
+
+    @IgnoredOnParcel
     override val supportDialogs = false
 
     @Composable

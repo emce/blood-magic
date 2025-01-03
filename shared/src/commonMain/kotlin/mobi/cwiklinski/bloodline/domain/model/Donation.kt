@@ -1,8 +1,5 @@
 package mobi.cwiklinski.bloodline.domain.model
 
-import dev.icerock.moko.parcelize.Parcelable
-import dev.icerock.moko.parcelize.Parcelize
-import dev.icerock.moko.parcelize.TypeParceler
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -10,6 +7,9 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import mobi.cwiklinski.bloodline.common.isAfter
 import mobi.cwiklinski.bloodline.common.isBefore
+import mobi.cwiklinski.bloodline.data.Parcelable
+import mobi.cwiklinski.bloodline.data.Parcelize
+import mobi.cwiklinski.bloodline.data.TypeParceler
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.LocalDateParceler
 import mobi.cwiklinski.bloodline.domain.Sex

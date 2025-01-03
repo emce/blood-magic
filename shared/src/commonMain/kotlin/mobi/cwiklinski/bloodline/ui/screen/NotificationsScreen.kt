@@ -28,7 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.icerock.moko.parcelize.Parcelize
+import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationNewInformationTitle
 import mobi.cwiklinski.bloodline.resources.goBack
@@ -55,6 +56,7 @@ import org.jetbrains.compose.resources.stringResource
 @Parcelize
 class NotificationsScreen : AppScreen() {
 
+    @IgnoredOnParcel
     override val supportDialogs = false
 
     @Composable

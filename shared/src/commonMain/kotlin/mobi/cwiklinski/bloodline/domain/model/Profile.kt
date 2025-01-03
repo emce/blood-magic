@@ -1,10 +1,10 @@
 package mobi.cwiklinski.bloodline.domain.model
 
-import dev.icerock.moko.parcelize.Parcelable
-import dev.icerock.moko.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import mobi.cwiklinski.bloodline.data.Parcelable
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.Sex
 
 @Serializable

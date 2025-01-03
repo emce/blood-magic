@@ -39,7 +39,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import co.touchlab.kermit.Logger
-import dev.icerock.moko.parcelize.Parcelize
 import mobi.cwiklinski.bloodline.common.isAfter
 import mobi.cwiklinski.bloodline.common.toMillis
 import mobi.cwiklinski.bloodline.common.today
@@ -56,6 +55,8 @@ import mobi.cwiklinski.bloodline.resources.donationNewDisqualificationLabel
 import mobi.cwiklinski.bloodline.resources.donationNewInformationTitle
 import mobi.cwiklinski.bloodline.resources.donationNewTypeLabel
 import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.ui.model.DonationError
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
@@ -83,6 +84,7 @@ class EditDonationScreen(
     override val key: ScreenKey = donation.id
 ) : AppDonationScreen() {
 
+    @IgnoredOnParcel
     override val supportDialogs = false
 
     @Composable

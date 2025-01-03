@@ -1,8 +1,8 @@
 package mobi.cwiklinski.bloodline.domain.model
 
-import dev.icerock.moko.parcelize.Parcelable
-import dev.icerock.moko.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import mobi.cwiklinski.bloodline.data.Parcelable
+import mobi.cwiklinski.bloodline.data.Parcelize
 
 @Serializable
 @Parcelize

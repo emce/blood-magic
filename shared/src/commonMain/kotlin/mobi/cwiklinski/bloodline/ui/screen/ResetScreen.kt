@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.icerock.moko.parcelize.Parcelize
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.goBack
@@ -36,6 +35,7 @@ import mobi.cwiklinski.bloodline.resources.resetSubmitButton
 import mobi.cwiklinski.bloodline.resources.resetSuccessful
 import mobi.cwiklinski.bloodline.resources.resetTitle
 import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.ui.model.ResetError
 import mobi.cwiklinski.bloodline.ui.model.ResetScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ResetState

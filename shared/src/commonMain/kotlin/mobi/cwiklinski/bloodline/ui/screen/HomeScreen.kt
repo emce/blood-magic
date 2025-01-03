@@ -35,7 +35,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.icerock.moko.parcelize.Parcelize
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.isMobile
@@ -76,6 +75,7 @@ import mobi.cwiklinski.bloodline.resources.milliliter
 import mobi.cwiklinski.bloodline.resources.seeAll
 import mobi.cwiklinski.bloodline.common.event.Events
 import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.ui.model.HomeScreenModel
 import mobi.cwiklinski.bloodline.ui.model.HomeState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors

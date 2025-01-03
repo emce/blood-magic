@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import dev.icerock.moko.parcelize.Parcelable
-import dev.icerock.moko.parcelize.Parcelize
+import mobi.cwiklinski.bloodline.data.Parcelable
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
@@ -21,7 +21,8 @@ import mobi.cwiklinski.bloodline.ui.widget.CloseButton
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Parcelize
-class CenterScreen(val center: Center, private val onSiteClick: ((link: String) -> Unit)? = null) : Screen, Parcelable {
+class CenterScreen(val center: Center, private val onSiteClick: ((link: String) -> Unit)? = null) : Screen,
+    Parcelable {
 
     @Preview
     @Composable

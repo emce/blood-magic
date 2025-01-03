@@ -43,7 +43,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.icerock.moko.parcelize.Parcelize
+import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.avatar_submit
@@ -67,6 +68,7 @@ import org.jetbrains.compose.resources.stringResource
 @Parcelize
 class ProfileAvatarScreen : AppProfileScreen() {
 
+    @IgnoredOnParcel
     override val supportDialogs = false
 
     @Composable

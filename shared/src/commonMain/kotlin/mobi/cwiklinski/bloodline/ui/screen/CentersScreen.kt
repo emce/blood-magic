@@ -36,7 +36,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.icerock.moko.parcelize.Parcelize
 import mobi.cwiklinski.bloodline.common.isValidUrl
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.resources.Res
@@ -46,6 +45,7 @@ import mobi.cwiklinski.bloodline.resources.ic_search
 import mobi.cwiklinski.bloodline.resources.icon_poland
 import mobi.cwiklinski.bloodline.resources.loading
 import mobi.cwiklinski.bloodline.common.event.Events
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.CenterState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors

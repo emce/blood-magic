@@ -28,11 +28,17 @@ val properties = localPropertiesFile.readLines().associate {
 fun getGlobalVersionCode(gitCommitsCount: Int) = 700 + gitCommitsCount
 fun getGlobalVersionName(gitCommitsCount: Int) = "5.1.${getGlobalVersionCode(gitCommitsCount)}"
 
+java {
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get().toInt())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get().toInt())
+}
+
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.fromTarget(libs.versions.jdk.get()))
+            freeCompilerArgs.addAll("-P", "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=mobi.cwiklinski.bloodline.data.Parcelize")
         }
         //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
@@ -92,7 +98,6 @@ kotlin {
             // "voyager-koin"
             implementation(libs.markdown)
             implementation(libs.markdown.m3)
-            implementation(libs.parcelize)
             // Firebase
             implementation(libs.google.firebase.common)
             implementation(libs.google.firebase.auth)
@@ -147,7 +152,8 @@ kotlin {
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-opt-in=kotlinx.coroutines.ObsoleteCoroutinesApi",
                 "-opt-in=kotlinx.coroutines.FlowPreview",
-                "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+                "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+                "-Xexpect-actual-classes"
             )
         }
 
