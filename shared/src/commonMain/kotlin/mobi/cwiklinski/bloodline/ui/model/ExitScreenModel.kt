@@ -10,7 +10,7 @@ import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.data.api.DonationService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import kotlin.time.Duration.Companion.seconds
 
 class ExitScreenModel(

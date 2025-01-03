@@ -1,38 +1,32 @@
-rootProject.name = "BloodMagic"
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+rootProject.name = "blood-magic"
 
 pluginManagement {
     repositories {
-        google()
-        mavenCentral()
+        google {
+            content { 
+              	includeGroupByRegex("com\\.android.*")
+              	includeGroupByRegex("com\\.google.*")
+              	includeGroupByRegex("androidx.*")
+              	includeGroupByRegex("android.*")
+            }
+        }
         gradlePluginPortal()
+        mavenCentral()
     }
 }
 
 dependencyResolutionManagement {
     repositories {
         google {
-            content {
-                includeGroupAndSubgroups("androidx")
-                includeGroupAndSubgroups("com.android")
-                includeGroupAndSubgroups("com.google")
+            content { 
+              	includeGroupByRegex("com\\.android.*")
+              	includeGroupByRegex("com\\.google.*")
+              	includeGroupByRegex("androidx.*")
+              	includeGroupByRegex("android.*")
             }
         }
         mavenCentral()
     }
 }
-
 include(":shared")
-include(":common")
-include(":commonTest")
-include(":domain")
-include(":service:auth:api")
-include(":service:auth:firebase")
-include(":service:auth:filed")
-include(":service:data:api")
-include(":service:data:firebase")
-include(":service:data:filed")
-include(":service:storage:api")
-include(":service:storage:datastore")
-//include(":service:notification:api")
-//include(":service:notification:fcm")
+

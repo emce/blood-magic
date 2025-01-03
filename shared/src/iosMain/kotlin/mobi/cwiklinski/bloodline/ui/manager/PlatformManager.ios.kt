@@ -12,7 +12,7 @@ actual fun rememberPlatformManager(): PlatformManager {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class PlatformManager(val application: UIApplication) {
+actual class PlatformManager(private val application: UIApplication) {
     actual fun openToast(content: String): Boolean {
         return false
     }

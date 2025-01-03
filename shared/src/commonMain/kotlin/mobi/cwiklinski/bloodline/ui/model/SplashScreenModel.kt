@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 
 class SplashScreenModel(
     callbackManager: CallbackManager,

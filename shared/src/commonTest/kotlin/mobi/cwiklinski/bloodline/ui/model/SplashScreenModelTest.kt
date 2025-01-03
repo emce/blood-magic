@@ -12,7 +12,7 @@ import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.auth.filed.AuthData
 import mobi.cwiklinski.bloodline.auth.filed.AuthenticationServiceImpl
-import mobi.cwiklinski.bloodline.ui.manager.AppCallbackManager
+import mobi.cwiklinski.bloodline.common.manager.AppCallbackManager
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
 import kotlin.test.BeforeTest
 import kotlin.test.Test

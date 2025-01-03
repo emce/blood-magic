@@ -61,7 +61,6 @@ import mobi.cwiklinski.bloodline.resources.loginSocialSectionTitle
 import mobi.cwiklinski.bloodline.resources.loginSubmitButton
 import mobi.cwiklinski.bloodline.resources.loginTitle
 import mobi.cwiklinski.bloodline.resources.soon
-import mobi.cwiklinski.bloodline.ui.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.LoginError
 import mobi.cwiklinski.bloodline.ui.model.LoginScreenModel
 import mobi.cwiklinski.bloodline.ui.model.LoginState
@@ -123,7 +122,6 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
         var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
         val showPassword = remember { mutableStateOf(false) }
-        val soon = stringResource(Res.string.soon)
         handleSideEffects<LoginState, LoginScreenModel>()
         Column(
             Modifier.wrapContentHeight().fillMaxWidth().background(
@@ -150,7 +148,10 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
             ) {
                 OutlinedInput(
                     text = email,
-                    onValueChanged = { email = it },
+                    onValueChanged = {
+                        screenModel.clearState()
+                        email = it
+                    },
                     label = stringResource(Res.string.loginEmailLabel),
                     enabled = state != LoginState.LoggingIn,
                     error = state is LoginState.Error && (state as LoginState.Error).errors.contains(
@@ -167,7 +168,10 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
                 Spacer(Modifier.height(20.dp))
                 OutlinedInput(
                     text = password,
-                    onValueChanged = { password = it },
+                    onValueChanged = {
+                        screenModel.clearState()
+                        password = it
+                    },
                     label = stringResource(Res.string.loginPasswordLabel),
                     enabled = state != LoginState.LoggingIn,
                     error = state is LoginState.Error && (state as LoginState.Error).errors.contains(
@@ -221,6 +225,7 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
                 } else {
                     SubmitButton(
                         onClick = {
+                            screenModel.clearState()
                             screenModel.onLoginSubmit(email, password)
                         },
                         text = stringResource(Res.string.loginSubmitButton),
@@ -257,7 +262,8 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
                         icon = Res.drawable.icon_facebook,
                         iconDescription = "Facebook",
                         onClicked = {
-                            screenModel.postSideEffect(SideEffects.SnackBar(soon))
+                            screenModel.clearState()
+                            screenModel.loginWithFacebook()
                         },
                         enabled = state != LoginState.LoggingIn,
                     )
@@ -266,7 +272,8 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
                         icon = Res.drawable.icon_google,
                         iconDescription = "Google",
                         onClicked = {
-                            screenModel.postSideEffect(SideEffects.SnackBar(soon))
+                            screenModel.clearState()
+                            screenModel.loginWithGoogle()
                         },
                         enabled = state != LoginState.LoggingIn,
                     )
@@ -275,7 +282,8 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
                         icon = Res.drawable.icon_apple,
                         iconDescription = "Apple",
                         onClicked = {
-                            screenModel.postSideEffect(SideEffects.SnackBar(soon))
+                            screenModel.clearState()
+                            screenModel.loginWithApple()
                         },
                         enabled = state != LoginState.LoggingIn,
                     )
@@ -312,6 +320,7 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
                     LoginError.PASSWORD_ERROR -> stringResource(Res.string.loginEmailError)
                     LoginError.LOGIN_ERROR -> stringResource(Res.string.loginError)
                     LoginError.PROFILE_ERROR -> stringResource(Res.string.loginError)
+                    LoginError.NOT_IMPLEMENTED -> stringResource(Res.string.soon)
                 }
             }
             .joinToString("\n")

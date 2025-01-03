@@ -57,6 +57,7 @@ import mobi.cwiklinski.bloodline.resources.registerSocialSectionTitle
 import mobi.cwiklinski.bloodline.resources.registerSubmitButton
 import mobi.cwiklinski.bloodline.resources.registerTerms
 import mobi.cwiklinski.bloodline.resources.registerTitle
+import mobi.cwiklinski.bloodline.resources.soon
 import mobi.cwiklinski.bloodline.ui.model.RegisterError
 import mobi.cwiklinski.bloodline.ui.model.RegisterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.RegisterState
@@ -144,7 +145,10 @@ class RegisterScreen : AppScreen() {
             ) {
                 OutlinedInput(
                     text = email,
-                    onValueChanged = { email = it },
+                    onValueChanged = {
+                        screenModel.clearState()
+                        email = it
+                    },
                     label = stringResource(Res.string.loginEmailLabel),
                     enabled = state != RegisterState.Registering,
                     error = state is RegisterState.Error
@@ -157,7 +161,10 @@ class RegisterScreen : AppScreen() {
                 Spacer(Modifier.height(20.dp))
                 OutlinedInput(
                     text = password,
-                    onValueChanged = { password = it },
+                    onValueChanged = {
+                        screenModel.clearState()
+                        password = it
+                    },
                     label = stringResource(Res.string.loginPasswordLabel),
                     enabled = state != RegisterState.Registering,
                     error = state is RegisterState.Error
@@ -181,7 +188,10 @@ class RegisterScreen : AppScreen() {
                 Spacer(Modifier.height(20.dp))
                 OutlinedInput(
                     text = repeat,
-                    onValueChanged = { repeat = it },
+                    onValueChanged = {
+                        screenModel.clearState()
+                        repeat = it
+                    },
                     label = stringResource(Res.string.registerRepeatLabel),
                     enabled = state != RegisterState.Registering,
                     error = state is RegisterState.Error
@@ -220,7 +230,10 @@ class RegisterScreen : AppScreen() {
                 )
                 Spacer(Modifier.height(20.dp))
                 SubmitButton(
-                    onClick = { screenModel.onRegisterSubmit(email, password, repeat) },
+                    onClick = {
+                        screenModel.clearState()
+                        screenModel.onRegisterSubmit(email, password, repeat)
+                    },
                     text = stringResource(Res.string.registerSubmitButton),
                     enabled = state != RegisterState.Registering,
                 )
@@ -254,21 +267,30 @@ class RegisterScreen : AppScreen() {
                     SocialIconButton(
                         icon = Res.drawable.icon_facebook,
                         iconDescription = "Facebook",
-                        onClicked = {},
+                        onClicked = {
+                            screenModel.clearState()
+                            screenModel.registerWithFacebook()
+                        },
                         enabled = false
                     )
                     Spacer(Modifier.width(30.dp))
                     SocialIconButton(
                         icon = Res.drawable.icon_google,
                         iconDescription = "Google",
-                        onClicked = {},
+                        onClicked = {
+                            screenModel.clearState()
+                            screenModel.registerWithGoogle()
+                        },
                         enabled = false
                     )
                     Spacer(Modifier.width(30.dp))
                     SocialIconButton(
                         icon = Res.drawable.icon_apple,
                         iconDescription = "Apple",
-                        onClicked = {},
+                        onClicked = {
+                            screenModel.clearState()
+                            screenModel.registerWithApple()
+                        },
                         enabled = false
                     )
                 }
@@ -302,6 +324,7 @@ class RegisterScreen : AppScreen() {
                 RegisterError.REPEAT_ERROR -> stringResource(Res.string.loginEmailError)
                 RegisterError.REGISTER_ERROR -> stringResource(Res.string.registerError)
                 RegisterError.PROFILE_ERROR -> stringResource(Res.string.registerError)
+                RegisterError.NOT_IMPLEMENTED -> stringResource(Res.string.soon)
             }
         }
             .joinToString("\n")

@@ -39,7 +39,7 @@ import mobi.cwiklinski.bloodline.resources.profileAvatarTitle
 import mobi.cwiklinski.bloodline.resources.profileDeleteButton
 import mobi.cwiklinski.bloodline.resources.profileDeleteContent
 import mobi.cwiklinski.bloodline.resources.profileDeleteTitle
-import mobi.cwiklinski.bloodline.ui.event.SideEffects
+import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.ProfileScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors

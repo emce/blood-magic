@@ -1,8 +1,6 @@
 package mobi.cwiklinski.bloodline
 
 import android.app.Application
-import io.github.aakira.napier.DebugAntilog
-import io.github.aakira.napier.Napier
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -22,9 +20,6 @@ class MainApplication: Application()/*, Configuration.Provider*/ {
             androidLogger()
             lazyModules(createAppLazyModule())
             modules(createAppModule())
-        }
-        if (BuildConfig.DEBUG) {
-            Napier.base(DebugAntilog())
         }
         //val notificationService: AndroidNotificationService = get()
         //notificationService.initialize(R.drawable.ic_launcher_foreground)

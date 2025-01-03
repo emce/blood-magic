@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.data.filed.DummyData
-import mobi.cwiklinski.bloodline.ui.manager.AppCallbackManager
+import mobi.cwiklinski.bloodline.common.manager.AppCallbackManager
 import mobi.cwiklinski.bloodline.ui.util.UiTestTools
 import kotlin.test.BeforeTest
 import kotlin.test.Test

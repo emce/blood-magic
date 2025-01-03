@@ -38,7 +38,7 @@ import mobi.cwiklinski.bloodline.resources.homeSectionHistoryAddDonationEmptyTex
 import mobi.cwiklinski.bloodline.resources.homeSectionHistoryEmptyText
 import mobi.cwiklinski.bloodline.resources.liter
 import mobi.cwiklinski.bloodline.resources.milliliter
-import mobi.cwiklinski.bloodline.ui.event.SideEffects
+import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
@@ -181,7 +181,8 @@ class DonationsScreen : AppScreen() {
                 { screenModel.clearError() }
             ) { donation ->
                 screenModel.deleteDonation(donation)
-                screenModel.postSideEffect(SideEffects.InformationDialog(
+                screenModel.postSideEffect(
+                    SideEffects.InformationDialog(
                     title = deletionTitle,
                     message = deletionMessage
                 ))

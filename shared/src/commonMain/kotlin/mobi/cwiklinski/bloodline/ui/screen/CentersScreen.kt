@@ -45,7 +45,7 @@ import mobi.cwiklinski.bloodline.resources.centersTitle
 import mobi.cwiklinski.bloodline.resources.ic_search
 import mobi.cwiklinski.bloodline.resources.icon_poland
 import mobi.cwiklinski.bloodline.resources.loading
-import mobi.cwiklinski.bloodline.ui.event.Events
+import mobi.cwiklinski.bloodline.common.event.Events
 import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.CenterState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors

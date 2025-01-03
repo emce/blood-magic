@@ -9,9 +9,9 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.icerock.moko.parcelize.Parcelable
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.LocalSnackBar
-import mobi.cwiklinski.bloodline.ui.event.HandleSideEffect
-import mobi.cwiklinski.bloodline.ui.event.SideEffects
-import mobi.cwiklinski.bloodline.ui.event.shareText
+import mobi.cwiklinski.bloodline.ui.util.HandleSideEffect
+import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.ui.util.shareText
 import mobi.cwiklinski.bloodline.ui.manager.rememberPlatformManager
 import mobi.cwiklinski.bloodline.ui.model.AppModel
 import mobi.cwiklinski.bloodline.ui.util.RenderLayout

@@ -25,7 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import mobi.cwiklinski.bloodline.resources.Res
@@ -60,7 +60,7 @@ fun <T> SelectView(
 
             override suspend fun emit(interaction: Interaction) {
                 if (interaction is PressInteraction.Release) {
-                    Napier.d("SelectView clicked")
+                    Logger.d("SelectView clicked")
                     focusManager.clearFocus()
                     expanded = if (expanded.isEmpty()) itemList else emptyList()
                 }

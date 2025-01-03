@@ -18,8 +18,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import co.touchlab.kermit.Logger
 import dev.icerock.moko.parcelize.Parcelize
-import io.github.aakira.napier.Napier
 import kotlinx.datetime.Clock
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.resources.Res
@@ -45,12 +45,12 @@ class SplashScreen(override val key: ScreenKey = Clock.System.now().toString()) 
         val state by screenModel.state.collectAsStateWithLifecycle(AuthenticationState.Idle)
         when (state) {
             AuthenticationState.Logged -> {
-                Napier.v("Redirecting to SetupScreen")
+                Logger.v("Redirecting to SetupScreen")
                 screenModel.resetState()
                 navigator.replaceAll(SetupScreen())
             }
             AuthenticationState.NotLogged -> {
-                Napier.v("Redirecting to Login Screen")
+                Logger.v("Redirecting to Login Screen")
                 screenModel.resetState()
                 navigator.replaceAll(LoginScreen())
             }

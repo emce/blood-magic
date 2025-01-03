@@ -3,7 +3,7 @@ package mobi.cwiklinski.bloodline.ui.model
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import mobi.cwiklinski.bloodline.data.api.CenterService
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.ui.util.filter
 
 class CenterScreenModel(

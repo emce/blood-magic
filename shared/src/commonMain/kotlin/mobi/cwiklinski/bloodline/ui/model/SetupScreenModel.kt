@@ -14,7 +14,7 @@ import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 
 class SetupScreenModel(

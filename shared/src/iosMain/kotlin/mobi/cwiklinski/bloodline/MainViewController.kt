@@ -2,10 +2,13 @@
 package mobi.cwiklinski.bloodline
 
 import androidx.compose.ui.window.ComposeUIViewController
-import platform.UIKit.UIViewController
+import org.koin.core.context.startKoin
+import org.koin.core.lazyModules
 
-fun MainViewController(): UIViewController {
-    return ComposeUIViewController {
-        NativeMainContent()
+fun MainViewController() = ComposeUIViewController {
+    startKoin {
+        lazyModules(createAppLazyModule())
+        modules(createAppModule())
     }
+    MagicApp()
 }

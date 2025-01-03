@@ -9,7 +9,7 @@ import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 
 class LoginScreenModel(
     callbackManager: CallbackManager,
@@ -69,6 +69,85 @@ class LoginScreenModel(
         mutableState.value = LoginState.Idle
     }
 
+    fun loginWithGoogle() {
+        mutableState.value = LoginState.LoggingIn
+        screenModelScope.launch {
+            authService.loginWithGoogle().collectLatest {
+                when (it) {
+                    is AuthResult.Dismissed -> mutableState.value = LoginState.Idle
+                    is AuthResult.Failure -> {
+                        val errors = mutableListOf<LoginError>()
+                        when (it.error) {
+                            AuthError.NOT_IMPLEMENTED -> {
+                                errors.add(LoginError.NOT_IMPLEMENTED)
+                            }
+                            else -> {
+                                errors.add(LoginError.LOGIN_ERROR)
+                            }
+                        }
+                        mutableState.value =
+                            LoginState.Error(errors)
+                    }
+                    is AuthResult.Success -> mutableState.value = LoginState.LoggedIn
+                }
+            }
+        }
+    }
+
+    fun loginWithFacebook() {
+        mutableState.value = LoginState.LoggingIn
+        screenModelScope.launch {
+            authService.loginWithFacebook().collectLatest {
+                when (it) {
+                    is AuthResult.Dismissed -> mutableState.value = LoginState.Idle
+                    is AuthResult.Failure -> {
+                        val errors = mutableListOf<LoginError>()
+                        when (it.error) {
+                            AuthError.NOT_IMPLEMENTED -> {
+                                errors.add(LoginError.NOT_IMPLEMENTED)
+                            }
+                            else -> {
+                                errors.add(LoginError.LOGIN_ERROR)
+                            }
+                        }
+                        mutableState.value =
+                            LoginState.Error(errors)
+                    }
+                    is AuthResult.Success -> mutableState.value = LoginState.LoggedIn
+                }
+            }
+        }
+    }
+
+    fun loginWithApple() {
+        mutableState.value = LoginState.LoggingIn
+        screenModelScope.launch {
+            authService.loginWithApple().collectLatest {
+                when (it) {
+                    is AuthResult.Dismissed -> mutableState.value = LoginState.Idle
+                    is AuthResult.Failure -> {
+                        val errors = mutableListOf<LoginError>()
+                        when (it.error) {
+                            AuthError.NOT_IMPLEMENTED -> {
+                                errors.add(LoginError.NOT_IMPLEMENTED)
+                            }
+                            else -> {
+                                errors.add(LoginError.LOGIN_ERROR)
+                            }
+                        }
+                        mutableState.value =
+                            LoginState.Error(errors)
+                    }
+                    is AuthResult.Success -> mutableState.value = LoginState.LoggedIn
+                }
+            }
+        }
+    }
+
+    fun clearState() {
+        mutableState.value = LoginState.Idle
+    }
+
 }
 
 sealed class LoginState {
@@ -86,5 +165,6 @@ enum class LoginError {
     EMAIL_ERROR,
     PASSWORD_ERROR,
     LOGIN_ERROR,
-    PROFILE_ERROR
+    PROFILE_ERROR,
+    NOT_IMPLEMENTED
 }

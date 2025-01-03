@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -21,9 +22,10 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.Constants
@@ -33,6 +35,8 @@ import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.monthGenitives
 import mobi.cwiklinski.bloodline.storage.api.StorageService
+import mobi.cwiklinski.bloodline.common.event.SideEffect
+import mobi.cwiklinski.bloodline.ui.manager.PlatformManager
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import org.jetbrains.compose.resources.stringArrayResource
 import org.koin.compose.currentKoinScope
@@ -311,3 +315,18 @@ inline fun <reified T : ScreenModel> Navigator.koinNavigatorScreenModel(
         }
     }
 }
+
+@Composable
+fun HandleSideEffect(
+    sideEffects: Flow<SideEffect>,
+    handler: suspend CoroutineScope.(sideEffect: SideEffect) -> Unit = {}
+) {
+    LaunchedEffect(Unit) {
+        sideEffects.collectLatest {
+            handler.invoke(this, it)
+        }
+    }
+}
+
+suspend fun shareText(platformManager: PlatformManager, text: String) =
+    platformManager.shareText(content = text)

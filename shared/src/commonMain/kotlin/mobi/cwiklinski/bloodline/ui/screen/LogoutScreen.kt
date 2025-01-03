@@ -20,8 +20,8 @@ import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import co.touchlab.kermit.Logger
 import dev.icerock.moko.parcelize.Parcelize
-import io.github.aakira.napier.Napier
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
@@ -52,7 +52,7 @@ class LogoutScreen : AppScreen() {
         val state by screenModel.state.collectAsStateWithLifecycle(ExitState.Idle)
         if (state == ExitState.LoggedOut) {
             navigator.clearStack()
-            Napier.d("Redirecting to Splash Screen")
+            Logger.d("Redirecting to Splash Screen")
             navigator.replaceAll(SplashScreen())
         }
         LifecycleEffectOnce {

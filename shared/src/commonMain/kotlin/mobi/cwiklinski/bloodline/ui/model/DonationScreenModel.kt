@@ -16,7 +16,7 @@ import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 
 class DonationScreenModel(
     callbackManager: CallbackManager,

@@ -35,7 +35,7 @@ import mobi.cwiklinski.bloodline.resources.resetInformation
 import mobi.cwiklinski.bloodline.resources.resetSubmitButton
 import mobi.cwiklinski.bloodline.resources.resetSuccessful
 import mobi.cwiklinski.bloodline.resources.resetTitle
-import mobi.cwiklinski.bloodline.ui.event.SideEffects
+import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.ResetError
 import mobi.cwiklinski.bloodline.ui.model.ResetScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ResetState

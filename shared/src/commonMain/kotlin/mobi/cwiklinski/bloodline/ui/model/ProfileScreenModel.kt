@@ -1,7 +1,7 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -18,7 +18,7 @@ import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 
 class ProfileScreenModel(
     callbackManager: CallbackManager,
@@ -157,7 +157,7 @@ class ProfileScreenModel(
                     storageService.storeProfile(currentProfile.withEmail(email))
                 }
             }
-            Napier.d(currentProfile.toString())
+            Logger.d(currentProfile.toString())
             _profile.value = currentProfile
         }
     }

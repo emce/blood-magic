@@ -50,8 +50,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import co.touchlab.kermit.Logger
 import dev.icerock.moko.parcelize.Parcelize
-import io.github.aakira.napier.Napier
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
@@ -113,7 +113,7 @@ class SetupScreen : AppScreen() {
         val behaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
         when (state) {
             SetupState.SavedData, SetupState.AlreadySetup -> {
-                Napier.d("Redirecting to Home Screen")
+                Logger.d("Redirecting to Home Screen")
                 navigator.clearStack()
                 navigator.replaceAll(HomeScreen())
                 screenModel.resetState()

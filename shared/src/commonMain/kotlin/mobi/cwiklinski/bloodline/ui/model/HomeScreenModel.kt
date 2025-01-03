@@ -1,7 +1,7 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -12,7 +12,7 @@ import mobi.cwiklinski.bloodline.data.api.NotificationService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.ui.util.fillWithRead
 import mobi.cwiklinski.bloodline.ui.util.getReadList
 
@@ -39,7 +39,7 @@ class HomeScreenModel(
         bootstrap()
         screenModelScope.launch {
             val currentProfile = profileService.getProfile().first()
-            Napier.d(currentProfile.toString())
+            Logger.d(currentProfile.toString())
             _profile.value = currentProfile
             storageService.storeProfile(currentProfile)
             _notificationsRead.emit(storageService.getReadList())

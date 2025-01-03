@@ -1,7 +1,8 @@
+
+import GoogleSignIn
 import SwiftUI
-import shared
+import Firebase
 import FirebaseCore
-import FirebaseMessaging
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 
@@ -10,16 +11,17 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
       FirebaseApp.configure()
 
-      NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(
-            showPushNotification: true,
-            askNotificationPermissionOnStart: true)
-      )
-
     return true
   }
 
-  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        Messaging.messaging().apnsToken = deviceToken
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        var handled: Bool
+
+        handled = GIDSignIn.sharedInstance.handle(url)
+        if handled {
+          return true
+        }
+        return false
   }
 
 }
@@ -29,13 +31,11 @@ struct iOSApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
-    init() {
-            NapierProxyKt.debugBuild()
-        }
-
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().onOpenURL(perform: { url in
+                 GIDSignIn.sharedInstance.handle(url)
+             })
         }
     }
 }

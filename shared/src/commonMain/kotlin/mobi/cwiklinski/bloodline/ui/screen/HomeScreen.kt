@@ -74,8 +74,8 @@ import mobi.cwiklinski.bloodline.resources.ic_zhdk_3
 import mobi.cwiklinski.bloodline.resources.liter
 import mobi.cwiklinski.bloodline.resources.milliliter
 import mobi.cwiklinski.bloodline.resources.seeAll
-import mobi.cwiklinski.bloodline.ui.event.Events
-import mobi.cwiklinski.bloodline.ui.event.SideEffects
+import mobi.cwiklinski.bloodline.common.event.Events
+import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.ui.model.HomeScreenModel
 import mobi.cwiklinski.bloodline.ui.model.HomeState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors

@@ -1,7 +1,7 @@
 package mobi.cwiklinski.bloodline.ui.model
 
 import cafe.adriel.voyager.core.model.StateScreenModel
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import org.koin.core.component.KoinComponent
 
 abstract class AppModel<S>(initialState: S, private val callbackManager: CallbackManager) :

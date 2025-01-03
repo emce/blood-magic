@@ -4,13 +4,14 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.auth.api.AuthError
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.ui.util.Avatar
 
 class RegisterScreenModel(
@@ -25,7 +26,7 @@ class RegisterScreenModel(
     }
 
     fun onRegisterSubmit(email: String, password: String, repeat: String) {
-        clearError()
+        clearState()
         mutableState.value = RegisterState.Registering
         if (!email.isValidEmail()) {
             mutableState.value = RegisterState.Error(listOf(RegisterError.EMAIL_ERROR))
@@ -69,7 +70,82 @@ class RegisterScreenModel(
         }
     }
 
-    private fun clearError() {
+    fun registerWithGoogle() {
+        mutableState.value = RegisterState.Registering
+        screenModelScope.launch {
+            authService.loginWithGoogle().collectLatest {
+                when (it) {
+                    is AuthResult.Dismissed -> mutableState.value = RegisterState.Idle
+                    is AuthResult.Failure -> {
+                        val errors = mutableListOf<RegisterError>()
+                        when (it.error) {
+                            AuthError.NOT_IMPLEMENTED -> {
+                                errors.add(RegisterError.NOT_IMPLEMENTED)
+                            }
+                            else -> {
+                                errors.add(RegisterError.REGISTER_ERROR)
+                            }
+                        }
+                        mutableState.value =
+                            RegisterState.Error(errors)
+                    }
+                    is AuthResult.Success -> mutableState.value = RegisterState.Registered
+                }
+            }
+        }
+    }
+
+    fun registerWithFacebook() {
+        mutableState.value = RegisterState.Registering
+        screenModelScope.launch {
+            authService.loginWithFacebook().collectLatest {
+                when (it) {
+                    is AuthResult.Dismissed -> mutableState.value = RegisterState.Idle
+                    is AuthResult.Failure -> {
+                        val errors = mutableListOf<RegisterError>()
+                        when (it.error) {
+                            AuthError.NOT_IMPLEMENTED -> {
+                                errors.add(RegisterError.NOT_IMPLEMENTED)
+                            }
+                            else -> {
+                                errors.add(RegisterError.REGISTER_ERROR)
+                            }
+                        }
+                        mutableState.value =
+                            RegisterState.Error(errors)
+                    }
+                    is AuthResult.Success -> mutableState.value = RegisterState.Registered
+                }
+            }
+        }
+    }
+
+    fun registerWithApple() {
+        mutableState.value = RegisterState.Registering
+        screenModelScope.launch {
+            authService.loginWithApple().collectLatest {
+                when (it) {
+                    is AuthResult.Dismissed -> mutableState.value = RegisterState.Idle
+                    is AuthResult.Failure -> {
+                        val errors = mutableListOf<RegisterError>()
+                        when (it.error) {
+                            AuthError.NOT_IMPLEMENTED -> {
+                                errors.add(RegisterError.NOT_IMPLEMENTED)
+                            }
+                            else -> {
+                                errors.add(RegisterError.REGISTER_ERROR)
+                            }
+                        }
+                        mutableState.value =
+                            RegisterState.Error(errors)
+                    }
+                    is AuthResult.Success -> mutableState.value = RegisterState.Registered
+                }
+            }
+        }
+    }
+
+    fun clearState() {
         mutableState.value = RegisterState.Idle
     }
 
@@ -87,6 +163,6 @@ enum class RegisterError {
     PASSWORD_ERROR,
     REPEAT_ERROR,
     PROFILE_ERROR,
-    REGISTER_ERROR
-
+    REGISTER_ERROR,
+    NOT_IMPLEMENTED
 }

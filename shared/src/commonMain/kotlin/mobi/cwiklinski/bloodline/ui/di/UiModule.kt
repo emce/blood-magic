@@ -1,9 +1,8 @@
 package mobi.cwiklinski.bloodline.ui.di
 
 import androidx.constraintlayout.compose.platform.annotation.SuppressWarnings
+import mobi.cwiklinski.bloodline.common.commonModule
 import mobi.cwiklinski.bloodline.storage.datastore.createStorageModule
-import mobi.cwiklinski.bloodline.ui.manager.AppCallbackManager
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
 import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ExitScreenModel
@@ -22,12 +21,12 @@ import mobi.cwiklinski.bloodline.data.filed.createDataModule as filedDataModule
 import mobi.cwiklinski.bloodline.data.firebase.createDataModule as firebaseDataModule
 
 val uiModule = buildList {
+    add(commonModule)
     addAll(getFirebaseImplementation())
     //addall(filedImplementation())
     add(createStorageModule())
     add(lazyModule {
         // Models
-        single<CallbackManager> { AppCallbackManager(get()) }
         factory {
             SplashScreenModel(
                 callbackManager = get(),

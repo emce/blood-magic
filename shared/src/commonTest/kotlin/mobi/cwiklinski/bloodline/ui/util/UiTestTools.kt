@@ -34,6 +34,9 @@ object UiTestTools {
         AuthenticationService {
         override val authenticationState = MutableStateFlow<AuthenticationState>(AuthenticationState.Idle)
         override fun loginWithEmailAndPassword(email: String, password: String) = flowOf(result)
+        override fun loginWithFacebook() = flowOf(result)
+        override fun loginWithGoogle() = flowOf(result)
+        override fun loginWithApple() = flowOf(result)
         override fun registerWithEmailAndPassWord(email: String, password: String) = flowOf(result)
         override fun logOut(): Flow<Boolean> = flowOf(secondResult)
         override fun resetPassword(email: String) = flowOf(result)

@@ -11,7 +11,7 @@ import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.data.api.NotificationService
 import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.ui.manager.CallbackManager
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.ui.util.fillWithRead
 import mobi.cwiklinski.bloodline.ui.util.getReadList
 
