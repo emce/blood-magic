@@ -14,7 +14,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.context.startKoin
 import org.koin.core.lazyModules
-import java.awt.Dimension
 
 fun main() = application {
     Window(
@@ -32,7 +31,6 @@ fun main() = application {
             lazyModules(createAppLazyModule())
             modules(createAppModule())
         }
-        window.minimumSize = Dimension(600, 500)
         MagicApp()
     }
 }

@@ -1,6 +1,6 @@
 package mobi.cwiklinski.bloodline
 
-import mobi.cwiklinski.bloodline.ui.di.uiModule
+import mobi.cwiklinski.bloodline.ui.uiModule
 import org.koin.core.module.LazyModule
 import org.koin.core.module.Module
 

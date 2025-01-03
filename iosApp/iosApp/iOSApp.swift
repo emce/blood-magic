@@ -3,6 +3,7 @@ import GoogleSignIn
 import SwiftUI
 import Firebase
 import FirebaseCore
+import BloodMagic
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 
@@ -10,11 +11,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
       FirebaseApp.configure()
-
-    return true
+      return true
   }
 
-  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+  func application(_ app: UIApplication, open url: URL,
+                options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         var handled: Bool
 
         handled = GIDSignIn.sharedInstance.handle(url)
@@ -30,6 +31,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct iOSApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
+    init() {
+            HelperKt.doInitKoin()
+        }
 
     var body: some Scene {
         WindowGroup {

@@ -36,7 +36,7 @@ import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.monthGenitives
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.common.event.SideEffect
-import mobi.cwiklinski.bloodline.ui.manager.PlatformManager
+import mobi.cwiklinski.bloodline.ui.PlatformManager
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import org.jetbrains.compose.resources.stringArrayResource
 import org.koin.compose.currentKoinScope

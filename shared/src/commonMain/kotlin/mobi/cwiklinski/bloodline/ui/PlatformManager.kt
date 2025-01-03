@@ -1,4 +1,4 @@
-package mobi.cwiklinski.bloodline.ui.manager
+package mobi.cwiklinski.bloodline.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
@@ -10,7 +10,6 @@ val LocalPlatformManager: ProvidableCompositionLocal<PlatformManager> =
 @Composable
 expect fun rememberPlatformManager(): PlatformManager
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect class PlatformManager {
     fun openBrowser(url: String, openSystemBrowser: Boolean)
 

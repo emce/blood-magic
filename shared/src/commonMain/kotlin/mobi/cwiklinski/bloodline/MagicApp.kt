@@ -2,7 +2,6 @@ package mobi.cwiklinski.bloodline
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -21,7 +20,6 @@ import org.koin.compose.koinInject
 
 val LocalSnackBar = compositionLocalOf { SnackbarHostState() }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MagicApp() {
     val snackBarHostState = remember { SnackbarHostState() }

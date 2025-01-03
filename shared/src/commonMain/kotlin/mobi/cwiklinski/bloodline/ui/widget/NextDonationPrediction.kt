@@ -126,7 +126,8 @@ fun NextDonationPrediction(lastDonation: Donation?) {
                     ),
                 color = AppThemeColors.red2,
                 trackColor = AppThemeColors.iconRedBackground,
-                strokeCap = StrokeCap.Round
+                strokeCap = StrokeCap.Butt,
+                gapSize = 0.dp
             )
         }
     }

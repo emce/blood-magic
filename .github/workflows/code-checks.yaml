@@ -39,7 +39,7 @@ jobs:
           base64 -d -i shared/google-services.json.b64 > shared/google-services.json
 
       - name: Run Checks
-        run: ./gradlew check
+        run: ./gradlew clean check
 
       - name: Upload reports
         if: failure()

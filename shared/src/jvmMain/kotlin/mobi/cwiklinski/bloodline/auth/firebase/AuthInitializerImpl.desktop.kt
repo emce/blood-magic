@@ -13,8 +13,6 @@ import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
 import mobi.cwiklinski.bloodline.config.FirebaseConfig
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-
 actual class AuthenticationInitializerImpl actual constructor(
     val storageService: StorageService,
     val coroutineScope: CoroutineScope

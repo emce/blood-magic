@@ -1,13 +1,13 @@
-package mobi.cwiklinski.bloodline.ui.manager
+package mobi.cwiklinski.bloodline.ui
 
 import androidx.compose.runtime.Composable
 import java.awt.Desktop
 import java.net.URI
 
 @Composable
-actual fun rememberPlatformManager(): PlatformManager = PlatformManager()
+actual fun rememberPlatformManager(): PlatformManager =
+    PlatformManager()
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class PlatformManager {
     actual fun openToast(content: String): Boolean {
         return false

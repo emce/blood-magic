@@ -1,4 +1,4 @@
-package mobi.cwiklinski.bloodline.ui.manager
+package mobi.cwiklinski.bloodline.ui
 
 import android.annotation.SuppressLint
 import android.content.ClipData
@@ -36,7 +36,6 @@ actual fun rememberPlatformManager(): PlatformManager {
     }
 }
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class PlatformManager(
     val context: Context,
     val activity: FragmentActivity?,

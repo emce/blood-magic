@@ -13,7 +13,7 @@ import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
 import mobi.cwiklinski.bloodline.data.Parcelable
 import mobi.cwiklinski.bloodline.ui.util.shareText
-import mobi.cwiklinski.bloodline.ui.manager.rememberPlatformManager
+import mobi.cwiklinski.bloodline.ui.rememberPlatformManager
 import mobi.cwiklinski.bloodline.ui.model.AppModel
 import mobi.cwiklinski.bloodline.ui.util.RenderLayout
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel

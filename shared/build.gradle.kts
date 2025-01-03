@@ -153,6 +153,7 @@ kotlin {
                 "-opt-in=kotlinx.coroutines.ObsoleteCoroutinesApi",
                 "-opt-in=kotlinx.coroutines.FlowPreview",
                 "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+                "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
                 "-Xexpect-actual-classes"
             )
         }
@@ -172,7 +173,6 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = getGlobalVersionCode(commitCount)
         versionName = getGlobalVersionName(commitCount)
-        setProperty("archivesBaseName", "Blood-Magic(${getGlobalVersionName(commitCount)}")
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -251,7 +251,7 @@ compose.desktop {
             description = "Application for keeping records of donations for Honorary Blood Donors in Poland"
             copyright = "© 2016 mobiGEEK Michal Cwiklinski. All rights reserved."
             outputBaseDir.set(layout.buildDirectory.asFile.get().resolve("release"))
-            targetFormats(TargetFormat.Deb, TargetFormat.Msi, TargetFormat.Pkg)
+            targetFormats(TargetFormat.Deb, TargetFormat.Msi, TargetFormat.Pkg, TargetFormat.Dmg)
 
 
             macOS {
@@ -317,13 +317,6 @@ buildConfig {
     buildConfigField("String", "WEB_CLIENT_ID", webClientId)
 }
 
-tasks.register("printVersionName") {
-    val gitCommitCountProvider = providers.of(GitCommitCountValueSource::class) {}
-    val commitCount = gitCommitCountProvider.get().toInt()
-    println(getGlobalVersionName(commitCount))
-    outputs.cacheIf { false }
-}
-
 afterEvaluate {
     tasks.findByName("generateDebugUnitTestLintModel")?.dependsOn(
         tasks.getByName("generateAndroidUnitTestDebugNonAndroidBuildConfig"),
@@ -339,6 +332,7 @@ afterEvaluate {
     }.forEach {
         it.enabled = false
     }
+    tasks.withType<JavaExec>().named { it == "jvmRun" }.configureEach { mainClass = "mobi.cwiklinski.bloodline.MainWindowKt"}
 }
 
 abstract class GitCommitCountValueSource : ValueSource<String, ValueSourceParameters.None> {

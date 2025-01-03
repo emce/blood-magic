@@ -1,4 +1,4 @@
-package mobi.cwiklinski.bloodline.ui.manager
+package mobi.cwiklinski.bloodline.ui
 
 import androidx.compose.runtime.Composable
 import platform.Foundation.NSURL
@@ -8,10 +8,9 @@ import platform.UIKit.UIPasteboard
 
 @Composable
 actual fun rememberPlatformManager(): PlatformManager {
-    return PlatformManager(UIApplication.sharedApplication())
+    return mobi.cwiklinski.bloodline.ui.PlatformManager(UIApplication.sharedApplication())
 }
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class PlatformManager(private val application: UIApplication) {
     actual fun openToast(content: String): Boolean {
         return false

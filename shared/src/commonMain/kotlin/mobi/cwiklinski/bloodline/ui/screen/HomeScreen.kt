@@ -338,14 +338,6 @@ class HomeScreen : AppScreen() {
                             .horizontalScroll(rememberScrollState())
                     ) {
                         val amount = donations.filter { !it.disqualification }.size
-                        CarouselItem(
-                            icon = Res.drawable.home_carousel_wand,
-                            title = stringResource(Res.string.homeCarouselAmountTitle).replace(
-                                "%d",
-                                amount.toString()
-                            ),
-                            subTitle = stringResource(Res.string.homeCarouselAmountSubtitle)
-                        )
                         var totalSum = profile.starting
                         totalSum += donations
                             .filter { !it.disqualification }.sumOf {
@@ -360,6 +352,14 @@ class HomeScreen : AppScreen() {
                                 stringResource(Res.string.liter)
                             ),
                             subTitle = stringResource(Res.string.homeCarouselTotalAmountTitle)
+                        )
+                        CarouselItem(
+                            icon = Res.drawable.home_carousel_wand,
+                            title = stringResource(Res.string.homeCarouselAmountTitle).replace(
+                                "%d",
+                                amount.toString()
+                            ),
+                            subTitle = stringResource(Res.string.homeCarouselAmountSubtitle)
                         )
                         val part =
                             if (profile.sex.isFemale()) Constants.BADGE_FEMALE_FIRST else Constants.BADGE_MALE_FIRST

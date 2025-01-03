@@ -1,4 +1,4 @@
-package mobi.cwiklinski.bloodline.ui.di
+package mobi.cwiklinski.bloodline.ui
 
 import androidx.constraintlayout.compose.platform.annotation.SuppressWarnings
 import mobi.cwiklinski.bloodline.common.commonModule
