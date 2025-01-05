@@ -50,7 +50,7 @@ fun CarouselItem(
     ),
     subTitleStyle: TextStyle = toolbarSubTitle(),
     titleLines: Int = 1,
-    suBtitleLines: Int = 1
+    subTitleLines: Int = 1
 ) {
     Card(
         modifier = modifier.padding(10.dp).width(300.dp)
@@ -92,7 +92,7 @@ fun CarouselItem(
                     Text(
                         subTitle,
                         style = subTitleStyle,
-                        maxLines = suBtitleLines,
+                        maxLines = subTitleLines,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.fillMaxWidth()
                     )

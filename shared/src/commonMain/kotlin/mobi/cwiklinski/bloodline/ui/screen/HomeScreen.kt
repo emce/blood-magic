@@ -36,6 +36,11 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.common.event.Events
+import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.data.Parcelize
+import mobi.cwiklinski.bloodline.domain.model.Donation
+import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.isMobile
 import mobi.cwiklinski.bloodline.isTablet
@@ -73,16 +78,12 @@ import mobi.cwiklinski.bloodline.resources.ic_zhdk_3
 import mobi.cwiklinski.bloodline.resources.liter
 import mobi.cwiklinski.bloodline.resources.milliliter
 import mobi.cwiklinski.bloodline.resources.seeAll
-import mobi.cwiklinski.bloodline.common.event.Events
-import mobi.cwiklinski.bloodline.common.event.SideEffects
-import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.ui.model.HomeScreenModel
 import mobi.cwiklinski.bloodline.ui.model.HomeState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.cardTitle
 import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
-import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
@@ -114,12 +115,15 @@ class HomeScreen : AppScreen() {
                     NavigationItem.LIST -> {
                         navigator.push(DonationsScreen())
                     }
+
                     NavigationItem.CENTER -> {
                         navigator.push(CentersScreen())
                     }
+
                     NavigationItem.PROFILE -> {
                         navigator.push(ProfileScreen())
                     }
+
                     else -> {
                         navigator.push(HomeScreen())
                     }
@@ -127,9 +131,9 @@ class HomeScreen : AppScreen() {
             },
             floatingAction = {
                 bottomSheetNavigator.show(NewDonationScreen())
-            }
+            },
         ) { paddingValues ->
-            HomeView(paddingValues)
+            InternalHomeView(paddingValues)
         }
     }
 
@@ -143,12 +147,15 @@ class HomeScreen : AppScreen() {
                     NavigationItem.LIST -> {
                         navigator.push(DonationsScreen())
                     }
+
                     NavigationItem.CENTER -> {
                         navigator.push(CentersScreen())
                     }
+
                     NavigationItem.PROFILE -> {
                         navigator.push(ProfileScreen())
                     }
+
                     else -> {
                         navigator.push(HomeScreen())
                     }
@@ -157,9 +164,12 @@ class HomeScreen : AppScreen() {
             floatingAction = {
                 bottomSheetNavigator.show(NewDonationScreen())
             },
+            infoClicked = {
+                navigator.push(AboutScreen())
+            },
             desiredContent = {
-                HomeView(PaddingValues(0.dp))
-            }
+                InternalHomeView(PaddingValues(0.dp))
+            },
         )
     }
 
@@ -173,12 +183,15 @@ class HomeScreen : AppScreen() {
                     NavigationItem.LIST -> {
                         navigator.push(DonationsScreen())
                     }
+
                     NavigationItem.CENTER -> {
                         navigator.push(CentersScreen())
                     }
+
                     NavigationItem.PROFILE -> {
                         navigator.push(ProfileScreen())
                     }
+
                     else -> {
                         navigator.push(HomeScreen())
                     }
@@ -187,257 +200,285 @@ class HomeScreen : AppScreen() {
             floatingAction = {
                 bottomSheetNavigator.show(NewDonationScreen())
             },
+            informationAction = {
+                navigator.push(AboutScreen())
+            },
             desiredContent = {
-                HomeView(PaddingValues(0.dp))
+                InternalHomeView(PaddingValues(0.dp))
             }
         )
     }
 
     @Composable
-    fun HomeView(paddingValues: PaddingValues) {
+    private fun InternalHomeView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
         val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
         val unreadNotification by screenModel.notifications.collectAsStateWithLifecycle(emptyList())
-        val hero = if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
         handleSideEffects<HomeState, HomeScreenModel>()
-        Column(
-            modifier = Modifier.padding(paddingValues).background(AppThemeColors.mainGradient)
-        ) {
-            ConstraintLayout(
-                modifier = Modifier.height(180.dp).fillMaxWidth()
-                    .background(Color.Transparent)
-            ) {
-                val (titleRef, subTitleRef, starsRef, bellRef) = createRefs()
-                NotificationsButton(
-                    modifier = Modifier
-                        .constrainAs(bellRef) {
-                            top.linkTo(parent.top, 40.dp)
-                            end.linkTo(parent.end, 10.dp)
-                        },
-                    onClick = {
-                        navigator.push(NotificationsScreen())
-                    },
-                    newNotifications = unreadNotification.any { it.read }
-                )
-                StarsAnimation(
-                    modifier = Modifier.padding(20.dp).constrainAs(starsRef){
-                        top.linkTo(bellRef.top)
-                        end.linkTo(bellRef.start, 10.dp)
-                        bottom.linkTo(parent.bottom, 30.dp)
-                    }
-                )
-                val name = profile.name.ifEmpty { hero }
-                Text(
-                    stringResource(Res.string.homeTitle).replace("%s", name),
-                    modifier = Modifier.constrainAs(titleRef) {
-                        bottom.linkTo(subTitleRef.top, 20.dp)
-                        start.linkTo(parent.start, 20.dp)
-                    },
-                    style = toolbarTitle()
-                )
-                Text(
-                    stringResource(Res.string.homeSubTitle),
-                    modifier = Modifier.constrainAs(subTitleRef) {
-                        bottom.linkTo(parent.bottom, 20.dp)
-                        start.linkTo(parent.start, 20.dp)
-                    },
-                    style = toolbarSubTitle()
+        HomeView(paddingValues,
+            donations,
+            profile,
+            unreadNotification,
+            { navigator.push(NotificationsScreen()) },
+            { bottomSheetNavigator.show(NewDonationScreen()) },
+            { navigator.push(DonationsScreen()) },
+            { text ->
+                screenModel.postEvent(
+                    Events.EventSideEffect(
+                        sideEffect = SideEffects.ShareText(
+                            text
+                        )
+                    )
                 )
             }
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .background(
-                        SolidColor(AppThemeColors.background),
-                        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top,
-            ) {
-                Spacer(Modifier.height(24.dp))
-                Text(
-                    if (donations.isNotEmpty()) stringResource(Res.string.homeSectionTitle).replace(
-                        "%s",
-                        hero
-                    ) else stringResource(Res.string.homeSectionEmptyTitle).replace("%s", hero),
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    style = contentTitle()
+        )
+    }
+}
+
+@Composable
+fun HomeView(
+    paddingValues: PaddingValues, donations: List<Donation>, profile: Profile,
+    unreadNotifications: List<Notification>, onNotificationIconClicked: () -> Unit,
+    openNewDonationForm: () -> Unit, showDonationsClicked: () -> Unit, shareText: (String) -> Unit
+) {
+    val hero =
+        if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
+    Column(
+        modifier = Modifier.padding(paddingValues).background(AppThemeColors.mainGradient)
+    ) {
+        ConstraintLayout(
+            modifier = Modifier.height(180.dp).fillMaxWidth()
+                .background(Color.Transparent)
+        ) {
+            val (titleRef, subTitleRef, starsRef, bellRef) = createRefs()
+            NotificationsButton(
+                modifier = Modifier
+                    .constrainAs(bellRef) {
+                        top.linkTo(parent.top, 40.dp)
+                        end.linkTo(parent.end, 10.dp)
+                    },
+                onClick = onNotificationIconClicked,
+                newNotifications = unreadNotifications.any { it.read }
+            )
+            StarsAnimation(
+                modifier = Modifier.padding(20.dp).constrainAs(starsRef) {
+                    top.linkTo(bellRef.top)
+                    end.linkTo(bellRef.start, 10.dp)
+                    bottom.linkTo(parent.bottom, 30.dp)
+                }
+            )
+            val name = profile.name.ifEmpty { hero }
+            Text(
+                stringResource(Res.string.homeTitle).replace("%s", name),
+                modifier = Modifier.constrainAs(titleRef) {
+                    bottom.linkTo(subTitleRef.top, 20.dp)
+                    start.linkTo(parent.start, 20.dp)
+                },
+                style = toolbarTitle()
+            )
+            Text(
+                stringResource(Res.string.homeSubTitle),
+                modifier = Modifier.constrainAs(subTitleRef) {
+                    bottom.linkTo(parent.bottom, 20.dp)
+                    start.linkTo(parent.start, 20.dp)
+                },
+                style = toolbarSubTitle()
+            )
+        }
+        Column(
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .background(
+                    SolidColor(AppThemeColors.background),
+                    shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            Spacer(Modifier.height(24.dp))
+            Text(
+                if (donations.isNotEmpty()) stringResource(Res.string.homeSectionTitle).replace(
+                    "%s",
+                    hero
+                ) else stringResource(Res.string.homeSectionEmptyTitle).replace("%s", hero),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                style = contentTitle()
+            )
+            if (donations.isEmpty()) {
+                Row(
+                    modifier = Modifier.height(140.dp).fillMaxWidth()
+                        .padding(start = 20.dp)
+                        .horizontalScroll(rememberScrollState())
+                ) {
+                    CarouselItem(
+                        icon = Res.drawable.home_carousel_wand,
+                        title = stringResource(Res.string.homeCarouselAmountTitle).replace(
+                            "%d", "0"
+                        ),
+                        subTitle = stringResource(Res.string.homeCarouselAmountSubtitle)
+                    )
+                    CarouselItem(
+                        icon = Res.drawable.home_carousel_cauldron,
+                        title = 0.capacity(
+                            stringResource(Res.string.milliliter),
+                            stringResource(Res.string.liter)
+                        ),
+                        subTitle = stringResource(Res.string.homeCarouselTotalAmountTitle)
+                    )
+                }
+                HomeCard(
+                    title = stringResource(Res.string.homeSectionNextDonationEmptyTitle),
+                    subTitle = stringResource(Res.string.homeSectionNextDonationEmptyText),
                 )
-                if (donations.isEmpty()) {
-                    Row(
-                        modifier = Modifier.height(140.dp).fillMaxWidth()
-                            .padding(start = 20.dp)
-                            .horizontalScroll(rememberScrollState())
-                    ) {
-                        CarouselItem(
-                            icon = Res.drawable.home_carousel_wand,
-                            title = stringResource(Res.string.homeCarouselAmountTitle).replace(
-                                "%d", "0"
-                            ),
-                            subTitle = stringResource(Res.string.homeCarouselAmountSubtitle)
-                        )
-                        CarouselItem(
-                            icon = Res.drawable.home_carousel_cauldron,
-                            title = 0.capacity(
-                                stringResource(Res.string.milliliter),
-                                stringResource(Res.string.liter)
-                            ),
-                            subTitle = stringResource(Res.string.homeCarouselTotalAmountTitle)
-                        )
-                    }
+                ConstraintLayout(
+                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                ) {
+                    val (card, image) = createRefs()
                     HomeCard(
-                        title = stringResource(Res.string.homeSectionNextDonationEmptyTitle),
-                        subTitle = stringResource(Res.string.homeSectionNextDonationEmptyText),
-                    )
-                    ConstraintLayout(
-                        modifier = Modifier.fillMaxWidth().wrapContentHeight(),
-                    ) {
-                        val (card, image) = createRefs()
-                        HomeCard(
-                            modifier = Modifier.constrainAs(card) {
-                                top.linkTo(parent.top)
-                                bottom.linkTo(parent.bottom)
-                                start.linkTo(parent.start)
-                                end.linkTo(parent.end)
-                            },
-                            title = stringResource(Res.string.homeSectionHistoryEmptyTitle),
-                            subTitle = stringResource(Res.string.homeSectionHistoryEmptyText),
-                            subSubTitle = {
-                                Text(
-                                    stringResource(Res.string.homeSectionHistoryAddDonationEmptyText),
-                                    style = itemTitle().copy(
-                                        textDecoration = TextDecoration.Underline
-                                    ),
-                                    modifier = Modifier.padding(top = 10.dp).clickable {
-                                        bottomSheetNavigator.show(NewDonationScreen())
-                                    }
-                                )
-                            }
-                        )
-                        if (isMobile() && !isTablet()) {
-                            Image(
-                                painterResource(Res.drawable.home_arrow),
-                                stringResource(Res.string.homeTitle),
-                                modifier = Modifier.constrainAs(image) {
-                                    centerHorizontallyTo(parent)
-                                    bottom.linkTo(parent.bottom)
-                                }
-                                    .offset(x = 70.dp, y = 100.dp)
-                            )
-                        }
-                    }
-                } else {
-                    Row(
-                        modifier = Modifier.height(140.dp).fillMaxWidth()
-                            .padding(start = 20.dp)
-                            .horizontalScroll(rememberScrollState())
-                    ) {
-                        val amount = donations.filter { !it.disqualification }.size
-                        var totalSum = profile.starting
-                        totalSum += donations
-                            .filter { !it.disqualification }.sumOf {
-                                it.convertToFullBlood(
-                                    profile.sex
-                                )
-                            }
-                        CarouselItem(
-                            icon = Res.drawable.home_carousel_cauldron,
-                            title = totalSum.capacity(
-                                stringResource(Res.string.milliliter),
-                                stringResource(Res.string.liter)
-                            ),
-                            subTitle = stringResource(Res.string.homeCarouselTotalAmountTitle)
-                        )
-                        CarouselItem(
-                            icon = Res.drawable.home_carousel_wand,
-                            title = stringResource(Res.string.homeCarouselAmountTitle).replace(
-                                "%d",
-                                amount.toString()
-                            ),
-                            subTitle = stringResource(Res.string.homeCarouselAmountSubtitle)
-                        )
-                        val part =
-                            if (profile.sex.isFemale()) Constants.BADGE_FEMALE_FIRST else Constants.BADGE_MALE_FIRST
-                        var badge = Res.drawable.ic_zhdk_3
-                        var badgeTitle = stringResource(Res.string.homeCarouselBadge1Title)
-                        var badgeSubTitle = stringResource(Res.string.homeCarouselBadge1Subtitle)
-                        when {
-                            totalSum > Constants.BADGE_FINAL -> {
-                                badge = Res.drawable.ic_zdzn
-                                badgeTitle = stringResource(Res.string.homeCarouselBadgeFinalTitle)
-                                badgeSubTitle = stringResource(Res.string.homeCarouselBadgeFinalSubtitle)
-                            }
-
-                            amount > part * 3 && amount < Constants.BADGE_FINAL -> {
-                                badge = Res.drawable.ic_zhdk_1
-                                badgeTitle = stringResource(Res.string.homeCarouselBadge3Title)
-                                badgeSubTitle = stringResource(Res.string.homeCarouselBadge3Subtitle)
-                            }
-
-                            amount > part * 2 && amount < part * 3 -> {
-                                badge = Res.drawable.ic_zhdk_2
-                                badgeTitle = stringResource(Res.string.homeCarouselBadge2Title)
-                                badgeSubTitle = stringResource(Res.string.homeCarouselBadge2Subtitle)
-                            }
-
-                            amount > part && amount < part * 2 -> {
-                                badge = Res.drawable.ic_zhdk_3
-                                badgeTitle = stringResource(Res.string.homeCarouselBadge1Title)
-                                badgeSubTitle = stringResource(Res.string.homeCarouselBadge1Subtitle)
-                            }
-                        }
-                        CarouselItem(
-                            icon = badge,
-                            title = badgeTitle,
-                            subTitle = badgeSubTitle,
-                            titleStyle = itemSubTitle(),
-                            subTitleStyle = cardTitle().copy(
-                                fontSize = 22.sp,
-                                color = AppThemeColors.black,
-                            ),
-                            suBtitleLines = 2
-                        )
-                    }
-                    NextDonationPrediction(
-                        donations
-                            .filter { !it.disqualification }
-                            .maxByOrNull { it.date.toEpochDays() }
-                    )
-                    Box(
-                        modifier = Modifier.fillMaxWidth().padding(20.dp),
-                    ) {
-                        Text(
-                            stringResource(Res.string.homeDonationHistory),
-                            style = contentTitle(),
-                            modifier = Modifier.align(Alignment.CenterStart)
-                        )
-                        TextButton(
-                            modifier = Modifier.align(Alignment.CenterEnd),
-                            onClick = {
-                                navigator.push(DonationsScreen())
-                            },
-                            contentPadding = PaddingValues(0.dp),
-                            colors = AppThemeColors.textButtonColors()
-                        ) {
+                        modifier = Modifier.constrainAs(card) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        },
+                        title = stringResource(Res.string.homeSectionHistoryEmptyTitle),
+                        subTitle = stringResource(Res.string.homeSectionHistoryEmptyText),
+                        subSubTitle = {
                             Text(
-                                stringResource(Res.string.seeAll),
-                                style = contentAction()
+                                stringResource(Res.string.homeSectionHistoryAddDonationEmptyText),
+                                style = itemTitle().copy(
+                                    textDecoration = TextDecoration.Underline
+                                ),
+                                modifier = Modifier.padding(top = 10.dp).clickable {
+                                    openNewDonationForm.invoke()
+                                }
                             )
                         }
-                    }
-                    donations.take(5).forEach {
-                        DonationItem(it, {}, {}, { text ->
-                            screenModel.postEvent(Events.EventSideEffect(sideEffect = SideEffects.ShareText(text)))
-                        }, false)
+                    )
+                    if (isMobile() && !isTablet()) {
+                        Image(
+                            painterResource(Res.drawable.home_arrow),
+                            stringResource(Res.string.homeTitle),
+                            modifier = Modifier.constrainAs(image) {
+                                centerHorizontallyTo(parent)
+                                bottom.linkTo(parent.bottom)
+                            }
+                                .offset(x = 70.dp, y = 100.dp)
+                        )
                     }
                 }
-                Spacer(Modifier.height(10.dp))
+            } else {
+                Row(
+                    modifier = Modifier.height(140.dp).fillMaxWidth()
+                        .padding(start = 20.dp)
+                        .horizontalScroll(rememberScrollState())
+                ) {
+                    val amount = donations.filter { !it.disqualification }.size
+                    var totalSum = profile.starting
+                    totalSum += donations
+                        .filter { !it.disqualification }.sumOf {
+                            it.convertToFullBlood(
+                                profile.sex
+                            )
+                        }
+                    CarouselItem(
+                        icon = Res.drawable.home_carousel_cauldron,
+                        title = totalSum.capacity(
+                            stringResource(Res.string.milliliter),
+                            stringResource(Res.string.liter)
+                        ),
+                        subTitle = stringResource(Res.string.homeCarouselTotalAmountTitle)
+                    )
+                    CarouselItem(
+                        icon = Res.drawable.home_carousel_wand,
+                        title = stringResource(Res.string.homeCarouselAmountTitle).replace(
+                            "%d",
+                            amount.toString()
+                        ),
+                        subTitle = stringResource(Res.string.homeCarouselAmountSubtitle)
+                    )
+                    val part =
+                        if (profile.sex.isFemale()) Constants.BADGE_FEMALE_FIRST else Constants.BADGE_MALE_FIRST
+                    var badge = Res.drawable.ic_zhdk_3
+                    var badgeTitle = stringResource(Res.string.homeCarouselBadge1Title)
+                    var badgeSubTitle = stringResource(Res.string.homeCarouselBadge1Subtitle)
+                    when {
+                        totalSum > Constants.BADGE_FINAL -> {
+                            badge = Res.drawable.ic_zdzn
+                            badgeTitle = stringResource(Res.string.homeCarouselBadgeFinalTitle)
+                            badgeSubTitle =
+                                stringResource(Res.string.homeCarouselBadgeFinalSubtitle)
+                        }
+
+                        amount > part * 3 && amount < Constants.BADGE_FINAL -> {
+                            badge = Res.drawable.ic_zhdk_1
+                            badgeTitle = stringResource(Res.string.homeCarouselBadge3Title)
+                            badgeSubTitle = stringResource(Res.string.homeCarouselBadge3Subtitle)
+                        }
+
+                        amount > part * 2 && amount < part * 3 -> {
+                            badge = Res.drawable.ic_zhdk_2
+                            badgeTitle = stringResource(Res.string.homeCarouselBadge2Title)
+                            badgeSubTitle = stringResource(Res.string.homeCarouselBadge2Subtitle)
+                        }
+
+                        amount > part && amount < part * 2 -> {
+                            badge = Res.drawable.ic_zhdk_3
+                            badgeTitle = stringResource(Res.string.homeCarouselBadge1Title)
+                            badgeSubTitle = stringResource(Res.string.homeCarouselBadge1Subtitle)
+                        }
+                    }
+                    CarouselItem(
+                        icon = badge,
+                        title = badgeTitle,
+                        subTitle = badgeSubTitle,
+                        titleStyle = toolbarSubTitle(),
+                        subTitleStyle = cardTitle().copy(
+                            fontSize = 22.sp,
+                            color = AppThemeColors.black,
+                            lineHeight = 25.sp
+                        ),
+                        subTitleLines = 2
+                    )
+                }
+                NextDonationPrediction(
+                    donations
+                        .filter { !it.disqualification }
+                        .maxByOrNull { it.date.toEpochDays() }
+                )
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(top = 20.dp, bottom = 10.dp, start = 20.dp, end = 20.dp),
+                ) {
+                    Text(
+                        stringResource(Res.string.homeDonationHistory),
+                        style = contentTitle(),
+                        modifier = Modifier.align(Alignment.CenterStart)
+                    )
+                    TextButton(
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        onClick = showDonationsClicked,
+                        contentPadding = PaddingValues(0.dp),
+                        colors = AppThemeColors.textButtonColors()
+                    ) {
+                        Text(
+                            stringResource(Res.string.seeAll),
+                            style = contentAction()
+                        )
+                    }
+                }
+                donations.take(5).forEach {
+                    DonationItem(it, {}, {}, { text ->
+                        shareText(text)
+                    }, false)
+                }
             }
+            Spacer(Modifier.height(10.dp))
         }
     }
 }

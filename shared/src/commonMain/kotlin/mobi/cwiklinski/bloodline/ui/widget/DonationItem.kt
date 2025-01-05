@@ -57,13 +57,13 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun DonationItem(
     donation: Donation,
-    onEdit: () -> Unit,
-    onDelete: () -> Unit,
+    onEdit: (Donation) -> Unit,
+    onDelete: (Donation) -> Unit,
     onShare: (text: String) -> Unit,
     showAction: Boolean = true,
     modifier: Modifier = Modifier
 ) {
-    val defaultPadding = 15.dp
+    val defaultPadding = 10.dp
     var typeName = stringResource(Res.string.donationFullBlood)
     var icon = Res.drawable.icon_full_blood
     when (donation.type) {
@@ -92,7 +92,7 @@ fun DonationItem(
     }
     Box(
         modifier = modifier
-            .padding(10.dp)
+            .padding(vertical = 10.dp, horizontal = 20.dp)
             .background(if (donation.disqualification) AppThemeColors.grey3 else AppThemeColors.background)
     ) {
         Card(
@@ -191,20 +191,22 @@ fun DonationItem(
                         }
                 )
                 // Center
-                Text(
-                    "${donation.center.name}, ${donation.center.getFullAddress()}",
-                    style = itemSubTitle(),
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier
-                        .padding(horizontal = defaultPadding)
-                        .constrainAs(center) {
-                            top.linkTo(typeIcon.bottom, 20.dp)
-                            start.linkTo(parent.start)
-                            bottom.linkTo(actions.top)
-                            end.linkTo(parent.end)
-                            width = Dimension.fillToConstraints
-                        }
-                )
+                if (showAction) {
+                    Text(
+                        "${donation.center.name}, ${donation.center.getFullAddress()}",
+                        style = itemSubTitle(),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .padding(horizontal = defaultPadding)
+                            .constrainAs(center) {
+                                top.linkTo(typeIcon.bottom, 10.dp)
+                                start.linkTo(parent.start)
+                                bottom.linkTo(actions.top)
+                                end.linkTo(parent.end)
+                                width = Dimension.fillToConstraints
+                            }
+                    )
+                }
                 // Actions
                 Row(
                     horizontalArrangement = Arrangement.End,
@@ -220,7 +222,9 @@ fun DonationItem(
                     if (showAction) {
                         JustTextButton(
                             text = stringResource(Res.string.donationsEdit),
-                            onClicked = onEdit,
+                            onClicked = {
+                                onEdit.invoke(donation)
+                            },
                             textColor = AppThemeColors.black,
                             textDecoration = TextDecoration.None,
                             leadingIcon = {
@@ -234,7 +238,9 @@ fun DonationItem(
                         Spacer(Modifier.width(20.dp))
                         JustTextButton(
                             text = stringResource(Res.string.donationsDelete),
-                            onClicked = onDelete,
+                            onClicked = {
+                                onDelete.invoke(donation)
+                            },
                             textDecoration = TextDecoration.None,
                             textColor = AppThemeColors.rose1,
                             leadingIcon = {

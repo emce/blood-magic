@@ -22,7 +22,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.ic_drop
+import mobi.cwiklinski.bloodline.resources.infoTitle
+import mobi.cwiklinski.bloodline.resources.navAbout
 import mobi.cwiklinski.bloodline.resources.navAdd
+import mobi.cwiklinski.bloodline.resources.nav_icon_info
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import org.jetbrains.compose.resources.painterResource
@@ -34,6 +37,7 @@ fun DesktopNavigation(
     modifier: Modifier = Modifier,
     selected: NavigationItem = NavigationItem.HOME,
     floatingAction: () -> Unit,
+    informationAction: (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     PermanentNavigationDrawer(
@@ -76,7 +80,6 @@ fun DesktopNavigation(
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                val label = stringResource(Res.string.navAdd)
                 NavigationDrawerItem(
                     selected = false,
                     onClick = floatingAction,
@@ -84,11 +87,29 @@ fun DesktopNavigation(
                     icon = {
                         Image(
                             painter = painterResource(Res.drawable.ic_drop),
-                            contentDescription = label
+                            contentDescription = stringResource(Res.string.navAdd)
                         )
                     },
                     label = {
-                        Text(text = label)
+                        Text(text = stringResource(Res.string.navAdd))
+                    },
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                NavigationDrawerItem(
+                    selected = false,
+                    onClick = {
+                        informationAction?.invoke()
+                    },
+                    shape = RoundedCornerShape(8.dp),
+                    icon = {
+                        Image(
+                            painter = painterResource(Res.drawable.nav_icon_info),
+                            contentDescription = stringResource(Res.string.infoTitle)
+                        )
+                    },
+                    label = {
+                        Text(text = stringResource(Res.string.navAbout))
                     },
                     modifier = Modifier.padding(horizontal = 12.dp),
                 )

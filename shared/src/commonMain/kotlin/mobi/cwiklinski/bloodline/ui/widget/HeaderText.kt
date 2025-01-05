@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
@@ -34,7 +35,7 @@ fun HeaderText(
     ) {
         Box(modifier = Modifier.width(lineWidth).height(lineHeight).background(lineColor))
         Spacer(modifier = Modifier.width(5.dp))
-        Text(text.uppercase(), style = textStyle)
+        Text(text.uppercase(), style = textStyle.copy(fontStyle = FontStyle.Italic))
         Spacer(modifier = Modifier.width(5.dp))
         Box(modifier = Modifier.width(lineWidth).height(lineHeight).background(lineColor))
     }

@@ -37,6 +37,7 @@ markdown = "0.27.0"
 play-publisher = "3.12.1"
 google-services = "4.4.2"
 lifecycle-viewmodel-compose = "2.8.4"
+libraries = "11.4.0"
 
 [libraries]
 
@@ -98,6 +99,10 @@ voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", vers
 voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+# Libraries
+libraries = { module = "com.mikepenz:aboutlibraries-core", version.ref="libraries" }
+libraries-ui = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref="libraries" }
+
 androidx-ui-desktop = { group = "androidx.compose.ui", name = "ui-desktop", version.ref = "uiDesktop" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
@@ -115,4 +120,4 @@ buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 play-publisher = { id = "com.github.triplet.play", version.ref="play-publisher" }
 parcelize = { id = "kotlin-parcelize" }
-kapt = { id = "kotlin-kapt" }
+libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref="libraries" }

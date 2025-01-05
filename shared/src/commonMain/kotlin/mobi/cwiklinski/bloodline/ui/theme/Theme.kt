@@ -93,6 +93,8 @@ object AppThemeColors {
     val greyish = Color(0xFFDBDBDB)
     val dark = Color(0xFF1A1A1A)
 
+    val accentRed1 = Color(0xFFCE4257)
+
 
     val startingGradient = Brush.verticalGradient(
         listOf(violet1, yellow3)

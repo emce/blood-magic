@@ -93,7 +93,7 @@ class DeleteScreen : AppScreen() {
                     style = hugeTitle()
                 )
                 Spacer(Modifier.height(20.dp))
-                FormProgress(filter = ColorFilter.tint(AppThemeColors.red2))
+                FormProgress()
             }
         }
     }

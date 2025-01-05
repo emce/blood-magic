@@ -2,14 +2,18 @@ package mobi.cwiklinski.bloodline.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.Lifecycle
@@ -73,37 +77,36 @@ class SplashScreen(override val key: ScreenKey = Clock.System.now().toString()) 
 
     @Composable
     override fun tabletView() = defaultView()
+}
 
-    @Composable
-    fun SplashView(paddingValues: PaddingValues) {
-        ConstraintLayout(
-            modifier = Modifier.padding(paddingValues).fillMaxSize().background(
-                AppThemeColors.startingGradient
-            )
+@Composable
+fun SplashView(paddingValues: PaddingValues) {
+    ConstraintLayout(
+        modifier = Modifier.padding(paddingValues).fillMaxSize().background(
+            AppThemeColors.startingGradient
+        )
+    ) {
+        val (container) = createRefs()
+        Column(modifier = Modifier
+            .constrainAs(container) {
+                centerHorizontallyTo(parent)
+                centerVerticallyTo(parent)
+            },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val (image, title, progress) = createRefs()
             Image(
                 painterResource(Res.drawable.splash_logo),
                 stringResource(Res.string.appName),
-                modifier = Modifier.constrainAs(image) {
-                    centerTo(parent)
-                }
+                modifier = Modifier.height(300.dp)
             )
+            Spacer(modifier = Modifier.height(40.dp))
             Text(
-                stringResource(Res.string.appName),
+                stringResource(Res.string.appName).replace(" ", "\n"),
                 style = hugeTitle(),
-                modifier = Modifier.constrainAs(title) {
-                    top.linkTo(image.bottom, 20.dp)
-                    centerHorizontallyTo(parent)
-                }
             )
-            FormProgress(
-                modifier = Modifier.constrainAs(progress) {
-                    top.linkTo(title.bottom, 20.dp)
-                    centerHorizontallyTo(parent)
-                },
-                filter = ColorFilter.tint(AppThemeColors.red2)
-            )
+            Spacer(modifier = Modifier.height(40.dp))
+            FormProgress()
         }
     }
 }

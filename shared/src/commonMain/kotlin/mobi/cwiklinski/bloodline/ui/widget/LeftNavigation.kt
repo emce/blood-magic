@@ -15,6 +15,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.infoTitle
+import mobi.cwiklinski.bloodline.resources.nav_icon_info
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
 import org.jetbrains.compose.resources.painterResource
@@ -25,6 +28,7 @@ fun LeftNavigation(
     onClicked: (NavigationItem) -> Unit,
     modifier: Modifier = Modifier,
     selected: NavigationItem = NavigationItem.HOME,
+    infoClicked: (() -> Unit)? = null,
     floatingActionButton: @Composable (ColumnScope.() -> Unit)? = null,
 ) {
     NavigationRail(
@@ -63,5 +67,25 @@ fun LeftNavigation(
                 unselectedContentColor = AppThemeColors.white
             )
         }
+        Spacer(modifier = Modifier.weight(1f))
+        NavigationRailItem(
+            modifier = Modifier.padding(vertical = 5.dp),
+            selected = false,
+            onClick = {
+                infoClicked?.invoke()
+            },
+            icon = {
+                Image(
+                    painterResource(Res.drawable.nav_icon_info),
+                    contentDescription = stringResource(Res.string.infoTitle),
+                    colorFilter = ColorFilter.tint(
+                        AppThemeColors.white
+                    )
+                )
+            },
+            alwaysShowLabel = false,
+            selectedContentColor = AppThemeColors.black,
+            unselectedContentColor = AppThemeColors.white
+        )
     }
 }

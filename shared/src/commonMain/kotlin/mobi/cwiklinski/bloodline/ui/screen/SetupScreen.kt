@@ -202,7 +202,7 @@ class SetupScreen : AppScreen() {
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    FormProgress(filter = ColorFilter.tint(AppThemeColors.red2))
+                    FormProgress()
                 }
             }
         }

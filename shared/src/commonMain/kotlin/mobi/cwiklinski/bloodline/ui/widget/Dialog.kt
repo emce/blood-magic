@@ -4,16 +4,22 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.mikepenz.markdown.m3.Markdown
@@ -33,9 +39,14 @@ import mobi.cwiklinski.bloodline.resources.icon_delete
 import mobi.cwiklinski.bloodline.resources.notificationsMarkAllAsReadButton
 import mobi.cwiklinski.bloodline.resources.notificationsMarkAllAsReadMessage
 import mobi.cwiklinski.bloodline.resources.notificationsMarkAllAsReadTitle
+import mobi.cwiklinski.bloodline.resources.settingsLogoutAction
+import mobi.cwiklinski.bloodline.resources.settingsLogoutMessage
+import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
+import mobi.cwiklinski.bloodline.ui.model.ProfileState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.dialogRichTextColors
 import mobi.cwiklinski.bloodline.ui.theme.alertTitle
+import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -132,8 +143,9 @@ fun DonationDeleteDialog(
             Image(
                 painterResource(Res.drawable.icon_delete),
                 contentDescription = stringResource(Res.string.close),
+                colorFilter = ColorFilter.tint(AppThemeColors.iconRed),
                 modifier = Modifier
-                    .size(96.dp)
+                    .size(64.dp)
                     .constrainAs(imageRef) {
                         top.linkTo(parent.top)
                         centerHorizontallyTo(parent)
@@ -143,19 +155,21 @@ fun DonationDeleteDialog(
             )
             Text(
                 stringResource(Res.string.donationsDeleteTitle),
-                style = alertTitle(),
+                style = alertTitle().copy(
+                    textAlign = TextAlign.Center
+                ),
                 modifier = Modifier.constrainAs(titleRef) {
                     top.linkTo(imageRef.bottom, 20.dp)
                     centerHorizontallyTo(parent)
                 }
             )
-            Markdown(
+            RichText(
                 stringResource(Res.string.donationsDeleteMessage),
                 modifier = Modifier.constrainAs(messageRef) {
                     top.linkTo(titleRef.bottom, 20.dp)
                     centerHorizontallyTo(parent)
                 },
-                colors = dialogRichTextColors()
+                centered = true
             )
             Row(
                 modifier = Modifier.constrainAs(buttonsRef) {
@@ -180,8 +194,6 @@ fun DonationDeleteDialog(
         }
     }
 }
-
-
 
 @Composable
 fun MarkAllReadDialog(
@@ -250,6 +262,62 @@ fun MarkAllReadDialog(
                     },
                     text = stringResource(Res.string.notificationsMarkAllAsReadButton)
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun LogoutDialog(
+    state: ProfileState,
+    onCancel: () -> Unit,
+    onSubmit: () -> Unit
+) {
+    BasicAlertDialog(
+        onDismissRequest = onCancel,
+        modifier = Modifier
+            .background(
+                color = AppThemeColors.white,
+                shape = RoundedCornerShape(20.dp)
+            )
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(30.dp)
+                .wrapContentSize(),
+        ) {
+            Text(
+                stringResource(Res.string.settingsLogoutTitle),
+                modifier = Modifier.fillMaxWidth(),
+                style = hugeTitle().copy(textAlign = TextAlign.Center)
+            )
+            Spacer(Modifier.height(10.dp))
+            RichText(
+                stringResource(Res.string.settingsLogoutMessage),
+                centered = true
+            )
+            Spacer(Modifier.height(30.dp))
+            if (state == ProfileState.LoggingOut) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    FormProgress()
+                }
+            } else {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    SecondaryButton(
+                        text = stringResource(Res.string.close),
+                        onClick = onCancel
+                    )
+                    SubmitButton(
+                        text = stringResource(Res.string.settingsLogoutAction),
+                        onClick = onSubmit
+                    )
+                }
             }
         }
     }

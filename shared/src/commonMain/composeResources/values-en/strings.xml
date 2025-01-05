@@ -62,6 +62,7 @@
     <string name="navDonations">Magic Drops</string>
     <string name="navProfile">Your Profile</string>
     <string name="navAdd">New Drops</string>
+    <string name="navAbout">Info</string>
 
         <!-- LOGIN SCREEN -->
     <string name="loginTitle">Welcome back!</string>
@@ -233,4 +234,20 @@
     <string name="settingsLogoutTitle">Log out</string>
     <string name="settingsLogoutMessage">You will be logged out of the app - don't worry, your data is saved, but to access it, you will need to log in again.</string>
 
+    // INFO
+    <string name="infoTitle">About Application</string>
+    <string name="infoTeam">Team</string>
+    <string name="infoLibraries">Libraries</string>
+    <string name="infoTeamDescription"><![CDATA[
+    ##### Graphic Design
+    **Agata Wolna** [(wolnaagata95@gmail.com)](mailto:wolnaagata95@gmail.com)
+
+    ##### Development
+    **Michał Ćwikliński** (mobiGEEK)
+
+    Application was written in *Kotlin*, using *Compose MultiPlatform* framework, and is delivered for 3 platforms:
+    - Android [https://play.google.com/store/apps/details?id=mobi.cwiklinski.bloodline](https://play.google.com/store/apps/details?id=mobi.cwiklinski.bloodline)
+    - iOS [https://apps.apple.com/en/app/blood-donor-diary/id1563904745](https://apps.apple.com/en/app/blood-donor-diary/id1563904745?platform=iphone)
+    - MacOS [https://apps.apple.com/en/app/blood-donor-diary/id1563904745](https://apps.apple.com/en/app/blood-donor-diary/id1563904745?platform=mac)
+    ]]></string>
 </resources>

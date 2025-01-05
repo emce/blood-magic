@@ -25,7 +25,11 @@ To run the application on iPhone device/simulator:
 Run iOS simulator UI tests: `./gradlew :composeApp:iosSimulatorArm64Test`
 
 ### Resource
-to rebuild resources run:
+To rebuild resources run:
 `./gradlew :shared:generateResourceAccessorsForCommonMain`
+
+### Libraries
+To generate libraries information run:
+`./gradlew share:exportLibraryDefinitions -PaboutLibraries.exportPath=src/commonMain/composeResources/files -PaboutLibraries.exportVariant=release`
 
 

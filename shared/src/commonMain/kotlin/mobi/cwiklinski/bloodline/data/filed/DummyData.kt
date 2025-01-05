@@ -1,6 +1,9 @@
 package mobi.cwiklinski.bloodline.data.filed
 
+import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
+import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
@@ -3477,11 +3480,7 @@ object DummyData {
         ),
         Donation(
             "-L1hZ6utP2Rw-YTtcHnr",
-            LocalDate(
-                2019,
-                7,
-                28
-            ),
+            today().minus(DatePeriod(days = 35)),
             DonationType.byType(1),
             450,
             0.0f,

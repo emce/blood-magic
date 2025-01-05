@@ -36,7 +36,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.common.event.Events
 import mobi.cwiklinski.bloodline.common.isValidUrl
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.centerSearchLabel
@@ -44,8 +46,6 @@ import mobi.cwiklinski.bloodline.resources.centersTitle
 import mobi.cwiklinski.bloodline.resources.ic_search
 import mobi.cwiklinski.bloodline.resources.icon_poland
 import mobi.cwiklinski.bloodline.resources.loading
-import mobi.cwiklinski.bloodline.common.event.Events
-import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.ui.model.CenterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.CenterState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
@@ -122,7 +122,7 @@ class CentersScreen : AppScreen() {
                 bottomSheetNavigator.show(NewDonationScreen())
             }
         ) { paddingValues ->
-            CentersView(paddingValues)
+            InternalCentersView(paddingValues)
         }
     }
 
@@ -180,8 +180,11 @@ class CentersScreen : AppScreen() {
             floatingAction = {
                 bottomSheetNavigator.show(NewDonationScreen())
             },
+            infoClicked = {
+                navigator.push(AboutScreen())
+            },
             desiredContent = {
-                CentersView(PaddingValues(0.dp))
+                InternalCentersView(PaddingValues(0.dp))
             }
         )
     }
@@ -241,89 +244,107 @@ class CentersScreen : AppScreen() {
             floatingAction = {
                 bottomSheetNavigator.show(NewDonationScreen())
             },
+            infoClicked = {
+                navigator.push(AboutScreen())
+            },
             desiredContent = {
-                CentersView(PaddingValues(0.dp))
+                InternalCentersView(PaddingValues(0.dp))
             }
         )
     }
 
     @Composable
-    private fun CentersView(paddingValues: PaddingValues) {
+    private fun InternalCentersView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val bottomNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
         val centers by screenModel.filteredCenters.collectAsStateWithLifecycle(emptyList())
         handleSideEffects<CenterState, CenterScreenModel>()
-        if (centers.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-                    .padding(paddingValues)
-                    .background(
-                        SolidColor(AppThemeColors.background),
-                        RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                    ),
-                verticalArrangement = Arrangement.Top
-            ) {
-                itemsIndexed(centers) { index, center ->
-                    if (index == 0) {
-                        RegionHeader(center)
-                    } else {
-                        centers.getOrNull(index - 1)?.let { previous ->
-                            if (center.voivodeship != previous.voivodeship) {
-                                RegionHeader(center)
-                            }
+        CentersView(
+            paddingValues = paddingValues,
+            centers = centers,
+            openCenter = { center ->
+                bottomNavigator.show(CenterScreen(center) { link ->
+                    if (link.isValidUrl()) {
+                        screenModel.postEvent(Events.OpenBrowser(url = link))
+                    }
+                })
+            }
+        )
+    }
+}
+
+@Composable
+fun CentersView(
+    paddingValues: PaddingValues,
+    centers: List<Center>,
+    openCenter: (Center) -> Unit
+) {
+    if (centers.isNotEmpty()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+                .padding(paddingValues)
+                .background(
+                    SolidColor(AppThemeColors.background),
+                    RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+                ),
+            verticalArrangement = Arrangement.Top
+        ) {
+            itemsIndexed(centers) { index, center ->
+                if (index == 0) {
+                    RegionHeader(center)
+                } else {
+                    centers.getOrNull(index - 1)?.let { previous ->
+                        if (center.voivodeship != previous.voivodeship) {
+                            RegionHeader(center)
                         }
                     }
-                    CenterItemView(
-                        center, modifier = Modifier
-                            .fillMaxWidth().clickable {
-                                bottomNavigator.show(CenterScreen(center) { link ->
-                                    if (link.isValidUrl()) {
-                                        screenModel.postEvent(Events.OpenBrowser(url = link))
-                                    }
-                                })
-                            })
                 }
+                CenterItemView(
+                    center, modifier = Modifier
+                        .fillMaxWidth().clickable {
+                            openCenter(center)
+                        })
             }
-        } else {
-            Column(
-                modifier = Modifier.fillMaxSize()
-                    .padding(paddingValues)
-                    .background(
-                        SolidColor(AppThemeColors.background),
-                        RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                    ),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                FormProgress()
-                Spacer(Modifier.height(10.dp))
-                Text(stringResource(Res.string.loading))
-            }
+        }
+    } else {
+        Column(
+            modifier = Modifier.fillMaxSize()
+                .padding(paddingValues)
+                .background(
+                    SolidColor(AppThemeColors.background),
+                    RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+                ),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            FormProgress()
+            Spacer(Modifier.height(10.dp))
+            Text(stringResource(Res.string.loading))
         }
     }
+}
 
-    @Composable
-    fun RegionHeader(center: Center) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(AppThemeColors.grey1)
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Image(
-                painterResource(Res.drawable.icon_poland),
-                contentDescription = center.voivodeship,
-                modifier = Modifier.size(16.dp),
-                colorFilter = ColorFilter.tint(AppThemeColors.black70)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                center.voivodeship.toUpperCase(Locale.current),
-                style = itemSubTitle()
-            )
-        }
+@Composable
+fun RegionHeader(center: Center) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppThemeColors.grey1)
+            .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Image(
+            painterResource(Res.drawable.icon_poland),
+            contentDescription = center.voivodeship,
+            modifier = Modifier.size(16.dp),
+            colorFilter = ColorFilter.tint(AppThemeColors.black70)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            center.voivodeship.toUpperCase(Locale.current),
+            style = itemSubTitle()
+        )
     }
 }

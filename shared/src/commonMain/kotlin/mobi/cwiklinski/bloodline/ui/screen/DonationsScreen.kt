@@ -27,6 +27,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.data.Parcelize
+import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.getDonationGridSize
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationsDeleteConfirmationMessage
@@ -37,8 +40,6 @@ import mobi.cwiklinski.bloodline.resources.homeSectionHistoryAddDonationEmptyTex
 import mobi.cwiklinski.bloodline.resources.homeSectionHistoryEmptyText
 import mobi.cwiklinski.bloodline.resources.liter
 import mobi.cwiklinski.bloodline.resources.milliliter
-import mobi.cwiklinski.bloodline.common.event.SideEffects
-import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
@@ -88,7 +89,7 @@ class DonationsScreen : AppScreen() {
                 bottomSheetNavigator.show(NewDonationScreen())
             }
         ) { paddingValues ->
-            DonationsView(paddingValues)
+            InternalDonationsView(paddingValues)
         }
     }
 
@@ -122,8 +123,11 @@ class DonationsScreen : AppScreen() {
             floatingAction = {
                 bottomSheetNavigator.show(NewDonationScreen())
             },
+            infoClicked = {
+                navigator.push(AboutScreen())
+            },
             desiredContent = {
-                DonationsView(PaddingValues(0.dp))
+                InternalDonationsView(PaddingValues(0.dp))
             }
         )
     }
@@ -158,21 +162,22 @@ class DonationsScreen : AppScreen() {
             floatingAction = {
                 bottomSheetNavigator.show(NewDonationScreen())
             },
+            infoClicked = {
+                navigator.push(AboutScreen())
+            },
             desiredContent = {
-                DonationsView(PaddingValues(0.dp))
+                InternalDonationsView(PaddingValues(0.dp))
             }
         )
     }
 
     @Composable
-    fun DonationsView(paddingValues: PaddingValues) {
+    fun InternalDonationsView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
         val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
-        val milliliter = stringResource(Res.string.milliliter)
-        val liter = stringResource(Res.string.liter)
         val deletionTitle = stringResource(Res.string.donationsDeleteConfirmationTitle)
         val deletionMessage = stringResource(Res.string.donationsDeleteConfirmationMessage)
         if (state is DonationState.ToDelete) {
@@ -188,58 +193,87 @@ class DonationsScreen : AppScreen() {
                 ))
             }
         }
-        Box(
-            modifier = Modifier.fillMaxSize().padding(paddingValues)
-                .background(
-                    SolidColor(AppThemeColors.background),
-                    RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                )
+        DonationsView(
+            paddingValues = paddingValues,
+            donations = donations,
+            onEdit = { donation ->
+                bottomSheetNavigator.show(EditDonationScreen(donation))
+            },
+            onDelete = { donation ->
+                screenModel.markToDelete(donation)
+            },
+            onShare = { text ->
+                screenModel.postSideEffect(SideEffects.ShareText(text))
+            },
+            onDonationAdd = {
+                bottomSheetNavigator.show(NewDonationScreen())
+            }
+        )
+    }
+}
+
+@Composable
+fun DonationsView(
+    paddingValues: PaddingValues,
+    donations: List<Donation>,
+    onEdit: (Donation) -> Unit,
+    onDelete: (Donation) -> Unit,
+    onShare: (String) -> Unit,
+    onDonationAdd: () -> Unit
+) {
+    val milliliter = stringResource(Res.string.milliliter)
+    val liter = stringResource(Res.string.liter)
+    Box(
+        modifier = Modifier.fillMaxSize().padding(paddingValues)
+            .background(
+                SolidColor(AppThemeColors.background),
+                RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+            )
+    ) {
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxWidth()
+                .background(AppThemeColors.background)
+                .padding(vertical = 5.dp),
+            columns = if (donations.isNotEmpty()) getDonationGridSize() else GridCells.Fixed(1),
+            verticalArrangement = Arrangement.Top
         ) {
-            LazyVerticalGrid(
-                modifier = Modifier.fillMaxWidth()
-                    .background(AppThemeColors.background)
-                    .padding(vertical = 5.dp),
-                columns = if (donations.isNotEmpty()) getDonationGridSize() else GridCells.Fixed(1),
-                verticalArrangement = Arrangement.Top
-            ) {
-                if (donations.isNotEmpty()) {
-                    items(donations) { donation ->
-                        val shareText = stringResource(Res.string.donationsShare)
-                            .replace("%s", donation.amount.capacity(milliliter, liter))
-                            .replace("%p", donation.center.name)
-                        DonationItem(
-                            donation = donation,
-                            onEdit = { bottomSheetNavigator.show(EditDonationScreen(donation)) },
-                            onDelete = { screenModel.markToDelete(donation) },
-                            onShare = {
-                                screenModel.postSideEffect(SideEffects.ShareText(shareText))
+            if (donations.isNotEmpty()) {
+                items(donations) { donation ->
+                    val shareText = stringResource(Res.string.donationsShare)
+                        .replace("%s", donation.amount.capacity(milliliter, liter))
+                        .replace("%p", donation.center.name)
+                    DonationItem(
+                        donation = donation,
+                        onEdit = onEdit,
+                        onDelete = onDelete,
+                        onShare = {
+                            onShare.invoke(shareText)
+                        }
+                    )
+                }
+            } else {
+                item {
+                    Column(
+                        modifier = Modifier.fillMaxWidth().height(400.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            stringResource(Res.string.homeSectionHistoryEmptyText),
+                            style = contentTitle().copy(
+                                textAlign = TextAlign.Center
+                            ),
+                            modifier = Modifier.fillMaxWidth().padding(10.dp)
+                        )
+                        Text(
+                            stringResource(Res.string.homeSectionHistoryAddDonationEmptyText),
+                            style = toolbarSubTitle().copy(
+                                textDecoration = TextDecoration.Underline
+                            ),
+                            modifier = Modifier.padding(10.dp).clickable {
+                                onDonationAdd.invoke()
                             }
                         )
-                    }
-                } else {
-                    item {
-                        Column(
-                            modifier = Modifier.fillMaxWidth().height(400.dp),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                stringResource(Res.string.homeSectionHistoryEmptyText),
-                                style = contentTitle().copy(
-                                    textAlign = TextAlign.Center
-                                ),
-                                modifier = Modifier.fillMaxWidth().padding(10.dp)
-                            )
-                            Text(
-                                stringResource(Res.string.homeSectionHistoryAddDonationEmptyText),
-                                style = toolbarSubTitle().copy(
-                                    textDecoration = TextDecoration.Underline
-                                ),
-                                modifier = Modifier.padding(10.dp).clickable {
-                                    bottomSheetNavigator.show(NewDonationScreen())
-                                }
-                            )
-                        }
                     }
                 }
             }

@@ -24,7 +24,7 @@ fun getTypography(): Typography {
         titleLarge = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.BOLD),
             fontWeight = FontWeight.Bold,
-            fontSize = 52.sp,
+            fontSize = 52.sp
         ),
         titleMedium = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.BOLD),
@@ -39,32 +39,38 @@ fun getTypography(): Typography {
         headlineLarge = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.MEDIUM),
             fontWeight = FontWeight.Medium,
-            fontSize = 16.sp,
+            fontSize = 24.sp,
+            lineHeight = 28.sp
         ),
         headlineMedium = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.BOLD),
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
+            fontSize = 20.sp,
+            lineHeight = 24.sp
         ),
         headlineSmall = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.MEDIUM),
             fontWeight = FontWeight.SemiBold,
-            fontSize = 12.sp,
+            fontSize = 18.sp,
+            lineHeight = 21.sp
         ),
         displayLarge = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.MEDIUM),
             fontWeight = FontWeight.SemiBold,
-            fontSize = 18.sp,
+            fontSize = 36.sp,
+            lineHeight = 42.sp
         ),
         displayMedium = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.MEDIUM),
             fontWeight = FontWeight.Medium,
-            fontSize = 16.sp,
+            fontSize = 32.sp,
+            lineHeight = 37.sp
         ),
         displaySmall = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.MEDIUM),
             fontWeight = FontWeight.Medium,
-            fontSize = 16.sp,
+            fontSize = 28.sp,
+            lineHeight = 32.sp
         ),
         bodyLarge = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.REGULAR),

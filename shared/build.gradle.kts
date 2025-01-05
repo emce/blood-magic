@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.play.publisher)
     alias(libs.plugins.parcelize)
+    alias(libs.plugins.libraries)
 }
 
 val properties = localPropertiesFile.readLines().associate {
@@ -103,6 +104,9 @@ kotlin {
             implementation(libs.google.firebase.auth)
             implementation(libs.google.firebase.database)
             implementation(project.dependencies.platform(libs.google.firebase.bom))
+            // Libraries
+            implementation(libs.libraries)
+            implementation(libs.libraries.ui)
         }
 
         commonTest.dependencies {
@@ -287,6 +291,9 @@ compose.desktop {
             }
         }
     }
+}
+aboutLibraries {
+    gitHubApiToken = properties["githubToken"].toString()
 }
 
 buildConfig {

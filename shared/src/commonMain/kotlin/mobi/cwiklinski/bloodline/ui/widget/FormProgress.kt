@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.resources.Res
@@ -26,7 +27,8 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun FormProgress(
     modifier: Modifier = Modifier,
-    filter: ColorFilter? = ColorFilter.tint(AppThemeColors.red2)
+    bigCircleColor: Color = AppThemeColors.accentRed1,
+    smallCircleColor: Color = AppThemeColors.accentRed1,
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -50,13 +52,13 @@ fun FormProgress(
             painterResource(Res.drawable.icon_loading_large),
             stringResource(Res.string.loading),
             modifier = Modifier.size(48.dp).rotate(largeAngle),
-            colorFilter = filter
+            colorFilter = ColorFilter.tint(bigCircleColor)
         )
         Image(
             painterResource(Res.drawable.icon_loading_small),
             stringResource(Res.string.stillLoading),
             modifier = Modifier.size(48.dp).rotate(smallAngle),
-            colorFilter = filter
+            colorFilter = ColorFilter.tint(smallCircleColor)
         )
     }
 }

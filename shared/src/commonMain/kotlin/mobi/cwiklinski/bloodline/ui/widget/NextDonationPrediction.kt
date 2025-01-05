@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -67,9 +67,9 @@ fun NextDonationPrediction(lastDonation: Donation?) {
                 notReadySubtitle.replace(
                     "%s",
                     if (nextDonationDate.fullBlood == 1) {
-                        "${nextDonationDate.fullBlood} $day}"
+                        "${nextDonationDate.fullBlood} $day"
                     } else {
-                        "${nextDonationDate.fullBlood} $days}"
+                        "${nextDonationDate.fullBlood} $days"
                     }
                 )
         }
@@ -113,9 +113,7 @@ fun NextDonationPrediction(lastDonation: Donation?) {
             )
             Spacer(Modifier.height(20.dp))
             LinearProgressIndicator(
-                progress = {
-                    progress
-                },
+                progress = progress,
                 modifier = Modifier.fillMaxWidth()
                     .height(24.dp)
                     .coloredShadow(
@@ -125,9 +123,8 @@ fun NextDonationPrediction(lastDonation: Donation?) {
                         offsetY = 3.dp
                     ),
                 color = AppThemeColors.red2,
-                trackColor = AppThemeColors.iconRedBackground,
-                strokeCap = StrokeCap.Butt,
-                gapSize = 0.dp
+                backgroundColor = AppThemeColors.iconRedBackground,
+                strokeCap = StrokeCap.Round,
             )
         }
     }

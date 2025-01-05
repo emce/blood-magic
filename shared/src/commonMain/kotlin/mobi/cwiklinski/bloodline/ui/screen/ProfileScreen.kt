@@ -23,7 +23,6 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
@@ -41,7 +40,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
@@ -59,7 +57,6 @@ import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.button_edit
-import mobi.cwiklinski.bloodline.resources.close
 import mobi.cwiklinski.bloodline.resources.female
 import mobi.cwiklinski.bloodline.resources.heroGenitive
 import mobi.cwiklinski.bloodline.resources.heroinGenitive
@@ -76,8 +73,6 @@ import mobi.cwiklinski.bloodline.resources.profileDeleteTitle
 import mobi.cwiklinski.bloodline.resources.profilePasswordChangeTitle
 import mobi.cwiklinski.bloodline.resources.profileTitle
 import mobi.cwiklinski.bloodline.resources.settingsDefaultCenterLabel
-import mobi.cwiklinski.bloodline.resources.settingsLogoutAction
-import mobi.cwiklinski.bloodline.resources.settingsLogoutMessage
 import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
 import mobi.cwiklinski.bloodline.resources.settingsReminderLabel
 import mobi.cwiklinski.bloodline.resources.settingsSexLabel
@@ -89,7 +84,6 @@ import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentAction
 import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
-import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemDelete
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.util.Avatar
@@ -104,10 +98,10 @@ import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
 import mobi.cwiklinski.bloodline.ui.widget.DesktopNavigationTitleScaffold
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
+import mobi.cwiklinski.bloodline.ui.widget.LogoutDialog
 import mobi.cwiklinski.bloodline.ui.widget.MobileLandscapeNavigationTitleLayout
 import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationTitleLayout
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
-import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -195,6 +189,9 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
             floatingAction = {
                 bottomSheetNavigator.show(NewDonationScreen())
             },
+            infoClicked = {
+                navigator.push(AboutScreen())
+            },
             desiredContent = {
                 ProfileView(PaddingValues(0.dp))
             }
@@ -237,6 +234,9 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
             },
             floatingAction = {
                 bottomSheetNavigator.show(NewDonationScreen())
+            },
+            infoClicked = {
+                navigator.push(AboutScreen())
             },
             desiredContent = {
                 ProfileView(PaddingValues(0.dp))
@@ -290,59 +290,8 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
         }
         val scrollState = rememberScrollState()
         if (state == ProfileState.ToLoggedOut) {
-            BasicAlertDialog(
-                onDismissRequest = {
-                    screenModel.cancelLogout()
-                },
-                modifier = Modifier
-                    .background(
-                        color = AppThemeColors.white,
-                        shape = RoundedCornerShape(20.dp)
-                    )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(30.dp)
-                        .wrapContentSize(),
-                ) {
-                    Text(
-                        stringResource(Res.string.settingsLogoutTitle),
-                        modifier = Modifier.fillMaxWidth(),
-                        style = hugeTitle().copy(textAlign = TextAlign.Center)
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    Text(
-                        stringResource(Res.string.settingsLogoutMessage),
-                        style = contentText().copy(textAlign = TextAlign.Center)
-                    )
-                    Spacer(Modifier.height(30.dp))
-                    if (state == ProfileState.LoggingOut) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            FormProgress(filter = ColorFilter.tint(AppThemeColors.red2))
-                        }
-                    } else {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            SecondaryButton(
-                                text = stringResource(Res.string.close),
-                                onClick = {
-                                    screenModel.cancelLogout()
-                                }
-                            )
-                            SubmitButton(
-                                text = stringResource(Res.string.settingsLogoutAction),
-                                onClick = {
-                                    screenModel.logout()
-                                }
-                            )
-                        }
-                    }
-                }
+            LogoutDialog(state, { screenModel.cancelLogout() } ) {
+                screenModel.logout()
             }
         }
         Column(

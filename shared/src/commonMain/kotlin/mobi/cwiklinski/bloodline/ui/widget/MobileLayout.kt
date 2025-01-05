@@ -129,6 +129,7 @@ fun MobileLandscapeNavigationTitleLayout(
     floatingAction: () -> Unit = {},
     navigationAction: (NavigationItem) -> Unit,
     selected: NavigationItem = NavigationItem.HOME,
+    infoClicked: (() -> Unit)? = null,
     desiredContent: @Composable () -> Unit
 ) {
     MobileLandscapeNavigationLayout(
@@ -144,6 +145,7 @@ fun MobileLandscapeNavigationTitleLayout(
         floatingAction = floatingAction,
         navigationAction = navigationAction,
         selected = selected,
+        infoClicked = infoClicked,
         desiredContent = desiredContent
     )
 }
@@ -157,6 +159,7 @@ fun MobileLandscapeNavigationLayout(
     floatingAction: () -> Unit = {},
     navigationAction: (NavigationItem) -> Unit,
     selected: NavigationItem = NavigationItem.HOME,
+    infoClicked: (() -> Unit)? = null,
     desiredContent: @Composable () -> Unit
 ) {
     Scaffold(
@@ -177,7 +180,8 @@ fun MobileLandscapeNavigationLayout(
                 selected = selected,
                 floatingActionButton = {
                     FloatingButton(floatingAction = floatingAction)
-                }
+                },
+                infoClicked = infoClicked
             )
             Column(
                 modifier = Modifier.weight(1.0f)
