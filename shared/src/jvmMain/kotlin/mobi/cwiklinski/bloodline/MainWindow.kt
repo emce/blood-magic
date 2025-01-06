@@ -28,8 +28,8 @@ fun main() = application {
         onKeyEvent = { false }
     ) {
         startKoin {
-            lazyModules(createAppLazyModule())
             modules(createAppModule())
+            lazyModules(createAppLazyModule())
         }
         MagicApp()
     }

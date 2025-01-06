@@ -8,20 +8,18 @@ compose = "1.7.3"
 agp = "8.7.3"
 androidx-activityCompose = "1.9.3"
 androidx-browser = "1.8.0"
-androidx-compose-material3-window = "1.7.1"
+androidx-compose-material3-window = "1.7.3"
 androidx-datastore = "1.1.1"
 androidx-datastore-core-okio-jvm = "1.1.1"
-androidx-uiTest = "1.7.6"
 kermit = "2.0.5"
 kotlinx-coroutines = "1.10.1"
 ktor = "3.0.3"
-androidx-navigation = "2.8.0-alpha10"
 kotlinx-serialization = "1.7.3"
 koin = "4.0.1"
 coil = "3.0.4"
 kotlinx-datetime = "0.6.1"
-buildConfig = "5.4.0"
-constraintlayout-compose-multiplatform = "0.4.0"
+buildConfig = "5.5.1"
+constraintlayout-compose-multiplatform = "0.5.0"
 google-firebase-kmm = "2.1.0"
 google-api = "2.7.1"
 google-oauth = "1.37.0"
@@ -31,7 +29,7 @@ identity = "1.1.1"
 playServicesAuth = "21.3.0"
 voyager = "1.1.0-beta03"
 uiDesktop = "1.7.0"
-accompanist = "0.36.0"
+accompanist = "0.37.0"
 turbine = "1.2.0"
 markdown = "0.27.0"
 play-publisher = "3.12.1"
@@ -43,8 +41,6 @@ libraries = "11.4.0"
 
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-browser = { module = "androidx.browser:browser", version.ref = "androidx-browser" }
-androidx-uitest-testManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-uiTest" }
-androidx-uitest-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
 androidx-compose-material3-window = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "androidx-compose-material3-window" }
 androidx-lifecycle-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-viewmodel-compose" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
@@ -59,7 +55,6 @@ ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", vers
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
-androidx-navigation-composee = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 # Koin
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }

@@ -39,13 +39,20 @@ kotlin {
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.fromTarget(libs.versions.jdk.get()))
-            freeCompilerArgs.addAll("-P", "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=mobi.cwiklinski.bloodline.data.Parcelize")
+            freeCompilerArgs.addAll(
+                "-P",
+                "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=mobi.cwiklinski.bloodline.data.Parcelize"
+            )
         }
         //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
     }
 
-    jvm()
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(libs.versions.jdk.get()))
+        }
+    }
 
     listOf(
         iosX64(),
@@ -96,7 +103,7 @@ kotlin {
             implementation(libs.voyager.bottomSheetNavigator)
             implementation(libs.voyager.transitions)
             // https://github.com/adrielcafe/voyager/issues/515
-            // "voyager-koin"
+            // implementation(libs.voyager.koin)
             implementation(libs.markdown)
             implementation(libs.markdown.m3)
             // Firebase
@@ -136,7 +143,8 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.ktor.client.okhttp)
-            implementation(libs.androidx.ui.desktop)
+            // Skiko library incompatibility https://github.com/JetBrains/skiko/issues/983
+            // implementation(libs.androidx.ui.desktop)
             implementation(libs.google.api.client)
             implementation(libs.google.api.client.gson)
             implementation(libs.google.oauth.client)
@@ -212,20 +220,14 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_6
-        targetCompatibility = JavaVersion.VERSION_1_6
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get().toInt())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get().toInt())
     }
 }
 
 play {
     serviceAccountCredentials.set(file("../play_config.json"))
     track.set("internal")
-}
-
-//https://developer.android.com/develop/ui/compose/testing#setup
-dependencies {
-    androidTestImplementation(libs.androidx.uitest.junit4)
-    debugImplementation(libs.androidx.uitest.testManifest)
 }
 
 compose.resources {
@@ -252,7 +254,8 @@ compose.desktop {
         nativeDistributions {
             packageName = "BloodMagic"
             packageVersion = getGlobalVersionName(commitCount)
-            description = "Application for keeping records of donations for Honorary Blood Donors in Poland"
+            description =
+                "Application for keeping records of donations for Honorary Blood Donors in Poland"
             copyright = "© 2016 mobiGEEK Michal Cwiklinski. All rights reserved."
             outputBaseDir.set(layout.buildDirectory.asFile.get().resolve("release"))
             targetFormats(TargetFormat.Deb, TargetFormat.Msi, TargetFormat.Pkg, TargetFormat.Dmg)
@@ -292,8 +295,12 @@ compose.desktop {
         }
     }
 }
+
 aboutLibraries {
     gitHubApiToken = properties["githubToken"].toString()
+    includePlatform = false
+    duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+    prettyPrint = true
 }
 
 buildConfig {
@@ -339,7 +346,8 @@ afterEvaluate {
     }.forEach {
         it.enabled = false
     }
-    tasks.withType<JavaExec>().named { it == "jvmRun" }.configureEach { mainClass = "mobi.cwiklinski.bloodline.MainWindowKt"}
+    tasks.withType<JavaExec>().named { it == "jvmRun" }
+        .configureEach { mainClass = "mobi.cwiklinski.bloodline.MainWindowKt" }
 }
 
 abstract class GitCommitCountValueSource : ValueSource<String, ValueSourceParameters.None> {
