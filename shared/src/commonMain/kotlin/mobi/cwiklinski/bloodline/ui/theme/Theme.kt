@@ -15,15 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mikepenz.aboutlibraries.ui.compose.m3.LibraryDefaults
 import com.mikepenz.markdown.model.DefaultMarkdownColors
-import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.appColors
 
 @Composable
 fun AppTheme(
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = appColors,
+        colorScheme = AppThemeColors.appColors,
         shapes = appShapes,
         typography = getTypography(),
         content = content
@@ -223,7 +223,7 @@ object AppThemeColors {
 
     @Composable
     fun datePickerColors() = DatePickerDefaults.colors(
-        containerColor = AppThemeColors.white,
+        containerColor = white,
     )
 
     @Composable
@@ -241,6 +241,15 @@ object AppThemeColors {
         scrolledContainerColor = Color.Transparent,
         titleContentColor = black,
         navigationIconContentColor = black
+    )
+    
+    @Composable
+    fun librariesColors() = LibraryDefaults.libraryColors(
+        backgroundColor = white,
+        contentColor = black70,
+        badgeBackgroundColor = grey,
+        badgeContentColor = white,
+        dialogConfirmButtonColor = rose1
     )
 
     @Composable

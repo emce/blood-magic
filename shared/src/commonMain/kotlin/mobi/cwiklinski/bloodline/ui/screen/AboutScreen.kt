@@ -1,16 +1,18 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -21,9 +23,11 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.rememberLibraries
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.goBack
+import mobi.cwiklinski.bloodline.resources.infoLibraries
 import mobi.cwiklinski.bloodline.resources.infoTeam
 import mobi.cwiklinski.bloodline.resources.infoTeamDescription
 import mobi.cwiklinski.bloodline.resources.infoTitle
+import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.librariesColors
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.widget.HeaderText
 import mobi.cwiklinski.bloodline.ui.widget.MobileLayoutWithTitle
@@ -61,10 +65,15 @@ class AboutScreen : AppScreen() {
                     stringResource(Res.string.infoTeamDescription).trimIndent()
                 )
                 HeaderText(
-                    stringResource(Res.string.infoTeam),
+                    stringResource(Res.string.infoLibraries),
                     textStyle = getTypography().headlineLarge
                 )
-                LibrariesContainer(libraries, Modifier.fillMaxSize())
+                LibrariesContainer(
+                    libraries = libraries,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = librariesColors(),
+                    showVersion = false
+                )
             }
         }
     }
@@ -95,23 +104,38 @@ class AboutScreen : AppScreen() {
 
 @Composable
 fun AboutHorizontalView(libraries: Libs?) {
-    Row {
-        Column {
+    Row(
+        modifier = Modifier.fillMaxSize(),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Column(
+            modifier = Modifier.weight(1f).padding(20.dp),
+            verticalArrangement = Arrangement.Top
+        ) {
             HeaderText(
                 stringResource(Res.string.infoTeam),
                 textStyle = getTypography().headlineLarge
             )
             RichText(
-                stringResource(Res.string.infoTeamDescription).trimIndent()
+                stringResource(Res.string.infoTeamDescription).trimIndent(),
+                modifier = Modifier.fillMaxWidth()
             )
         }
-        Spacer(modifier = Modifier.width(40.dp))
-        Column {
+        Column(
+            modifier = Modifier.weight(1f).padding(20.dp),
+            verticalArrangement = Arrangement.Top
+        ) {
             HeaderText(
-                stringResource(Res.string.infoTeam),
+                stringResource(Res.string.infoLibraries),
                 textStyle = getTypography().headlineLarge
             )
-            LibrariesContainer(libraries, Modifier.fillMaxSize())
+            LibrariesContainer(
+                libraries = libraries,
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                colors = librariesColors(),
+                showVersion = false
+            )
         }
     }
 }

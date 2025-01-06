@@ -26,12 +26,13 @@ fun RichText(
     modifier: Modifier = Modifier,
     centered: Boolean = false
 ) {
+    val finalText = text.replace("<br>", "\n\n")
     var components = markdownComponents()
     if (centered) {
         val customParagraphComponent: MarkdownComponent = {
             val styledText = buildAnnotatedString {
                 pushStyle(LocalMarkdownTypography.current.text.toSpanStyle())
-                buildMarkdownAnnotatedString(text, it.node)
+                buildMarkdownAnnotatedString(finalText, it.node)
                 pop()
             }
             Text(
@@ -45,7 +46,7 @@ fun RichText(
         )
     }
     Markdown(
-        text,
+        finalText,
         modifier = modifier,
         colors = dialogRichTextColors(),
         typography = markdownTypography(

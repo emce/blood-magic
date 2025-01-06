@@ -24,12 +24,12 @@ fun getTypography(): Typography {
         titleLarge = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.BOLD),
             fontWeight = FontWeight.Bold,
-            fontSize = 52.sp
+            fontSize = 22.sp
         ),
         titleMedium = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.BOLD),
             fontWeight = FontWeight.Bold,
-            fontSize = 24.sp
+            fontSize = 20.sp
         ),
         titleSmall = TextStyle(
             fontFamily = getFontFamily(AppFontFamily.BOLD),

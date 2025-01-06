@@ -239,15 +239,20 @@
     <string name="infoTeam">Team</string>
     <string name="infoLibraries">Libraries</string>
     <string name="infoTeamDescription"><![CDATA[
+    <br><br>
     ##### Graphic Design
     **Agata Wolna** [(wolnaagata95@gmail.com)](mailto:wolnaagata95@gmail.com)
-
+    <br><br>
+    ---
+    <br><br>
     ##### Development
     **Michał Ćwikliński** (mobiGEEK)
-
+    <br><br>
+    ---
+    <br><br>
     Application was written in *Kotlin*, using *Compose MultiPlatform* framework, and is delivered for 3 platforms:
-    - Android [https://play.google.com/store/apps/details?id=mobi.cwiklinski.bloodline](https://play.google.com/store/apps/details?id=mobi.cwiklinski.bloodline)
-    - iOS [https://apps.apple.com/en/app/blood-donor-diary/id1563904745](https://apps.apple.com/en/app/blood-donor-diary/id1563904745?platform=iphone)
-    - MacOS [https://apps.apple.com/en/app/blood-donor-diary/id1563904745](https://apps.apple.com/en/app/blood-donor-diary/id1563904745?platform=mac)
+    - Android [Play Store](https://play.google.com/store/apps/details?id=mobi.cwiklinski.bloodline)
+    - iOS [App Store](https://apps.apple.com/en/app/blood-donor-diary/id1563904745?platform=iphone)
+    - MacOS [Mac App Store](https://apps.apple.com/en/app/blood-donor-diary/id1563904745?platform=mac)
     ]]></string>
 </resources>
