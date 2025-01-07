@@ -1,3 +1,4 @@
+
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.internal.utils.localPropertiesFile
@@ -5,7 +6,6 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 import java.io.ByteArrayOutputStream
-import java.nio.charset.Charset
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -25,9 +25,6 @@ val properties = localPropertiesFile.readLines().associate {
     val (key, value) = it.split("=", limit = 2)
     key to value
 }
-
-fun getGlobalVersionCode(gitCommitsCount: Int) = 700 + gitCommitsCount
-fun getGlobalVersionName(gitCommitsCount: Int) = "${libs.versions.app}.${getGlobalVersionCode(gitCommitsCount)}"
 
 java {
     sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get().toInt())
@@ -177,14 +174,13 @@ android {
     namespace = "mobi.cwiklinski.bloodline"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
-    val gitCommitCountProvider = providers.of(GitCommitCountValueSource::class) {}
-    val commitCount = gitCommitCountProvider.get().toInt()
-
-    defaultConfig {
+    val versionCodeString = getCurrentVersion()
+    val versionCodeNumber = versionCodeString.split(".").last().toInt()
+        defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = getGlobalVersionCode(commitCount)
-        versionName = getGlobalVersionName(commitCount)
+        versionCode = versionCodeNumber
+        versionName = versionCodeString
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -248,12 +244,9 @@ compose.desktop {
             version.set("7.4.0")
         }
 
-        val gitCommitCountProvider = providers.of(GitCommitCountValueSource::class) {}
-        val commitCount = gitCommitCountProvider.get().toInt()
-
         nativeDistributions {
             packageName = "BloodMagic"
-            packageVersion = getGlobalVersionName(commitCount)
+            packageVersion = getCurrentVersion()
             description =
                 "Application for keeping records of donations for Honorary Blood Donors in Poland"
             copyright = "© 2016 mobiGEEK Michal Cwiklinski. All rights reserved."
@@ -353,16 +346,17 @@ afterEvaluate {
         .configureEach { mainClass = "mobi.cwiklinski.bloodline.MainWindowKt" }
 }
 
-abstract class GitCommitCountValueSource : ValueSource<String, ValueSourceParameters.None> {
-    @get:Inject
-    abstract val execOperations: ExecOperations
-
-    override fun obtain(): String {
-        val output = ByteArrayOutputStream()
-        execOperations.exec {
-            commandLine("git", "rev-list", "--count", "HEAD")
-            standardOutput = output
-        }
-        return String(output.toByteArray(), Charset.defaultCharset()).trim()
+fun getCurrentVersion(): String {
+    val stdout = ByteArrayOutputStream()
+    val scriptPath = projectDir.path.replace("shared", "")
+    exec {
+        executable("/bin/sh")
+        args("-c", "${scriptPath}/print_version.sh")
+        standardOutput = stdout
     }
+    return stdout.toString().trim()
+}
+
+tasks.register("printVersion") {
+    println(getCurrentVersion())
 }
