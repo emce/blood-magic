@@ -473,9 +473,15 @@ fun HomeView(
                     }
                 }
                 donations.take(5).forEach {
-                    DonationItem(it, {}, {}, { text ->
-                        shareText(text)
-                    }, false)
+                    DonationItem(
+                        donation = it,
+                        onEdit = {},
+                        onDelete = {},
+                        onShare = { text ->
+                            shareText(text)
+                        },
+                        showAction = false
+                    )
                 }
             }
             Spacer(Modifier.height(10.dp))

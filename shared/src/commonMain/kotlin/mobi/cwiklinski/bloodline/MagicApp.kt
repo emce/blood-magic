@@ -9,17 +9,22 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
+import cafe.adriel.voyager.transitions.ScreenTransition
 import coil3.compose.setSingletonImageLoaderFactory
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
 import mobi.cwiklinski.bloodline.ui.screen.SplashScreen
 import mobi.cwiklinski.bloodline.ui.theme.AppTheme
+import mobi.cwiklinski.bloodline.ui.util.SlideInVerticallyTransition
+import mobi.cwiklinski.bloodline.ui.util.SlideTransition
 import mobi.cwiklinski.bloodline.ui.widget.getAsyncImageLoader
 import org.koin.compose.koinInject
 
 val LocalSnackBar = compositionLocalOf { SnackbarHostState() }
 
+@OptIn(ExperimentalVoyagerApi::class)
 @Composable
 fun MagicApp() {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -42,7 +47,13 @@ fun MagicApp() {
                     onBackPressed = {
                         false
                     }
-                )
+                ) { navigator ->
+                    ScreenTransition(
+                        navigator = navigator,
+                        defaultTransition = if (isDesktop()) SlideInVerticallyTransition() else SlideTransition(),
+                        disposeScreenAfterTransitionEnd = true
+                    )
+                }
             }
         }
     }

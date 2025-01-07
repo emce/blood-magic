@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 
 interface Platform {
-    fun isMobile() = !name.startsWith("Java")
 
     val name: String
 }
@@ -18,6 +17,9 @@ expect fun isTablet(): Boolean
 
 @Composable
 expect fun isMobile(): Boolean
+
+@Composable
+fun isDesktop() = !isTablet() && !isMobile()
 
 @Composable
 expect fun getOrientation(): Orientation

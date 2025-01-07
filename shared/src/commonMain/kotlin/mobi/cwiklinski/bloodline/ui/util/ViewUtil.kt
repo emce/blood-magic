@@ -1,5 +1,13 @@
 package mobi.cwiklinski.bloodline.ui.util
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOut
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.ripple
@@ -18,24 +26,28 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
+import cafe.adriel.voyager.core.stack.StackEvent
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.ScreenTransition
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.common.event.SideEffect
 import mobi.cwiklinski.bloodline.common.removeDiacritics
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.monthGenitives
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.common.event.SideEffect
 import mobi.cwiklinski.bloodline.ui.PlatformManager
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import org.jetbrains.compose.resources.stringArrayResource
@@ -330,3 +342,45 @@ fun HandleSideEffect(
 
 suspend fun shareText(platformManager: PlatformManager, text: String) =
     platformManager.shareText(content = text)
+
+@ExperimentalVoyagerApi
+class SlideTransition : ScreenTransition {
+
+    override fun enter(lastEvent: StackEvent): EnterTransition {
+        return slideIn { size ->
+            val x = if (lastEvent == StackEvent.Pop) -size.width else size.width
+            IntOffset(x = x, y = 0)
+        }
+    }
+
+    override fun exit(lastEvent: StackEvent): ExitTransition {
+        return slideOut { size ->
+            val x = if (lastEvent == StackEvent.Pop) size.width else -size.width
+            IntOffset(x = x, y = 0)
+        }
+    }
+}
+
+@ExperimentalVoyagerApi
+class SlideInVerticallyTransition(val index: Int = 0) : ScreenTransition {
+
+    override fun enter(lastEvent: StackEvent): EnterTransition {
+        return if (lastEvent == StackEvent.Pop) {
+            fadeIn(initialAlpha = 0.9f)
+        } else {
+            slideInVertically { it }
+        }
+    }
+
+    override fun exit(lastEvent: StackEvent): ExitTransition {
+        return if (lastEvent == StackEvent.Pop) {
+            slideOutVertically { it }
+        } else {
+            fadeOut(targetAlpha = 0.9f)
+        }
+    }
+
+    override fun zIndex(lastEvent: StackEvent): Float {
+        return if (lastEvent == StackEvent.Pop) (index).toFloat() else (index + 1).toFloat()
+    }
+}

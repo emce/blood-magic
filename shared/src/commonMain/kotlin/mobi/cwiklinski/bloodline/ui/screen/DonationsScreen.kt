@@ -248,7 +248,8 @@ fun DonationsView(
                         onDelete = onDelete,
                         onShare = {
                             onShare.invoke(shareText)
-                        }
+                        },
+                        modifier = Modifier.animateItem()
                     )
                 }
             } else {

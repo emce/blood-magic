@@ -292,16 +292,23 @@ fun CentersView(
         ) {
             itemsIndexed(centers) { index, center ->
                 if (index == 0) {
-                    RegionHeader(center)
+                    RegionHeader(
+                        center,
+                        modifier = Modifier.animateItem()
+                    )
                 } else {
                     centers.getOrNull(index - 1)?.let { previous ->
                         if (center.voivodeship != previous.voivodeship) {
-                            RegionHeader(center)
+                            RegionHeader(
+                                center,
+                                modifier = Modifier.animateItem()
+                            )
                         }
                     }
                 }
                 CenterItemView(
-                    center, modifier = Modifier
+                    center,
+                    modifier = Modifier.animateItem()
                         .fillMaxWidth().clickable {
                             openCenter(center)
                         })
@@ -326,9 +333,12 @@ fun CentersView(
 }
 
 @Composable
-fun RegionHeader(center: Center) {
+fun RegionHeader(
+    center: Center,
+    modifier: Modifier = Modifier,
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(AppThemeColors.grey1)
             .padding(10.dp),
