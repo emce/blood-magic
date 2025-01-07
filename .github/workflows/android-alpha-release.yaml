@@ -23,10 +23,6 @@ jobs:
         run: |
           echo '${{ secrets.KEYSTORE_FILE }}' > release.keystore.asc
           gpg -d --passphrase '${{ secrets.KEYSTORE_PASSPHRASE }}' --batch release.keystore.asc > release.keystore
-        env:
-          BLOODLINE_RELEASE_KEYSTORE: ~/release.keystore
-          BLOODLINE_RELEASE_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
-          BLOODLINE_RELEASE_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
 
       - name: Create Firebase config
         run: |
@@ -38,6 +34,9 @@ jobs:
           firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
           firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          bloodlineReleaseKeystore="./release.keystore"
+          bloodlineReleasePassword="${{ secrets.KEYSTORE_KEY_PASSWORD }}"
+          bloodlineReleaseAlias="${{ secrets.KEYSTORE_KEY_ALIAS }}"
           googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
           googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
           googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
@@ -49,9 +48,7 @@ jobs:
       - name: Create Google Play Config file
         run: |
           echo "${{ secrets.PLAY_CONFIG_JSON }}" > play_config.json.b64
-          base64 -d -i play_config.json.b64 > play_config.json
-        env:
-          PLAY_CONFIG_JSON: ${{ secrets.PLAY_CONFIG_JSON }}
+          base64 -d -i play_config.json.b64 > ../play_config.json
 
       - name: Distribute app to Alpha track
         run: ./gradlew :shared:publishApk

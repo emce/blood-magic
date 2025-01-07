@@ -264,16 +264,14 @@ compose.desktop {
             macOS {
                 bundleID = "mobi.cwiklinski.bloodline"
                 iconFile.set(project.file("icons/bloodmagic.icns"))
+                // APP Store
                 signing {
                     properties["appleIdentity"]?.let { appleIdentity ->
                         sign.set(true)
                         identity.set(appleIdentity)
                     }
                 }
-                provisioningProfile.set(project.file("../embedded.provisionprofile"))
-                runtimeProvisioningProfile.set(project.file("../runtime.provisionprofile"))
-                entitlementsFile.set(project.file("../entitlements.plist"))
-                runtimeEntitlementsFile.set(project.file("../runtime-entitlements.plist"))
+                // Notarization
                 notarization {
                     properties["appleId"]?.let { appleId ->
                         appleID.set(appleId)
@@ -285,6 +283,11 @@ compose.desktop {
                         teamID.set(appleTeamId)
                     }
                 }
+                // TestFlight
+                provisioningProfile.set(project.file("../embedded.provisionprofile"))
+                runtimeProvisioningProfile.set(project.file("../runtime.provisionprofile"))
+                entitlementsFile.set(project.file("../entitlements.plist"))
+                runtimeEntitlementsFile.set(project.file("../runtime-entitlements.plist"))
             }
             linux {
                 iconFile.set(project.file("icons/bloodmagic.png"))
