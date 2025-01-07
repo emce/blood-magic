@@ -68,7 +68,7 @@ jobs:
           cd iosApp
           
           xcrun xcodebuild \
-            -scheme "BloodMagic" \
+            -scheme "iosApp" \
             -configuration "Release" \
             -sdk "iphoneos" \
             -parallelizeTargets \

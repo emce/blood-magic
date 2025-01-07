@@ -67,6 +67,7 @@
         <!-- LOGIN SCREEN -->
     <string name="loginTitle">Welcome back!</string>
     <string name="loginEmailLabel">Email</string>
+    <string name="loginEmailTip">This is just your email address.</string>
     <string name="loginPasswordLabel">Password</string>
     <string name="loginPasswordReminderButton">Forgot your password?</string>
     <string name="loginSubmitButton">Log in</string>

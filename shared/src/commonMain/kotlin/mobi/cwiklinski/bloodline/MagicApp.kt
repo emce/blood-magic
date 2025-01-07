@@ -17,8 +17,7 @@ import coil3.compose.setSingletonImageLoaderFactory
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
 import mobi.cwiklinski.bloodline.ui.screen.SplashScreen
 import mobi.cwiklinski.bloodline.ui.theme.AppTheme
-import mobi.cwiklinski.bloodline.ui.util.SlideInVerticallyTransition
-import mobi.cwiklinski.bloodline.ui.util.SlideTransition
+import mobi.cwiklinski.bloodline.ui.util.FadeTransition
 import mobi.cwiklinski.bloodline.ui.widget.getAsyncImageLoader
 import org.koin.compose.koinInject
 
@@ -50,7 +49,7 @@ fun MagicApp() {
                 ) { navigator ->
                     ScreenTransition(
                         navigator = navigator,
-                        defaultTransition = if (isDesktop()) SlideInVerticallyTransition() else SlideTransition(),
+                        defaultTransition = FadeTransition(),
                         disposeScreenAfterTransitionEnd = true
                     )
                 }

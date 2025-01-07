@@ -18,7 +18,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,8 +54,10 @@ import mobi.cwiklinski.bloodline.resources.icon_eye_opened
 import mobi.cwiklinski.bloodline.resources.icon_facebook
 import mobi.cwiklinski.bloodline.resources.icon_google
 import mobi.cwiklinski.bloodline.resources.icon_login
+import mobi.cwiklinski.bloodline.resources.icon_question
 import mobi.cwiklinski.bloodline.resources.loginEmailError
 import mobi.cwiklinski.bloodline.resources.loginEmailLabel
+import mobi.cwiklinski.bloodline.resources.loginEmailTip
 import mobi.cwiklinski.bloodline.resources.loginError
 import mobi.cwiklinski.bloodline.resources.loginPasswordError
 import mobi.cwiklinski.bloodline.resources.loginPasswordLabel
@@ -76,6 +83,7 @@ import mobi.cwiklinski.bloodline.ui.widget.MobileLayout
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SocialIconButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -87,7 +95,7 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
         handleSideEffects<LoginState, LoginScreenModel>()
         MobileLayout(
             desiredContent = { paddingValues ->
-                LoginView(paddingValues)
+                InternalLoginView(paddingValues)
             }
         )
     }
@@ -104,13 +112,13 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
                     start = width / 4,
                     end = width / 4
                 )
-                LoginView(newPaddingValues)
+                InternalLoginView(newPaddingValues)
             }
         )
     }
 
     @Composable
-    fun LoginView(paddingValues: PaddingValues) {
+    fun InternalLoginView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<LoginScreenModel>()
         val state by screenModel.state.collectAsStateWithLifecycle(LoginState.Idle)
@@ -118,198 +126,58 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
             screenModel.resetState()
             navigator.replaceAll(SetupScreen())
         }
-        val focusManager = LocalFocusManager.current
         var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
         val showPassword = remember { mutableStateOf(false) }
         handleSideEffects<LoginState, LoginScreenModel>()
-        Column(
-            Modifier.wrapContentHeight().fillMaxWidth().background(
-                AppThemeColors.authGradient
-            ).padding(paddingValues).verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Image(
-                painterResource(Res.drawable.icon_login),
-                stringResource(Res.string.loginTitle),
-                modifier = Modifier.padding(20.dp)
-            )
-            Spacer(Modifier.height(40.dp))
-            Text(
-                stringResource(Res.string.loginTitle),
-                style = hugeTitle()
-            )
-            Spacer(Modifier.height(50.dp))
-            Column(
-                modifier = Modifier.padding(20.dp).fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top
-            ) {
-                OutlinedInput(
-                    text = email,
-                    onValueChanged = {
-                        screenModel.clearState()
-                        email = it
-                    },
-                    label = stringResource(Res.string.loginEmailLabel),
-                    enabled = state != LoginState.LoggingIn,
-                    error = state is LoginState.Error && (state as LoginState.Error).errors.contains(
-                        LoginError.EMAIL_ERROR
-                    ),
-                    errorMessage = stringResource(Res.string.loginEmailError),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.moveFocus(FocusDirection.Down)
-                        }
-                    )
-                )
-                Spacer(Modifier.height(20.dp))
-                OutlinedInput(
-                    text = password,
-                    onValueChanged = {
-                        screenModel.clearState()
-                        password = it
-                    },
-                    label = stringResource(Res.string.loginPasswordLabel),
-                    enabled = state != LoginState.LoggingIn,
-                    error = state is LoginState.Error && (state as LoginState.Error).errors.contains(
-                        LoginError.PASSWORD_ERROR
-                    ),
-                    errorMessage = stringResource(Res.string.loginPasswordError),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.clearFocus()
-                            screenModel.onLoginSubmit(email, password)
-                        }
-                    ),
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        autoCorrectEnabled = true,
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Done
-                    ),
-                    visualTransformation = if (showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
-                    trailingIcon = {
-                        if (state != LoginState.LoggingIn) {
-                            Image(
-                                painterResource(if (showPassword.value) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
-                                "password",
-                                modifier = Modifier.clickable {
-                                    showPassword.value = !showPassword.value
-                                }
-                            )
-                        }
-                    },
-                )
-                Spacer(Modifier.height(20.dp))
-                Row(modifier = Modifier.fillMaxWidth().align(Alignment.End)) {
-                    JustTextButton(
-                        text = stringResource(Res.string.loginPasswordReminderButton),
-                        onClicked = {
-                            navigator.push(ResetScreen())
-                        },
-                        enabled = state != LoginState.LoggingIn
-                    )
-                }
-                Spacer(Modifier.height(30.dp))
-                if (state is LoginState.Error) {
-                    Text(
-                        getErrorMessage(state as LoginState.Error),
-                        style = contentText().copy(color = AppThemeColors.alertRed)
-                    )
-                    Spacer(Modifier.height(30.dp))
-                }
-                if (state == LoginState.LoggingIn) {
-                    FormProgress()
-                } else {
-                    SubmitButton(
-                        onClick = {
-                            screenModel.clearState()
-                            screenModel.onLoginSubmit(email, password)
-                        },
-                        text = stringResource(Res.string.loginSubmitButton),
-                        enabled = state != LoginState.LoggingIn,
-                    )
-                }
-                Spacer(Modifier.height(30.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Box(
-                        modifier = Modifier.weight(1.0f).height(1.dp)
-                            .background(AppThemeColors.grey3)
-                    )
-                    Text(
-                        stringResource(Res.string.loginSocialSectionTitle),
-                        modifier = Modifier.padding(horizontal = 10.dp),
-                        style = itemSubTitle().copy(color = AppThemeColors.grey3)
-                    )
-                    Box(
-                        modifier = Modifier.weight(1.0f).height(1.dp)
-                            .background(AppThemeColors.grey3)
-                    )
-                }
-                Spacer(Modifier.height(30.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight()
-                        .padding(vertical = 10.dp),
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    SocialIconButton(
-                        icon = Res.drawable.icon_facebook,
-                        iconDescription = "Facebook",
-                        onClicked = {
-                            screenModel.clearState()
-                            screenModel.loginWithFacebook()
-                        },
-                        enabled = state != LoginState.LoggingIn,
-                    )
-                    Spacer(Modifier.width(30.dp))
-                    SocialIconButton(
-                        icon = Res.drawable.icon_google,
-                        iconDescription = "Google",
-                        onClicked = {
-                            screenModel.clearState()
-                            screenModel.loginWithGoogle()
-                        },
-                        enabled = state != LoginState.LoggingIn,
-                    )
-                    Spacer(Modifier.width(30.dp))
-                    SocialIconButton(
-                        icon = Res.drawable.icon_apple,
-                        iconDescription = "Apple",
-                        onClicked = {
-                            screenModel.clearState()
-                            screenModel.loginWithApple()
-                        },
-                        enabled = state != LoginState.LoggingIn,
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight()
-                        .padding(vertical = 20.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        stringResource(Res.string.loginRegisterText),
-                        style = itemTrailing().copy(color = AppThemeColors.black70)
-                    )
-                    Spacer(Modifier.width(10.dp))
-                    JustTextButton(
-                        stringResource(Res.string.loginRegisterButton),
-                        onClicked = {
-                            navigator.replace(RegisterScreen())
-                        },
-                        enabled = state != LoginState.LoggingIn,
-                        textDecoration = TextDecoration.None,
-                    )
-                }
-            }
-        }
+        LoginView(
+            paddingValues = paddingValues,
+            formEnabled = state != LoginState.LoggingIn,
+            email = email,
+            onEmailChange = { newEmail ->
+                email = newEmail
+            },
+            emailError = state is LoginState.Error && (state as LoginState.Error).errors.contains(
+                LoginError.EMAIL_ERROR
+            ),
+            password = password,
+            onPasswordChange = { newPassword ->
+                password = newPassword
+            },
+            passwordError = state is LoginState.Error && (state as LoginState.Error).errors.contains(
+                LoginError.PASSWORD_ERROR
+            ),
+            passwordTransformation = if (showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
+            passwordIcon = if (showPassword.value) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed,
+            passwordTransform = {
+                showPassword.value = !showPassword.value
+            },
+            onSubmit = {
+                screenModel.clearState()
+                screenModel.onLoginSubmit(email, password)
+            },
+            onRegister = {
+                navigator.replace(RegisterScreen())
+            },
+            onReset = {
+                navigator.replace(ResetScreen())
+            },
+            onFacebook = {
+                screenModel.clearState()
+                screenModel.loginWithFacebook()
+            },
+            onGoogle = {
+                screenModel.clearState()
+                screenModel.loginWithGoogle()
+            },
+            onApple = {
+                screenModel.clearState()
+                screenModel.loginWithApple()
+            },
+            isError = state is LoginState.Error,
+            errorText = if (state is LoginState.Error) getErrorMessage(state as LoginState.Error) else "",
+            isLogging = state == LoginState.LoggingIn
+        )
     }
 
     @Composable
@@ -330,4 +198,214 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
 sealed class LoginScreenState {
     data object Idle : LoginScreenState()
     data class Info(val text: String) : LoginScreenState()
+}
+
+@Composable
+fun LoginView(
+    paddingValues: PaddingValues,
+    formEnabled: Boolean = true,
+    email: String,
+    onEmailChange: (String) -> Unit,
+    emailError: Boolean = false,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    passwordError: Boolean = false,
+    passwordTransformation: VisualTransformation = VisualTransformation.None,
+    passwordIcon: DrawableResource,
+    passwordTransform: () -> Unit,
+    onSubmit: () -> Unit,
+    onReset: () -> Unit,
+    onRegister: () -> Unit,
+    onFacebook: () -> Unit,
+    onGoogle: () -> Unit,
+    onApple: () -> Unit,
+    isError: Boolean = false,
+    errorText: String = "",
+    isLogging: Boolean = false
+) {
+    val focusManager = LocalFocusManager.current
+    Column(
+        Modifier.wrapContentHeight().fillMaxWidth().background(
+            AppThemeColors.authGradient
+        ).padding(paddingValues).verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Image(
+            painterResource(Res.drawable.icon_login),
+            stringResource(Res.string.loginTitle),
+            modifier = Modifier.padding(20.dp)
+        )
+        Spacer(Modifier.height(40.dp))
+        Text(
+            stringResource(Res.string.loginTitle),
+            style = hugeTitle()
+        )
+        Spacer(Modifier.height(50.dp))
+        Column(
+            modifier = Modifier.padding(20.dp).fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedInput(
+                    text = email,
+                    modifier = Modifier.weight(1f),
+                    onValueChanged = onEmailChange,
+                    label = stringResource(Res.string.loginEmailLabel),
+                    enabled = formEnabled,
+                    error = emailError,
+                    errorMessage = stringResource(Res.string.loginEmailError),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    )
+                )
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                    tooltip = { PlainTooltip { Text(stringResource(Res.string.loginEmailTip)) } },
+                    state = rememberTooltipState(),
+                    focusable = false,
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                ) {
+                    Icon(
+                        painterResource(Res.drawable.icon_question),
+                        contentDescription = stringResource(Res.string.loginEmailTip)
+                    )
+                }
+            }
+            Spacer(Modifier.height(20.dp))
+            Row(
+                modifier = Modifier.padding(end = 40.dp).fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedInput(
+                    text = password,
+                    onValueChanged = onPasswordChange,
+                    label = stringResource(Res.string.loginPasswordLabel),
+                    enabled = formEnabled,
+                    error = passwordError,
+                    errorMessage = stringResource(Res.string.loginPasswordError),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus()
+                            onSubmit.invoke()
+                        }
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        autoCorrectEnabled = true,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
+                    ),
+                    visualTransformation = passwordTransformation,
+                    trailingIcon = {
+                        if (formEnabled) {
+                            Image(
+                                painterResource(passwordIcon),
+                                "password",
+                                modifier = Modifier.clickable {
+                                    passwordTransform.invoke()
+                                }
+                            )
+                        }
+                    },
+                )
+            }
+            Spacer(Modifier.height(20.dp))
+            Row(modifier = Modifier.fillMaxWidth().align(Alignment.End)) {
+                JustTextButton(
+                    text = stringResource(Res.string.loginPasswordReminderButton),
+                    onClicked = onReset,
+                    enabled = formEnabled
+                )
+            }
+            Spacer(Modifier.height(30.dp))
+            if (isError) {
+                Text(
+                    errorText,
+                    style = contentText().copy(color = AppThemeColors.alertRed)
+                )
+                Spacer(Modifier.height(30.dp))
+            }
+            if (isLogging) {
+                FormProgress()
+            } else {
+                SubmitButton(
+                    onClick = onSubmit,
+                    text = stringResource(Res.string.loginSubmitButton),
+                    enabled = formEnabled,
+                )
+            }
+            Spacer(Modifier.height(30.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Box(
+                    modifier = Modifier.weight(1.0f).height(1.dp)
+                        .background(AppThemeColors.grey3)
+                )
+                Text(
+                    stringResource(Res.string.loginSocialSectionTitle),
+                    modifier = Modifier.padding(horizontal = 10.dp),
+                    style = itemSubTitle().copy(color = AppThemeColors.grey3)
+                )
+                Box(
+                    modifier = Modifier.weight(1.0f).height(1.dp)
+                        .background(AppThemeColors.grey3)
+                )
+            }
+            Spacer(Modifier.height(30.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                    .padding(vertical = 10.dp),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                SocialIconButton(
+                    icon = Res.drawable.icon_facebook,
+                    iconDescription = "Facebook",
+                    onClicked = onFacebook,
+                    enabled = formEnabled,
+                )
+                Spacer(Modifier.width(30.dp))
+                SocialIconButton(
+                    icon = Res.drawable.icon_google,
+                    iconDescription = "Google",
+                    onClicked = onGoogle,
+                    enabled = formEnabled,
+                )
+                Spacer(Modifier.width(30.dp))
+                SocialIconButton(
+                    icon = Res.drawable.icon_apple,
+                    iconDescription = "Apple",
+                    onClicked = onApple,
+                    enabled = formEnabled,
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                    .padding(vertical = 20.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    stringResource(Res.string.loginRegisterText),
+                    style = itemTrailing().copy(color = AppThemeColors.black70)
+                )
+                Spacer(Modifier.width(10.dp))
+                JustTextButton(
+                    stringResource(Res.string.loginRegisterButton),
+                    onClicked = onRegister,
+                    enabled = formEnabled,
+                    textDecoration = TextDecoration.None,
+                )
+            }
+        }
+    }
 }

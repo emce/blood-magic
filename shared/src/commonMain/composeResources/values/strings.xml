@@ -67,35 +67,36 @@
 
     // LOGIN SCREEN
     <string name="loginTitle">Witaj ponownie!</string>
-    <string name="loginEmailLabel">Email</string>
-    <string name="loginPasswordLabel">Hasło</string>
-    <string name="loginPasswordReminderButton">Nie pamiętasz hasła?</string>
-    <string name="loginSubmitButton">Zaloguj się</string>
+    <string name="loginEmailLabel">Kod rozpoznawczy</string>
+    <string name="loginEmailTip">To po prostu Twój adres email.</string>
+    <string name="loginPasswordLabel">Tajemne Zaklęcie</string>
+    <string name="loginPasswordReminderButton">Nie pamiętasz zaklęcia?</string>
+    <string name="loginSubmitButton">Wejście</string>
     <string name="loginSocialSectionTitle">lub kontynuuj, używając</string>
-    <string name="loginRegisterText">Nie masz konta?</string>
-    <string name="loginRegisterButton">Zarejestruj się</string>
-    <string name="loginEmailError">Nieprawidłowy adres email!</string>
-    <string name="loginPasswordError">Nieprawidłowe bądź za krótkie hasło!</string>
-    <string name="loginError">Proces logowania nieudany!</string>
+    <string name="loginRegisterText">Nie masz profilu?</string>
+    <string name="loginRegisterButton">Stwórz swój Profil</string>
+    <string name="loginEmailError">Nieprawidłowy kod rozpoznawczy!</string>
+    <string name="loginPasswordError">Nieprawidłowe bądź za krótkie zaklęcie!</string>
+    <string name="loginError">Proces wejścia nieudany!</string>
 
     // REGISTER SCREEN
-    <string name="registerTitle">Utwórz konto</string>
-    <string name="registerRepeatLabel">Powtórz hasło</string>
-    <string name="registerRepeatError">Nieprawidłowe bądź za krótkie potwórzenie hasła!</string>
-    <string name="registerRepeatComparisonError">Hasło i jego potwórzenie nie są jednakowe!</string>
-    <string name="registerError">Proces rejestracji nieudany!</string>
-    <string name="registerTerms">Tworząc konto, wyrażasz zgodę na [Politykę prywatności](https://krwiodawca.cwiklin.ski/privacy_policy/) oraz [Regulamin](https://krwiodawca.cwiklin.ski/terms_conditions/).</string>
-    <string name="registerSubmitButton">Zarejestruj się</string>
-    <string name="registerLoginText">Masz już konto?</string>
-    <string name="registerLoginButton">Zaloguj się</string>
-    <string name="registerSocialSectionTitle">lub zarejestruj się, używając</string>
+    <string name="registerTitle">Utwórz Profil</string>
+    <string name="registerRepeatLabel">Powtórz zaklęcie</string>
+    <string name="registerRepeatError">Nieprawidłowe bądź za krótkie potwórzenie zaklęcia!</string>
+    <string name="registerRepeatComparisonError">Zaklęcie i jego potwórzenie nie są jednakowe!</string>
+    <string name="registerError">Proces tworzenia Profilu nieudany!</string>
+    <string name="registerTerms">Tworząc Profil, wyrażasz zgodę na [Politykę prywatności](https://krwiodawca.cwiklin.ski/privacy_policy/) oraz [Regulamin](https://krwiodawca.cwiklin.ski/terms_conditions/).</string>
+    <string name="registerSubmitButton">Utwórz Profil</string>
+    <string name="registerLoginText">Masz już Profil?</string>
+    <string name="registerLoginButton">Wejdź</string>
+    <string name="registerSocialSectionTitle">lub utwórz Profil, używając</string>
 
     // RESET
-    <string name="resetTitle">Zresetuj hasło</string>
-    <string name="resetInformation">Wprowadź adres email podany podczas rejestracji. Wyślemy na niego wiadomość z linkiem do zresetowania hasła.</string>
+    <string name="resetTitle">Zresetuj zaklęcie</string>
+    <string name="resetInformation">Wprowadź Kod Rozpoznawczy podany podczas tworzenia Profilu. Wyślemy na niego wiadomość z magicznym linkiem do zresetowania zaklęcia.</string>
     <string name="resetSubmitButton">Wyślij wiadomość z linkiem</string>
-    <string name="resetError">Wystąpił błąd przy wysyłaniu formularza</string>
-    <string name="resetSuccessful">Wiadomość jest już w drodze! Sprawdź skrzynkę swą pocztową, i kliknij w magiczny link, aby zmienić hasło.</string>
+    <string name="resetError">Wystąpił błąd przy wysyłaniu danych</string>
+    <string name="resetSuccessful">Wiadomość jest już w drodze! Sprawdź skrzynkę swą pocztową, i kliknij w magiczny link, aby zmienić zaklęcie.</string>
 
     // SETUP
     <string name="setupTitle">Witaj, Wędrowcze</string>
@@ -113,7 +114,7 @@
     <string name="homeSectionNextDonationEmptyText">Tutaj pojawi się informacja o następnym możliwym terminie kropelkowania.</string>
     <string name="homeSectionHistoryEmptyTitle">Historia Kropelkowania</string>
     <string name="homeSectionHistoryEmptyText">Tutaj pojawią się oddane przez Ciebie Kropelki.</string>
-    <string name="homeSectionHistoryAddDonationEmptyText">Dodaj donację.</string>
+    <string name="homeSectionHistoryAddDonationEmptyText">Dodaj porcję Kropelek.</string>
     <string name="homeDonationHistory">Historia Kropelkowania</string>
     <string name="homeCarouselAmountTitle">%d pobrań</string>
     <string name="homeCarouselAmountSubtitle">leczniczych Kropelek</string>
@@ -160,7 +161,7 @@
     <string name="profileDataEmailLabel">Magiczny adres</string>
     <string name="profileDataEmailError">Błąd przy zmianie adresu</string>
     <string name="profileDataCurrentPasswordLabel">Tajemne zaklęcie</string>
-    <string name="profileDataPasswordLabel">Nowe tajemne zaklęcie</string>
+    <string name="profileDataPasswordLabel">Nowe zaklęcie</string>
     <string name="profileDataPasswordRepeatLabel">Potwórzenie tajemnego zaklęcia</string>
     <string name="profileDataCurrentPasswordError">Za krótkie lub niepoprawne aktualne zaklęcie!</string>
     <string name="profileDataPasswordError">Nieprawidłowy format zaklęcia (co najmniej 5 znaków)</string>
