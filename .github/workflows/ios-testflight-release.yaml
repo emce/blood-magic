@@ -43,6 +43,7 @@ jobs:
           googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
           googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
           googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
+          githubToken="${{ secrets.GITHUB_TOKEN }}"
           ' > local.properties
           echo "${{ secrets.FIREBASE_PLIST }}" > iosApp/GoogleService-Info.plist
         env:

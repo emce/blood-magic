@@ -41,6 +41,7 @@ jobs:
           googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
           googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
           googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
+          githubToken="${{ secrets.GH_TOKEN }}"
           ' > local.properties
           echo "${{ secrets.FIREBASE_JSON }}" > shared/google-services.json.b64
           base64 -d -i shared/google-services.json.b64 > shared/google-services.json
