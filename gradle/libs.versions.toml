@@ -1,4 +1,5 @@
 [versions]
+app = "5.2"
 jdk = "19"
 android-compileSdk = "35"
 android-minSdk = "24"

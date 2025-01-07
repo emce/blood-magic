@@ -27,7 +27,7 @@ val properties = localPropertiesFile.readLines().associate {
 }
 
 fun getGlobalVersionCode(gitCommitsCount: Int) = 700 + gitCommitsCount
-fun getGlobalVersionName(gitCommitsCount: Int) = "5.1.${getGlobalVersionCode(gitCommitsCount)}"
+fun getGlobalVersionName(gitCommitsCount: Int) = "${libs.versions.app}.${getGlobalVersionCode(gitCommitsCount)}"
 
 java {
     sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get().toInt())

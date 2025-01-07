@@ -22,7 +22,7 @@ jobs:
       - name: Configure Keystore
         run: |
           echo '${{ secrets.KEYSTORE_FILE }}' > release.keystore.asc
-          gpg -d --passphrase '${{ secrets.KEYSTORE_PASSPHRASE }}' --batch release.keystore.asc > release.keystore
+          gpg -d --passphrase '${{ secrets.KEYSTORE_PASSPHRASE }}' --batch release.keystore.asc > shared/release.keystore
 
       - name: Create Firebase config
         run: |
@@ -34,7 +34,7 @@ jobs:
           firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
           firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
-          bloodlineReleaseKeystore="./release.keystore"
+          bloodlineReleaseKeystore=release.keystore
           bloodlineReleasePassword="${{ secrets.KEYSTORE_KEY_PASSWORD }}"
           bloodlineReleaseAlias="${{ secrets.KEYSTORE_KEY_ALIAS }}"
           googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
