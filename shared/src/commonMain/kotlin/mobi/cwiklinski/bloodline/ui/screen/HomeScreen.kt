@@ -3,10 +3,13 @@ package mobi.cwiklinski.bloodline.ui.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,10 +27,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,6 +51,7 @@ import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.domain.model.Profile
+import mobi.cwiklinski.bloodline.getOrientation
 import mobi.cwiklinski.bloodline.isMobile
 import mobi.cwiklinski.bloodline.isTablet
 import mobi.cwiklinski.bloodline.resources.Res
@@ -238,12 +248,15 @@ class HomeScreen : AppScreen() {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HomeView(
     paddingValues: PaddingValues, donations: List<Donation>, profile: Profile,
     unreadNotifications: List<Notification>, onNotificationIconClicked: () -> Unit,
     openNewDonationForm: () -> Unit, showDonationsClicked: () -> Unit, shareText: (String) -> Unit
 ) {
+    var donationWidth by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
     val hero =
         if (profile.sex.isFemale()) stringResource(Res.string.homeHeroin) else stringResource(Res.string.homeHero)
     Column(
@@ -472,7 +485,15 @@ fun HomeView(
                         )
                     }
                 }
-                donations.take(5).forEach {
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth().onGloballyPositioned {
+                        donationWidth = with(density) {
+                            it.size.width.toDp()
+                        }
+                    },
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                donations.take(6).forEach {
                     DonationItem(
                         donation = it,
                         onEdit = {},
@@ -480,9 +501,11 @@ fun HomeView(
                         onShare = { text ->
                             shareText(text)
                         },
-                        showAction = false
+                        showAction = false,
+                        modifier = Modifier.width(if (isMobile() || getOrientation() == Orientation.Vertical) donationWidth else donationWidth / 2 - 2.dp)
                     )
                 }
+                    }
             }
             Spacer(Modifier.height(10.dp))
         }

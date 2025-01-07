@@ -22,17 +22,21 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.m3.rememberLibraries
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.close
 import mobi.cwiklinski.bloodline.resources.goBack
+import mobi.cwiklinski.bloodline.resources.icon_close
 import mobi.cwiklinski.bloodline.resources.infoLibraries
 import mobi.cwiklinski.bloodline.resources.infoTeam
 import mobi.cwiklinski.bloodline.resources.infoTeamDescription
 import mobi.cwiklinski.bloodline.resources.infoTitle
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.librariesColors
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.widget.DesktopWithTitleScaffold
 import mobi.cwiklinski.bloodline.ui.widget.HeaderText
 import mobi.cwiklinski.bloodline.ui.widget.MobileLayoutWithTitle
 import mobi.cwiklinski.bloodline.ui.widget.RichText
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Parcelize
@@ -93,6 +97,29 @@ class AboutScreen : AppScreen() {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(Res.string.goBack)
+                    )
+                }
+            }
+        ) {
+            AboutHorizontalView(libraries)
+        }
+    }
+
+    @OptIn(ExperimentalResourceApi::class)
+    @Composable
+    override fun desktopView() {
+        super.desktopView()
+        val navigator = LocalNavigator.currentOrThrow
+        val libraries by rememberLibraries {
+            Res.readBytes("files/aboutlibraries.json").decodeToString()
+        }
+        DesktopWithTitleScaffold(
+            title = stringResource(Res.string.infoTitle),
+            actions = {
+                IconButton(onClick = { navigator.pop() }) {
+                    Icon(
+                        painterResource(Res.drawable.icon_close),
+                        contentDescription = stringResource(Res.string.close)
                     )
                 }
             }

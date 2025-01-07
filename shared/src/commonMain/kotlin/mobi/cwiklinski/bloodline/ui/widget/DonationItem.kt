@@ -127,7 +127,7 @@ fun DonationItem(
                 val shareText = stringResource(Res.string.donationsShare)
                     .replace("%s", donation.type.getGenitive())
                 Box(
-                    modifier = Modifier.size(40.dp).clickable {
+                    modifier = Modifier.size(if (isMobile()) 40.dp else 0.dp).clickable {
                         onShare.invoke(shareText)
                     }.constrainAs(share) {
                         end.linkTo(parent.end)

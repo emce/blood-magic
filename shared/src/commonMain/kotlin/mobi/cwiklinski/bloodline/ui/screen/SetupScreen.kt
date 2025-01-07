@@ -112,13 +112,11 @@ class SetupScreen : AppScreen() {
         val state by screenModel.state.collectAsStateWithLifecycle(SetupState.Loading)
         val behaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
         when (state) {
-            SetupState.SavedData, SetupState.AlreadySetup -> {
+            SetupState.Loading, SetupState.SavedData, SetupState.AlreadySetup -> {
                 Logger.d("Redirecting to Home Screen")
                 navigator.clearStack()
                 navigator.replaceAll(HomeScreen())
                 screenModel.resetState()
-            }
-            SetupState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize()
                         .background(AppThemeColors.background),

@@ -69,7 +69,7 @@ object AppThemeColors {
 
     val cardBackground = Color(0xFFFFF7F2)
     val topBarBackground = Color(0xFFB08FA2)
-    val modalHeader = grey2
+    val modalHeader = rose4
 
     val iconOrange = Color(0xFFFF9B54)
     val iconOrangeBackground = Color(0xFFFFEBDD)

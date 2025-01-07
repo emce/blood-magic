@@ -20,8 +20,6 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,9 +37,12 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import co.touchlab.kermit.Logger
+import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.isAfter
 import mobi.cwiklinski.bloodline.common.toMillis
 import mobi.cwiklinski.bloodline.common.today
+import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
+import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.resources.Res
@@ -54,15 +55,11 @@ import mobi.cwiklinski.bloodline.resources.donationNewDateLabel
 import mobi.cwiklinski.bloodline.resources.donationNewDisqualificationLabel
 import mobi.cwiklinski.bloodline.resources.donationNewInformationTitle
 import mobi.cwiklinski.bloodline.resources.donationNewTypeLabel
-import mobi.cwiklinski.bloodline.common.event.SideEffects
-import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
-import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.ui.model.DonationError
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentText
-import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
 import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
@@ -70,6 +67,7 @@ import mobi.cwiklinski.bloodline.ui.widget.CloseButton
 import mobi.cwiklinski.bloodline.ui.widget.DateField
 import mobi.cwiklinski.bloodline.ui.widget.DonationTypeItem
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
+import mobi.cwiklinski.bloodline.ui.widget.MobileTitleBar
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SelectView
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
@@ -138,27 +136,17 @@ class EditDonationScreen(
             sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
             sheetBackgroundColor = AppThemeColors.white,
             topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            stringResource(Res.string.donationEditTitle),
-                            style = contentTitle(),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    },
+                MobileTitleBar(
+                    title = stringResource(Res.string.donationEditTitle),
                     actions = {
                         CloseButton {
                             bottomSheetNavigator.hide()
                         }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = AppThemeColors.modalHeader,
-                        titleContentColor = AppThemeColors.white,
-                        actionIconContentColor = AppThemeColors.white,
-                    )
+                    }
                 )
             },
             sheetPeekHeight = 100.dp,
+            sheetElevation = 16.dp,
             sheetContent = {
                 Column(
                     modifier = Modifier.fillMaxWidth().height(100.dp).background(AppThemeColors.modalHeader).padding(20.dp),
