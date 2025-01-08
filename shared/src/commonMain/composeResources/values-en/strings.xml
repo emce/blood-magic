@@ -150,7 +150,7 @@
 
     // PROFILES
     <string name="profileTitle">Your profile</string>
-    <string name ="profileAvatarFenix">the untamed phoenix</string>
+    <string name="profileAvatarFenix">the untamed phoenix</string>
     <string name="profileAvatarPegasus">the determined pegasus</string>
     <string name="profileAvatarFairy">hardworking fairy</string>
     <string name="profileAvatarNymph">empathetic nymph</string>
@@ -167,7 +167,7 @@
     <string name="profileDataCurrentPasswordError">Current spell too short or invalid!</string>
     <string name="profileDataPasswordError">Invalid spell format (at least 5 characters)</string>
     <string name="profileDataPasswordRepeatError">Spell repeat is not the same as new!</string>
-    <string name="profileDataUpdateError ">There was an error updating your magic data.</string>
+    <string name="profileDataUpdateError">There was an error updating your magic data.</string>
     <string name="profileDataPasswordUpdateError">There was an error updating spells.</string>
     <string name="profileDataEmailUpdateError">An error occurred while updating the magic address.</string>
     <string name="profileDataUpdateSuccess">Profile data has been enchanted!</string>
