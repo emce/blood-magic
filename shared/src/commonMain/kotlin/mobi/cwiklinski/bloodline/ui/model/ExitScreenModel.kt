@@ -7,10 +7,10 @@ import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.common.Either
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.api.DonationService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import kotlin.time.Duration.Companion.seconds
 
 class ExitScreenModel(
@@ -44,10 +44,6 @@ class ExitScreenModel(
                 }
             }
         }
-    }
-
-    fun resetState() {
-        mutableState.value = ExitState.Idle
     }
 
     fun delete() {

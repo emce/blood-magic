@@ -19,6 +19,7 @@ import mobi.cwiklinski.bloodline.ui.screen.SplashScreen
 import mobi.cwiklinski.bloodline.ui.theme.AppTheme
 import mobi.cwiklinski.bloodline.ui.util.FadeTransition
 import mobi.cwiklinski.bloodline.ui.widget.getAsyncImageLoader
+import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 
 val LocalSnackBar = compositionLocalOf { SnackbarHostState() }
@@ -33,25 +34,27 @@ fun MagicApp() {
         setSingletonImageLoaderFactory { context ->
             getAsyncImageLoader(context)
         }
-        val authInit = koinInject<AuthenticationInitializer>()
-        authInit.run()
         AppTheme {
-            BottomSheetNavigator(
-                modifier = Modifier.animateContentSize(),
-                sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-                skipHalfExpanded = true
-            ) {
-                Navigator(
-                    screen = SplashScreen(),
-                    onBackPressed = {
-                        false
+            KoinContext {
+                val authInit = koinInject<AuthenticationInitializer>()
+                authInit.run()
+                BottomSheetNavigator(
+                    modifier = Modifier.animateContentSize(),
+                    sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                    skipHalfExpanded = true
+                ) {
+                    Navigator(
+                        screen = SplashScreen(),
+                        onBackPressed = {
+                            false
+                        }
+                    ) { navigator ->
+                        ScreenTransition(
+                            navigator = navigator,
+                            defaultTransition = FadeTransition(),
+                            disposeScreenAfterTransitionEnd = true
+                        )
                     }
-                ) { navigator ->
-                    ScreenTransition(
-                        navigator = navigator,
-                        defaultTransition = FadeTransition(),
-                        disposeScreenAfterTransitionEnd = true
-                    )
                 }
             }
         }

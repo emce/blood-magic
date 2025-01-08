@@ -27,7 +27,9 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
     private val mainRef = db.reference("donation").child(auth.currentUser?.uid ?: "-")
 
 
-    override fun getDonations() = if (auth.currentUser != null) combineTransform(
+    override fun getDonations() = if (auth.currentUser != null) {
+        try {
+            combineTransform(
                 centerRef
                     .valueEvents
                     .map {
@@ -48,13 +50,18 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
                         emit(emptyList())
                     } else {
                         emit(donations.map { donation ->
-                            donation.toDonation(centers.first { it.id == donation.centerId }.toCenter())
+                            donation.toDonation(centers.first { it.id == donation.centerId }
+                                .toCenter())
                         }.sortedByDescending { it.date })
                     }
                 } catch (e: DatabaseException) {
                     emit(emptyList())
                 }
-            } else flowOf(emptyList())
+            }
+        } catch (e: DatabaseException) {
+            flowOf(emptyList())
+        }
+    } else flowOf(emptyList())
 
 
     override fun getDonation(id: String) =
