@@ -174,7 +174,7 @@
     <string name="profileDataPasswordUpdateSuccess"> New spell has been set.</string>
     <string name="profileDataSubmitButton">Edit Data</string>
     <string name="profileAvatarTitle">Select Character</string>
-    <string name="profilePasswordChangeTitle">Change Magic Spell</ string>
+    <string name="profilePasswordChangeTitle">Change Magic Spell</string>
     <string name="profileUpdateError">Oops - some error while updating profile</string>
     <string name="profileDeleteTitle">Account deletion</string>
     <string name="profileDeleteContent">You are starting the account deletion process.\n\nAll your profile data, all information about Kropelki, will be **permanently deleted!!!** \n\n\n\nTo continue the account deletion process, press the * button %s* </string>
