@@ -27,7 +27,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun FormProgress(
     modifier: Modifier = Modifier,
-    bigCircleColor: Color = AppThemeColors.accentRed1,
+    bigCircleColor: Color = AppThemeColors.red2,
     smallCircleColor: Color = AppThemeColors.accentRed1,
 ) {
     BoxWithConstraints(

@@ -116,20 +116,20 @@
     <string name="homeSectionHistoryEmptyText">Droplets donated by you will appear here.</string>
     <string name="homeSectionHistoryAddDonationEmptyText">Add a portion of Droplets.</string>
     <string name="homeDonationHistory">Droplet History</string>
-    <string name="homeCarouselAmountTitle">%d downloads</string>
-    <string name="homeCarouselAmountSubtitle">medicinal Droplets</string>
-    <string name="homeCarouselTotalAmountTitle">donated Droplets</string>
-    <string name="homeCarouselBadge1Title">Congratulations! You have</string>
+    <string name="homeCarouselAmountTitle">%d donations</string>
+    <string name="homeCarouselAmountSubtitle">Droplets</string>
+    <string name="homeCarouselTotalAmountTitle">Droplets</string>
+    <string name="homeCarouselBadge1Title">You earned</string>
     <string name="homeCarouselBadge1Subtitle">Bronze\nOrder</string>
-    <string name="homeCarouselBadge2Title">Congratulations! You have</string>
+    <string name="homeCarouselBadge2Title">You earned</string>
     <string name="homeCarouselBadge2Subtitle">Silver\nOrder</string>
-    <string name="homeCarouselBadge3Title">Congratulations! You have</string>
+    <string name="homeCarouselBadge3Title">You earned</string>
     <string name="homeCarouselBadge3Subtitle">Gold\nOrder</string>
-    <string name="homeCarouselBadgeFinalTitle">Congratulations! You have</string>
+    <string name="homeCarouselBadgeFinalTitle">You earned</string>
     <string name="homeCarouselBadgeFinalSubtitle">Platinum\nOrder</string>
     <string name="homeNextDonationReadyTitle">This is Magic!</string>
     <string name="homeNextDonationReadySubtitle">Full Drop Collection is now POSSIBLE</string>
-    <string name="homeNextDonationPendingTitle">Next possible Full Drop Collection (%s)</string>
+    <string name="homeNextDonationPendingTitle">Next possible Full Drops Collection (%s)</string>
 
     // NOTIFICATIONS
     <string name="notificationsTitle">News! News!</string>

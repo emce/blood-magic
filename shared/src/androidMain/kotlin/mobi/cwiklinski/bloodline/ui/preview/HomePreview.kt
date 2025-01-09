@@ -39,7 +39,7 @@ import mobi.cwiklinski.bloodline.ui.widget.CarouselItem
 import mobi.cwiklinski.bloodline.ui.widget.capacity
 import org.jetbrains.compose.resources.stringResource
 
-@Preview(locale = "pl")
+@Preview(locale = "pl", device = "id:Nexus 4")
 @Composable
 fun HomePreview() {
     HomeView(
@@ -69,7 +69,7 @@ fun EmptyHomePreview() {
     )
 }
 
-@Preview(locale = "pl")
+@Preview(locale = "pl", device = "id:Nexus 4")
 @Composable
 fun CarouselPreview() {
     val totalSum = 58000

@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.Lifecycle
@@ -103,6 +104,7 @@ fun SplashView(paddingValues: PaddingValues) {
             Spacer(modifier = Modifier.height(40.dp))
             Text(
                 stringResource(Res.string.appName).replace(" ", "\n"),
+                textAlign = TextAlign.Center,
                 style = hugeTitle(),
             )
             Spacer(modifier = Modifier.height(40.dp))
