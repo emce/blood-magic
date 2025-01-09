@@ -174,7 +174,7 @@
     <string name="profileDataPasswordUpdateSuccess"> New spell has been set.</string>
     <string name="profileDataSubmitButton">Edit Data</string>
     <string name="profileAvatarTitle">Select Character</string>
-    <string name="profilePasswordChangeTitle">Change Magic Spell</string>
+    <string name="profilePasswordChangeTitle">Change the Spell</string>
     <string name="profileUpdateError">Oops - some error while updating profile</string>
     <string name="profileDeleteTitle">Account deletion</string>
     <string name="profileDeleteContent">You are starting the account deletion process.\n\nAll your profile data, all information about Kropelki, will be **permanently deleted!!!** \n\n\n\nTo continue the account deletion process, press the * button %s* </string>
@@ -228,7 +228,7 @@
     // SETTINGS
     <string name="settingsTitle">Schemes</string>
     <string name="settingsDefaultCenterLabel">Default Drip Location</string>
-    <string name="settingsStartingLabel">Starting value for sum of all Drips</string>
+    <string name="settingsStartingLabel">Starting value for sum of all Drips (ml)</string>
     <string name="settingsSexLabel">Gender</string>
     <string name="settingsReminderLabel">Drip Notifications</string>
     <string name="settingsSubmitButton">Save Schemes</string>

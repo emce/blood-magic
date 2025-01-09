@@ -162,7 +162,7 @@
     <string name="profileDataEmailError">Błąd przy zmianie adresu</string>
     <string name="profileDataCurrentPasswordLabel">Tajemne zaklęcie</string>
     <string name="profileDataPasswordLabel">Nowe zaklęcie</string>
-    <string name="profileDataPasswordRepeatLabel">Potwórzenie tajemnego zaklęcia</string>
+    <string name="profileDataPasswordRepeatLabel">Potwórzenie nowego zaklęcia</string>
     <string name="profileDataCurrentPasswordError">Za krótkie lub niepoprawne aktualne zaklęcie!</string>
     <string name="profileDataPasswordError">Nieprawidłowy format zaklęcia (co najmniej 5 znaków)</string>
     <string name="profileDataPasswordRepeatError">Powtórzenie zaklęcia nie jest jednakowe z nowym!</string>
@@ -173,7 +173,7 @@
     <string name="profileDataPasswordUpdateSuccess">Nowe zaklęcie zostało ustawione.</string>
     <string name="profileDataSubmitButton">Edytuj dane</string>
     <string name="profileAvatarTitle">Wybierz postać</string>
-    <string name="profilePasswordChangeTitle">Zmiana magicznego zaklęcia</string>
+    <string name="profilePasswordChangeTitle">Zmiana zaklęcia</string>
     <string name="profileUpdateError">Ojej - jakiś błąd przy aktualizacji profilu</string>
     <string name="profileDeleteTitle">Usunięcie konta</string>
     <string name="profileDeleteContent">Rozpoczynasz proces usuwania konta.\n\nWszystkie dane Twojego profilu, wszystkie informacje o Kropelkach, zostaną **trwale usuniętę!!!** \n\n\n\nAby kontynuować proces usuwania konta, naciśnij przycisk *%s* </string>
@@ -227,7 +227,7 @@
     // SETTINGS
     <string name="settingsTitle">Schematy</string>
     <string name="settingsDefaultCenterLabel">Domyślne Miejsce Kropelkowania</string>
-    <string name="settingsStartingLabel">Początkowa wartość dla sumy wszystkich Kropelek</string>
+    <string name="settingsStartingLabel">Początkowa wartość dla sumy Kropelek (ml)</string>
     <string name="settingsSexLabel">Płeć</string>
     <string name="settingsReminderLabel">Powiadomienia o możliwości kropelkowania</string>
     <string name="settingsSubmitButton">Zapisz Schematy</string>

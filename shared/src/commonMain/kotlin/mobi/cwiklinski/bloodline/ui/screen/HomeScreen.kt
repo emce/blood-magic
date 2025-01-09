@@ -210,7 +210,7 @@ class HomeScreen : AppScreen() {
             floatingAction = {
                 bottomSheetNavigator.show(NewDonationScreen())
             },
-            informationAction = {
+            infoClicked = {
                 navigator.push(AboutScreen())
             },
             desiredContent = {

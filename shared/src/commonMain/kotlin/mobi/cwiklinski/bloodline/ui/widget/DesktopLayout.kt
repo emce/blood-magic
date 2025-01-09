@@ -65,7 +65,7 @@ fun DesktopNavigationTitleScaffold(
         selected = selected,
         navigationAction = navigationAction,
         floatingAction = floatingAction,
-        informationAction = infoClicked,
+        infoClicked = infoClicked,
         desiredContent = desiredContent
     )
 }
@@ -78,7 +78,7 @@ fun DesktopNavigationScaffold(
     selected: NavigationItem = NavigationItem.HOME,
     navigationAction: (NavigationItem) -> Unit,
     floatingAction: () -> Unit = {},
-    informationAction: (() -> Unit)? = null,
+    infoClicked: (() -> Unit)? = null,
     desiredContent: @Composable () -> Unit
 ) {
     DesktopScaffold(
@@ -90,7 +90,7 @@ fun DesktopNavigationScaffold(
             onClicked = navigationAction,
             selected = selected,
             floatingAction = floatingAction,
-            informationAction = informationAction
+            informationAction = infoClicked
         ) {
             Column(
                 modifier = Modifier.fillMaxSize()

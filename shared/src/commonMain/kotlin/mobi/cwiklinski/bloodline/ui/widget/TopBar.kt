@@ -50,14 +50,15 @@ fun MobileTitleBar(
     title: String? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable (() -> Unit)? = null,
-    behaviour: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    behaviour: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
+        containerColor = AppThemeColors.topBarBackground,
+        titleContentColor = AppThemeColors.black,
+        navigationIconContentColor = AppThemeColors.black
+    )
 ) {
     TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppThemeColors.topBarBackground,
-            titleContentColor = AppThemeColors.black,
-            navigationIconContentColor = AppThemeColors.black
-        ),
+        colors = colors,
         modifier = modifier,
         title = {
             if (title != null) {
