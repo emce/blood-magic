@@ -1,4 +1,4 @@
-# Compose Multiplatform Application
+# Blood magic - aplikacja dla Krwiodawców w Polsce do śledzenia donacji
 
 ## Before running!
  - check your system with [KDoctor](https://github.com/Kotlin/kdoctor)
@@ -6,30 +6,28 @@
  - add `local.properties` file to the project root and set a path to Android SDK there
 
 ### Android
-To run the application on android device/emulator:  
- - open project in Android Studio and run imported android run configuration
-
-To build the application bundle:
- - run `./gradlew :composeApp:assembleDebug`
- - find `.apk` file in `composeApp/build/outputs/apk/debug/composeApp-debug.apk`
+Aby przygotować aplikację:
+ - uruchom `./gradlew :composeApp:assembleDebug`
+ - znajdź plik `.apk` w `shared/build/outputs/apk/debug/composeApp-debug.apk`
 Run android UI tests on the connected device: `./gradlew :composeApp:connectedDebugAndroidTest`
 
 ### Desktop
-Run the desktop application: `./gradlew :composeApp:run`
-Run desktop UI tests: `./gradlew :composeApp:jvmTest`
+Aby uruchomić aplikację: `./gradlew :shared:run`
+Aby uruchomić testy: `./gradlew :shared:jvmTest`
+Aby wybudowac aplikację, uruchom: `./gradlew clean :shared:packageReleaseDistributionForCurrentOS -PmacOsAppStoreRelease=true`
 
 ### iOS
-To run the application on iPhone device/simulator:
- - Open `iosApp/iosApp.xcproject` in Xcode and run standard configuration
- - Or use [Kotlin Multiplatform Mobile plugin](https://plugins.jetbrains.com/plugin/14936-kotlin-multiplatform-mobile) for Android Studio
-Run iOS simulator UI tests: `./gradlew :composeApp:iosSimulatorArm64Test`
+Aby przygotować i uruchomić aplikację  na urządzeniu/emulatorze:
+ - Otwórz `iosApp/iosApp.xcproject` w Xcode i uruchom
+- Albo użyj [Kotlin Multiplatform Mobile plugin](https://plugins.jetbrains.com/plugin/14936-kotlin-multiplatform-mobile) dla Android Studio
+Aby uruchomić testy UI: `./gradlew :shared:iosSimulatorArm64Test`
 
 ### Resource
-To rebuild resources run:
+Aby przebudować zasoby uruchom:
 `./gradlew :shared:generateResourceAccessorsForCommonMain`
 
 ### Libraries
-To generate libraries information run:
+Aby wygenerować plik z listą bibliotek, uruchom:
 `./gradlew share:exportLibraryDefinitions -PaboutLibraries.exportPath=src/commonMain/composeResources/files -PaboutLibraries.exportVariant=release`
 
 

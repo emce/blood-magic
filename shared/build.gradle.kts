@@ -257,11 +257,25 @@ compose.desktop {
             macOS {
                 bundleID = "mobi.cwiklinski.bloodline"
                 iconFile.set(project.file("icons/bloodmagic.icns"))
-                // APP Store
+                minimumSystemVersion = "13.0"
+                appCategory = "public.app-category.healthcare-fitness"
+                packageVersion = "792"
+                infoPlist {
+                    extraKeysRawXml = """
+                        <key>LSMinimumSystemVersion</key>
+                        <string>13.0</string>
+                        <key>LSApplicationCategoryType</key>
+                        <string>public.app-category.healthcare-fitness</string>
+                    """.trimIndent()
+                }
+                // AppStore
                 signing {
                     properties["appleIdentity"]?.let { appleIdentity ->
                         sign.set(true)
                         identity.set(appleIdentity)
+                        properties["appleKeychain"]?.let { appleKeychain ->
+                            keychain.set(appleKeychain)
+                        }
                     }
                 }
                 // Notarization
