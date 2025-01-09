@@ -1,0 +1,35 @@
+{
+  "sourceLanguage" : "pl",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blood Magic"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Magia Krwi"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "blood-magic"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

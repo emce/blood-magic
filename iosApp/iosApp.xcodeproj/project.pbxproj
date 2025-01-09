@@ -14,6 +14,7 @@
 		8E53C21A2D28147400E1FCCC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 8E53C2192D28147400E1FCCC /* GoogleSignIn */; };
 		8E53C21D2D281C2500E1FCCC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E53C21C2D281C2500E1FCCC /* ContentView.swift */; };
 		8E53C21F2D281CDB00E1FCCC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E53C21E2D281CDB00E1FCCC /* GoogleService-Info.plist */; };
+		8ECF84312D2FBF44006D6B4B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 8ECF84302D2FBF44006D6B4B /* InfoPlist.xcstrings */; };
 		A93A953B29CC810C00F8E227 /* iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93A953A29CC810C00F8E227 /* iosApp.swift */; };
 		A93A953F29CC810D00F8E227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A93A953E29CC810D00F8E227 /* Assets.xcassets */; };
 		A93A954229CC810D00F8E227 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A93A954129CC810D00F8E227 /* Preview Assets.xcassets */; };
@@ -23,6 +24,7 @@
 		8E53C21B2D28178400E1FCCC /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
 		8E53C21C2D281C2500E1FCCC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8E53C21E2D281CDB00E1FCCC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8ECF84302D2FBF44006D6B4B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		A93A953729CC810C00F8E227 /* blood-magic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "blood-magic.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A93A953A29CC810C00F8E227 /* iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosApp.swift; sourceTree = "<group>"; };
 		A93A953E29CC810D00F8E227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				A93A953A29CC810C00F8E227 /* iosApp.swift */,
 				A93A953E29CC810D00F8E227 /* Assets.xcassets */,
 				A93A954029CC810D00F8E227 /* Preview Content */,
+				8ECF84302D2FBF44006D6B4B /* InfoPlist.xcstrings */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -127,11 +130,12 @@
 			};
 			buildConfigurationList = A93A953229CC810C00F8E227 /* Build configuration list for PBXProject "iosApp" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = pl;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				pl,
 			);
 			mainGroup = A93A952E29CC810C00F8E227;
 			packageReferences = (
@@ -153,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A93A954229CC810D00F8E227 /* Preview Assets.xcassets in Resources */,
+				8ECF84312D2FBF44006D6B4B /* InfoPlist.xcstrings in Resources */,
 				A93A953F29CC810D00F8E227 /* Assets.xcassets in Resources */,
 				8E53C21F2D281CDB00E1FCCC /* GoogleService-Info.plist in Resources */,
 			);
@@ -197,6 +202,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -249,6 +255,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -257,6 +264,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -302,6 +310,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -315,13 +324,12 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 788;
+				CURRENT_PROJECT_VERSION = 793;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = BA38377JQU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Blood Magic";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -330,7 +338,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.2.788;
+				MARKETING_VERSION = 5.3.793;
 				PRODUCT_BUNDLE_IDENTIFIER = mobi.cwiklinski.bloodline;
 				PRODUCT_NAME = "blood-magic";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -347,13 +355,12 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 788;
+				CURRENT_PROJECT_VERSION = 793;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = BA38377JQU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Blood Magic";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -362,7 +369,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.2.788;
+				MARKETING_VERSION = 5.3.793;
 				PRODUCT_BUNDLE_IDENTIFIER = mobi.cwiklinski.bloodline;
 				PRODUCT_NAME = "blood-magic";
 				SWIFT_EMIT_LOC_STRINGS = YES;
