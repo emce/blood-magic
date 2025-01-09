@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.ImageLoader
 import coil3.PlatformContext
@@ -50,7 +51,7 @@ fun Int.capacity(ml: String, l: String): String = if (this < 1000) {
 }
 
 @Composable
-fun Break() = Spacer(Modifier.height(20.dp))
+fun Break(height: Dp = 20.dp) = Spacer(Modifier.height(height))
 
 @Composable
 fun getAvatarName(avatar: Avatar) = stringResource(

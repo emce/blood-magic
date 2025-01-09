@@ -101,7 +101,7 @@
 
     // SETUP
     <string name="setupTitle">Hello, Traveler</string>
-    <string name="setupInformation">You are about to embark on a magical journey, so we need some information about you. They will allow you to neatly count magic drops, and serve up neat data about your exploits.</string>
+    <string name="setupInformation">You are about to embark on a magical journey, so we need some information about **You**. They will allow you to neatly count magic drops, and serve up neat data about **Your** adventures.</string>
     <string name="setupSave">Save information</string>
 
     // HOME
