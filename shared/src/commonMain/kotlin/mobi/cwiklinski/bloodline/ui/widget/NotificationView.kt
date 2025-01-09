@@ -3,11 +3,11 @@ package mobi.cwiklinski.bloodline.ui.widget
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,7 +26,6 @@ import mobi.cwiklinski.bloodline.resources.ic_map_pin
 import mobi.cwiklinski.bloodline.resources.ic_mark_read
 import mobi.cwiklinski.bloodline.resources.notificationsLocationDescription
 import mobi.cwiklinski.bloodline.resources.seeAll
-import mobi.cwiklinski.bloodline.ui.model.NotificationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.notificationRichTextColors
 import mobi.cwiklinski.bloodline.ui.theme.notificationInfo
 import mobi.cwiklinski.bloodline.ui.theme.notificationTitle
@@ -38,78 +37,79 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun NotificationView(
     notification: Notification,
-    state: NotificationState,
-    onMarkRead: (notification: Notification) -> Unit,
+    isMarking: (String) -> Boolean = { false },
+    onMarkRead: (notification: Notification) -> Unit = {},
 ) {
-    Row(
+    Column(
         modifier = Modifier
-            .background(notification.getType().color)
-            .padding(20.dp),
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.SpaceBetween
+        .background(notification.getType().color)
+        .padding(20.dp)
     ) {
-        Image(
-            painterResource(notification.getType().icon),
-            contentDescription = stringResource(notification.getType().description),
-            modifier = Modifier.size(40.dp)
-        )
-        Spacer(modifier = Modifier.width(20.dp))
-        Column(
-            modifier = Modifier.weight(1.0f),
+        Row(
+            modifier = Modifier,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            Image(
+                painterResource(notification.getType().icon),
+                contentDescription = stringResource(notification.getType().description),
+                modifier = Modifier.size(40.dp)
+            )
             Text(
                 notification.title,
                 style = notificationTitle(),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.weight(1f).padding(horizontal = 10.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Markdown(
-                notification.message.replace("<br>", "\n"),
-                colors = notificationRichTextColors()
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    notification.date.toLocalizedString(),
-                    style = notificationInfo()
-                )
-                Spacer(modifier = Modifier.width(14.dp))
-                Image(
-                    painterResource(Res.drawable.ic_map_pin),
-                    contentDescription = stringResource(Res.string.notificationsLocationDescription)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    notification.location,
-                    style = notificationInfo()
-                )
-            }
-        }
-        Spacer(modifier = Modifier.width(20.dp))
-        if (!notification.read) {
-            if (state is NotificationState.MarkingAsRead && state.notification.id == notification.id) {
-                FormProgress(modifier = Modifier.size(40.dp))
-            } else {
-                IconButton(
-                    onClick = {
-                        onMarkRead.invoke(notification)
-                    },
-                    modifier = Modifier
-                        .size(48.dp)
-                        .padding(8.dp)
+            if (!notification.read) {
+                BoxWithConstraints(
+                    modifier = Modifier.size(40.dp)
                 ) {
-                    Icon(
-                        painterResource(Res.drawable.ic_mark_read),
-                        contentDescription = stringResource(Res.string.seeAll),
-                    )
+                    if (isMarking(notification.id)) {
+                        FormProgress(modifier = Modifier.size(40.dp))
+                    } else {
+                        IconButton(
+                            onClick = {
+                                onMarkRead.invoke(notification)
+                            },
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(8.dp)
+                        ) {
+                            Icon(
+                                painterResource(Res.drawable.ic_mark_read),
+                                contentDescription = stringResource(Res.string.seeAll),
+                            )
+                        }
+                    }
                 }
             }
-            Spacer(modifier = Modifier.width(20.dp))
+        }
+        Markdown(
+            notification.message.replace("<br>", "\n"),
+            colors = notificationRichTextColors(),
+            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+        )
+        Row(
+            modifier = Modifier.padding(start = 40.dp).fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                notification.date.toLocalizedString(),
+                style = notificationInfo()
+            )
+            Spacer(modifier = Modifier.width(14.dp))
+            Image(
+                painterResource(Res.drawable.ic_map_pin),
+                contentDescription = stringResource(Res.string.notificationsLocationDescription)
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                notification.location,
+                style = notificationInfo()
+            )
         }
     }
 }
