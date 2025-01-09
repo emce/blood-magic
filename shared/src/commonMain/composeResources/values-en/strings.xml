@@ -177,7 +177,7 @@
     <string name="profilePasswordChangeTitle">Change the Spell</string>
     <string name="profileUpdateError">Oops - some error while updating profile</string>
     <string name="profileDeleteTitle">Account deletion</string>
-    <string name="profileDeleteContent">You are starting the account deletion process.\n\nAll your profile data, all information about Kropelki, will be **permanently deleted!!!** \n\n\n\nTo continue the account deletion process, press the * button %s* </string>
+    <string name="profileDeleteContent">You are starting the account deletion process.\n\nAll your profile data, all information about Kropelki, will be **permanently deleted**!!! \n\n\n\nTo continue the account deletion process, press the *%s* button.</string>
     <string name="profileDeleteButton">Permanently Delete Account</string>
     <string name="profileDeleteDonationsMessage">Deleting Magic Drops...</string>
     <string name="profileDeleteProfileMessage">Deleting Profile ...</string>
