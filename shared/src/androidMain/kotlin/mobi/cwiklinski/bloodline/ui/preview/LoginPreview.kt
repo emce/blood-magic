@@ -6,12 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.icon_eye_closed
 import mobi.cwiklinski.bloodline.resources.icon_eye_opened
 import mobi.cwiklinski.bloodline.ui.screen.LoginView
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable

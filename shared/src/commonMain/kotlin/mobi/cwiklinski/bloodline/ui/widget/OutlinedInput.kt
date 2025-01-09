@@ -67,8 +67,3 @@ fun OutlinedInput(
         colors = AppThemeColors.authFieldColors()
     )
 }
-
-@Composable
-fun OutlinedInputLabel(text: String) {
-    Text(text)
-}

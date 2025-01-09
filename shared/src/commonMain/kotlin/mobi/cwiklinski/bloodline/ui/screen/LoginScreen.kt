@@ -73,9 +73,10 @@ import mobi.cwiklinski.bloodline.ui.model.LoginScreenModel
 import mobi.cwiklinski.bloodline.ui.model.LoginState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentText
-import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
+import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTrailing
+import mobi.cwiklinski.bloodline.ui.util.avatarShadow
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.JustTextButton
@@ -234,14 +235,16 @@ fun LoginView(
         Image(
             painterResource(Res.drawable.icon_login),
             stringResource(Res.string.loginTitle),
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(vertical = 30.dp).avatarShadow(
+                color = AppThemeColors.white,
+                sizeAdjustment = 0.5f
+            )
         )
-        Spacer(Modifier.height(40.dp))
         Text(
             stringResource(Res.string.loginTitle),
-            style = hugeTitle()
+            style = getTypography().displayMedium
         )
-        Spacer(Modifier.height(50.dp))
+        Spacer(Modifier.height(5.dp))
         Column(
             modifier = Modifier.padding(20.dp).fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -279,7 +282,6 @@ fun LoginView(
                     )
                 }
             }
-            Spacer(Modifier.height(20.dp))
             Row(
                 modifier = Modifier.padding(end = 40.dp).fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -316,15 +318,18 @@ fun LoginView(
                     },
                 )
             }
-            Spacer(Modifier.height(20.dp))
-            Row(modifier = Modifier.fillMaxWidth().align(Alignment.End)) {
+            Spacer(Modifier.height(10.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
                 JustTextButton(
                     text = stringResource(Res.string.loginPasswordReminderButton),
                     onClicked = onReset,
                     enabled = formEnabled
                 )
             }
-            Spacer(Modifier.height(30.dp))
+            Spacer(Modifier.height(20.dp))
             if (isError) {
                 Text(
                     errorText,

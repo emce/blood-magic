@@ -109,10 +109,10 @@ object AppThemeColors {
     )
 
     val authGradient = Brush.linearGradient(
-        0.13f to white,
-        0.56f to Color(0xFFFCFCFC),
-        0.74f to Color(0xFFFFF3EE),
-        1.00f to Color(0xFFE1C7D3)
+        0.13f to Color(0xFFE1C7D3),
+        0.56f to Color(0xFFFFF3EE),
+        0.74f to Color(0xFFFCFCFC),
+        1.00f to white
     )
     val homeGradient = Brush.verticalGradient(
         0.0f to Color(0xFFB08FA2),
