@@ -84,7 +84,6 @@ import mobi.cwiklinski.bloodline.ui.widget.MobileLayout
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SocialIconButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -148,10 +147,9 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
             passwordError = state is LoginState.Error && (state as LoginState.Error).errors.contains(
                 LoginError.PASSWORD_ERROR
             ),
-            passwordTransformation = if (showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
-            passwordIcon = if (showPassword.value) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed,
-            passwordTransform = {
-                showPassword.value = !showPassword.value
+            showPassword = showPassword.value,
+            passwordTransform = { show ->
+                showPassword.value = show
             },
             onSubmit = {
                 screenModel.clearState()
@@ -203,23 +201,22 @@ sealed class LoginScreenState {
 
 @Composable
 fun LoginView(
-    paddingValues: PaddingValues,
+    paddingValues: PaddingValues = PaddingValues(0.dp),
     formEnabled: Boolean = true,
-    email: String,
-    onEmailChange: (String) -> Unit,
+    email: String = "",
+    onEmailChange: (String) -> Unit = {},
     emailError: Boolean = false,
-    password: String,
-    onPasswordChange: (String) -> Unit,
+    password: String = "",
+    onPasswordChange: (String) -> Unit = {},
     passwordError: Boolean = false,
-    passwordTransformation: VisualTransformation = VisualTransformation.None,
-    passwordIcon: DrawableResource,
-    passwordTransform: () -> Unit,
-    onSubmit: () -> Unit,
-    onReset: () -> Unit,
-    onRegister: () -> Unit,
-    onFacebook: () -> Unit,
-    onGoogle: () -> Unit,
-    onApple: () -> Unit,
+    showPassword: Boolean = false,
+    passwordTransform: (Boolean) -> Unit = {},
+    onSubmit: () -> Unit = {},
+    onReset: () -> Unit = {},
+    onRegister: () -> Unit = {},
+    onFacebook: () -> Unit = {},
+    onGoogle: () -> Unit = {},
+    onApple: () -> Unit = {},
     isError: Boolean = false,
     errorText: String = "",
     isLogging: Boolean = false
@@ -232,17 +229,22 @@ fun LoginView(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        Spacer(Modifier.height(30.dp))
         Image(
             painterResource(Res.drawable.icon_login),
             stringResource(Res.string.loginTitle),
-            modifier = Modifier.padding(vertical = 30.dp).avatarShadow(
-                color = AppThemeColors.white,
-                sizeAdjustment = 0.5f
-            )
+            modifier = Modifier
+                .avatarShadow(
+                    color = AppThemeColors.white,
+                    sizeAdjustment = 0.38f
+                )
         )
+        Spacer(Modifier.height(30.dp))
         Text(
             stringResource(Res.string.loginTitle),
-            style = getTypography().displayMedium
+            style = getTypography().displayMedium.copy(
+                color = AppThemeColors.violet4
+            )
         )
         Spacer(Modifier.height(5.dp))
         Column(
@@ -304,14 +306,14 @@ fun LoginView(
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Done
                     ),
-                    visualTransformation = passwordTransformation,
+                    visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
                         if (formEnabled) {
                             Image(
-                                painterResource(passwordIcon),
+                                painterResource(if (showPassword) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
                                 "password",
                                 modifier = Modifier.clickable {
-                                    passwordTransform.invoke()
+                                    passwordTransform(!showPassword)
                                 }
                             )
                         }
@@ -329,7 +331,7 @@ fun LoginView(
                     enabled = formEnabled
                 )
             }
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(10.dp))
             if (isError) {
                 Text(
                     errorText,

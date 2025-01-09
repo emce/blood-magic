@@ -85,7 +85,8 @@
     <string name="registerRepeatError">Nieprawidłowe bądź za krótkie potwórzenie zaklęcia!</string>
     <string name="registerRepeatComparisonError">Zaklęcie i jego potwórzenie nie są jednakowe!</string>
     <string name="registerError">Proces tworzenia Profilu nieudany!</string>
-    <string name="registerTerms">Tworząc Profil, wyrażasz zgodę na [Politykę prywatności](https://krwiodawca.cwiklin.ski/privacy_policy/) oraz [Regulamin](https://krwiodawca.cwiklin.ski/terms_conditions/).</string>
+    <string name="registerTerms"><![CDATA[ Tworząc Profil, wyrażasz zgodę
+    na [Politykę prywatności](https://krwiodawca.cwiklin.ski/privacy_policy/) oraz [Regulamin](https://krwiodawca.cwiklin.ski/terms_conditions/). ]]></string>
     <string name="registerSubmitButton">Utwórz Profil</string>
     <string name="registerLoginText">Masz już Profil?</string>
     <string name="registerLoginButton">Wejdź</string>

@@ -4,13 +4,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.resources.icon_eye_closed
-import mobi.cwiklinski.bloodline.resources.icon_eye_opened
 import mobi.cwiklinski.bloodline.ui.screen.LoginView
 
 @Preview
@@ -26,8 +21,7 @@ fun LoginPreview() {
         password = "",
         onPasswordChange = { },
         passwordError = false,
-        passwordTransformation = if (showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
-        passwordIcon = if (showPassword.value) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed,
+        showPassword = false,
         passwordTransform = {
             showPassword.value = !showPassword.value
         },

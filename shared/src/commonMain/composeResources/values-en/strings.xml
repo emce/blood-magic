@@ -85,7 +85,8 @@
     <string name="registerRepeatError">Incorrect or too short spell repetition!</string>
     <string name="registerRepeatComparisonError">Spell and its repetition are not the same!</string>
     <string name="registerError">Profile creation process failed!</string>
-    <string name="registerTerms">By creating a Profile, you agree to the [Privacy Policy](https://krwiodawca.cwiklin.ski/privacy_policy/) and [Regulations](https://krwiodawca.cwiklin.ski/terms_conditions/).</string>
+    <string name="registerTerms"><![CDATA[ By creating a Profile, you agree
+        to the [Privacy Policy](https://krwiodawca.cwiklin.ski/privacy_policy/) and [Regulations](https://krwiodawca.cwiklin.ski/terms_conditions/). ]]></string>
     <string name="registerSubmitButton">Create a Profile</string>
     <string name="registerLoginText">Do you already have a Profile?</string>
     <string name="registerLoginButton">Enter</string>
