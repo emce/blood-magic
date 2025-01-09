@@ -81,9 +81,9 @@ class ProfilePasswordScreen : AppProfileScreen() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
+        val state by screenModel.state.collectAsStateWithLifecycle(ProfileState.Idle)
         val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
-        val focusManager = LocalFocusManager.current
-        if (screenModel.state.value == ProfileState.Saved) {
+        if (state == ProfileState.Saved) {
             bottomSheetNavigator.hide()
         }
         var currentPassword by remember { mutableStateOf("") }
@@ -92,203 +92,261 @@ class ProfilePasswordScreen : AppProfileScreen() {
         val showCurrentPassword = remember { mutableStateOf(false) }
         val showNewPassword = remember { mutableStateOf(false) }
         val showRepeatPassword = remember { mutableStateOf(false) }
-        Column(
-            modifier = Modifier.background(AppThemeColors.homeGradient)
+        ChangePasswordView(
+            profile = profile,
+            onClose = {
+                bottomSheetNavigator.hide()
+            },
+            formEnabled = state != ProfileState.Saving,
+            currentPassword = currentPassword,
+            showCurrentPassword = showCurrentPassword.value,
+            showCurrentPasswordChanged = { show ->
+                showCurrentPassword.value = show
+            },
+            onCurrentPasswordChanged = { newPassword ->
+                currentPassword = newPassword
+            },
+            currentPasswordError = state is ProfileState.Error &&
+                    (state as ProfileState.Error).errors.contains(
+                        ProfileError.PASSWORD
+                    ),
+            password = password,
+            showPassword = showNewPassword.value,
+            showPasswordChanged = { show ->
+                showNewPassword.value = show
+            },
+            onPasswordChanged = { newPassword ->
+                password = newPassword
+            },
+            passwordError = state is ProfileState.Error &&
+                    (state as ProfileState.Error).errors.contains(
+                        ProfileError.REPEAT
+                    ),
+            repeat = repeat,
+            showRepeat = showRepeatPassword.value,
+            showRepeatChanged = { show ->
+                showRepeatPassword.value = show
+            },
+            onRepeatChanged = { newRepeat ->
+                repeat = newRepeat
+            },
+            repeatError = state is ProfileState.Error,
+            onChangePassword = {
+                screenModel.onProfilePasswordUpdate(
+                    currentPassword,
+                    password,
+                    repeat
+                )
+            },
+            isSaved = state == ProfileState.Saved
+        )
+    }
+}
+
+@Composable
+fun ChangePasswordView(
+    profile: Profile,
+    onClose: () -> Unit = {},
+    formEnabled: Boolean = true,
+    currentPassword: String = "",
+    showCurrentPassword: Boolean = false,
+    showCurrentPasswordChanged: (Boolean) -> Unit = {},
+    onCurrentPasswordChanged: (String) -> Unit = {},
+    currentPasswordError: Boolean = false,
+    password: String = "",
+    showPassword: Boolean = false,
+    showPasswordChanged: (Boolean) -> Unit = {},
+    onPasswordChanged: (String) -> Unit = {},
+    passwordError: Boolean = false,
+    repeat: String = "",
+    showRepeat: Boolean = false,
+    showRepeatChanged: (Boolean) -> Unit = {},
+    onRepeatChanged: (String) -> Unit = {},
+    repeatError: Boolean = false,
+    onChangePassword: () -> Unit = {},
+    isSaved: Boolean = false,
+    errorMessage: @Composable (List<ProfileError>) -> String = { "" },
+    errors: List<ProfileError> = emptyList()
+) {
+    val focusManager = LocalFocusManager.current
+    Column(
+        modifier = Modifier.background(AppThemeColors.homeGradient)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth().wrapContentHeight()
+                .background(Color.Transparent)
+                .drawBehind {
+                    val start = 100.dp.value
+                    val middle = 450.dp.value
+                    drawPath(
+                        color = AppThemeColors.white,
+                        path = Path().apply {
+                            reset()
+                            moveTo(0f, start)
+                            cubicTo(
+                                x1 = 0f,
+                                y1 = start,
+                                x2 = size.width / 2,
+                                y2 = middle,
+                                x3 = size.width,
+                                y3 = start
+                            )
+                            lineTo(size.width, size.height)
+                            lineTo(0f, size.height)
+                            lineTo(0f, start)
+                            close()
+                        }
+                    )
+                },
+            contentAlignment = Alignment.Center
         ) {
-            Box(
+            Canvas(
+                modifier = Modifier.size(146.dp)
+                    .shadow(
+                        10.dp,
+                        shape = CircleShape,
+                        ambientColor = AppThemeColors.white,
+                        spotColor = AppThemeColors.white
+                    ).offset(y = 4.dp)
+            ) {
+                drawCircle(AppThemeColors.white.copy(alpha = 0.2f))
+            }
+            Image(
+                painterResource(Avatar.byName(profile.avatar).icon),
+                stringResource(Res.string.profileAvatarTitle),
+                modifier = Modifier.width(184.dp).height(184.dp).avatarShadow()
+            )
+            CloseButton(modifier = Modifier.align(Alignment.TopEnd)) {
+                onClose.invoke()
+            }
+        }
+        ProfileModal(
+            profile = profile,
+            title = stringResource(Res.string.profilePasswordChangeTitle)
+        ) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth().wrapContentHeight()
-                    .background(Color.Transparent)
-                    .drawBehind {
-                        val start = 100.dp.value
-                        val middle = 450.dp.value
-                        drawPath(
-                            color = AppThemeColors.white,
-                            path = Path().apply {
-                                reset()
-                                moveTo(0f, start)
-                                cubicTo(
-                                    x1 = 0f,
-                                    y1 = start,
-                                    x2 = size.width / 2,
-                                    y2 = middle,
-                                    x3 = size.width,
-                                    y3 = start
-                                )
-                                lineTo(size.width, size.height)
-                                lineTo(0f, size.height)
-                                lineTo(0f, start)
-                                close()
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(horizontal = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                OutlinedInput(
+                    text = currentPassword,
+                    onValueChanged = onCurrentPasswordChanged,
+                    label = stringResource(Res.string.profileDataCurrentPasswordLabel),
+                    enabled = formEnabled,
+                    error = currentPasswordError,
+                    errorMessage = errorMessage(listOf(ProfileError.PASSWORD)),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        autoCorrectEnabled = true,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
+                    ),
+                    visualTransformation = if (showCurrentPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        Image(
+                            painterResource(if (showCurrentPassword) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
+                            "password",
+                            modifier = Modifier.clickable {
+                                showCurrentPasswordChanged.invoke(!showCurrentPassword)
                             }
                         )
                     },
-                contentAlignment = Alignment.Center
-            ) {
-                Canvas(
-                    modifier = Modifier.size(146.dp)
-                        .shadow(
-                            10.dp,
-                            shape = CircleShape,
-                            ambientColor = AppThemeColors.white,
-                            spotColor = AppThemeColors.white
-                        ).offset(y = 4.dp)
-                ) {
-                    drawCircle(AppThemeColors.white.copy(alpha = 0.2f))
-                }
-                Image(
-                    painterResource(Avatar.byName(profile.avatar).icon),
-                    stringResource(Res.string.profileAvatarTitle),
-                    modifier = Modifier.width(184.dp).height(184.dp).avatarShadow()
                 )
-                CloseButton(modifier = Modifier.align(Alignment.TopEnd)) {
-                    bottomSheetNavigator.hide()
-                }
-            }
-            ProfileModal(
-                profile = profile,
-                title = stringResource(Res.string.profilePasswordChangeTitle)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(horizontal = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    OutlinedInput(
-                        text = currentPassword,
-                        onValueChanged = { currentPassword = it },
-                        label = stringResource(Res.string.profileDataCurrentPasswordLabel),
-                        enabled = screenModel.state.value != ProfileState.Saving,
-                        error = screenModel.state.value is ProfileState.Error &&
-                                (screenModel.state.value as ProfileState.Error).errors.contains(
-                                    ProfileError.PASSWORD
-                                ),
-                        errorMessage = getError(listOf(ProfileError.PASSWORD)),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.moveFocus(FocusDirection.Down)
+                Spacer(Modifier.height(20.dp))
+                OutlinedInput(
+                    text = password,
+                    onValueChanged = onPasswordChanged,
+                    label = stringResource(Res.string.profileDataPasswordLabel),
+                    enabled = formEnabled,
+                    error = passwordError,
+                    errorMessage = errorMessage(listOf(ProfileError.REPEAT)),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        autoCorrectEnabled = true,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
+                    ),
+                    visualTransformation = if (showPassword) VisualTransformation.None
+                    else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        Image(
+                            painterResource(if (showPassword) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
+                            "password",
+                            modifier = Modifier.clickable {
+                                showPasswordChanged.invoke(!showPassword)
                             }
-                        ),
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            autoCorrectEnabled = true,
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
-                        visualTransformation = if (showCurrentPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
-                        trailingIcon = {
-                            Image(
-                                painterResource(if (showCurrentPassword.value) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
-                                "password",
-                                modifier = Modifier.clickable {
-                                    showCurrentPassword.value = !showCurrentPassword.value
-                                }
-                            )
-                        },
-                    )
-                    Spacer(Modifier.height(20.dp))
-                    OutlinedInput(
-                        text = password,
-                        onValueChanged = { password = it },
-                        label = stringResource(Res.string.profileDataPasswordLabel),
-                        enabled = screenModel.state.value != ProfileState.Saving,
-                        error = screenModel.state.value is ProfileState.Error &&
-                                (screenModel.state.value as ProfileState.Error).errors.contains(
-                                    ProfileError.REPEAT
-                                ),
-                        errorMessage = getError(listOf(ProfileError.REPEAT)),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.moveFocus(FocusDirection.Down)
+                        )
+                    },
+                )
+                Spacer(Modifier.height(20.dp))
+                OutlinedInput(
+                    text = repeat,
+                    onValueChanged = onRepeatChanged,
+                    label = stringResource(Res.string.profileDataPasswordRepeatLabel),
+                    enabled = formEnabled,
+                    error = repeatError,
+                    errorMessage = errorMessage(listOf(ProfileError.REPEAT)),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            onChangePassword.invoke()
+                        }
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        autoCorrectEnabled = true,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
+                    ),
+                    visualTransformation = if (showRepeat) VisualTransformation.None else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        Image(
+                            painterResource(if (showRepeat) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
+                            "password",
+                            modifier = Modifier.clickable {
+                                showRepeatChanged.invoke(!showRepeat)
                             }
-                        ),
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            autoCorrectEnabled = true,
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
-                        visualTransformation = if (showNewPassword.value) VisualTransformation.None
-                            else PasswordVisualTransformation(),
-                        trailingIcon = {
-                            Image(
-                                painterResource(if (showNewPassword.value) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
-                                "password",
-                                modifier = Modifier.clickable {
-                                    showNewPassword.value = !showNewPassword.value
-                                }
-                            )
-                        },
-                    )
-                    Spacer(Modifier.height(20.dp))
-                    OutlinedInput(
-                        text = repeat,
-                        onValueChanged = { repeat = it },
-                        label = stringResource(Res.string.profileDataPasswordRepeatLabel),
-                        enabled = screenModel.state.value != ProfileState.Saving,
-                        error = screenModel.state.value is ProfileState.Error,
-                        errorMessage = getError(listOf(ProfileError.REPEAT)),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                screenModel.onProfilePasswordUpdate(
-                                    currentPassword,
-                                    password,
-                                    repeat
-                                )
-                            }
-                        ),
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            autoCorrectEnabled = true,
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
-                        visualTransformation = if (showRepeatPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
-                        trailingIcon = {
-                            Image(
-                                painterResource(if (showRepeatPassword.value) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
-                                "password",
-                                modifier = Modifier.clickable {
-                                    showRepeatPassword.value = !showRepeatPassword.value
-                                }
-                            )
-                        },
+                        )
+                    },
+                )
+                Spacer(Modifier.height(30.dp))
+                if (errors.isNotEmpty()) {
+                    Text(
+                        errorMessage(errors),
+                        style = getTypography().displaySmall.copy(
+                            color = AppThemeColors.red2
+                        )
                     )
                     Spacer(Modifier.height(30.dp))
-                    if (screenModel.state.value is ProfileState.Error) {
-                        Text(
-                            getError((screenModel.state.value as ProfileState.Error).errors),
-                            style = getTypography().displaySmall.copy(
-                                color = AppThemeColors.red2
-                            )
-                        )
-                        Spacer(Modifier.height(30.dp))
-                    }
-                    if (screenModel.state.value == ProfileState.Saved) {
+                }
+                if (isSaved) {
+                    SubmitButton(
+                        onClick = onClose,
+                        text = stringResource(Res.string.close),
+                    )
+                } else {
+                    if (formEnabled) {
                         SubmitButton(
-                            onClick = {
-                                bottomSheetNavigator.hide()
-                            },
-                            text = stringResource(Res.string.close),
+                            onClick = onChangePassword,
+                            text = stringResource(Res.string.profileDataSubmitButton),
+                            enabled = formEnabled,
                         )
                     } else {
-                        if (screenModel.state.value != ProfileState.Saving) {
-                            SubmitButton(
-                                onClick = {
-                                    screenModel.onProfilePasswordUpdate(
-                                        currentPassword,
-                                        password,
-                                        repeat
-                                    )
-                                },
-                                text = stringResource(Res.string.profileDataSubmitButton),
-                                enabled = screenModel.state.value != ProfileState.Saving,
-                            )
-                        } else {
-                            FormProgress()
-                        }
+                        FormProgress()
                     }
-                    Spacer(Modifier.height(20.dp))
                 }
+                Spacer(Modifier.height(20.dp))
             }
         }
     }
