@@ -21,6 +21,29 @@ jobs:
         with:
           gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 
+      - name: Create Firebase config
+        run: |
+          echo '
+          firebaseAndroidApiKey="${{ secrets.FIREBASE_ANDROID_API_KEY }}"
+          firebaseIosApiKey="${{ secrets.FIREBASE_IOS_API_KEY }}"
+          firebaseGcmSenderId="${{ secrets.FIREBASE_GCM_SENDER_ID }}"
+          firebaseApplicationId="${{ secrets.FIREBASE_APPLICATION_ID }}"
+          firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
+          firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
+          firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
+          bloodlineReleaseKeystore=shared/release.keystore
+          bloodlineReleasePassword=${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          bloodlineReleaseAlias=${{ secrets.KEYSTORE_KEY_ALIAS }}
+          googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
+          googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
+          googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
+          googleClientSecret="${{ secrets.GOOGLE_CLIENT_SECRET }}"
+          facebookClientId="${{ secrets.FACEBOOK_CLIENT_ID }}"
+          facebookClientSecret="${{ secrets.FACEBOOK_CLIENT_SECRET }}"
+          appleClientId="${{ secrets.APPLE_CLIENT_ID }}"
+          appleClientSecret="${{ secrets.APPLE_CLIENT_SECRET }}"
+          githubToken="${{ secrets.GH_TOKEN }}"
+
       - name: Import Mac App Distribution and Installer certificate
         uses: apple-actions/import-codesign-certs@v3
         with:

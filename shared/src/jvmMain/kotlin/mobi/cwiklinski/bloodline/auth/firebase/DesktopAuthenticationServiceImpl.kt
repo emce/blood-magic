@@ -31,18 +31,15 @@ class DesktopAuthenticationServiceImpl(
     private val authFlowFactory: CodeAuthFlowFactory
 ) : AuthenticationServiceImpl(coroutineScope) {
 
-    private val redirectUrl = "https://bloodline.cwiklinski.mobi/auth"
-
 
     override fun loginWithGoogle() = callbackFlow {
         try {
-            trySend(AuthResult.Failure(AuthError.NOT_IMPLEMENTED))
             throw NotImplementedError()
-            val client = getOauthClient(GoogleConfiguration(redirectUri = redirectUrl))
+            val config = GoogleConfiguration()
+            val client = getOauthClient(config)
             val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken(
-                configureAuthUrl = {
-                    parameters.remove("client_secret")
-                }
+                configureAuthUrl = config.configureAuthUrl,
+                configureTokenExchange = config.configureTokenExchange
             )
             val authCredential = GoogleAuthProvider
                 .credential(
@@ -67,8 +64,12 @@ class DesktopAuthenticationServiceImpl(
     override fun loginWithFacebook() = callbackFlow {
         try {
             throw NotImplementedError()
-            val client = getOauthClient(FacebookConfiguration(redirectUri = redirectUrl))
-            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken()
+            val config = FacebookConfiguration()
+            val client = getOauthClient(config)
+            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken(
+                configureAuthUrl = config.configureAuthUrl,
+                configureTokenExchange = config.configureTokenExchange
+            )
             val authCredential = FacebookAuthProvider
                 .credential(
                     newTokens.access_token
@@ -91,9 +92,12 @@ class DesktopAuthenticationServiceImpl(
     override fun loginWithApple() = callbackFlow {
         try {
             throw NotImplementedError()
-            trySend(AuthResult.Failure(AuthError.NOT_IMPLEMENTED))
-            val client = getOauthClient(AppleConfiguration(redirectUri = redirectUrl))
-            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken()
+            val config = AppleConfiguration()
+            val client = getOauthClient(config)
+            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken(
+                configureAuthUrl = config.configureAuthUrl,
+                configureTokenExchange = config.configureTokenExchange
+            )
             val authCredential = OAuthProvider.credential(
                     providerId = "apple.com",
                     newTokens.access_token,

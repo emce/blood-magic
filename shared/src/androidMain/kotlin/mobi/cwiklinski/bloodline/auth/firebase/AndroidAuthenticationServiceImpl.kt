@@ -83,8 +83,12 @@ class AndroidAuthenticationServiceImpl(
 
     override fun loginWithFacebook() = callbackFlow {
         try {
-            val client = getOauthClient(FacebookConfiguration())
-            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken()
+            val config = FacebookConfiguration()
+            val client = getOauthClient(config)
+            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken(
+                configureAuthUrl = config.configureAuthUrl,
+                configureTokenExchange = config.configureTokenExchange
+            )
             val authCredential = FacebookAuthProvider
                 .credential(
                     newTokens.access_token
@@ -105,8 +109,12 @@ class AndroidAuthenticationServiceImpl(
 
     override fun loginWithApple() = callbackFlow {
         try {
-            val client = getOauthClient(AppleConfiguration())
-            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken()
+            val config = AppleConfiguration()
+            val client = getOauthClient(config)
+            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken(
+                configureAuthUrl = config.configureAuthUrl,
+                configureTokenExchange = config.configureTokenExchange
+            )
             val authCredential = OAuthProvider.credential(
                 providerId = "apple.com",
                 newTokens.access_token,

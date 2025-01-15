@@ -34,7 +34,11 @@ jobs:
           googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
           googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
           googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
-          googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
+          googleClientSecret="${{ secrets.GOOGLE_CLIENT_SECRET }}"
+          facebookClientId="${{ secrets.FACEBOOK_CLIENT_ID }}"
+          facebookClientSecret="${{ secrets.FACEBOOK_CLIENT_SECRET }}"
+          appleClientId="${{ secrets.APPLE_CLIENT_ID }}"
+          appleClientSecret="${{ secrets.APPLE_CLIENT_SECRET }}"
           githubToken="${{ secrets.GH_TOKEN }}"
           ' > local.properties
           echo "${{ secrets.FIREBASE_JSON }}" > shared/google-services.json.b64
@@ -76,6 +80,11 @@ jobs:
           googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
           googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
           googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
+          googleClientSecret="${{ secrets.GOOGLE_CLIENT_SECRET }}"
+          facebookClientId="${{ secrets.FACEBOOK_CLIENT_ID }}"
+          facebookClientSecret="${{ secrets.FACEBOOK_CLIENT_SECRET }}"
+          appleClientId="${{ secrets.APPLE_CLIENT_ID }}"
+          appleClientSecret="${{ secrets.APPLE_CLIENT_SECRET }}"
           githubToken="${{ secrets.GH_TOKEN }}"
           ' > local.properties
           echo "${{ secrets.FIREBASE_JSON }}" > shared/google-services.json.b64
@@ -109,6 +118,11 @@ jobs:
           googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
           googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
           googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
+          googleClientSecret="${{ secrets.GOOGLE_CLIENT_SECRET }}"
+          facebookClientId="${{ secrets.FACEBOOK_CLIENT_ID }}"
+          facebookClientSecret="${{ secrets.FACEBOOK_CLIENT_SECRET }}"
+          appleClientId="${{ secrets.APPLE_CLIENT_ID }}"
+          appleClientSecret="${{ secrets.APPLE_CLIENT_SECRET }}"
           githubToken="${{ secrets.GH_TOKEN }}"
           ' > local.properties
 
@@ -169,6 +183,11 @@ jobs:
           googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
           googleIosClientId="${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
           googleClientId="${{ secrets.GOOGLE_CLIENT_ID }}"
+          googleClientSecret="${{ secrets.GOOGLE_CLIENT_SECRET }}"
+          facebookClientId="${{ secrets.FACEBOOK_CLIENT_ID }}"
+          facebookClientSecret="${{ secrets.FACEBOOK_CLIENT_SECRET }}"
+          appleClientId="${{ secrets.APPLE_CLIENT_ID }}"
+          appleClientSecret="${{ secrets.APPLE_CLIENT_SECRET }}"
           githubToken="${{ secrets.GH_TOKEN }}"
           ' > local.properties
 

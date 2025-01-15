@@ -9,11 +9,13 @@ import org.publicvalue.multiplatform.oidc.appsupport.IosCodeAuthFlowFactory
 
 fun initKoin(){
     startKoin {
-        module {
+        val codeAuth = module {
             single<CodeAuthFlowFactory> { IosCodeAuthFlowFactory() }
         }
         lazyModules(createAppLazyModule())
-        modules(createAppModule())
+        val modules = createAppModule().toMutableList()
+        modules.add(codeAuth)
+        modules(modules)
     }
 
 }
