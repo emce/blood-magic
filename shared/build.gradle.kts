@@ -188,7 +188,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         addManifestPlaceholders(
-            mapOf("oidcRedirectScheme" to "mobi.cwiklinski.bloodline")
+            mapOf("oidcRedirectScheme" to "bloodmagic")
         )
     }
     packaging {
