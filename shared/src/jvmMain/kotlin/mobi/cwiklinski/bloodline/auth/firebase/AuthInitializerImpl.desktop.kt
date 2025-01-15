@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
-import mobi.cwiklinski.bloodline.config.FirebaseConfig
+import mobi.cwiklinski.bloodline.config.AppConfig
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 
 actual class AuthenticationInitializerImpl actual constructor(
@@ -26,12 +26,12 @@ actual class AuthenticationInitializerImpl actual constructor(
                 initPersistence()
                 Firebase.initialize(
                     Context(), options = FirebaseOptions(
-                        applicationId = FirebaseConfig.FIREBASE_APP_ID,
-                        apiKey = FirebaseConfig.FIREBASE_ANDROID_API_KEY,
-                        databaseUrl = FirebaseConfig.FIREBASE_DATABASE_URL,
-                        storageBucket = FirebaseConfig.FIREBASE_STORAGE_BUCKET,
-                        projectId = FirebaseConfig.FIREBASE_PROJECT_ID,
-                        gcmSenderId = FirebaseConfig.FIREBASE_MESSAGING_SENDER_ID
+                        applicationId = AppConfig.FIREBASE_APP_ID,
+                        apiKey = AppConfig.FIREBASE_ANDROID_API_KEY,
+                        databaseUrl = AppConfig.FIREBASE_DATABASE_URL,
+                        storageBucket = AppConfig.FIREBASE_STORAGE_BUCKET,
+                        projectId = AppConfig.FIREBASE_PROJECT_ID,
+                        gcmSenderId = AppConfig.FIREBASE_MESSAGING_SENDER_ID
                     )
                 )
                 initialized = true

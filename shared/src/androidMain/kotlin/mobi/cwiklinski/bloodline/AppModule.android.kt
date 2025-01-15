@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.LazyModule
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import org.publicvalue.multiplatform.oidc.ExperimentalOpenIdConnect
 
 actual fun createAppModule(): List<Module> = buildList {
     add(platformModule)
@@ -24,6 +25,7 @@ actual fun createAppLazyModule(): List<LazyModule> = buildList {
     }
 }
 
+@OptIn(ExperimentalOpenIdConnect::class)
 val platformModule = module {
     factory<CoroutineDispatcher> { Dispatchers.Main }
     factory<CoroutineScope> { CoroutineScope(Dispatchers.Main) }

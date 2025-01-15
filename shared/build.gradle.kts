@@ -111,6 +111,8 @@ kotlin {
             // Libraries
             implementation(libs.libraries)
             implementation(libs.libraries.ui)
+            // OIDC
+            implementation(libs.oidc.appsupport)
         }
 
         commonTest.dependencies {
@@ -140,16 +142,18 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.ktor.server.core)
+            implementation(libs.ktor.server.cio)
             // Skiko library incompatibility https://github.com/JetBrains/skiko/issues/983
             // implementation(libs.androidx.ui.desktop)
-            implementation(libs.google.api.client)
-            implementation(libs.google.api.client.gson)
-            implementation(libs.google.oauth.client)
             implementation(libs.androidx.datastore.core.okio.jvm)
+            implementation(libs.oidc.ktor)
+            implementation(libs.slf4j.simple)
         }
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.oidc.ktor)
         }
 
         task("testClasses")
@@ -176,13 +180,16 @@ android {
 
     val versionCodeString = getCurrentVersion()
     val versionCodeNumber = versionCodeString.split(".").last().toInt()
-        defaultConfig {
+    defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = versionCodeNumber
         versionName = versionCodeString
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        addManifestPlaceholders(
+            mapOf("oidcRedirectScheme" to "mobi.cwiklinski.bloodline")
+        )
     }
     packaging {
         resources {
@@ -314,7 +321,7 @@ aboutLibraries {
 }
 
 buildConfig {
-    className("FirebaseConfig")
+    className("AppConfig")
     packageName("mobi.cwiklinski.bloodline.config")
     useKotlinOutput { internalVisibility = true }
 
@@ -327,7 +334,12 @@ buildConfig {
     val firebaseDatabaseUrl = properties["firebaseDatabaseUrl"].toString()
     val androidClientId = properties["googleAndroidClientId"].toString()
     val iosClientId = properties["googleIosClientId"].toString()
-    val webClientId = properties["googleClientId"].toString()
+    val googleClientId = properties["googleClientId"].toString()
+    val googleClientSecret = properties["googleClientSecret"].toString()
+    val facebookClientId = properties["facebookClientId"].toString()
+    val facebookClientSecret = properties["facebookClientSecret"].toString()
+    val appleClientId = properties["appleClientId"].toString()
+    val appleClientSecret = properties["appleClientSecret"].toString()
 
     buildConfigField("String", "FIREBASE_ANDROID_API_KEY", firebaseAndroidApiKey)
     buildConfigField("String", "FIREBASE_IOS_API_KEY", firebaseIosApiKey)
@@ -338,7 +350,12 @@ buildConfig {
     buildConfigField("String", "FIREBASE_DATABASE_URL", firebaseDatabaseUrl)
     buildConfigField("String", "ANDROID_CLIENT_ID", androidClientId)
     buildConfigField("String", "IOS_CLIENT_ID", iosClientId)
-    buildConfigField("String", "WEB_CLIENT_ID", webClientId)
+    buildConfigField("String", "GOOGLE_CLIENT_ID", googleClientId)
+    buildConfigField("String", "GOOGLE_CLIENT_SECRET", googleClientSecret)
+    buildConfigField("String", "FACEBOOK_CLIENT_ID", facebookClientId)
+    buildConfigField("String", "FACEBOOK_CLIENT_SECRET", facebookClientSecret)
+    buildConfigField("String", "APPLE_CLIENT_ID", appleClientId)
+    buildConfigField("String", "APPLE_CLIENT_SECRET", appleClientSecret)
 }
 
 afterEvaluate {

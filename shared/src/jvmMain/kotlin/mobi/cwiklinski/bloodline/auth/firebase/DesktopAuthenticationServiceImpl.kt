@@ -1,112 +1,154 @@
 package mobi.cwiklinski.bloodline.auth.firebase
 
-import com.google.api.client.auth.oauth2.Credential
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets
-import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
-import com.google.api.client.json.gson.GsonFactory
-import com.google.api.client.util.store.DataStoreFactory
-import com.google.api.client.util.store.FileDataStoreFactory
+import co.touchlab.kermit.Logger
+import dev.gitlive.firebase.auth.FacebookAuthProvider
 import dev.gitlive.firebase.auth.GoogleAuthProvider
+import dev.gitlive.firebase.auth.OAuthProvider
+import io.ktor.http.Url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.withContext
+import mobi.cwiklinski.bloodline.auth.api.AppleConfiguration
 import mobi.cwiklinski.bloodline.auth.api.AuthError
 import mobi.cwiklinski.bloodline.auth.api.AuthResult
-import mobi.cwiklinski.bloodline.common.Either
-import mobi.cwiklinski.bloodline.common.event.Events
-import mobi.cwiklinski.bloodline.common.manager.CallbackManager
-import mobi.cwiklinski.bloodline.storage.api.StorageService
-import java.io.File
-import java.io.InputStreamReader
+import mobi.cwiklinski.bloodline.auth.api.FacebookConfiguration
+import mobi.cwiklinski.bloodline.auth.api.GoogleConfiguration
+import mobi.cwiklinski.bloodline.auth.api.getOauthClient
+import org.publicvalue.multiplatform.oidc.OpenIdConnectClient
+import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
+import org.publicvalue.multiplatform.oidc.appsupport.openInBrowser
+import org.publicvalue.multiplatform.oidc.appsupport.webserver.Webserver
+import org.publicvalue.multiplatform.oidc.flows.AuthCodeResponse
+import org.publicvalue.multiplatform.oidc.flows.CodeAuthFlow
+import org.publicvalue.multiplatform.oidc.types.AuthCodeRequest
 
+@Suppress("UNREACHABLE_CODE")
 class DesktopAuthenticationServiceImpl(
     coroutineScope: CoroutineScope,
-    private val storageService: StorageService,
-    private val server: AuthServer,
-    private val callbackManager: CallbackManager
-) :
-    AuthenticationServiceImpl(coroutineScope) {
+    private val authFlowFactory: CodeAuthFlowFactory
+) : AuthenticationServiceImpl(coroutineScope) {
 
-        private val authCodeKey = ":authCode"
-        private val clientSecretsFile = "./client_secrets.json"
-        private val dataStoreDir = File("tokens")
-        private val dataStoreFactory: DataStoreFactory = FileDataStoreFactory(dataStoreDir)
-        private val scopes =
-            mutableListOf(
-                "https://www.googleapis.com/auth/userinfo.email",
-                "https://www.googleapis.com/auth/userinfo.profile"
-            )
-        private val jsonFactory = GsonFactory.getDefaultInstance()
+    private val redirectUrl = "https://bloodline.cwiklinski.mobi/auth"
 
 
     override fun loginWithGoogle() = callbackFlow {
-        val authCode = storageService.getString(authCodeKey, "")
-        val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
-        val clientSecrets =
-            GoogleClientSecrets.load(
-                jsonFactory,
-                InputStreamReader(File(clientSecretsFile).inputStream())
-            )
-
-        // Build flow and trigger user authorization request
-        val flow = GoogleAuthorizationCodeFlow.Builder(
-            httpTransport, jsonFactory, clientSecrets, scopes
-        )
-            .setDataStoreFactory(dataStoreFactory)
-            .setAccessType("offline")
-            .build()
-
-
-        if (authCode.isEmpty()) {
-            val authorizationUrl: String =
-                flow.newAuthorizationUrl()
-                    .setRedirectUri("urn:ietf:wg:oauth:2.0:oob")
-                    .setScopes(listOf("openid", "profile", "email"))
-                    .build()
-            callbackManager.postEvent(Events.OpenBrowser(java.net.URI(authorizationUrl).toString()))
-        } else {
-            val tokenResponse: GoogleTokenResponse =
-                flow.newTokenRequest(authCode).setRedirectUri("urn:ietf:wg:oauth:2.0:oob").execute()
-            val credential: Credential = flow.createAndStoreCredential(tokenResponse, "user")
-            withContext(Dispatchers.Main) {
-                when (val authResponse = server.authRequest(authCode = credential.accessToken)) {
-                    is Either.Left -> {
-                        storageService.storeString(authCodeKey, authResponse.value)
-                        when (val profileResponse = server.profileGetRequest(authResponse.value)) {
-                            is Either.Left -> {
-                                val authCredential = GoogleAuthProvider
-                                    .credential(
-                                        profileResponse.value,
-                                        null
-                                    )
-                                firebaseAuth.signInWithCredential(authCredential)
-                                    .user != null
-                            }
-                            is Either.Right -> {
-                                trySend(AuthResult.Failure(AuthError.GOOGLE_AUTH_ERROR))
-                            }
-                        }
-                    }
-                    is Either.Right -> {
-                        trySend(AuthResult.Failure(AuthError.GOOGLE_AUTH_ERROR))
-                    }
+        try {
+            trySend(AuthResult.Failure(AuthError.NOT_IMPLEMENTED))
+            throw NotImplementedError()
+            val client = getOauthClient(GoogleConfiguration(redirectUri = redirectUrl))
+            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken(
+                configureAuthUrl = {
+                    parameters.remove("client_secret")
                 }
+            )
+            val authCredential = GoogleAuthProvider
+                .credential(
+                    newTokens.id_token,
+                    newTokens.access_token
+                )
+            if (firebaseAuth.signInWithCredential(authCredential)
+                    .user != null) {
+                trySend(AuthResult.Success())
+            } else {
+                trySend(AuthResult.Failure(AuthError.GOOGLE_AUTH_ERROR))
             }
+        } catch (e: NotImplementedError) {
+            trySend(AuthResult.Failure(AuthError.NOT_IMPLEMENTED))
+        } catch (e: Exception) {
+            Logger.e("Login by Google", throwable = e)
+            trySend(AuthResult.Failure(AuthError.GOOGLE_AUTH_ERROR))
         }
         awaitClose { }
     }
 
     override fun loginWithFacebook() = callbackFlow {
-        trySend(AuthResult.Failure(AuthError.NOT_IMPLEMENTED))
+        try {
+            throw NotImplementedError()
+            val client = getOauthClient(FacebookConfiguration(redirectUri = redirectUrl))
+            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken()
+            val authCredential = FacebookAuthProvider
+                .credential(
+                    newTokens.access_token
+                )
+            if (firebaseAuth.signInWithCredential(authCredential)
+                    .user != null) {
+                trySend(AuthResult.Success())
+            } else {
+                trySend(AuthResult.Failure(AuthError.FACEBOOK_AUTH_ERROR))
+            }
+        } catch (e: NotImplementedError) {
+            trySend(AuthResult.Failure(AuthError.NOT_IMPLEMENTED))
+        } catch (e: Exception) {
+            Logger.e("Login by Facebook", throwable = e)
+            trySend(AuthResult.Failure(AuthError.FACEBOOK_AUTH_ERROR))
+        }
         awaitClose { }
     }
 
     override fun loginWithApple() = callbackFlow {
-        trySend(AuthResult.Failure(AuthError.NOT_IMPLEMENTED))
+        try {
+            throw NotImplementedError()
+            trySend(AuthResult.Failure(AuthError.NOT_IMPLEMENTED))
+            val client = getOauthClient(AppleConfiguration(redirectUri = redirectUrl))
+            val newTokens = authFlowFactory.createAuthFlow(client).getAccessToken()
+            val authCredential = OAuthProvider.credential(
+                    providerId = "apple.com",
+                    newTokens.access_token,
+                    newTokens.id_token,
+                )
+            if (firebaseAuth.signInWithCredential(authCredential)
+                    .user != null) {
+                trySend(AuthResult.Success())
+            } else {
+                trySend(AuthResult.Failure(AuthError.APPLE_AUTH_ERROR))
+            }
+        } catch (e: NotImplementedError) {
+            trySend(AuthResult.Failure(AuthError.NOT_IMPLEMENTED))
+        } catch (e: Exception) {
+            Logger.e("Login by Apple", throwable = e)
+            trySend(AuthResult.Failure(AuthError.APPLE_AUTH_ERROR))
+        }
         awaitClose { }
+    }
+}
+
+class DesktopCodeAuthFlowFactory(
+    private val webserverProvider: () -> Webserver = { AuthServer() }
+): CodeAuthFlowFactory {
+    override fun createAuthFlow(client: OpenIdConnectClient): PlatformCodeAuthFlow {
+        return PlatformCodeAuthFlow(client, webserverProvider = webserverProvider)
+    }
+}
+
+class PlatformCodeAuthFlow(
+    client: OpenIdConnectClient,
+    private val webserverProvider: () -> Webserver = { AuthServer() },
+    private val openUrl: (Url) -> Unit = { it.openInBrowser() }
+) : CodeAuthFlow(client) {
+    companion object {
+        const val PORT = 8080
+        const val REDIRECT_PATH = "/redirect"
+    }
+
+    override suspend fun getAuthorizationCode(request: AuthCodeRequest): AuthCodeResponse {
+
+        val webserver = webserverProvider()
+
+        val response =
+            withContext(Dispatchers.IO) {
+                async {
+                    openUrl(request.url)
+                    val response = webserver.startAndWaitForRedirect(PORT, REDIRECT_PATH)
+                    webserver.stop()
+                    response
+                }.await()
+            }
+
+        return AuthCodeResponse.success(
+            response
+        )
     }
 }
