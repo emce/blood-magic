@@ -11,7 +11,6 @@ import android.os.Build
 import android.os.PersistableBundle
 import android.provider.Settings
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
@@ -19,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
-import androidx.fragment.app.FragmentActivity
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.idShare
 import org.jetbrains.compose.resources.stringResource
@@ -28,20 +26,17 @@ import java.io.File
 @Composable
 actual fun rememberPlatformManager(): PlatformManager {
     val context = LocalContext.current
-    val activity = LocalContext.current as? FragmentActivity
     val shareId: String = stringResource(Res.string.idShare)
 
     return remember {
-        PlatformManager(context, activity, shareId)
+        PlatformManager(context, shareId)
     }
 }
 
 actual class PlatformManager(
-    val context: Context,
-    val activity: FragmentActivity?,
-    val shareId: String
+    private val context: Context,
+    private val shareId: String
 ) {
-    private var isWindowSecure: Boolean = false
 
     actual fun openToast(content: String): Boolean {
         Toast.makeText(context, content, Toast.LENGTH_SHORT).show()
@@ -70,7 +65,6 @@ actual class PlatformManager(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     actual fun copyToClipboard(content: String, label: String?, isSensitive: Boolean): Boolean {
         (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
             ClipData.newPlainText(label ?: "Green", content).apply {
@@ -135,6 +129,6 @@ actual class PlatformManager(
     }
 
     actual fun enableLocationService() {
-        activity?.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
     }
 }
