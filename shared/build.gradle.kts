@@ -57,6 +57,9 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
+            export("io.github.kalinjul.kotlin.multiplatform:oidc-appsupport")
+            export("io.github.kalinjul.kotlin.multiplatform:oidc-tokenstore")
+            export("io.github.kalinjul.kotlin.multiplatform:oidc-core")
             baseName = "BloodMagic"
             isStatic = true
         }
@@ -258,7 +261,7 @@ compose.desktop {
                 "Application for keeping records of donations for Honorary Blood Donors in Poland"
             copyright = "© 2016 mobiGEEK Michal Cwiklinski. All rights reserved."
             outputBaseDir.set(layout.buildDirectory.asFile.get().resolve("release"))
-            targetFormats(TargetFormat.Deb, TargetFormat.Msi, TargetFormat.Pkg, TargetFormat.Dmg)
+            targetFormats(TargetFormat.Pkg)
 
 
             macOS {
