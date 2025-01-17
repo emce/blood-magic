@@ -50,7 +50,7 @@ jobs:
           appleClientSecret="${{ secrets.APPLE_CLIENT_SECRET }}"
           githubToken="${{ secrets.GH_TOKEN }}"
           ' > local.properties
-          echo "${{ secrets.FIREBASE_PLIST }}" > iosApp/GoogleService-Info.plist
+          echo "${{ secrets.FIREBASE_PLIST }}" > iosApp/iosApp/GoogleService-Info.plist
         env:
           FIREBASE_PLIST: ${{ secrets.FIREBASE_PLIST }}
 
