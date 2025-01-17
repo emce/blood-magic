@@ -13,17 +13,21 @@ if [ $# -gt 0 ] ; then
     case $1 in
         android)
           git tag $VERSION-android
+          git push origin main
           git push origin $VERSION-android
           ;;
         ios)
           git tag $VERSION-ios
+          git push origin main
           git push origin $VERSION-ios
           ;;
         desktop)
           git tag $VERSION-desktop
+          git push origin main
           git push origin $VERSION-desktop
           ;;
         all)
+          git push origin main
           git tag $VERSION-android
           git push origin $VERSION-android
           git tag $VERSION-ios
