@@ -34,7 +34,7 @@ jobs:
           firebaseStorageBucket="${{ secrets.FIREBASE_STORAGE_BUCKET }}"
           firebaseProjectId="${{ secrets.FIREBASE_PROJECT_ID }}"
           firebaseDatabaseUrl="${{ secrets.FIREBASE_DATABASE_URL }}"
-          bloodlineReleaseKeystore=shared/release.keystore
+          bloodlineReleaseKeystore=./release.keystore
           bloodlineReleasePassword=${{ secrets.KEYSTORE_KEY_PASSWORD }}
           bloodlineReleaseAlias=${{ secrets.KEYSTORE_KEY_ALIAS }}
           googleAndroidClientId="${{ secrets.GOOGLE_ANDROID_CLIENT_ID }}"
@@ -47,8 +47,8 @@ jobs:
           appleClientSecret="${{ secrets.APPLE_CLIENT_SECRET }}"
           githubToken="${{ secrets.GH_TOKEN }}"
           ' > local.properties
-          echo "${{ secrets.FIREBASE_JSON }}" > shared/google-services.json.b64
-          base64 -d -i shared/google-services.json.b64 > shared/google-services.json
+          echo "${{ secrets.FIREBASE_JSON }}" > google-services.json.b64
+          base64 -d -i google-services.json.b64 > shared/google-services.json
 
       - name: Create Google Play Config file
         run: |
