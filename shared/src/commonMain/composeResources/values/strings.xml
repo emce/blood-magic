@@ -126,7 +126,7 @@
     <string name="homeCarouselBadge2Subtitle">Srebrny\nOrder</string>
     <string name="homeCarouselBadge3Title">Należy się</string>
     <string name="homeCarouselBadge3Subtitle">Złoty\nOrder</string>
-    <string name="homeCarouselBadgeFinalTitle">Gratulacje! Posiadasz</string>
+    <string name="homeCarouselBadgeFinalTitle">Należy się</string>
     <string name="homeCarouselBadgeFinalSubtitle">Platynowy\nOrder</string>
     <string name="homeNextDonationReadyTitle">To jest Magia!</string>
     <string name="homeNextDonationReadySubtitle">Pobór Pełnych Kropelek jest już MOŻLIWY</string>
@@ -134,8 +134,8 @@
 
     // NOTIFICATIONS
     <string name="notificationsTitle">Nowinki! Nowinki!</string>
-    <string name="notificationsUnreadTabTitle">Świeże Nowinki</string>
-    <string name="notificationsReadTabTitle">Dawne Nowinki</string>
+    <string name="notificationsUnreadTabTitle">Świeże</string>
+    <string name="notificationsReadTabTitle">Dawne</string>
     <string name="notificationsMarkAsRead">Oznacz jako dawne</string>
     <string name="notificationsMarkAllAsRead">Oznacz Wszystkie jako dawne</string>
     <string name="notificationsTypeStandard">Ważność normalna</string>
@@ -212,7 +212,7 @@
     <string name="donationsDeleteTitle">Usunięcie zapisanych Kropelek</string>
     <string name="donationsDeleteMessage">Zapisane Kropelki zostaną bezpowrotnie usunięte!\nCzy chcesz kontynuować?</string>
     <string name="donationsDeleteError">Wystąpił błąd przy usuwaniu Kropelek.</string>
-    <string name="donationsShare">Kolejne Magiczne Kropelki poleciały! %s zainkasował całe %p Kropelek!</string>
+    <string name="donationsShare">Kolejne Magiczne Kropelki poleciały! %p zainkasował całe %s Kropelek!\n\n%l</string>
     <string name="donationsDeleteConfirmationTitle">Magiczne Kropelki zniknęły...</string>
     <string name="donationsDeleteConfirmationMessage">To znak, że trzeba zdobyć nowe!</string>
 
@@ -228,7 +228,7 @@
     // SETTINGS
     <string name="settingsTitle">Schematy</string>
     <string name="settingsDefaultCenterLabel">Domyślne Miejsce Kropelkowania</string>
-    <string name="settingsStartingLabel">Początkowa wartość dla sumy Kropelek (ml)</string>
+    <string name="settingsStartingLabel">Początkowa wartość dla Kropelek (ml)</string>
     <string name="settingsSexLabel">Płeć</string>
     <string name="settingsReminderLabel">Powiadomienia o możliwości kropelkowania</string>
     <string name="settingsSubmitButton">Zapisz Schematy</string>
@@ -258,4 +258,6 @@
     - iOS [App Store](https://apps.apple.com/pl/app/blood-donor-diary/id1563904745?platform=iphone)
     - MacOS [Mac App Store](https://apps.apple.com/pl/app/blood-donor-diary/id1563904745?platform=mac)
     ]]></string>
+    <string name="android_link">https://magiakrwi.cwiklinski.mobi/android</string>
+    <string name="ios_link">https://magiakrwi.cwiklinski.mobi/ios</string>
 </resources>

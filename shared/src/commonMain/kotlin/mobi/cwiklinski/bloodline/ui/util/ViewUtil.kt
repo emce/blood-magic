@@ -30,13 +30,22 @@ import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.common.event.SideEffect
 import mobi.cwiklinski.bloodline.common.removeDiacritics
 import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.domain.model.Notification
+import mobi.cwiklinski.bloodline.getPlatform
 import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.android_link
+import mobi.cwiklinski.bloodline.resources.donationsShare
+import mobi.cwiklinski.bloodline.resources.ios_link
+import mobi.cwiklinski.bloodline.resources.liter
+import mobi.cwiklinski.bloodline.resources.milliliter
 import mobi.cwiklinski.bloodline.resources.monthGenitives
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.PlatformManager
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
+import mobi.cwiklinski.bloodline.ui.widget.capacity
 import org.jetbrains.compose.resources.stringArrayResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.currentKoinScope
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.emptyParametersHolder
@@ -194,4 +203,15 @@ fun HandleSideEffect(
 
 suspend fun shareText(platformManager: PlatformManager, text: String) =
     platformManager.shareText(content = text)
+
+@Composable
+fun getShareText(donation: Donation): String {
+    val link = stringResource(if (getPlatform().name.startsWith("Android")) Res.string.android_link else Res.string.ios_link)
+    val milliliter = stringResource(Res.string.milliliter)
+    val liter = stringResource(Res.string.liter)
+    return stringResource(Res.string.donationsShare)
+        .replace("%s", donation.amount.capacity(milliliter, liter))
+        .replace("%p", donation.center.name)
+        .replace("%l", link)
+}
 

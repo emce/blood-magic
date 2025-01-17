@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.isMobile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.centerAddress
 import mobi.cwiklinski.bloodline.resources.centerContact
@@ -78,6 +79,13 @@ fun CenterView(center: Center, modifier: Modifier = Modifier, onSiteClick: ((lin
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
+                    if (isMobile()) {
+                        Text(
+                            center.name,
+                            style = contentTitle(),
+                            modifier = Modifier.padding(vertical = 10.dp)
+                        )
+                    }
                     RemoteImage(
                         modifier = Modifier
                             .weight(0.3f)

@@ -34,25 +34,22 @@ import mobi.cwiklinski.bloodline.getDonationGridSize
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationsDeleteConfirmationMessage
 import mobi.cwiklinski.bloodline.resources.donationsDeleteConfirmationTitle
-import mobi.cwiklinski.bloodline.resources.donationsShare
 import mobi.cwiklinski.bloodline.resources.donationsTitle
 import mobi.cwiklinski.bloodline.resources.homeSectionHistoryAddDonationEmptyText
 import mobi.cwiklinski.bloodline.resources.homeSectionHistoryEmptyText
-import mobi.cwiklinski.bloodline.resources.liter
-import mobi.cwiklinski.bloodline.resources.milliliter
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.contentTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.util.NavigationItem
+import mobi.cwiklinski.bloodline.ui.util.getShareText
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.DesktopNavigationTitleScaffold
 import mobi.cwiklinski.bloodline.ui.widget.DonationDeleteDialog
 import mobi.cwiklinski.bloodline.ui.widget.DonationItem
 import mobi.cwiklinski.bloodline.ui.widget.MobileLandscapeNavigationTitleLayout
 import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationTitleLayout
-import mobi.cwiklinski.bloodline.ui.widget.capacity
 import org.jetbrains.compose.resources.stringResource
 
 @Parcelize
@@ -221,8 +218,6 @@ fun DonationsView(
     onShare: (String) -> Unit,
     onDonationAdd: () -> Unit
 ) {
-    val milliliter = stringResource(Res.string.milliliter)
-    val liter = stringResource(Res.string.liter)
     Box(
         modifier = Modifier.fillMaxSize().padding(paddingValues)
             .background(
@@ -239,9 +234,7 @@ fun DonationsView(
         ) {
             if (donations.isNotEmpty()) {
                 items(donations) { donation ->
-                    val shareText = stringResource(Res.string.donationsShare)
-                        .replace("%s", donation.amount.capacity(milliliter, liter))
-                        .replace("%p", donation.center.name)
+                    val shareText = getShareText(donation)
                     DonationItem(
                         donation = donation,
                         onEdit = onEdit,

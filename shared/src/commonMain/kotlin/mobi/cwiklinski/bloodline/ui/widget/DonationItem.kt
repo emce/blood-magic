@@ -36,7 +36,6 @@ import mobi.cwiklinski.bloodline.resources.donationPlasma
 import mobi.cwiklinski.bloodline.resources.donationPlatelets
 import mobi.cwiklinski.bloodline.resources.donationsDelete
 import mobi.cwiklinski.bloodline.resources.donationsEdit
-import mobi.cwiklinski.bloodline.resources.donationsShare
 import mobi.cwiklinski.bloodline.resources.icon_delete
 import mobi.cwiklinski.bloodline.resources.icon_donation_alert
 import mobi.cwiklinski.bloodline.resources.icon_edit
@@ -51,6 +50,7 @@ import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTrailing
+import mobi.cwiklinski.bloodline.ui.util.getShareText
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -124,8 +124,7 @@ fun DonationItem(
                     }
                 )
                 // Share icon
-                val shareText = stringResource(Res.string.donationsShare)
-                    .replace("%s", donation.type.getGenitive())
+                val shareText = getShareText(donation)
                 Box(
                     modifier = Modifier.size(if (isMobile()) 40.dp else 0.dp).clickable {
                         onShare.invoke(shareText)

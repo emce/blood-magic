@@ -134,8 +134,8 @@
 
     // NOTIFICATIONS
     <string name="notificationsTitle">News! News!</string>
-    <string name="notificationsUnreadTabTitle">Fresh News</string>
-    <string name="notificationsReadTabTitle">Old News</string>
+    <string name="notificationsUnreadTabTitle">Fresh</string>
+    <string name="notificationsReadTabTitle">Old</string>
     <string name="notificationsMarkAsRead">Mark as Old</string>
     <string name="notificationsMarkAllAsRead">Mark All as Old</string>
     <string name="notificationsTypeStandard">Normal Importance</string>
@@ -213,7 +213,7 @@
     <string name="donationsDeleteTitle">Delete saved Droplets</string>
     <string name="donationsDeleteMessage">Saved Droplets will be permanently deleted!\nDo you want to continue?</string>
     <string name="donationsDeleteError">An error occurred while deleting Droplets.</string>
-    <string name="donationsShare">More Magic Droplets have flown! %s has collected all %p Droplets!</string>
+    <string name="donationsShare">More Magic Droplets have flown! %p has collected whole %s of Droplets!\n\n%l</string>
     <string name="donationsDeleteConfirmationTitle">Magic Droplets are gone...</string>
     <string name="donationsDeleteConfirmationMessage">That's a sign you need to get new ones!</string>
 
@@ -260,5 +260,7 @@
      - iOS [App Store](https://apps.apple.com/app/blood-donor-diary/id1563904745?platform=iphone)
      - MacOS [Mac App Store](https://apps.apple.com/app/blood-donor-diary/id1563904745?platform=mac)
      ]]></string>
+    <string name="android_link">https://bloodmagic.cwiklinski.mobi/android</string>
+    <string name="ios_link">https://bloodmagic.cwiklinski.mobi/ios</string>
 
 </resources>
