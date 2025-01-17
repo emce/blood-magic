@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.common.isAfter
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.common.removeDiacritics
 import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.data.api.CenterService
@@ -16,7 +17,6 @@ import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
-import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 
 class DonationScreenModel(
     callbackManager: CallbackManager,
@@ -74,7 +74,7 @@ class DonationScreenModel(
         date: LocalDate,
         center: Center?,
         type: Int,
-        hemoglobin: Int = 0,
+        hemoglobin: Float = 0f,
         systolic: Int = 0,
         diastolic: Int = 0,
         disqualification: Boolean = false
@@ -92,7 +92,7 @@ class DonationScreenModel(
                         date,
                         DonationType.byType(type),
                         amount,
-                        hemoglobin.toFloat(),
+                        hemoglobin,
                         systolic,
                         diastolic,
                         disqualification,
@@ -120,7 +120,7 @@ class DonationScreenModel(
         date: LocalDate,
         center: Center,
         type: Int,
-        hemoglobin: Int = 0,
+        hemoglobin: Float = 0f,
         systolic: Int = 0,
         diastolic: Int = 0,
         disqualification: Boolean
@@ -138,7 +138,7 @@ class DonationScreenModel(
                     date,
                     DonationType.byType(type),
                     amount,
-                    hemoglobin.toFloat(),
+                    hemoglobin,
                     systolic,
                     diastolic,
                     disqualification,
@@ -209,6 +209,8 @@ enum class DonationError {
     AMOUNT_ERROR,
     CENTER_ERROR,
     TYPE_ERROR,
+    PRESSURE_ERROR,
+    HEMOGLOBIN_ERROR,
     DELETION_ERROR,
     DONATION_ERROR
 }

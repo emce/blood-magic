@@ -192,6 +192,9 @@
     <string name="donationNewDateLabel">Data kropelkowania</string>
     <string name="donationNewDateSubmit">Wybierz datę</string>
     <string name="donationNewDateError">Data nie może być datą przyszłą</string>
+    <string name="donationNewHemoglobin">Ferrum Vitae (g/dl)</string>
+    <string name="donationNewPressure">Przepływ Kropelek (mmHg)</string>
+    <string name="donationNewPressureLabel">Przepływ Burzy / Przepływ Spokoju</string>
     <string name="donationNewError">Wystąpił błąd przy zapisie Kropelek</string>
     <string name="donationNewCenterLabel">Miejsce Kropelkowania</string>
     <string name="donationNewCenterError">Nie wybrane zostało Miejsce Kropelkowania!</string>

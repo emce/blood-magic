@@ -58,7 +58,7 @@
     </string-array>
 
     // NAVIGATION
-    <string name="navHome">Where the Magic Is</string>
+    <string name="navHome">Where the Magic is...</string>
     <string name="navCenters">Drop Places</string>
     <string name="navDonations">Magic Droplets</string>
     <string name="navProfile">Your Character</string>
@@ -193,6 +193,9 @@
     <string name="donationNewDateLabel">Droplet Date</string>
     <string name="donationNewDateSubmit">Select Date</string>
     <string name="donationNewDateError">Date cannot be a future date</string>
+    <string name="donationNewHemoglobin">Ferrum Vitae (g/dl)</string>
+    <string name="donationNewPressure">Droplets flow (mmHg)</string>
+    <string name="donationNewPressureLabel">Storm flow / Calm flow</string>
     <string name="donationNewError">An error occurred while saving Droplets</string>
     <string name="donationNewCenterLabel">Drip Location</string>
     <string name="donationNewCenterError">Drip Location not selected!</string>

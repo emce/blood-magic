@@ -3,23 +3,14 @@ package mobi.cwiklinski.bloodline.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.SelectableDates
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.ScreenKey
@@ -39,40 +29,26 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import co.touchlab.kermit.Logger
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.isAfter
+import mobi.cwiklinski.bloodline.common.isValidPressure
 import mobi.cwiklinski.bloodline.common.toMillis
 import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
 import mobi.cwiklinski.bloodline.data.Parcelize
-import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationEditInformationMessage
 import mobi.cwiklinski.bloodline.resources.donationEditSubmit
 import mobi.cwiklinski.bloodline.resources.donationEditTitle
-import mobi.cwiklinski.bloodline.resources.donationNewAmountLabel
-import mobi.cwiklinski.bloodline.resources.donationNewCenterLabel
-import mobi.cwiklinski.bloodline.resources.donationNewDateLabel
-import mobi.cwiklinski.bloodline.resources.donationNewDisqualificationLabel
 import mobi.cwiklinski.bloodline.resources.donationNewInformationTitle
-import mobi.cwiklinski.bloodline.resources.donationNewTypeLabel
 import mobi.cwiklinski.bloodline.ui.model.DonationError
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
-import mobi.cwiklinski.bloodline.ui.widget.AutoCompleteTextView
-import mobi.cwiklinski.bloodline.ui.widget.CenterSelectItem
 import mobi.cwiklinski.bloodline.ui.widget.CloseButton
-import mobi.cwiklinski.bloodline.ui.widget.DateField
-import mobi.cwiklinski.bloodline.ui.widget.DonationTypeItem
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
 import mobi.cwiklinski.bloodline.ui.widget.MobileTitleBar
-import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
-import mobi.cwiklinski.bloodline.ui.widget.SelectView
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
-import mobi.cwiklinski.bloodline.ui.widget.getIcon
-import mobi.cwiklinski.bloodline.ui.widget.getName
 import mobi.cwiklinski.bloodline.ui.widget.toLocalDate
 import org.jetbrains.compose.resources.stringResource
 
@@ -124,8 +100,9 @@ class EditDonationScreen(
             )
         }
         var centerSelected by remember { mutableStateOf(donation.center) }
-        var amountLabel by remember { mutableStateOf(donation.amount.toString()) }
-        var amountValue by remember { mutableStateOf(donation.amount.toString()) }
+        var amountValue by remember { mutableStateOf(donation.amount) }
+        var pressure by remember { mutableStateOf(if (donation.systolic > 0 && donation.diastolic > 0) "${donation.systolic}/${donation.diastolic}" else "") }
+        var hemoglobinValue by remember { mutableStateOf(if (donation.hemoglobin > 0f) donation.hemoglobin.toString() else "") }
         var disqualificationValue by remember { mutableStateOf(if (donation.disqualification) 1 else 0) }
         centerSelected = donation.center
         centerLabel = donation.center.toSelection()
@@ -156,12 +133,32 @@ class EditDonationScreen(
                     if (state != DonationState.Saving) {
                         SubmitButton(
                             onClick = {
+                                var systolic = 0
+                                var diastolic = 0
+                                var hemoglobin = 0f
+                                try {
+                                    if (pressure.isValidPressure()) {
+                                        val pressures = pressure.split("/")
+                                        systolic = pressures.first().toInt()
+                                        diastolic = pressures.last().toInt()
+                                    }
+                                } catch (e: NumberFormatException) {
+                                    Logger.e("Parsing pressure", e)
+                                }
+                                try {
+                                    hemoglobin = hemoglobinValue.toFloat()
+                                } catch (e: NumberFormatException) {
+                                    Logger.e("Parsing hemoglobin", e)
+                                }
                                 screenModel.updateDonation(
                                     id = donation.id,
                                     amount = amountValue.toInt(),
                                     date = calendarState.selectedDateMillis.toLocalDate(),
                                     center = centerSelected,
                                     type = donationType.type,
+                                    hemoglobin = hemoglobin,
+                                    systolic = systolic,
+                                    diastolic = diastolic,
                                     disqualification = disqualificationValue == 1
                                 )
                             },
@@ -173,123 +170,65 @@ class EditDonationScreen(
                 }
                 Spacer(modifier = Modifier.height(40.dp))
             },
-
-            ) {
-            Column(
-                modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(20.dp)
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Bottom,
-            ) {
-                SelectView(
-                    modifier = Modifier.fillMaxWidth(),
-                    itemList = DonationType.entries.toList(),
-                    text = donationType.getName(),
-                    label = stringResource(Res.string.donationNewTypeLabel),
-                    icon = donationType.getIcon(),
-                    onSelectionChanged = {
-                        donationType = it
-                    },
-                    enabled = state != DonationState.Saving,
-                ) {
-                    DonationTypeItem(it)
+        ) {
+            NewDonationForm(
+                formEnabled = state != DonationState.Saving,
+                donationType = donationType,
+                onDonationTypeChanged = { newType ->
+                    donationType = newType
+                },
+                centerList = centerList,
+                centerSearch = centerSearch,
+                onCenterSearchChanged = { updatedSymbol ->
+                    screenModel.clearError()
+                    screenModel.query.value = updatedSymbol
+                },
+                onCenterSearchCleared = {
+                    screenModel.query.value = ""
+                },
+                onCenterSearchChosen = {
+                    centerSelected = it
+                    centerLabel = it.toSelection()
+                    screenModel.query.value = it.toSelection()
+                    focusManager.clearFocus()
+                },
+                centerErrorMessage = if (state is DonationState.Error && (state as DonationState.Error).error == DonationError.CENTER_ERROR) getError(
+                    (state as DonationState.Error).error
+                ) else null,
+                amount = amountValue.toString(),
+                onAmountChanged = {
+                    screenModel.clearError()
+                    try {
+                        val amount = it.toInt()
+                        amountValue = amount
+                    } catch (e: Exception) {
+                        Logger.d("Error parsing amount for: $it")
+                    }
+                },
+                isAmountError = state is DonationState.Error && (state as DonationState.Error).error == DonationError.AMOUNT_ERROR,
+                amountErrorMessage = getError(DonationError.AMOUNT_ERROR),
+                calendarState = calendarState,
+                isDateError = state is DonationState.Error && (state as DonationState.Error).error == DonationError.DATE_IN_FUTURE_ERROR,
+                dateErrorMessage = getError(DonationError.DATE_IN_FUTURE_ERROR),
+                hemoglobin = hemoglobinValue.toString(),
+                onHemoglobinChanged = {
+                    screenModel.clearError()
+                    hemoglobinValue = it
+                },
+                isHemoglobinError = state is DonationState.Error && (state as DonationState.Error).error == DonationError.HEMOGLOBIN_ERROR,
+                hemoglobinErrorMessage = getError(DonationError.HEMOGLOBIN_ERROR),
+                pressure = pressure,
+                onPressureChanged = {
+                    screenModel.clearError()
+                    pressure = it
+                },
+                isPressureError = state is DonationState.Error && (state as DonationState.Error).error == DonationError.PRESSURE_ERROR,
+                pressureErrorMessage = getError(DonationError.PRESSURE_ERROR),
+                disqualification = disqualificationValue,
+                onDisqualificationChanged = { isChecked ->
+                    disqualificationValue = if (isChecked) 1 else 0
                 }
-                AutoCompleteTextView(
-                    modifier = Modifier.fillMaxWidth(),
-                    query = centerSearch,
-                    enabled = state != DonationState.Saving,
-                    queryLabel = stringResource(Res.string.donationNewCenterLabel),
-                    onQueryChanged = { updatedSymbol ->
-                        screenModel.clearError()
-                        screenModel.query.value = updatedSymbol
-                    },
-                    predictions = centerList,
-                    onClearClick = {
-                        screenModel.query.value = ""
-                    },
-                    onItemClick = {
-                        centerSelected = it
-                        centerLabel = it.toSelection()
-                        screenModel.query.value = it.toSelection()
-                        focusManager.clearFocus()
-                    },
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.clearFocus()
-                        }
-                    ),
-                    errorMessage = if (state is DonationState.Error && (state as DonationState.Error).error == DonationError.CENTER_ERROR) getError(
-                        (state as DonationState.Error).error
-                    ) else null
-                ) { center, index ->
-                    CenterSelectItem(
-                        center = center,
-                        previous = if (index > 0) centerList[index - 1] else null
-                    )
-                }
-                OutlinedInput(
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    text = amountLabel,
-                    label = stringResource(Res.string.donationNewAmountLabel),
-                    error = state is DonationState.Error && (state as DonationState.Error).error == DonationError.AMOUNT_ERROR,
-                    errorMessage = getError(DonationError.AMOUNT_ERROR),
-                    onValueChanged = {
-                        screenModel.clearError()
-                        try {
-                            val amount = it.toInt()
-                            amountLabel = amount.toString()
-                            amountValue = amount.toString()
-                        } catch (e: Exception) {
-                            Logger.d("Error parsing amount for: $it")
-                        }
-                    },
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.clearFocus()
-                        }
-                    )
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                Text(
-                    stringResource(Res.string.donationNewDateLabel),
-                    style = contentText()
-                )
-                DateField(
-                    modifier = Modifier.fillMaxWidth(),
-                    calendarState,
-                    error = state is DonationState.Error && (state as DonationState.Error).error == DonationError.DATE_IN_FUTURE_ERROR,
-                    errorMessage = getError(DonationError.DATE_IN_FUTURE_ERROR),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.clearFocus()
-                        }
-                    ),
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Checkbox(
-                        checked = disqualificationValue == 1,
-                        onCheckedChange = { isChecked ->
-                            disqualificationValue = if (isChecked) 1 else 0
-                        },
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = AppThemeColors.rose1,
-                            uncheckedColor = AppThemeColors.rose3
-                        )
-                    )
-                    Text(
-                        stringResource(Res.string.donationNewDisqualificationLabel),
-                        style = contentText(),
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-                Spacer(modifier = Modifier.height(105.dp))
-            }
+            )
         }
     }
 }

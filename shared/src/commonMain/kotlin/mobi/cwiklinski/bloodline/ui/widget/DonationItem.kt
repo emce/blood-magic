@@ -1,13 +1,13 @@
 package mobi.cwiklinski.bloodline.ui.widget
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,6 +31,8 @@ import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.isMobile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationFullBlood
+import mobi.cwiklinski.bloodline.resources.donationNewHemoglobin
+import mobi.cwiklinski.bloodline.resources.donationNewPressureLabel
 import mobi.cwiklinski.bloodline.resources.donationPacked
 import mobi.cwiklinski.bloodline.resources.donationPlasma
 import mobi.cwiklinski.bloodline.resources.donationPlatelets
@@ -39,6 +41,8 @@ import mobi.cwiklinski.bloodline.resources.donationsEdit
 import mobi.cwiklinski.bloodline.resources.icon_delete
 import mobi.cwiklinski.bloodline.resources.icon_donation_alert
 import mobi.cwiklinski.bloodline.resources.icon_edit
+import mobi.cwiklinski.bloodline.resources.icon_ferrum
+import mobi.cwiklinski.bloodline.resources.icon_flow
 import mobi.cwiklinski.bloodline.resources.icon_full_blood
 import mobi.cwiklinski.bloodline.resources.icon_packed
 import mobi.cwiklinski.bloodline.resources.icon_plasma
@@ -93,7 +97,6 @@ fun DonationItem(
     Box(
         modifier = modifier
             .padding(vertical = 10.dp, horizontal = 20.dp)
-            .background(if (donation.disqualification) AppThemeColors.grey3 else AppThemeColors.background)
     ) {
         Card(
             shape = RoundedCornerShape(4.dp),
@@ -101,7 +104,7 @@ fun DonationItem(
                 defaultElevation = 4.dp
             ),
             colors = CardDefaults.cardColors(
-                containerColor = AppThemeColors.white
+                containerColor = if (donation.disqualification) AppThemeColors.greyish else AppThemeColors.white
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -110,7 +113,7 @@ fun DonationItem(
                     .fillMaxWidth()
                     .padding(defaultPadding)
             ) {
-                val (typeIcon, title, subtitle, amount, share, center, actions) = createRefs()
+                val (typeIcon, title, subtitle, amount, share, center, addtional, actions) = createRefs()
                 // Type icon
                 Image(
                     painterResource(icon),
@@ -195,16 +198,56 @@ fun DonationItem(
                         "${donation.center.name}, ${donation.center.getFullAddress()}",
                         style = itemSubTitle(),
                         textAlign = TextAlign.Start,
+                        minLines = if (isMobile()) 1 else 2,
                         modifier = Modifier
                             .padding(horizontal = defaultPadding)
                             .constrainAs(center) {
                                 top.linkTo(typeIcon.bottom, 10.dp)
                                 start.linkTo(parent.start)
-                                bottom.linkTo(actions.top)
                                 end.linkTo(parent.end)
                                 width = Dimension.fillToConstraints
                             }
                     )
+                    // Additional info
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .padding(horizontal = defaultPadding)
+                            .constrainAs(addtional) {
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                top.linkTo(center.bottom, 10.dp)
+                                bottom.linkTo(actions.top)
+                                width = Dimension.fillToConstraints
+                            }
+                    ) {
+                        if (donation.hemoglobin > 0f) {
+                            Image(
+                                painterResource(Res.drawable.icon_ferrum),
+                                contentDescription = stringResource(Res.string.donationNewHemoglobin),
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Text(
+                                "${donation.hemoglobin} g/dl",
+                                style = itemSubTitle(),
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(20.dp).weight(1f))
+                        if (donation.systolic > 0 && donation.diastolic > 0) {
+                            Image(
+                                painterResource(Res.drawable.icon_flow),
+                                contentDescription = stringResource(Res.string.donationNewPressureLabel),
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Text(
+                                "${donation.systolic}/${donation.diastolic} mmHg",
+                                style = itemSubTitle(),
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
+                        }
+                    }
                 }
                 // Actions
                 Row(

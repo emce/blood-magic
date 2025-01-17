@@ -86,6 +86,11 @@ fun String.isValidEmail(): Boolean {
     return this.matches(emailRegex)
 }
 
+fun String.isValidPressure(): Boolean {
+    val pressureRegex = "^[0-9]{2,3}/[0-9]{2,3}$".toRegex()
+    return this.matches(pressureRegex)
+}
+
 fun String.isValidUrl(): Boolean {
     val urlRegex = """^(https?|ftp)://[\w\-]+(\.[\w\-]+)+[/#?]?.*$""".toRegex()
     return urlRegex.matches(this)
