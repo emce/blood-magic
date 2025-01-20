@@ -76,7 +76,6 @@ kotlin {
             implementation(libs.constraintlayout.compose.multiplatform)
             implementation(libs.androidx.compose.material3.window)
             implementation(libs.androidx.lifecycle.compose)
-            implementation(libs.kermit)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
@@ -104,8 +103,6 @@ kotlin {
             implementation(libs.voyager.transitions)
             // https://github.com/adrielcafe/voyager/issues/515
             // implementation(libs.voyager.koin)
-            implementation(libs.markdown)
-            implementation(libs.markdown.m3)
             // Firebase
             implementation(libs.google.firebase.common)
             implementation(libs.google.firebase.auth)
@@ -116,6 +113,11 @@ kotlin {
             implementation(libs.libraries.ui)
             // OIDC
             implementation(libs.oidc.appsupport)
+            // Others
+            implementation(libs.markdown)
+            implementation(libs.markdown.m3)
+            implementation(libs.kermit)
+            implementation(libs.alarmee)
         }
 
         commonTest.dependencies {

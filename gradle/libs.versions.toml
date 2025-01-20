@@ -22,7 +22,7 @@ kotlinx-datetime = "0.6.1"
 buildConfig = "5.5.1"
 constraintlayout-compose-multiplatform = "0.5.0"
 google-firebase-kmm = "2.1.0"
-firebase = "33.7.0"
+firebase = "33.8.0"
 credentials = "1.3.0"
 identity = "1.1.1"
 playServicesAuth = "21.3.0"
@@ -37,6 +37,7 @@ lifecycle-viewmodel-compose = "2.8.4"
 libraries = "11.4.0"
 oidc = "0.12.1"
 slf4j = "2.0.16"
+alarmee = "1.6.0"
 
 [libraries]
 
@@ -65,7 +66,6 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-coroutines = { module = "io.insert-koin:koin-core-coroutines", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
-koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin" }
 
 coil = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
@@ -107,6 +107,7 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 markdown = { module = "com.mikepenz:multiplatform-markdown-renderer", version.ref="markdown" }
 markdown-m3 = { module = "com.mikepenz:multiplatform-markdown-renderer-m3", version.ref = "markdown" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+alarmee = { group = "io.github.tweener", name = "alarmee", version.ref = "alarmee" }
 
 [plugins]
 

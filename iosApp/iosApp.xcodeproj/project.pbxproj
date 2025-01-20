@@ -329,7 +329,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 805;
+				CURRENT_PROJECT_VERSION = 817;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = BA38377JQU;
 				ENABLE_PREVIEWS = YES;
@@ -344,7 +344,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.4.805;
+				MARKETING_VERSION = 5.5.817;
 				PRODUCT_BUNDLE_IDENTIFIER = mobi.cwiklinski.bloodline;
 				PRODUCT_NAME = "blood-magic";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -361,7 +361,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 805;
+				CURRENT_PROJECT_VERSION = 817;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = BA38377JQU;
 				ENABLE_PREVIEWS = YES;
@@ -376,7 +376,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.4.805;
+				MARKETING_VERSION = 5.5.817;
 				PRODUCT_BUNDLE_IDENTIFIER = mobi.cwiklinski.bloodline;
 				PRODUCT_NAME = "blood-magic";
 				SWIFT_EMIT_LOC_STRINGS = YES;
