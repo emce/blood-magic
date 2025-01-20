@@ -13,7 +13,7 @@ import com.mmk.kmpnotifier.permission.permissionUtil
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import mobi.cwiklinski.bloodline.di.initKoin
+import mobi.cwiklinski.bloodline.di.Dependencies
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.dsl.module
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val codeAuthFlowFactory = AndroidCodeAuthFlowFactory(useWebView = false).also { it.registerActivity(this@MainActivity) }
-        initKoin(
+        Dependencies.initKoin(
             platformModule = platformModule,
             koinApplication = {
                 androidContext(this@MainActivity)

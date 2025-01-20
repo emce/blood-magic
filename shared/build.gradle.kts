@@ -118,7 +118,6 @@ kotlin {
             implementation(libs.markdown)
             implementation(libs.markdown.m3)
             implementation(libs.kermit)
-            implementation(libs.alarmee)
             api(libs.notifier)
         }
 
@@ -131,7 +130,7 @@ kotlin {
         }
 
         androidMain {
-            resources.srcDirs("sshared/commonMain/composeResources")
+            resources.srcDirs("shared/commonMain/composeResources")
             dependencies {
                 implementation(compose.uiTooling)
                 implementation(libs.androidx.activityCompose)

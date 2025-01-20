@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import mobi.cwiklinski.bloodline.auth.firebase.DesktopCodeAuthFlowFactory
-import mobi.cwiklinski.bloodline.di.initKoin
+import mobi.cwiklinski.bloodline.di.Dependencies
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.splash_logo
@@ -40,7 +40,7 @@ fun main() = application {
         focusable = true,
         onKeyEvent = { false }
     ) {
-        initKoin(
+        Dependencies.initKoin(
             platformModule = platformModule,
             customModules = listOf(
                 module {

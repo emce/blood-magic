@@ -36,7 +36,6 @@ lifecycle-viewmodel-compose = "2.8.4"
 libraries = "11.4.0"
 oidc = "0.12.1"
 slf4j = "2.0.16"
-alarmee = "1.6.0"
 notifier = "1.4.0"
 
 [libraries]
@@ -106,7 +105,6 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 markdown = { module = "com.mikepenz:multiplatform-markdown-renderer", version.ref="markdown" }
 markdown-m3 = { module = "com.mikepenz:multiplatform-markdown-renderer-m3", version.ref = "markdown" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
-alarmee = { module = "io.github.tweener:alarmee", version.ref = "alarmee" }
 notifier = { module = "io.github.mirzemehdi:kmpnotifier", version.ref = "notifier" }
 
 [plugins]
