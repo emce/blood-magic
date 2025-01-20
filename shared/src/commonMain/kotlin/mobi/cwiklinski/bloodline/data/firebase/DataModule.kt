@@ -9,6 +9,7 @@ import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.data.api.DonationService
 import mobi.cwiklinski.bloodline.data.api.NotificationService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
+import mobi.cwiklinski.bloodline.data.api.TokenService
 import org.koin.dsl.module
 
 fun createDataModule() = buildList {
@@ -26,5 +27,6 @@ fun createDataModule() = buildList {
         single<DonationService> { DonationServiceImplementation(get(), get()) }
         single<ProfileService> { ProfileServiceImplementation(get(), get(), get()) }
         single<NotificationService> { NotificationServiceImplementation(get()) }
+        single<TokenService> { TokenServiceImplementation(get(), get()) }
     })
 }

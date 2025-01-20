@@ -125,15 +125,12 @@ class HomeScreen : AppScreen() {
                     NavigationItem.LIST -> {
                         navigator.push(DonationsScreen())
                     }
-
                     NavigationItem.CENTER -> {
                         navigator.push(CentersScreen())
                     }
-
                     NavigationItem.PROFILE -> {
                         navigator.push(ProfileScreen())
                     }
-
                     else -> {
                         navigator.push(HomeScreen())
                     }

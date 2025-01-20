@@ -6,5 +6,5 @@ import org.koin.dsl.module
 
 actual fun createAuthenticationModule() = module {
     single<AuthenticationService> { IosAuthenticationServiceImpl(get(), get()) }
-    single<AuthenticationInitializer> { AuthenticationInitializerImpl(get(), get()) }
+    single<AuthenticationInitializer> { IosAuthenticationInitializer() }
 }

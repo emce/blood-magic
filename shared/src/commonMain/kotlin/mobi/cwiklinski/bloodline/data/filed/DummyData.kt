@@ -10,6 +10,7 @@ import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.domain.model.Profile
+import mobi.cwiklinski.bloodline.domain.model.Token
 
 object DummyData {
 
@@ -3553,6 +3554,10 @@ object DummyData {
             "Polska"
         )
     )
+
+    val TOKENS = (1..10).map {
+        Token(generateString(12), LocalDate((2001..2020).random(), (1..12).random(), (1..28).random()))
+    }
 
     val ACCOUNTS = listOf(
         "user1@domain.com" to "8d9f7asd98&9",

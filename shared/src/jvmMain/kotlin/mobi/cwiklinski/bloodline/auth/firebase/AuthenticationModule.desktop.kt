@@ -6,5 +6,5 @@ import org.koin.dsl.module
 
 actual fun createAuthenticationModule() = module {
     single<AuthenticationService> { DesktopAuthenticationServiceImpl(get(), get()) }
-    single<AuthenticationInitializer> { AuthenticationInitializerImpl(get(), get()) }
+    single<AuthenticationInitializer> { DesktopAuthenticationInitializer(get(), get()) }
 }

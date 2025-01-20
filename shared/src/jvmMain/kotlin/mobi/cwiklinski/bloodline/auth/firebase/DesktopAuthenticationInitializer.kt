@@ -13,7 +13,7 @@ import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
 import mobi.cwiklinski.bloodline.config.AppConfig
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 
-actual class AuthenticationInitializerImpl actual constructor(
+class DesktopAuthenticationInitializer(
     val storageService: StorageService,
     val coroutineScope: CoroutineScope
 ) : AuthenticationInitializer {
@@ -42,8 +42,8 @@ actual class AuthenticationInitializerImpl actual constructor(
     }
 
     private fun initDebug() {
-        FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform(){
-            val storage = mutableMapOf<String,String>()
+        FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
+            val storage = mutableMapOf<String, String>()
             override fun clear(key: String) {
                 storage.remove(key)
             }
