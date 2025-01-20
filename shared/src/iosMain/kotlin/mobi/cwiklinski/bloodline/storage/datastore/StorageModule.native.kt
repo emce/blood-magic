@@ -14,7 +14,7 @@ import platform.Foundation.NSURL
 import platform.Foundation.NSUserDomainMask
 
 @OptIn(ExperimentalForeignApi::class)
-actual val commonModule: Module = module {
+actual val storageModule: Module = module {
     single<DataStore<Preferences>> {
         PreferenceDataStoreFactory.createWithPath {
             val documentDirectory: NSURL? =

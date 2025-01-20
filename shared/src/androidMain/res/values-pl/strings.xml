@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Magia Krwi</string>
+    <string name="channel_notifications">Świeże Nowinki</string>
+    <string name="channel_donations">Kropelkowanie</string>
 </resources>

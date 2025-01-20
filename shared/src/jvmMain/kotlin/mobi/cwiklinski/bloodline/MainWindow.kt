@@ -7,15 +7,28 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import com.mmk.kmpnotifier.notification.NotifierManager
+import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import mobi.cwiklinski.bloodline.auth.firebase.DesktopCodeAuthFlowFactory
+import mobi.cwiklinski.bloodline.di.initKoin
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.splash_logo
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.core.context.startKoin
-import org.koin.core.lazyModules
+import org.koin.dsl.module
+import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
 
 fun main() = application {
+    NotifierManager.initialize(
+        NotificationPlatformConfiguration.Desktop(
+            showPushNotification = true,
+            notificationIconPath = "composeResources/mobi.cwiklinski.bloodline.resources/drawable/ic_notification.png"
+        )
+    )
     Window(
         onCloseRequest = ::exitApplication,
         state = WindowState(
@@ -27,10 +40,19 @@ fun main() = application {
         focusable = true,
         onKeyEvent = { false }
     ) {
-        startKoin {
-            modules(createAppModule())
-            lazyModules(createAppLazyModule())
-        }
+        initKoin(
+            platformModule = platformModule,
+            customModules = listOf(
+                module {
+                    single<CodeAuthFlowFactory> { DesktopCodeAuthFlowFactory() }
+                }
+            )
+        )
         MagicApp()
     }
+}
+
+val platformModule = module {
+    factory<CoroutineDispatcher> { Dispatchers.IO }
+    factory<CoroutineScope> { CoroutineScope(Dispatchers.IO) }
 }

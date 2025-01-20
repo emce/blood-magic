@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Blood Magic</string>
+    <string name="channel_notifications">Fresh News</string>
+    <string name="channel_donations">Drip</string>
 </resources>

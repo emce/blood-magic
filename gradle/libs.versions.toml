@@ -28,7 +28,6 @@ identity = "1.1.1"
 playServicesAuth = "21.3.0"
 voyager = "1.1.0-beta03"
 uiDesktop = "1.7.0"
-accompanist = "0.37.0"
 turbine = "1.2.0"
 markdown = "0.27.0"
 play-publisher = "3.12.1"
@@ -38,6 +37,7 @@ libraries = "11.4.0"
 oidc = "0.12.1"
 slf4j = "2.0.16"
 alarmee = "1.6.0"
+notifier = "1.4.0"
 
 [libraries]
 
@@ -102,12 +102,12 @@ oidc-appsupport = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-appsu
 oidc-ktor = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-ktor", version.ref = "oidc" }
 
 androidx-ui-desktop = { group = "androidx.compose.ui", name = "ui-desktop", version.ref = "uiDesktop" }
-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 markdown = { module = "com.mikepenz:multiplatform-markdown-renderer", version.ref="markdown" }
 markdown-m3 = { module = "com.mikepenz:multiplatform-markdown-renderer-m3", version.ref = "markdown" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
-alarmee = { group = "io.github.tweener", name = "alarmee", version.ref = "alarmee" }
+alarmee = { module = "io.github.tweener:alarmee", version.ref = "alarmee" }
+notifier = { module = "io.github.mirzemehdi:kmpnotifier", version.ref = "notifier" }
 
 [plugins]
 

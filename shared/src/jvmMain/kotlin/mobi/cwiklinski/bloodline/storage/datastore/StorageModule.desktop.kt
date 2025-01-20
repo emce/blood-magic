@@ -9,7 +9,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import java.io.File
 
-actual val commonModule: Module = module {
+actual val storageModule: Module = module {
     single<DataStore<Preferences>> {
         PreferenceDataStoreFactory.createWithPath {
             File(

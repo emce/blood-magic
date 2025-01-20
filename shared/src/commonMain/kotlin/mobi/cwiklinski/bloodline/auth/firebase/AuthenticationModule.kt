@@ -1,6 +1,6 @@
 package mobi.cwiklinski.bloodline.auth.firebase
 
-import org.koin.core.module.LazyModule
+import org.koin.core.module.Module
 
 
-expect fun createAuthenticationModule(): LazyModule
+expect fun createAuthenticationModule(): Module

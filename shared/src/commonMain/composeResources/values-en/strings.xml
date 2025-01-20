@@ -114,7 +114,7 @@
     <string name="homeSectionNextDonationEmptyTitle">Next Donation</string>
     <string name="homeSectionNextDonationEmptyText">Information about the next possible drip date will appear here.</string>
     <string name="homeSectionHistoryEmptyTitle">Drip History</string>
-    <string name="homeSectionHistoryEmptyText">Droplets donated by you will appear here.</string>
+    <string name="homeSectionHistoryEmptyText">Donated droplets will appear here.</string>
     <string name="homeSectionHistoryAddDonationEmptyText">Add a portion of Droplets.</string>
     <string name="homeDonationHistory">Droplet History</string>
     <string name="homeCarouselAmountTitle">%d donations</string>

@@ -11,6 +11,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
       FirebaseApp.configure()
+
+      NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(
+                  showPushNotification: true,
+                  askNotificationPermissionOnStart: true)
+            )
       return true
   }
 
@@ -25,6 +30,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         return false
   }
 
+  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+  }
+
+  func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) async -> UIBackgroundFetchResult {
+        NotifierManager.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
+        return UIBackgroundFetchResult.newData
+   }
+
 }
 
 @main
@@ -33,7 +47,7 @@ struct iOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     init() {
-            HelperKt.doInitKoin()
+            HelperKt.doStartKoin()
         }
 
     var body: some Scene {

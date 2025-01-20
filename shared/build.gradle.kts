@@ -60,6 +60,7 @@ kotlin {
             export("io.github.kalinjul.kotlin.multiplatform:oidc-appsupport")
             export("io.github.kalinjul.kotlin.multiplatform:oidc-tokenstore")
             export("io.github.kalinjul.kotlin.multiplatform:oidc-core")
+            export("io.github.mirzemehdi:kmpnotifier")
             baseName = "BloodMagic"
             isStatic = true
         }
@@ -118,6 +119,7 @@ kotlin {
             implementation(libs.markdown.m3)
             implementation(libs.kermit)
             implementation(libs.alarmee)
+            api(libs.notifier)
         }
 
         commonTest.dependencies {
@@ -128,19 +130,22 @@ kotlin {
             implementation(libs.turbine)
         }
 
-        androidMain.dependencies {
-            implementation(compose.uiTooling)
-            implementation(libs.androidx.activityCompose)
-            implementation(libs.androidx.browser)
-            implementation(libs.androidx.credentials)
-            implementation(libs.androidx.credentials.play.services)
-            implementation(libs.google.identity)
-            implementation(libs.play.services.auth)
-            implementation(libs.androidx.datastore.preferences)
-            implementation(libs.kotlinx.coroutines.android)
-            implementation(libs.ktor.client.okhttp)
-            implementation(libs.koin.android)
-            implementation(libs.koin.androidx.compose)
+        androidMain {
+            resources.srcDirs("sshared/commonMain/composeResources")
+            dependencies {
+                implementation(compose.uiTooling)
+                implementation(libs.androidx.activityCompose)
+                implementation(libs.androidx.browser)
+                implementation(libs.androidx.credentials)
+                implementation(libs.androidx.credentials.play.services)
+                implementation(libs.google.identity)
+                implementation(libs.play.services.auth)
+                implementation(libs.androidx.datastore.preferences)
+                implementation(libs.kotlinx.coroutines.android)
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.koin.android)
+                implementation(libs.koin.androidx.compose)
+            }
         }
 
         jvmMain.dependencies {
@@ -227,6 +232,10 @@ android {
         compose = true
     }
 
+    sourceSets {
+
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get().toInt())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get().toInt())
@@ -235,7 +244,7 @@ android {
 
 play {
     serviceAccountCredentials.set(file("../play_config.json"))
-    track.set("internal")
+    track.set("beta")
 }
 
 compose.resources {
