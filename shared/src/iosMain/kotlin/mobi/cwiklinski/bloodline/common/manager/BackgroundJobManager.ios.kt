@@ -4,7 +4,6 @@ import co.touchlab.kermit.Logger
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ObjCObjectVar
 import kotlinx.cinterop.memScoped
-import kotlinx.coroutines.*
 import platform.BackgroundTasks.*
 import platform.Foundation.*
 import kotlinx.cinterop.*
@@ -49,6 +48,7 @@ actual class WorkConstraints constructor(
     val requiresNetwork: Boolean,
     val requiresCharging: Boolean
 ) {
+    @Suppress("unused")
     actual fun meetsRequirements(): Boolean {
         val isConnected = true
         val isCharging = true

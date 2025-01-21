@@ -8,6 +8,7 @@ interface SideEffectWithEvent : SideEffect {
 
 class SideEffects : SideEffect {
     class DeleteAccountEffect : SideEffect
+    @Suppress("unused")
     open class SideEffectEvent(override val event: Event) : SideEffectWithEvent
     data class OpenBrowser(val url: String, val openSystemBrowser: Boolean = false) : SideEffect
     data class SnackBar(val text: String) : SideEffect

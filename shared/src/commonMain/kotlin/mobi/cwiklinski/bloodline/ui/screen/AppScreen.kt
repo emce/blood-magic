@@ -24,7 +24,6 @@ import mobi.cwiklinski.bloodline.ui.widget.InformationDialog
 import mobi.cwiklinski.bloodline.ui.widget.InformationDialogData
 import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
 
 abstract class AppScreen : Screen, KoinComponent, Parcelable {
 

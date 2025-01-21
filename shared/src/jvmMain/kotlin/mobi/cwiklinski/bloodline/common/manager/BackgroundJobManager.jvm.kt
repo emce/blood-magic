@@ -15,6 +15,7 @@ actual class BackgroundJobManager {
 }
 
 actual class WorkConstraints {
+    @Suppress("unused")
     actual fun meetsRequirements() = false
 
     actual companion object {

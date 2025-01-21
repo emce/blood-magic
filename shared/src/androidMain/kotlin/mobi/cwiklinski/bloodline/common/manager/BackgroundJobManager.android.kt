@@ -67,6 +67,7 @@ actual class WorkConstraints(
     val requiresNetwork: Boolean,
     val requiresCharging: Boolean
 ) {
+    @Suppress("unused")
     actual fun meetsRequirements(): Boolean {
         val isConnected = true
         val isCharging = true

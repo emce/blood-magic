@@ -82,7 +82,6 @@ import mobi.cwiklinski.bloodline.ui.model.SetupScreenModel
 import mobi.cwiklinski.bloodline.ui.model.SetupState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.topBarColors
-import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle

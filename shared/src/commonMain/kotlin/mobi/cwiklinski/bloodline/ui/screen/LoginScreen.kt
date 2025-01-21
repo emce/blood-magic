@@ -44,10 +44,7 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.datetime.Clock
-import kotlinx.serialization.Serializable
-import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
 import mobi.cwiklinski.bloodline.common.event.SideEffects
-import mobi.cwiklinski.bloodline.common.manager.AppManager
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.getScreenWidth
@@ -76,7 +73,6 @@ import mobi.cwiklinski.bloodline.ui.model.LoginError
 import mobi.cwiklinski.bloodline.ui.model.LoginScreenModel
 import mobi.cwiklinski.bloodline.ui.model.LoginState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.contentText
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTrailing
@@ -196,12 +192,6 @@ class LoginScreen(override val key: ScreenKey = Clock.System.now().toString()) :
                 }
             }
             .joinToString("\n")
-}
-
-@Serializable
-sealed class LoginScreenState {
-    data object Idle : LoginScreenState()
-    data class Info(val text: String) : LoginScreenState()
 }
 
 @Composable
