@@ -52,7 +52,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import co.touchlab.kermit.Logger
+import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.isValidEmail
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
@@ -101,6 +103,7 @@ import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import mobi.cwiklinski.bloodline.ui.widget.getAvatarName
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 
 @Parcelize
 class SetupScreen : AppScreen() {
@@ -319,6 +322,9 @@ fun SetupView(
     val cellHeight = 120.dp
     val cellPadding = 10.dp
     val scrollState = rememberScrollState()
+    if (isError) {
+        koinInject<CallbackManager>().postSideEffect(SideEffects.ErrorSnackBar(errorText.invoke(error)))
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -545,15 +551,6 @@ fun SetupView(
                 colors = AppThemeColors.switchColors()
             )
             Break()
-            if (isError) {
-                Text(
-                    errorText(error),
-                    style = contentText().copy(
-                        color = AppThemeColors.red2
-                    )
-                )
-                Spacer(Modifier.height(30.dp))
-            }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween

@@ -35,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
@@ -74,6 +76,7 @@ import mobi.cwiklinski.bloodline.ui.widget.SocialIconButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 
 @Parcelize
 class RegisterScreen : AppScreen() {
@@ -216,6 +219,9 @@ fun RegisterView(
     errorText: String = "",
     isRegistering: Boolean = false
 ) {
+    if (isError) {
+        koinInject<CallbackManager>().postSideEffect(SideEffects.ErrorSnackBar(errorText))
+    }
     Column(
         Modifier.wrapContentHeight().fillMaxWidth().background(
             AppThemeColors.authGradient
@@ -296,15 +302,6 @@ fun RegisterView(
                 },
             )
             Spacer(Modifier.height(10.dp))
-            if (isError) {
-                Text(
-                    errorText,
-                    style = getTypography().bodyLarge.copy(
-                        color = AppThemeColors.red1
-                    )
-                )
-                Spacer(Modifier.height(10.dp))
-            }
             RichText(
                 stringResource(Res.string.registerTerms),
                 centered = true

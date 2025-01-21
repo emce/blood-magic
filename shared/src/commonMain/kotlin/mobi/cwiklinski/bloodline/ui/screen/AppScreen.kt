@@ -9,8 +9,10 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.LocalSnackBar
 import mobi.cwiklinski.bloodline.common.event.ScreenRoute
+import mobi.cwiklinski.bloodline.common.event.SideEffect
 import mobi.cwiklinski.bloodline.ui.util.HandleSideEffect
 import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
 import mobi.cwiklinski.bloodline.data.Parcelable
 import mobi.cwiklinski.bloodline.ui.util.shareText
@@ -20,7 +22,9 @@ import mobi.cwiklinski.bloodline.ui.util.RenderLayout
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.InformationDialog
 import mobi.cwiklinski.bloodline.ui.widget.InformationDialogData
+import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
 abstract class AppScreen : Screen, KoinComponent, Parcelable {
 
@@ -86,6 +90,12 @@ abstract class AppScreen : Screen, KoinComponent, Parcelable {
                         state.showSnackbar(snackBar.text)
                     }
                 }
+                is SideEffects.ErrorSnackBar -> {
+                    val snackBar = it
+                    screenModel.screenModelScope.launch {
+                        state.showSnackbar(snackBar.text)
+                    }
+                }
                 is SideEffects.InformationDialog -> {
                     showInformation.value = InformationDialogData(it.title, it.message)
                 }
@@ -111,5 +121,8 @@ abstract class AppScreen : Screen, KoinComponent, Parcelable {
             }
         }
     }
+
+    @Composable
+    fun sideEffect(effect: SideEffect) = koinInject<CallbackManager>().postSideEffect(effect)
 
 }

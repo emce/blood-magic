@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
@@ -52,6 +53,7 @@ import mobi.cwiklinski.bloodline.ui.widget.SecondaryButton
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 
 @Parcelize
 class ResetScreen : AppScreen() {
@@ -141,6 +143,9 @@ fun ResetView(
     errors: List<ResetError> = emptyList(),
     errorMessage: @Composable (List<ResetError>) -> String = { "" }
 ) {
+    if (errors.isNotEmpty()) {
+        koinInject<CallbackManager>().postSideEffect(SideEffects.ErrorSnackBar(errorMessage.invoke(errors)))
+    }
     Column(
         Modifier.fillMaxSize().background(
             AppThemeColors.authGradient
@@ -185,15 +190,6 @@ fun ResetView(
                 errorMessage = errorMessage(listOf(ResetError.EMAIL_ERROR))
             )
             Spacer(Modifier.height(10.dp))
-            if (errors.isNotEmpty()) {
-                Text(
-                    errorMessage(errors),
-                    style = getTypography().displaySmall.copy(
-                        color = AppThemeColors.red1
-                    )
-                )
-                Spacer(Modifier.height(30.dp))
-            }
             if (isResetting) {
                 FormProgress()
             } else {

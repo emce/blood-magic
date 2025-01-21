@@ -109,6 +109,7 @@ kotlin {
             implementation(libs.google.firebase.common)
             implementation(libs.google.firebase.auth)
             implementation(libs.google.firebase.database)
+            implementation(libs.google.firebase.messaging)
             implementation(project.dependencies.platform(libs.google.firebase.bom))
             // Libraries
             implementation(libs.libraries)

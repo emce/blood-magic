@@ -53,6 +53,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
@@ -109,6 +111,7 @@ import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 
 @Parcelize
 class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString()) :
@@ -444,6 +447,9 @@ fun ProfileView(
     val heroinGenitive = stringResource(Res.string.heroinGenitive)
     val hero = if (sex.isFemale()) heroinGenitive else heroGenitive
     val scrollState = rememberScrollState()
+    if (errors.isNotEmpty()) {
+        koinInject<CallbackManager>().postSideEffect(SideEffects.ErrorSnackBar(errorMessage.invoke(errors)))
+    }
     Column(
         modifier = Modifier.padding(paddingValues)
             .fillMaxSize()
@@ -653,15 +659,6 @@ fun ProfileView(
                 )
             }
             Break()
-            if (errors.isNotEmpty()) {
-                Text(
-                    errorMessage(errors),
-                    style = contentText().copy(
-                        color = AppThemeColors.red2
-                    )
-                )
-                Spacer(Modifier.height(30.dp))
-            }
             if (formEnabled) {
                 SubmitButton(
                     onClick = onProfileSave,

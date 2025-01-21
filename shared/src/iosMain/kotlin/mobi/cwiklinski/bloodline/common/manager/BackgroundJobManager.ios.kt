@@ -12,24 +12,6 @@ import kotlinx.cinterop.*
 actual class BackgroundJobManager {
     private val taskOperationMap = mutableMapOf<String, NSOperationQueue>()
 
-    @OptIn(DelicateCoroutinesApi::class)
-    actual fun enqueueUniqueWork(
-        taskId: String,
-        constraints: WorkConstraints,
-        task: suspend () -> Unit
-    ) {
-        BGTaskScheduler.sharedScheduler.registerForTaskWithIdentifier(
-            taskId, usingQueue = null
-        ) { bgTask ->
-            GlobalScope.launch {
-                if (constraints.meetsRequirements()) {
-                    task()
-                }
-                bgTask?.setTaskCompletedWithSuccess(true)
-            }
-        }
-    }
-
     @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
     actual fun enqueuePeriodicWork(
         taskId: String,
@@ -53,39 +35,12 @@ actual class BackgroundJobManager {
         }
     }
 
-    actual fun enqueueParallelTasks(
-        taskId: String,
-        tasks: List<suspend () -> Unit>,
-        onComplete: () -> Unit
-    ) {
-        val operationQueue = NSOperationQueue()
-        val coroutineScope = CoroutineScope(Dispatchers.Default)
-        tasks.forEach { task ->
-            operationQueue.addOperationWithBlock {
-                coroutineScope.launch {
-                    task()
-                }
-            }
-        }
-        operationQueue.addOperationWithBlock {
-            onComplete()
-        }
-        taskOperationMap[taskId] = operationQueue
-    }
-
     actual fun cancelTask(taskId: String) {
         val queue = taskOperationMap[taskId]
         if (queue != null) {
             queue.cancelAllOperations()
             taskOperationMap.remove(taskId)
         }
-    }
-
-    actual fun cancelAllTasks() {
-        taskOperationMap.forEach { (_, operationQueue) ->
-            operationQueue.cancelAllOperations()
-        }
-        taskOperationMap.clear()
     }
 
 }

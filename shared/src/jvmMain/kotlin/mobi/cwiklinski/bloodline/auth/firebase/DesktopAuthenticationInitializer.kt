@@ -41,27 +41,6 @@ class DesktopAuthenticationInitializer(
         }
     }
 
-    private fun initDebug() {
-        FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
-            val storage = mutableMapOf<String, String>()
-            override fun clear(key: String) {
-                storage.remove(key)
-            }
-
-            override fun log(msg: String) {
-                println(msg)
-            }
-
-            override fun retrieve(key: String): String? {
-                return storage[key]
-            }
-
-            override fun store(key: String, value: String) {
-                storage[key] = value
-            }
-        })
-    }
-
     private fun initPersistence() {
         FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
 

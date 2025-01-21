@@ -113,6 +113,3 @@ fun String.isValidUrl(): Boolean {
     val urlRegex = """^(https?|ftp)://[\w\-]+(\.[\w\-]+)+[/#?]?.*$""".toRegex()
     return urlRegex.matches(this)
 }
-
-fun CoroutineScope.launchUI(block: suspend CoroutineScope.() -> Unit): Job =
-    launch(Dispatchers.Main, block = block)

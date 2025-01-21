@@ -4,28 +4,14 @@ import android.content.Context
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import androidx.work.workDataOf
+import co.touchlab.kermit.Logger
 import java.util.concurrent.TimeUnit
 
 actual class BackgroundJobManager(private val workManager: WorkManager) {
-
-    actual fun enqueueUniqueWork(
-        taskId: String,
-        constraints: WorkConstraints,
-        task: suspend () -> Unit
-    ) {
-        val workRequest = OneTimeWorkRequestBuilder<TaskWorker>()
-            .setConstraints(toWorkConstraints(constraints))
-            .build()
-
-        workManager.enqueueUniqueWork(taskId, ExistingWorkPolicy.REPLACE, workRequest)
-    }
 
     actual fun enqueuePeriodicWork(
         taskId: String,
@@ -44,34 +30,8 @@ actual class BackgroundJobManager(private val workManager: WorkManager) {
         workManager.enqueueUniquePeriodicWork(taskId, ExistingPeriodicWorkPolicy.UPDATE, periodicWorkRequest)
     }
 
-    actual fun enqueueParallelTasks(
-        taskId: String,
-        tasks: List<suspend () -> Unit>,
-        onComplete: () -> Unit
-    ) {
-        val workRequests = List(tasks.size) { index ->
-            val taskData = workDataOf("TASK_ID" to "$taskId-task-$index")
-
-            OneTimeWorkRequestBuilder<TaskWorker>()
-                .setInputData(taskData)
-                .build()
-        }
-
-        val continuation = workManager.beginWith(workRequests)
-
-        continuation.enqueue()
-        continuation.then(
-            OneTimeWorkRequestBuilder<OnCompleteWorker>()
-                .build()
-        ).enqueue()
-    }
-
     actual fun cancelTask(taskId: String) {
         workManager.cancelUniqueWork(taskId)
-    }
-
-    actual fun cancelAllTasks() {
-        workManager.cancelAllWork()
     }
 
     private fun toWorkConstraints(constraints: WorkConstraints): Constraints {
@@ -95,21 +55,11 @@ class TaskWorker(
     override suspend fun doWork(): Result {
         val taskId = inputData.getString("TASK_ID") ?: return Result.failure()
         try {
+            Logger.d("Task $taskId executed")
             return Result.success()
         } catch (e: Exception) {
             return Result.failure()
         }
-    }
-}
-
-class OnCompleteWorker(
-    appContext: Context,
-    workerParams: WorkerParameters
-) : CoroutineWorker(appContext, workerParams) {
-
-    override suspend fun doWork(): Result {
-        println("All tasks completed")
-        return Result.success()
     }
 }
 

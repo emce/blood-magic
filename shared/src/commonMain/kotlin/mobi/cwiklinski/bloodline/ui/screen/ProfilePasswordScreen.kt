@@ -41,6 +41,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.common.event.SideEffects
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Profile
@@ -69,6 +71,7 @@ import mobi.cwiklinski.bloodline.ui.widget.ProfileModal
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 
 @Parcelize
 class ProfilePasswordScreen : AppProfileScreen() {
@@ -169,6 +172,9 @@ fun ChangePasswordView(
     errors: List<ProfileError> = emptyList()
 ) {
     val focusManager = LocalFocusManager.current
+    if (errors.isNotEmpty()) {
+        koinInject<CallbackManager>().postSideEffect(SideEffects.ErrorSnackBar(errorMessage.invoke(errors)))
+    }
     Column(
         modifier = Modifier.background(AppThemeColors.homeGradient)
     ) {
@@ -321,15 +327,6 @@ fun ChangePasswordView(
                     },
                 )
                 Spacer(Modifier.height(30.dp))
-                if (errors.isNotEmpty()) {
-                    Text(
-                        errorMessage(errors),
-                        style = getTypography().displaySmall.copy(
-                            color = AppThemeColors.red2
-                        )
-                    )
-                    Spacer(Modifier.height(30.dp))
-                }
                 if (isSaved) {
                     SubmitButton(
                         onClick = onClose,
