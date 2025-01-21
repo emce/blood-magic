@@ -23,5 +23,11 @@ class SideEffects : SideEffect {
         SideEffect
 
     data class ShareText(val text: String) : SideEffect
+
+    data class Redirect(val route: ScreenRoute) : SideEffect
 }
 
+enum class ScreenRoute {
+    UnreadNotification,
+    Donations
+}

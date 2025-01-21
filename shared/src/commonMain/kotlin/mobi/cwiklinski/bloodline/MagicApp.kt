@@ -16,6 +16,7 @@ import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.transitions.ScreenTransition
 import coil3.compose.setSingletonImageLoaderFactory
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
+import mobi.cwiklinski.bloodline.common.Job
 import mobi.cwiklinski.bloodline.common.manager.AppManager
 import mobi.cwiklinski.bloodline.ui.screen.SplashScreen
 import mobi.cwiklinski.bloodline.ui.theme.AppTheme
@@ -38,6 +39,8 @@ fun MagicApp() {
         }
         LaunchedEffect(true) {
             AppManager.onApplicationStart()
+            Job.runNotificationCheck()
+            Job.runPotentialDonationCheck()
         }
         AppTheme {
             KoinContext {

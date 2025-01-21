@@ -4,6 +4,7 @@ package mobi.cwiklinski.bloodline
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import mobi.cwiklinski.bloodline.common.manager.BackgroundJobManager
 import mobi.cwiklinski.bloodline.di.Dependencies
 import org.koin.dsl.module
 import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
@@ -23,4 +24,5 @@ fun startKoin() {
 val platformModule = module {
     factory<CoroutineDispatcher> { Dispatchers.Main }
     factory<CoroutineScope> { CoroutineScope(Dispatchers.Main) }
+    single<BackgroundJobManager> { BackgroundJobManager() }
 }

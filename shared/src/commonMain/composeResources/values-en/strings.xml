@@ -133,21 +133,25 @@
     <string name="homeNextDonationPendingTitle">Next possible Full Drops Collection (%s)</string>
 
     // NOTIFICATIONS
-    <string name="notificationsTitle">News! News!</string>
+    <string name="notificationsTitle">Newsies! Newsies!</string>
     <string name="notificationsUnreadTabTitle">Fresh</string>
     <string name="notificationsReadTabTitle">Old</string>
     <string name="notificationsMarkAsRead">Mark as Old</string>
     <string name="notificationsMarkAllAsRead">Mark All as Old</string>
     <string name="notificationsTypeStandard">Normal Importance</string>
     <string name="notificationsTypeUrgent">High Importance</string>
-    <string name="notificationsLocationDescription" >News Place</string>
-    <string name="notificationsNoUnreadInformation">No Fresh News</string>
-    <string name="notificationsNoReadInformation">No Old News</string>
+    <string name="notificationsLocationDescription" >Newsie Place</string>
+    <string name="notificationsNoUnreadInformation">No Fresh Newsies</string>
+    <string name="notificationsNoReadInformation">No Old Newsies</string>
     <string name="notificationsMarkAllAsReadTitle">Mark All as old</string>
-    <string name="notificationsMarkAllAsReadMessage">To mark All News as old, click the magic button **Mark**</string>
+    <string name="notificationsMarkAllAsReadMessage">To mark All Newsies as old, click the magic button **Mark**</string>
     <string name="notificationsMarkAllAsReadButton">Mark</string>
-
-    <string name="notificationsMarkAllAsReadConfirmation">All News has been marked as old!</string>
+    <string name="notificationsMarkAllAsReadConfirmation">All Newsies has been marked as old!</string>
+    <string name="notificationsUnreadTitle">Fresh Magic Newsies!</string>
+    <plurals name="notificationsUnreadMessage">
+        <item quantity="one">You still have 1 unreada Newsie!</item>
+        <item quantity="other">You still have %1$d unreada Newsies!</item>
+    </plurals>
 
     // PROFILES
     <string name="profileTitle">Your profile</string>

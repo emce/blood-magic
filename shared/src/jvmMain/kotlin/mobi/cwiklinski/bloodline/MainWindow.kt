@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import mobi.cwiklinski.bloodline.auth.firebase.DesktopCodeAuthFlowFactory
+import mobi.cwiklinski.bloodline.common.manager.BackgroundJobManager
 import mobi.cwiklinski.bloodline.di.Dependencies
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.appName
@@ -55,4 +56,5 @@ fun main() = application {
 val platformModule = module {
     factory<CoroutineDispatcher> { Dispatchers.IO }
     factory<CoroutineScope> { CoroutineScope(Dispatchers.IO) }
+    single<BackgroundJobManager> { BackgroundJobManager() }
 }

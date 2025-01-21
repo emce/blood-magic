@@ -147,6 +147,14 @@
     <string name="notificationsMarkAllAsReadMessage">Aby oznaczyć Wszystkie Nowinki jako dawne, kliknij magiczny przycisk **Oznacz**</string>
     <string name="notificationsMarkAllAsReadButton">Oznacz</string>
     <string name="notificationsMarkAllAsReadConfirmation">Wszystkie Nowinki zostały oznaczone jako dawne!</string>
+    <string name="notificationsUnreadTitle">Świeże Magiczne Nowinki</string>
+    <plurals name="notificationsUnreadMessage">
+        <item quantity="one">Masz ciągle 1 nieprzeczytaną Nowinkę!</item>
+        <item quantity="few">Masz ciągle %1$d nieprzeczytane Nowinki!</item>
+        <item quantity="many">Masz ciągle %1$d nieprzeczytanych Nowinek!</item>
+        <item quantity="other">Masz ciągle %1$d nieprzeczytanych Nowinek!</item>
+    </plurals>
+
 
     // PROFILE
     <string name="profileTitle">Twój profil</string>

@@ -1,4 +1,5 @@
 
+import com.mikepenz.aboutlibraries.plugin.DuplicateMode
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.internal.utils.localPropertiesFile
@@ -108,7 +109,6 @@ kotlin {
             implementation(libs.google.firebase.common)
             implementation(libs.google.firebase.auth)
             implementation(libs.google.firebase.database)
-            implementation(libs.google.firebase.messaging)
             implementation(project.dependencies.platform(libs.google.firebase.bom))
             // Libraries
             implementation(libs.libraries)
@@ -130,22 +130,21 @@ kotlin {
             implementation(libs.turbine)
         }
 
-        androidMain {
-            resources.srcDirs("shared/commonMain/composeResources")
-            dependencies {
-                implementation(compose.uiTooling)
-                implementation(libs.androidx.activityCompose)
-                implementation(libs.androidx.browser)
-                implementation(libs.androidx.credentials)
-                implementation(libs.androidx.credentials.play.services)
-                implementation(libs.google.identity)
-                implementation(libs.play.services.auth)
-                implementation(libs.androidx.datastore.preferences)
-                implementation(libs.kotlinx.coroutines.android)
-                implementation(libs.ktor.client.okhttp)
-                implementation(libs.koin.android)
-                implementation(libs.koin.androidx.compose)
-            }
+        androidMain.dependencies {
+            implementation(compose.uiTooling)
+            implementation(libs.androidx.activityCompose)
+            implementation(libs.androidx.browser)
+            implementation(libs.androidx.credentials)
+            implementation(libs.androidx.credentials.play.services)
+            implementation(libs.androidx.workmanager)
+            implementation(libs.google.identity)
+            implementation(libs.play.services.auth)
+            implementation(libs.androidx.datastore.preferences)
+            implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.koin.android.workmanager)
         }
 
         jvmMain.dependencies {
@@ -190,6 +189,7 @@ android {
 
     val versionCodeString = getCurrentVersion()
     val versionCodeNumber = versionCodeString.split(".").last().toInt()
+
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
@@ -232,10 +232,6 @@ android {
         compose = true
     }
 
-    sourceSets {
-
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get().toInt())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get().toInt())
@@ -244,7 +240,7 @@ android {
 
 play {
     serviceAccountCredentials.set(file("../play_config.json"))
-    track.set("beta")
+    track.set("production")
 }
 
 compose.resources {
@@ -330,7 +326,8 @@ compose.desktop {
 aboutLibraries {
     gitHubApiToken = properties["githubToken"].toString()
     includePlatform = false
-    duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+    duplicationMode = DuplicateMode.MERGE
+    registerAndroidTasks = false
     prettyPrint = true
 }
 

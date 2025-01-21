@@ -8,6 +8,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.LocalSnackBar
+import mobi.cwiklinski.bloodline.common.event.ScreenRoute
 import mobi.cwiklinski.bloodline.ui.util.HandleSideEffect
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
@@ -96,6 +97,16 @@ abstract class AppScreen : Screen, KoinComponent, Parcelable {
                 }
                 is SideEffects.ShareText -> {
                     shareText(platformManager, it.text)
+                }
+                is SideEffects.Redirect -> {
+                    when (it.route) {
+                        ScreenRoute.UnreadNotification -> {
+                            navigator.replaceAll(NotificationsScreen())
+                        }
+                        ScreenRoute.Donations -> {
+                            navigator.replaceAll(DonationsScreen())
+                        }
+                    }
                 }
             }
         }

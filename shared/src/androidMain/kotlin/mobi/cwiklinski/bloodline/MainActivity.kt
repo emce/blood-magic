@@ -13,9 +13,11 @@ import com.mmk.kmpnotifier.permission.permissionUtil
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import mobi.cwiklinski.bloodline.common.manager.BackgroundJobManager
 import mobi.cwiklinski.bloodline.di.Dependencies
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.dsl.module
 import org.publicvalue.multiplatform.oidc.appsupport.AndroidCodeAuthFlowFactory
 import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
@@ -30,6 +32,7 @@ class MainActivity : ComponentActivity() {
             koinApplication = {
                 androidContext(this@MainActivity)
                 androidLogger()
+                workManagerFactory()
             },
             customModules = listOf(
                 module {
@@ -61,6 +64,7 @@ class MainActivity : ComponentActivity() {
 val platformModule = module {
     factory<CoroutineDispatcher> { Dispatchers.Main }
     factory<CoroutineScope> { CoroutineScope(Dispatchers.Main) }
+    single<BackgroundJobManager> { BackgroundJobManager(get()) }
 }
 
 @Preview

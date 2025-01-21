@@ -28,6 +28,9 @@ suspend fun <T> Flow<List<T>>.flattenToList() =
 fun today() = Clock.System.now()
     .toLocalDateTime(TimeZone.currentSystemDefault()).date
 
+fun currentTime() = Clock.System.now()
+    .toLocalDateTime(TimeZone.currentSystemDefault())
+
 fun LocalDate.isBefore(date: LocalDate) =
     LocalDateTime(this.year, this.monthNumber, this.dayOfMonth, 0, 0, 0)
         .toInstant(TimeZone.currentSystemDefault()) < LocalDateTime(
@@ -55,6 +58,21 @@ fun LocalDate.isAfter(date: LocalDate) =
 fun LocalDate.toMillis() =
     LocalDateTime(this.year, this.month, this.dayOfMonth, 12, 0, 0)
         .toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+
+fun LocalDateTime.toMillis() =
+    toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+
+fun countDelayByHour(hour: Int): Long {
+    val now = currentTime()
+    val nextRun = LocalDateTime(
+        year = now.year,
+        monthNumber = now.monthNumber,
+        dayOfMonth = if (now.hour >= hour) now.dayOfMonth + 1 else now.dayOfMonth,
+        hour = hour,
+        minute = 0,
+        second = 0)
+    return nextRun.toMillis() - now.toMillis()
+}
 
 fun Double.toPrecision(precision: Int) =
     if (precision < 1) {
