@@ -121,6 +121,7 @@ kotlin {
             implementation(libs.markdown.m3)
             implementation(libs.kermit)
             api(libs.notifier)
+            implementation(libs.snackbar)
         }
 
         commonTest.dependencies {

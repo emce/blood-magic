@@ -15,6 +15,8 @@ import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
 import mobi.cwiklinski.bloodline.data.Parcelable
+import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.close
 import mobi.cwiklinski.bloodline.ui.util.shareText
 import mobi.cwiklinski.bloodline.ui.rememberPlatformManager
 import mobi.cwiklinski.bloodline.ui.model.AppModel
@@ -22,6 +24,7 @@ import mobi.cwiklinski.bloodline.ui.util.RenderLayout
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.InformationDialog
 import mobi.cwiklinski.bloodline.ui.widget.InformationDialogData
+import org.jetbrains.compose.resources.getString
 import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
 
@@ -86,13 +89,17 @@ abstract class AppScreen : Screen, KoinComponent, Parcelable {
                 is SideEffects.SnackBar -> {
                     val snackBar = it
                     screenModel.screenModelScope.launch {
-                        state.showSnackbar(snackBar.text)
+                        state.showInfoSnackbar(title = snackBar.text)
                     }
                 }
                 is SideEffects.ErrorSnackBar -> {
                     val snackBar = it
                     screenModel.screenModelScope.launch {
-                        state.showSnackbar(snackBar.text)
+                        state.showErrorSnackbar(
+                            title = snackBar.text,
+                            actionTitle = getString(Res.string.close),
+                            duration = StackedSnackbarDuration.Indefinite
+                        )
                     }
                 }
                 is SideEffects.InformationDialog -> {

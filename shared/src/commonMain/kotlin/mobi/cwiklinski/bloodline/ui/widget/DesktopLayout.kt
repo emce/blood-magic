@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.widget
 
+import StackedSnackbarHost
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -117,7 +118,7 @@ fun DesktopScaffold(
         backgroundColor = backgroundColor,
         topBar = topBar,
         snackbarHost = {
-            SnackbarHost(LocalSnackBar.current)
+            StackedSnackbarHost(LocalSnackBar.current)
         },
         content = desiredContent
     )

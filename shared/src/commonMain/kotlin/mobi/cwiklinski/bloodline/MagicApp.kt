@@ -1,13 +1,13 @@
 package mobi.cwiklinski.bloodline
 
+import StackedSnackbarAnimation
+import StackedSnakbarHostState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
@@ -24,13 +24,18 @@ import mobi.cwiklinski.bloodline.ui.util.FadeTransition
 import mobi.cwiklinski.bloodline.ui.widget.getAsyncImageLoader
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
+import rememberStackedSnackbarHostState
 
-val LocalSnackBar = compositionLocalOf { SnackbarHostState() }
+
+val LocalSnackBar = compositionLocalOf<StackedSnakbarHostState> { error("No SnackbarState provided") }
 
 @OptIn(ExperimentalVoyagerApi::class)
 @Composable
 fun MagicApp() {
-    val snackBarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = rememberStackedSnackbarHostState(
+        maxStack = 3,
+        animation = StackedSnackbarAnimation.Slide
+    )
     CompositionLocalProvider(
         LocalSnackBar provides snackBarHostState,
     ) {

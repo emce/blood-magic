@@ -28,7 +28,7 @@ credentials = "1.3.0"
 identity = "1.1.1"
 playServicesAuth = "21.3.0"
 voyager = "1.1.0-beta03"
-uiDesktop = "1.7.0"
+#uiDesktop = "1.7.0"
 turbine = "1.2.0"
 markdown = "0.27.0"
 play-publisher = "3.12.1"
@@ -38,6 +38,7 @@ libraries = "11.4.0"
 oidc = "0.12.1"
 slf4j = "2.0.16"
 notifier = "1.4.0"
+snackbar = "1.0.4"
 
 [libraries]
 
@@ -95,7 +96,7 @@ voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
-voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+# voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 # Libraries
 libraries = { module = "com.mikepenz:aboutlibraries-core", version.ref="libraries" }
 libraries-ui = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref="libraries" }
@@ -103,12 +104,13 @@ libraries-ui = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref=
 oidc-appsupport = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-appsupport", version.ref = "oidc" }
 oidc-ktor = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-ktor", version.ref = "oidc" }
 
-androidx-ui-desktop = { group = "androidx.compose.ui", name = "ui-desktop", version.ref = "uiDesktop" }
+#androidx-ui-desktop = { group = "androidx.compose.ui", name = "ui-desktop", version.ref = "uiDesktop" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 markdown = { module = "com.mikepenz:multiplatform-markdown-renderer", version.ref="markdown" }
 markdown-m3 = { module = "com.mikepenz:multiplatform-markdown-renderer-m3", version.ref = "markdown" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 notifier = { module = "io.github.mirzemehdi:kmpnotifier", version.ref = "notifier" }
+snackbar = { module = "io.github.rizmaulana:compose-stacked-snackbar", version.ref = "snackbar" }
 
 [plugins]
 

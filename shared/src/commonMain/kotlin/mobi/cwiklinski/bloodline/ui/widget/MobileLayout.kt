@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.widget
 
+import StackedSnackbarHost
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -72,7 +73,7 @@ fun MobilePortraitNavigationTitleLayout(
                 selected = selected
             )
         },
-        snackbarHost = { SnackbarHost(LocalSnackBar.current) },
+        snackbarHost = { StackedSnackbarHost(LocalSnackBar.current) },
         content = desiredContent
     )
 }
@@ -113,7 +114,7 @@ fun MobilePortraitNavigationLayout(
                 selected = selected
             )
         },
-        snackbarHost = { SnackbarHost(LocalSnackBar.current) },
+        snackbarHost = { StackedSnackbarHost(LocalSnackBar.current) },
         content = desiredContent
     )
 }
@@ -167,7 +168,7 @@ fun MobileLandscapeNavigationLayout(
             .windowInsetsPadding(WindowInsets.safeDrawing)
             .background(AppThemeColors.homeGradient),
         backgroundColor = backgroundColor,
-        snackbarHost = { SnackbarHost(LocalSnackBar.current) },
+        snackbarHost = { StackedSnackbarHost(LocalSnackBar.current) },
     ) { paddingValues ->
         Row(
             modifier = Modifier.padding(paddingValues),
@@ -229,7 +230,7 @@ fun MobileLayout(
             .windowInsetsPadding(WindowInsets.safeDrawing),
         topBar = topBar,
         backgroundColor = backgroundColor,
-        snackbarHost = { SnackbarHost(LocalSnackBar.current) },
+        snackbarHost = { StackedSnackbarHost(LocalSnackBar.current) },
         content = desiredContent
     )
 }
