@@ -101,6 +101,7 @@ voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", vers
 libraries = { module = "com.mikepenz:aboutlibraries-core", version.ref="libraries" }
 libraries-ui = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref="libraries" }
 # OIDC
+oidc-core = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-core", version.ref = "oidc" }
 oidc-appsupport = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-appsupport", version.ref = "oidc" }
 oidc-ktor = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-ktor", version.ref = "oidc" }
 

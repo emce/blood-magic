@@ -3,6 +3,7 @@ import GoogleSignIn
 import SwiftUI
 import Firebase
 import FirebaseCore
+import FirebaseMessaging
 import BloodMagic
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -14,7 +15,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
       NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(
                   showPushNotification: true,
-                  askNotificationPermissionOnStart: true)
+                  askNotificationPermissionOnStart: true,
+                  notificationSoundName: nil)
             )
       return true
   }
@@ -47,7 +49,7 @@ struct iOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     init() {
-            HelperKt.doStartKoin()
+            HelperKt.startKoin()
         }
 
     var body: some Scene {

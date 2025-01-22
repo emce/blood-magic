@@ -58,12 +58,14 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            export("io.github.kalinjul.kotlin.multiplatform:oidc-appsupport")
-            export("io.github.kalinjul.kotlin.multiplatform:oidc-tokenstore")
-            export("io.github.kalinjul.kotlin.multiplatform:oidc-core")
-            export("io.github.mirzemehdi:kmpnotifier")
+            export(libs.notifier)
             baseName = "BloodMagic"
             isStatic = true
+        }
+    }
+    iosSimulatorArm64() {
+        compilerOptions {
+            freeCompilerArgs.addAll(listOf("-linker-options", "-L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator"))
         }
     }
 
@@ -109,12 +111,12 @@ kotlin {
             implementation(libs.google.firebase.common)
             implementation(libs.google.firebase.auth)
             implementation(libs.google.firebase.database)
-            implementation(libs.google.firebase.messaging)
             implementation(project.dependencies.platform(libs.google.firebase.bom))
             // Libraries
             implementation(libs.libraries)
             implementation(libs.libraries.ui)
             // OIDC
+            implementation(libs.oidc.core)
             implementation(libs.oidc.appsupport)
             // Others
             implementation(libs.markdown)
@@ -170,7 +172,7 @@ kotlin {
         task("testClasses")
 
         compilerOptions {
-            freeCompilerArgs = listOf(
+            freeCompilerArgs.addAll(listOf(
                 "-opt-in=kotlin.RequiresOptIn",
                 "-opt-in=kotlin.OptIn",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
@@ -179,7 +181,7 @@ kotlin {
                 "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
                 "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
                 "-Xexpect-actual-classes"
-            )
+            ))
         }
 
     }
@@ -242,7 +244,7 @@ android {
 
 play {
     serviceAccountCredentials.set(file("../play_config.json"))
-    track.set("production")
+    track.set("beta")
 }
 
 compose.resources {
