@@ -27,6 +27,7 @@ actual fun getOrientation(): Orientation = when (LocalConfiguration.current.orie
 @Composable
 actual fun getScreenWidth(): Dp = LocalConfiguration.current.screenWidthDp.dp
 
+@Suppress("unused")
 @Composable
 actual fun getScreenHeight(): Dp = LocalConfiguration.current.screenHeightDp.dp
 

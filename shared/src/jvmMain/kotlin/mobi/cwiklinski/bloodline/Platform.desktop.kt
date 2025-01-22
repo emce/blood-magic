@@ -23,6 +23,7 @@ actual fun getScreenWidth(): Dp = with(LocalDensity.current) {
     Toolkit.getDefaultToolkit().screenSize.width.toDp()
 }
 
+@Suppress("unused")
 @Composable
 actual fun getScreenHeight(): Dp = with(LocalDensity.current) {
     Toolkit.getDefaultToolkit().screenSize.height.toDp()

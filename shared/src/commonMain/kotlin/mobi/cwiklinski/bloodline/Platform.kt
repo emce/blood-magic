@@ -21,6 +21,7 @@ expect fun isTablet(): Boolean
 @Composable
 expect fun isMobile(): Boolean
 
+@Suppress("unused")
 @Composable
 fun isDesktop() = !isTablet() && !isMobile()
 

@@ -42,6 +42,7 @@ actual fun getScreenWidth(): Dp = with(LocalDensity.current) {
     LocalWindowInfo.current.containerSize.width.toDp()
 }
 
+@Suppress("unused")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 actual fun getScreenHeight(): Dp = with(LocalDensity.current) {

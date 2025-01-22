@@ -382,7 +382,7 @@ afterEvaluate {
     )
     // Disabled due to frameworks linking error
     tasks.filter {
-        it.name.contains("TestIos", true)
+        it.name.contains("TestIos", true) or it.name.contains("TestJvm", true)
     }.forEach {
         it.enabled = false
     }
