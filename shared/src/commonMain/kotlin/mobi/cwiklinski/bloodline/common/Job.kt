@@ -7,6 +7,7 @@ import mobi.cwiklinski.bloodline.common.manager.BackgroundJobManager
 import mobi.cwiklinski.bloodline.common.manager.WorkConstraints
 import mobi.cwiklinski.bloodline.data.api.DonationService
 import mobi.cwiklinski.bloodline.data.api.NotificationService
+import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.homeNextDonationReadySubtitle
 import mobi.cwiklinski.bloodline.resources.homeNextDonationReadyTitle
@@ -44,10 +45,12 @@ object Job : KoinComponent {
     suspend fun checkNotifications() {
         val notificationService: NotificationService by inject()
         val storageService: StorageService by inject()
+        val profileService: ProfileService by inject()
+        val profile = profileService.getProfile().first()
         val readList = storageService.getReadList()
         val notifications = notificationService.getNotifications().first()
         val unread = notifications.fillWithRead(readList).filter { !it.read }
-        if (unread.isNotEmpty()) {
+        if (unread.isNotEmpty() && profile.notification) {
             val notifier = NotifierManager.getLocalNotifier()
             notifier.notify(
                 id = ID_NOTIFICATION,
@@ -74,11 +77,13 @@ object Job : KoinComponent {
 
     suspend fun checkPotentialDonation() {
         val donationService: DonationService by inject()
+        val profileService: ProfileService by inject()
+        val profile = profileService.getProfile().first()
         val readySubtitle = getString(Res.string.homeNextDonationReadySubtitle)
         val readyTitle = getString(Res.string.homeNextDonationReadyTitle)
         donationService.getDonations().first().firstOrNull()?.let { lastDonation ->
             NextDonationTime(lastDonation, today()).fillData { nextDonationDate ->
-                if (nextDonationDate.fullBlood < 1) {
+                if (nextDonationDate.fullBlood < 1 && profile.notification) {
                     val notifier = NotifierManager.getLocalNotifier()
                     notifier.notify(
                         id = ID_DONATION,
