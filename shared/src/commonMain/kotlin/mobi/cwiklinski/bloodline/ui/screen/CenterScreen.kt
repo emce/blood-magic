@@ -11,10 +11,13 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import mobi.cwiklinski.bloodline.data.Parcelable
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.donationNewCenterLabel
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.widget.CenterView
 import mobi.cwiklinski.bloodline.ui.widget.CloseButton
 import mobi.cwiklinski.bloodline.ui.widget.MobileTitleBar
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Parcelize
@@ -31,7 +34,7 @@ class CenterScreen(val center: Center, private val onSiteClick: ((link: String) 
             sheetBackgroundColor = AppThemeColors.white,
             topBar = {
                 MobileTitleBar(
-                    title = center.name,
+                    title = stringResource(Res.string.donationNewCenterLabel),
                     actions = {
                         CloseButton {
                             bottomSheetNavigator.hide()

@@ -54,7 +54,11 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun CenterView(center: Center, modifier: Modifier = Modifier, onSiteClick: ((link: String) -> Unit)? = null) {
+fun CenterView(
+    center: Center,
+    modifier: Modifier = Modifier,
+    onSiteClick: ((link: String) -> Unit)? = null
+) {
     val density = LocalDensity.current
     var centerImageWidth by remember { mutableStateOf(0.dp) }
     val margin = 10.dp
@@ -76,16 +80,18 @@ fun CenterView(center: Center, modifier: Modifier = Modifier, onSiteClick: ((lin
             }
         } else {
             item {
+                if (isMobile()) {
+                    Text(
+                        center.name,
+                        style = contentTitle(),
+                        modifier = Modifier.padding(vertical = 10.dp)
+                    )
+                }
+            }
+            item {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    if (isMobile()) {
-                        Text(
-                            center.name,
-                            style = contentTitle(),
-                            modifier = Modifier.padding(vertical = 10.dp)
-                        )
-                    }
                     RemoteImage(
                         modifier = Modifier
                             .weight(0.3f)
