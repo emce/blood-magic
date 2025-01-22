@@ -23,6 +23,9 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
@@ -53,11 +56,13 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import mobi.cwiklinski.bloodline.common.Job
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
+import mobi.cwiklinski.bloodline.getPlatform
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.button_edit
 import mobi.cwiklinski.bloodline.resources.female
@@ -127,6 +132,30 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 MobileTitleBar(
                     title = stringResource(Res.string.profileTitle),
                     actions = {
+                        if (getPlatform().isDebugBinary) {
+                            IconButton(onClick = {
+                                screenModel.screenModelScope.launch {
+                                    Job.checkNotifications()
+                                }
+                            }) {
+                                Icon(
+                                    Icons.Filled.Notifications,
+                                    contentDescription = "not",
+                                    modifier = Modifier.padding(5.dp)
+                                )
+                            }
+                            IconButton(onClick = {
+                                screenModel.screenModelScope.launch {
+                                    Job.checkPotentialDonation()
+                                }
+                            }) {
+                                Icon(
+                                    Icons.Filled.Star,
+                                    contentDescription = "not",
+                                    modifier = Modifier.padding(5.dp)
+                                )
+                            }
+                        }
                         IconButton(onClick = {
                             screenModel.loggingOut()
                         }) {
@@ -239,6 +268,28 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 DesktopTitleBar(
                     title = stringResource(Res.string.profileTitle),
                     actions = {
+                        if (getPlatform().isDebugBinary) {
+                            TextButton(onClick = {
+                                screenModel.screenModelScope.launch {
+                                    Job.checkNotifications()
+                                }
+                            }) {
+                                Text(
+                                    "not",
+                                    style = contentAction()
+                                )
+                            }
+                            TextButton(onClick = {
+                                screenModel.screenModelScope.launch {
+                                    Job.checkPotentialDonation()
+                                }
+                            }) {
+                                Text(
+                                    "don",
+                                    style = contentAction()
+                                )
+                            }
+                        }
                         TextButton(onClick = {
                             screenModel.loggingOut()
                         }) {

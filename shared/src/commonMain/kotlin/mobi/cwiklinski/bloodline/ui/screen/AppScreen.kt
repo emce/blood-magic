@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
+import StackedSnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -10,18 +11,18 @@ import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.LocalSnackBar
 import mobi.cwiklinski.bloodline.common.event.ScreenRoute
 import mobi.cwiklinski.bloodline.common.event.SideEffect
-import mobi.cwiklinski.bloodline.ui.util.HandleSideEffect
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
 import mobi.cwiklinski.bloodline.data.Parcelable
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.close
-import mobi.cwiklinski.bloodline.ui.util.shareText
-import mobi.cwiklinski.bloodline.ui.rememberPlatformManager
 import mobi.cwiklinski.bloodline.ui.model.AppModel
+import mobi.cwiklinski.bloodline.ui.rememberPlatformManager
+import mobi.cwiklinski.bloodline.ui.util.HandleSideEffect
 import mobi.cwiklinski.bloodline.ui.util.RenderLayout
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
+import mobi.cwiklinski.bloodline.ui.util.shareText
 import mobi.cwiklinski.bloodline.ui.widget.InformationDialog
 import mobi.cwiklinski.bloodline.ui.widget.InformationDialogData
 import org.jetbrains.compose.resources.getString
@@ -117,10 +118,10 @@ abstract class AppScreen : Screen, KoinComponent, Parcelable {
                 is SideEffects.Redirect -> {
                     when (it.route) {
                         ScreenRoute.UnreadNotification -> {
-                            navigator.replaceAll(NotificationsScreen())
+                            navigator.push(NotificationsScreen())
                         }
                         ScreenRoute.Donations -> {
-                            navigator.replaceAll(DonationsScreen())
+                            navigator.push(DonationsScreen())
                         }
                     }
                 }

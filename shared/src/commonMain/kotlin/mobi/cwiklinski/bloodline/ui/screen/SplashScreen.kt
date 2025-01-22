@@ -17,8 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -61,9 +59,7 @@ class SplashScreen(override val key: ScreenKey = Clock.System.now().toString()) 
             }
             else -> Unit
         }
-        LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-            screenModel.start()
-        }
+        screenModel.start()
     }
 
     @Composable

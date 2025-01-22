@@ -8,6 +8,9 @@ import androidx.compose.ui.unit.Dp
 interface Platform {
 
     val name: String
+
+    val isDebugBinary: Boolean
+
 }
 
 expect fun getPlatform(): Platform

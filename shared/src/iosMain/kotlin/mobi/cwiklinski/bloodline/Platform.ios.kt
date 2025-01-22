@@ -16,9 +16,12 @@ import platform.UIKit.UIInterfaceOrientationPortrait
 import platform.UIKit.UIInterfaceOrientationPortraitUpsideDown
 import platform.UIKit.UIUserInterfaceIdiomPad
 import platform.UIKit.UIWindow
+import kotlin.experimental.ExperimentalNativeApi
 
+@OptIn(ExperimentalNativeApi::class)
 class IOSPlatform: Platform {
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
+    override val isDebugBinary = kotlin.native.Platform.isDebugBinary
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()

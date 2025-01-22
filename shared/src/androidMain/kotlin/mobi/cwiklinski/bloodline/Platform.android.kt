@@ -12,6 +12,7 @@ import mobi.cwiklinski.bloodline.ui.widget.isHorizontal
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
+    override val isDebugBinary = BuildConfig.DEBUG
 }
 
 actual fun getPlatform(): Platform = AndroidPlatform()

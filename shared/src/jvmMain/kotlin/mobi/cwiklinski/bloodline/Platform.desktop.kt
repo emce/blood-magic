@@ -9,6 +9,8 @@ import java.awt.Toolkit
 
 class DesktopPlatform: Platform {
     override val name: String = "Desktop Java ${System.getProperty("java.version")}"
+    override val isDebugBinary = System.getProperty("mobi.cwiklinski.bloodline.debug") == "true" ||
+            System.getenv("BLOODMAGIC_JVM_DEBUG") == "true"
 }
 
 actual fun getPlatform(): Platform = DesktopPlatform()

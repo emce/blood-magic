@@ -1,6 +1,7 @@
 package mobi.cwiklinski.bloodline.common
 
 import com.mmk.kmpnotifier.notification.NotifierManager
+import kotlinx.coroutines.flow.first
 import mobi.cwiklinski.bloodline.common.manager.AppManager
 import mobi.cwiklinski.bloodline.common.manager.BackgroundJobManager
 import mobi.cwiklinski.bloodline.common.manager.WorkConstraints
@@ -30,57 +31,63 @@ object Job : KoinComponent {
 
     fun runNotificationCheck() {
         val jobManager: BackgroundJobManager by inject()
-        val notificationService: NotificationService by inject()
-        val storageService: StorageService by inject()
         jobManager.cancelTask(TASK_NOTIFICATION)
         jobManager.enqueuePeriodicWork(
             taskId = TASK_NOTIFICATION,
             interval = 24.hours.inWholeMilliseconds,
             initialDelay = countDelayByHour(9),
-            constraints = WorkConstraints.getDefault()
-        ) {
-            val readList = storageService.getReadList()
-            val notifications = notificationService.getNotifications().flattenToList()
-            val unread = notifications.fillWithRead(readList).filter { !it.read }
-            if (unread.isNotEmpty()) {
-                val notifier = NotifierManager.getLocalNotifier()
-                notifier.notify(
-                    id = ID_NOTIFICATION,
-                    title = getString(Res.string.notificationsUnreadTitle),
-                    body = getPluralString(Res.plurals.notificationsUnreadMessage, unread.size),
-                    payloadData = mapOf(
-                        AppManager.NOTIFICATION_KEY_ID to TASK_NOTIFICATION
-                    )
+            constraints = WorkConstraints.getDefault(),
+            task = ::checkNotifications
+        )
+    }
+
+    suspend fun checkNotifications() {
+        val notificationService: NotificationService by inject()
+        val storageService: StorageService by inject()
+        val readList = storageService.getReadList()
+        val notifications = notificationService.getNotifications().first()
+        val unread = notifications.fillWithRead(readList).filter { !it.read }
+        if (unread.isNotEmpty()) {
+            val notifier = NotifierManager.getLocalNotifier()
+            notifier.notify(
+                id = ID_NOTIFICATION,
+                title = getString(Res.string.notificationsUnreadTitle),
+                body = getPluralString(Res.plurals.notificationsUnreadMessage, unread.size, unread.size),
+                payloadData = mapOf(
+                    AppManager.NOTIFICATION_KEY_ID to TASK_NOTIFICATION
                 )
-            }
+            )
         }
     }
 
     fun runPotentialDonationCheck() {
         val jobManager: BackgroundJobManager by inject()
-        val donationService: DonationService by inject()
         jobManager.cancelTask(TASK_DONATION)
         jobManager.enqueuePeriodicWork(
             taskId = TASK_DONATION,
             interval = 24.hours.inWholeMilliseconds,
             initialDelay = countDelayByHour(7),
-            constraints = WorkConstraints.getDefault()
-        ) {
-            val readySubtitle = getString(Res.string.homeNextDonationReadySubtitle)
-            val readyTitle = getString(Res.string.homeNextDonationReadyTitle)
-            donationService.getDonations().flattenToList().firstOrNull()?.let { lastDonation ->
-                NextDonationTime(lastDonation, today()).fillData { nextDonationDate ->
-                    if (nextDonationDate.fullBlood < 1) {
-                        val notifier = NotifierManager.getLocalNotifier()
-                        notifier.notify(
-                            id = ID_DONATION,
-                            title = readyTitle,
-                            body = readySubtitle,
-                            payloadData = mapOf(
-                                AppManager.NOTIFICATION_KEY_ID to TASK_DONATION
-                            )
+            constraints = WorkConstraints.getDefault(),
+            task = ::checkPotentialDonation
+        )
+    }
+
+    suspend fun checkPotentialDonation() {
+        val donationService: DonationService by inject()
+        val readySubtitle = getString(Res.string.homeNextDonationReadySubtitle)
+        val readyTitle = getString(Res.string.homeNextDonationReadyTitle)
+        donationService.getDonations().first().firstOrNull()?.let { lastDonation ->
+            NextDonationTime(lastDonation, today()).fillData { nextDonationDate ->
+                if (nextDonationDate.fullBlood < 1) {
+                    val notifier = NotifierManager.getLocalNotifier()
+                    notifier.notify(
+                        id = ID_DONATION,
+                        title = readyTitle,
+                        body = readySubtitle,
+                        payloadData = mapOf(
+                            AppManager.NOTIFICATION_KEY_ID to TASK_DONATION
                         )
-                    }
+                    )
                 }
             }
         }

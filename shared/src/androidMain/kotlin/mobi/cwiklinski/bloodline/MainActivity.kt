@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.work.WorkManager
+import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.extensions.onCreateOrOnNewIntent
 import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
@@ -18,6 +18,7 @@ import mobi.cwiklinski.bloodline.di.Dependencies
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.error.KoinApplicationAlreadyStartedException
 import org.koin.dsl.module
 import org.publicvalue.multiplatform.oidc.appsupport.AndroidCodeAuthFlowFactory
 import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
@@ -26,20 +27,26 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        NotifierManager.onCreateOrOnNewIntent(intent)
         val codeAuthFlowFactory = AndroidCodeAuthFlowFactory(useWebView = false).also { it.registerActivity(this@MainActivity) }
-        Dependencies.initKoin(
-            platformModule = platformModule,
-            koinApplication = {
-                androidContext(this@MainActivity)
-                androidLogger()
-                workManagerFactory()
-            },
-            customModules = listOf(
-                module {
-                    factory<CodeAuthFlowFactory> { codeAuthFlowFactory }
-                }
+        try {
+            Dependencies.initKoin(
+                platformModule = platformModule,
+                koinApplication = {
+                    androidContext(this@MainActivity)
+                    androidLogger()
+                    workManagerFactory()
+                },
+                customModules = listOf(
+                    module {
+                        single<WorkManager> { WorkManager.getInstance(this@MainActivity) }
+                        factory<CodeAuthFlowFactory> { codeAuthFlowFactory }
+                    }
+                )
             )
-        )
+        } catch (e: KoinApplicationAlreadyStartedException) {
+            Logger.e("Android Activity", e)
+        }
         NotifierManager.initialize(
             configuration = NotificationPlatformConfiguration.Android(
                 notificationIconResId = R.drawable.ic_notification,
@@ -48,7 +55,6 @@ class MainActivity : ComponentActivity() {
         )
         val permissionUtil by permissionUtil()
         permissionUtil.askNotificationPermission()
-        NotifierManager.onCreateOrOnNewIntent(intent)
         setContent {
             MagicApp()
         }
@@ -65,10 +71,4 @@ val platformModule = module {
     factory<CoroutineDispatcher> { Dispatchers.Main }
     factory<CoroutineScope> { CoroutineScope(Dispatchers.Main) }
     single<BackgroundJobManager> { BackgroundJobManager(get()) }
-}
-
-@Preview
-@Composable
-fun AppAndroidPreview() {
-    MagicApp()
 }
