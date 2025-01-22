@@ -125,11 +125,11 @@ jobs:
           xcrun xcodebuild \
             -exportArchive \
             -exportOptionsPlist "${RUNNER_TEMP}/Build/ExportOptions.plist" \
-            -archivePath "${RUNNER_TEMP}/Build/Archives/FeedFlow.xcarchive" \
-            -exportPath "${RUNNER_TEMP}/Build/Archives/FeedFlow.xcarchive" \
+            -archivePath "${RUNNER_TEMP}/Build/Archives/BloodMagic.xcarchive" \
+            -exportPath "${RUNNER_TEMP}/Build/Archives/BloodMagic.xcarchive" \
             PRODUCT_BUNDLE_IDENTIFIER="${{ secrets.BUNDLE_ID }}" | xcbeautify --renderer github-actions
           
-          echo "ipa_path=${RUNNER_TEMP}/Build/Archives/FeedFlow.xcarchive/FeedFlow.ipa" >> $GITHUB_ENV
+          echo "ipa_path=${RUNNER_TEMP}/Build/Archives/BloodMagic.xcarchive/BloodMagic.ipa" >> $GITHUB_ENV
 
       - uses: Apple-Actions/upload-testflight-build@v1
         with:
