@@ -1,7 +1,10 @@
 package mobi.cwiklinski.bloodline.common
 
 import com.mmk.kmpnotifier.notification.NotifierManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import mobi.cwiklinski.bloodline.common.manager.AppManager
 import mobi.cwiklinski.bloodline.common.manager.BackgroundJobManager
 import mobi.cwiklinski.bloodline.common.manager.WorkConstraints
@@ -31,26 +34,32 @@ object Job : KoinComponent {
     private const val ID_DONATION = 233003
 
     fun runNotificationCheck() {
-        val jobManager: BackgroundJobManager by inject()
-        jobManager.cancelTask(TASK_NOTIFICATION)
-        jobManager.enqueuePeriodicWork(
-            taskId = TASK_NOTIFICATION,
-            interval = 24.hours.inWholeMilliseconds,
-            initialDelay = countDelayByHour(9),
-            constraints = WorkConstraints.getDefault(),
-            task = ::checkNotifications
-        )
+        val coroutineScope: CoroutineScope by inject()
+        coroutineScope.launch {
+            val profileService: ProfileService by inject()
+            profileService.getProfile().collectLatest {
+                if (it.notification) {
+                    val jobManager: BackgroundJobManager by inject()
+                    jobManager.cancelTask(TASK_NOTIFICATION)
+                    jobManager.enqueuePeriodicWork(
+                        taskId = TASK_NOTIFICATION,
+                        interval = 24.hours.inWholeMilliseconds,
+                        initialDelay = countDelayByHour(9),
+                        constraints = WorkConstraints.getDefault(),
+                        task = ::checkNotifications
+                    )
+                }
+            }
+        }
     }
 
     suspend fun checkNotifications() {
         val notificationService: NotificationService by inject()
         val storageService: StorageService by inject()
-        val profileService: ProfileService by inject()
-        val profile = profileService.getProfile().first()
         val readList = storageService.getReadList()
         val notifications = notificationService.getNotifications().first()
         val unread = notifications.fillWithRead(readList).filter { !it.read }
-        if (unread.isNotEmpty() && profile.notification) {
+        if (unread.isNotEmpty()) {
             val notifier = NotifierManager.getLocalNotifier()
             notifier.notify(
                 id = ID_NOTIFICATION,
@@ -64,26 +73,30 @@ object Job : KoinComponent {
     }
 
     fun runPotentialDonationCheck() {
-        val jobManager: BackgroundJobManager by inject()
-        jobManager.cancelTask(TASK_DONATION)
-        jobManager.enqueuePeriodicWork(
-            taskId = TASK_DONATION,
-            interval = 24.hours.inWholeMilliseconds,
-            initialDelay = countDelayByHour(7),
-            constraints = WorkConstraints.getDefault(),
-            task = ::checkPotentialDonation
-        )
+        val coroutineScope: CoroutineScope by inject()
+        coroutineScope.launch {
+            val profileService: ProfileService by inject()
+            profileService.getProfile().collectLatest {
+                val jobManager: BackgroundJobManager by inject()
+                jobManager.cancelTask(TASK_DONATION)
+                jobManager.enqueuePeriodicWork(
+                    taskId = TASK_DONATION,
+                    interval = 24.hours.inWholeMilliseconds,
+                    initialDelay = countDelayByHour(7),
+                    constraints = WorkConstraints.getDefault(),
+                    task = ::checkPotentialDonation
+                )
+            }
+        }
     }
 
     suspend fun checkPotentialDonation() {
         val donationService: DonationService by inject()
-        val profileService: ProfileService by inject()
-        val profile = profileService.getProfile().first()
         val readySubtitle = getString(Res.string.homeNextDonationReadySubtitle)
         val readyTitle = getString(Res.string.homeNextDonationReadyTitle)
         donationService.getDonations().first().firstOrNull()?.let { lastDonation ->
             NextDonationTime(lastDonation, today()).fillData { nextDonationDate ->
-                if (nextDonationDate.fullBlood < 1 && profile.notification) {
+                if (nextDonationDate.fullBlood < 1) {
                     val notifier = NotifierManager.getLocalNotifier()
                     notifier.notify(
                         id = ID_DONATION,
