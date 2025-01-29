@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.common.manager.AppManager
 import mobi.cwiklinski.bloodline.common.manager.BackgroundJobManager
 import mobi.cwiklinski.bloodline.common.manager.WorkConstraints
@@ -36,18 +37,21 @@ object Job : KoinComponent {
     fun runNotificationCheck() {
         val coroutineScope: CoroutineScope by inject()
         coroutineScope.launch {
-            val profileService: ProfileService by inject()
-            profileService.getProfile().collectLatest {
-                if (it.notification) {
-                    val jobManager: BackgroundJobManager by inject()
-                    jobManager.cancelTask(TASK_NOTIFICATION)
-                    jobManager.enqueuePeriodicWork(
-                        taskId = TASK_NOTIFICATION,
-                        interval = 24.hours.inWholeMilliseconds,
-                        initialDelay = countDelayByHour(9),
-                        constraints = WorkConstraints.getDefault(),
-                        task = ::checkNotifications
-                    )
+            val auth: AuthenticationService by inject()
+            auth.authenticationState.collectLatest {
+                val profileService: ProfileService by inject()
+                profileService.getProfile().collectLatest {
+                    if (it.notification) {
+                        val jobManager: BackgroundJobManager by inject()
+                        jobManager.cancelTask(TASK_NOTIFICATION)
+                        jobManager.enqueuePeriodicWork(
+                            taskId = TASK_NOTIFICATION,
+                            interval = 24.hours.inWholeMilliseconds,
+                            initialDelay = countDelayByHour(9),
+                            constraints = WorkConstraints.getDefault(),
+                            task = ::checkNotifications
+                        )
+                    }
                 }
             }
         }
@@ -75,17 +79,20 @@ object Job : KoinComponent {
     fun runPotentialDonationCheck() {
         val coroutineScope: CoroutineScope by inject()
         coroutineScope.launch {
-            val profileService: ProfileService by inject()
-            profileService.getProfile().collectLatest {
-                val jobManager: BackgroundJobManager by inject()
-                jobManager.cancelTask(TASK_DONATION)
-                jobManager.enqueuePeriodicWork(
-                    taskId = TASK_DONATION,
-                    interval = 24.hours.inWholeMilliseconds,
-                    initialDelay = countDelayByHour(7),
-                    constraints = WorkConstraints.getDefault(),
-                    task = ::checkPotentialDonation
-                )
+            val auth: AuthenticationService by inject()
+            auth.authenticationState.collectLatest {
+                val profileService: ProfileService by inject()
+                profileService.getProfile().collectLatest {
+                    val jobManager: BackgroundJobManager by inject()
+                    jobManager.cancelTask(TASK_DONATION)
+                    jobManager.enqueuePeriodicWork(
+                        taskId = TASK_DONATION,
+                        interval = 24.hours.inWholeMilliseconds,
+                        initialDelay = countDelayByHour(7),
+                        constraints = WorkConstraints.getDefault(),
+                        task = ::checkPotentialDonation
+                    )
+                }
             }
         }
     }
