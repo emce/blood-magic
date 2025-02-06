@@ -15,6 +15,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.transitions.ScreenTransition
 import coil3.compose.setSingletonImageLoaderFactory
+import kotlinx.coroutines.delay
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
 import mobi.cwiklinski.bloodline.common.Job
 import mobi.cwiklinski.bloodline.common.manager.AppManager
@@ -42,15 +43,16 @@ fun MagicApp() {
         setSingletonImageLoaderFactory { context ->
             getAsyncImageLoader(context)
         }
-        LaunchedEffect(true) {
-            AppManager.onApplicationStart()
-            Job.runNotificationCheck()
-            Job.runPotentialDonationCheck()
-        }
         AppTheme {
             KoinContext {
                 val authInit = koinInject<AuthenticationInitializer>()
                 authInit.run()
+                LaunchedEffect(true) {
+                    AppManager.onApplicationStart()
+                    delay(3000)
+                    Job.runNotificationCheck()
+                    Job.runPotentialDonationCheck()
+                }
                 BottomSheetNavigator(
                     modifier = Modifier.animateContentSize(),
                     sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),

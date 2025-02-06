@@ -10,6 +10,7 @@ import mobi.cwiklinski.bloodline.data.api.DonationService
 import mobi.cwiklinski.bloodline.data.api.NotificationService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.data.api.TokenService
+import mobi.cwiklinski.bloodline.getPlatform
 import org.koin.dsl.module
 
 fun createDataModule() = buildList {
@@ -17,7 +18,7 @@ fun createDataModule() = buildList {
         single<FirebaseDatabase> {
             val db = Firebase.database
             db.setPersistenceEnabled(true)
-            db.setLoggingEnabled(true)
+            db.setLoggingEnabled(getPlatform().isDebugBinary)
             db
         }
         single<FirebaseAuth> {
