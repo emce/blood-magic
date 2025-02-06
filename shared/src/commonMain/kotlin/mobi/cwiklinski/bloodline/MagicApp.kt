@@ -48,8 +48,8 @@ fun MagicApp() {
                 val authInit = koinInject<AuthenticationInitializer>()
                 authInit.run()
                 LaunchedEffect(true) {
-                    AppManager.onApplicationStart()
                     delay(3000)
+                    AppManager.onApplicationStart()
                     Job.runNotificationCheck()
                     Job.runPotentialDonationCheck()
                 }
