@@ -24,8 +24,19 @@
 		<string>fetch</string>
 	</array>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    </array>
+    <key>GIDClientID</key>
+    <string>705364351951-kqshjl1eouvbucn52ct55kkm1786veg5.apps.googleusercontent.com</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
         <array>
-            <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+          <string>com.googleusercontent.apps.705364351951-kqshjl1eouvbucn52ct55kkm1786veg5</string>
         </array>
+      </dict>
+    </array>
 </dict>
 </plist>
