@@ -5,6 +5,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.domain.DonationType
+import mobi.cwiklinski.bloodline.domain.NotificationType
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
@@ -3495,7 +3496,7 @@ object DummyData {
     val NOTIFICATIONS = listOf(
         Notification(
             "fhfghffghfg",
-            1,
+            NotificationType.STANDARD,
             LocalDate(
                 2023,
                 12,
@@ -3507,7 +3508,7 @@ object DummyData {
         ),
         Notification(
             "gfghfyu76",
-            1,
+            NotificationType.STANDARD,
             LocalDate(
                 2024,
                 1,
@@ -3519,7 +3520,7 @@ object DummyData {
         ),
         Notification(
             "u56u5jdghj",
-            2,
+            NotificationType.URGENT,
             LocalDate(
                 2024,
                 4,
@@ -3531,7 +3532,7 @@ object DummyData {
         ),
         Notification(
             "hdrghf7t77",
-            1,
+            NotificationType.STANDARD,
             LocalDate(
                 2024,
                 5,
@@ -3543,7 +3544,7 @@ object DummyData {
         ),
         Notification(
             "342jk4j234kh234",
-            1,
+            NotificationType.STANDARD,
             LocalDate(
                 2024,
                 6,

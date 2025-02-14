@@ -140,7 +140,7 @@ fun List<Center>.filter(query: String) = filter {
             )
 }
 
-fun Notification.getType() = NavigationType.fromType(this.type)
+fun Notification.getType() = NavigationType.fromType(this.type.type)
 
 @Composable
 fun LocalDate.toLocalizedString(): String {

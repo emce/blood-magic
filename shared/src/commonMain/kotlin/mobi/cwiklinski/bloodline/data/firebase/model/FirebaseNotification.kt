@@ -2,6 +2,7 @@ package mobi.cwiklinski.bloodline.data.firebase.model
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
+import mobi.cwiklinski.bloodline.domain.NotificationType
 import mobi.cwiklinski.bloodline.domain.model.Notification
 
 @Serializable
@@ -17,7 +18,7 @@ data class FirebaseNotification(
 ) {
     fun toNotification() = Notification(
         id = this.id,
-        type = this.type,
+        type = NotificationType.byType(this.type),
         date = LocalDate(this.year, this.month, this.day),
         title = this.title,
         message = this.message,

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.LocalDate
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.data.api.NotificationService
+import mobi.cwiklinski.bloodline.domain.NotificationType
 import mobi.cwiklinski.bloodline.domain.model.Notification
 
 class NotificationServiceImplementation : NotificationService {
@@ -25,7 +26,7 @@ class NotificationServiceImplementation : NotificationService {
         location: String,
         title: String,
         message: String,
-        type: Int
+        type: NotificationType
     ) = flow<Either<Notification, Throwable>> {
         val id = DummyData.generateString()
         val notification = Notification(
@@ -46,7 +47,7 @@ class NotificationServiceImplementation : NotificationService {
         location: String,
         title: String,
         message: String,
-        type: Int
+        type: NotificationType
     ) = flow<Either<Notification, Throwable>> {
         val notification = _memory.firstOrNull { it.id == id }
         if (notification == null) {

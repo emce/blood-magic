@@ -39,7 +39,6 @@ oidc = "0.12.1"
 slf4j = "2.0.16"
 notifier = "1.4.0"
 snackbar = "1.0.4"
-crypto = "0.2.0"
 editor = "1.0.0-rc10"
 
 [libraries]
@@ -115,7 +114,6 @@ markdown-editor = { module = "com.mohamedrejeb.richeditor:richeditor-compose", v
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 notifier = { module = "io.github.mirzemehdi:kmpnotifier", version.ref = "notifier" }
 snackbar = { module = "io.github.rizmaulana:compose-stacked-snackbar", version.ref = "snackbar" }
-crypto = { module = "com.diglol.crypto:crypto", version.ref = "crypto" }
 
 [plugins]
 

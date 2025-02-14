@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.secondaryButton
@@ -19,6 +20,7 @@ fun SubmitButton(
     modifier: Modifier = Modifier.padding(10.dp),
     text: String,
     enabled: Boolean = true,
+    textAlign: TextAlign = TextAlign.Center,
     colors: ButtonColors = AppThemeColors.submitButtonColors()
 ) {
     Button(
@@ -36,6 +38,7 @@ fun SubmitButton(
         Text(
             text,
             modifier = modifier,
+            textAlign = textAlign,
             style = submitButton()
         )
     }
@@ -47,6 +50,7 @@ fun SecondaryButton(
     modifier: Modifier = Modifier.padding(10.dp),
     text: String,
     enabled: Boolean = true,
+    textAlign: TextAlign = TextAlign.Center,
     colors: ButtonColors = AppThemeColors.secondarySubmitButtonColors()
 ) {
     Button(
@@ -64,6 +68,7 @@ fun SecondaryButton(
         Text(
             text,
             modifier = modifier,
+            textAlign = textAlign,
             style = secondaryButton()
         )
     }

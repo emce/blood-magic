@@ -27,6 +27,7 @@ import kotlinx.serialization.Serializable
 import mobi.cwiklinski.bloodline.data.Parcelable
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Donation
+import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.close
 import mobi.cwiklinski.bloodline.resources.donationsDelete
@@ -318,6 +319,83 @@ fun LogoutDialog(
                         onClick = onSubmit
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun NotificationDeleteDialog(
+    notification: Notification,
+    onClose: () -> Unit,
+    onDelete: (notification: Notification) -> Unit
+) {
+    BasicAlertDialog(
+        onDismissRequest = { },
+    ) {
+        ConstraintLayout(
+            modifier = Modifier
+                .background(
+                    AppThemeColors.white,
+                    RoundedCornerShape(24.dp)
+                ).padding(
+                    top = 24.dp,
+                    bottom = 48.dp,
+                    start = 24.dp,
+                    end = 24.dp
+                )
+        ) {
+            val (titleRef, messageRef, imageRef, buttonsRef) = createRefs()
+            Image(
+                painterResource(Res.drawable.icon_delete),
+                contentDescription = stringResource(Res.string.close),
+                colorFilter = ColorFilter.tint(AppThemeColors.iconRed),
+                modifier = Modifier
+                    .size(64.dp)
+                    .constrainAs(imageRef) {
+                        top.linkTo(parent.top)
+                        centerHorizontallyTo(parent)
+                    }.clickable {
+                        onClose.invoke()
+                    }
+            )
+            Text(
+                "Usunięcie notyfikacji",
+                style = alertTitle().copy(
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier.constrainAs(titleRef) {
+                    top.linkTo(imageRef.bottom, 20.dp)
+                    centerHorizontallyTo(parent)
+                }
+            )
+            Text(
+                "Notyfikacja zosytanie usunięta z bazy. Proszę o potwierdzenie:",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.constrainAs(messageRef) {
+                    top.linkTo(titleRef.bottom, 20.dp)
+                    centerHorizontallyTo(parent)
+                }
+            )
+            Row(
+                modifier = Modifier.constrainAs(buttonsRef) {
+                    top.linkTo(messageRef.bottom, 40.dp)
+                }.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SecondaryButton(
+                    onClick = {
+                        onClose.invoke()
+                    },
+                    text = stringResource(Res.string.goBack)
+                )
+                SubmitButton(
+                    onClick = {
+                        onDelete.invoke(notification)
+                    },
+                    text = "Usuń notyfikację"
+                )
             }
         }
     }

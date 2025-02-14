@@ -6,12 +6,13 @@ import mobi.cwiklinski.bloodline.data.Parcelable
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.data.TypeParceler
 import mobi.cwiklinski.bloodline.domain.LocalDateParceler
+import mobi.cwiklinski.bloodline.domain.NotificationType
 
 @Serializable
 @Parcelize
 data class Notification(
     val id: String,
-    val type: Int,
+    val type: NotificationType,
     @TypeParceler<LocalDate, LocalDateParceler>()
     val date: LocalDate,
     val title: String,

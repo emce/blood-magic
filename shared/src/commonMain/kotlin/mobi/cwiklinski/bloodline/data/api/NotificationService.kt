@@ -6,6 +6,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import mobi.cwiklinski.bloodline.common.Either
+import mobi.cwiklinski.bloodline.domain.NotificationType
 import mobi.cwiklinski.bloodline.domain.model.Notification
 
 interface NotificationService {
@@ -18,7 +19,7 @@ interface NotificationService {
         location: String = "Polska",
         title: String = "",
         message: String = "",
-        type: Int = 1
+        type: NotificationType = NotificationType.STANDARD
     ): Flow<Either<Notification, Throwable>>
 
     fun updateNotification(
@@ -27,7 +28,7 @@ interface NotificationService {
         location: String = "Polska",
         title: String = "",
         message: String = "",
-        type: Int = 1
+        type: NotificationType = NotificationType.STANDARD
     ): Flow<Either<Notification, Throwable>>
 
     fun deleteNotification(id: String): Flow<Either<Boolean, Throwable>>

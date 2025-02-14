@@ -8,6 +8,7 @@ import kotlinx.datetime.LocalDate
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.data.api.NotificationService
 import mobi.cwiklinski.bloodline.data.firebase.model.FirebaseNotification
+import mobi.cwiklinski.bloodline.domain.NotificationType
 import mobi.cwiklinski.bloodline.domain.model.Notification
 
 class NotificationServiceImplementation(db: FirebaseDatabase) : NotificationService {
@@ -33,7 +34,7 @@ class NotificationServiceImplementation(db: FirebaseDatabase) : NotificationServ
         location: String,
         title: String,
         message: String,
-        type: Int
+        type: NotificationType
     ) = flow<Either<Notification, Throwable>> {
         try {
             val newRef = mainRef.push()
@@ -43,7 +44,7 @@ class NotificationServiceImplementation(db: FirebaseDatabase) : NotificationServ
                     newRef.setValue(
                         FirebaseNotification(
                             id,
-                            type,
+                            type.type,
                             date.year,
                             date.monthNumber,
                             date.dayOfMonth,
@@ -80,12 +81,12 @@ class NotificationServiceImplementation(db: FirebaseDatabase) : NotificationServ
         location: String,
         title: String,
         message: String,
-        type: Int
+        type: NotificationType
     ) = flow<Either<Notification, Throwable>> {
         try {
             val updatedNotification = FirebaseNotification(
                 id,
-                type,
+                type.type,
                 date.year,
                 date.monthNumber,
                 date.dayOfMonth,

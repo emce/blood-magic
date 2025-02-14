@@ -121,6 +121,7 @@ kotlin {
             // Others
             implementation(libs.markdown)
             implementation(libs.markdown.m3)
+            implementation(libs.markdown.editor)
             implementation(libs.kermit)
             api(libs.notifier)
             implementation(libs.snackbar)
