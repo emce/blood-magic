@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
 import com.mikepenz.markdown.m3.markdownTypography
 import mobi.cwiklinski.bloodline.resources.Res
@@ -260,7 +261,7 @@ fun markdownText() = TextStyle(
     fontSize = 14.sp,
     color = AppThemeColors.black70,
     fontWeight = FontWeight.Medium,
-    lineHeight = 16.sp,
+    lineHeight = 18.sp,
 )
 
 @Composable
@@ -269,7 +270,11 @@ fun richTextTypography() = markdownTypography(
     paragraph = markdownText(),
     ordered = markdownText(),
     bullet = markdownText(),
-    list = markdownText()
+    list = markdownText(),
+    link = markdownText().copy(
+        fontWeight = FontWeight.SemiBold,
+        textDecoration = TextDecoration.Underline
+    )
 )
 
 @Composable

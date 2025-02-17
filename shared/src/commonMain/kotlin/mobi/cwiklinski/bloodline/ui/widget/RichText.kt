@@ -11,7 +11,7 @@ import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.dialogRichTextColors
-import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.theme.markdownText
 import mobi.cwiklinski.bloodline.ui.theme.richTextTypography
 
 @Composable
@@ -31,7 +31,7 @@ fun RichText(
             }
             Text(
                 styledText,
-                style = getTypography().bodyLarge,
+                style = markdownText(),
                 textAlign = TextAlign.Center
             )
         }

@@ -26,6 +26,9 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Female
+import androidx.compose.material.icons.filled.Male
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Switch
@@ -61,8 +64,6 @@ import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.female
-import mobi.cwiklinski.bloodline.resources.ic_sex_female
-import mobi.cwiklinski.bloodline.resources.ic_sex_male
 import mobi.cwiklinski.bloodline.resources.male
 import mobi.cwiklinski.bloodline.resources.profileDataEmailError
 import mobi.cwiklinski.bloodline.resources.profileDataEmailLabel
@@ -370,7 +371,8 @@ fun SetupView(
         }
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(horizontal = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             RichText(
@@ -472,7 +474,7 @@ fun SetupView(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painterResource(Res.drawable.ic_sex_female),
+                        Icons.Filled.Female,
                         stringResource(Res.string.female),
                         colorFilter = ColorFilter.tint(
                             if (sex.isFemale())
@@ -500,7 +502,7 @@ fun SetupView(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painterResource(Res.drawable.ic_sex_male),
+                        Icons.Filled.Male,
                         stringResource(Res.string.male),
                         colorFilter = ColorFilter.tint(
                             if (!sex.isFemale())

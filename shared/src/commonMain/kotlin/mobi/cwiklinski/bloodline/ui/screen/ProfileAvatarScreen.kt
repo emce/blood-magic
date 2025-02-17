@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -191,6 +192,7 @@ fun AvatarView(
                 maxItemsInEachRow = 3
             ) {
                 Avatar.entries.filter { it != avatar }.forEach { listAvatar ->
+                    val selected = isAvatarSelected.invoke(listAvatar.name)
                     Column(
                         modifier = Modifier.padding(cellPadding).width(cellWidth - cellPadding.times(2)).height(cellHeight - cellPadding.times(2)),
                         verticalArrangement = Arrangement.Center,
@@ -208,7 +210,7 @@ fun AvatarView(
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
-                            if (isAvatarSelected.invoke(listAvatar.name)) {
+                            if (selected) {
                                 Canvas(
                                     modifier = Modifier.size(70.dp).offset(y = 1.dp)
                                 ) {
@@ -223,7 +225,7 @@ fun AvatarView(
                         }
                         Text(
                             avatarName.invoke(listAvatar.name),
-                            style = itemSubTitle(),
+                            style = if (selected) itemSubTitle().copy(fontWeight = FontWeight.Bold) else itemSubTitle(),
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
                         )

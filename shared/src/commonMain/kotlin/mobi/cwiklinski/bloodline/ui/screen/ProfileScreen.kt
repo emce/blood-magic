@@ -25,6 +25,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Female
+import androidx.compose.material.icons.filled.Male
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Icon
@@ -69,8 +71,6 @@ import mobi.cwiklinski.bloodline.resources.button_edit
 import mobi.cwiklinski.bloodline.resources.female
 import mobi.cwiklinski.bloodline.resources.heroGenitive
 import mobi.cwiklinski.bloodline.resources.heroinGenitive
-import mobi.cwiklinski.bloodline.resources.ic_sex_female
-import mobi.cwiklinski.bloodline.resources.ic_sex_male
 import mobi.cwiklinski.bloodline.resources.male
 import mobi.cwiklinski.bloodline.resources.profileAvatarTitle
 import mobi.cwiklinski.bloodline.resources.profileDataEmailLabel
@@ -616,7 +616,7 @@ fun ProfileView(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painterResource(Res.drawable.ic_sex_female),
+                        Icons.Filled.Female,
                         stringResource(Res.string.female),
                         colorFilter = ColorFilter.tint(
                             if (sex.isFemale())
@@ -644,7 +644,7 @@ fun ProfileView(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painterResource(Res.drawable.ic_sex_male),
+                        Icons.Filled.Male,
                         stringResource(Res.string.male),
                         colorFilter = ColorFilter.tint(
                             if (!sex.isFemale())

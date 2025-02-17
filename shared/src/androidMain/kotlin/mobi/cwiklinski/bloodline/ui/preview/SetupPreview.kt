@@ -31,3 +31,24 @@ fun SetupPreview() {
         )
     }
 }
+
+@Preview(device = "spec:width=1280dp,height=800dp,dpi=240,orientation=portrait")
+@Composable
+fun SetupBigScreenPreview() {
+    Column(
+        modifier = Modifier
+            .drawBehind {
+                drawRect(
+                    brush = AppThemeColors.homeGradient,
+                    size = Size(width = 4000f, height = 400f)
+                )
+            }
+    ) {
+        SetupView(
+            avatar = Avatar.WIZARD,
+            avatarName = { desiredAvatar ->
+                getAvatarName(desiredAvatar)
+            }
+        )
+    }
+}

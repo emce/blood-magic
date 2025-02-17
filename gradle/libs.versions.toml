@@ -34,12 +34,12 @@ markdown = "0.27.0"
 play-publisher = "3.12.1"
 google-services = "4.4.2"
 lifecycle-viewmodel-compose = "2.8.4"
-libraries = "11.5.0"
-oidc = "0.12.1"
+libraries = "11.6.2"
+oidc = "0.12.2"
 slf4j = "2.0.16"
 notifier = "1.4.0"
 snackbar = "1.0.4"
-editor = "1.0.0-rc10"
+editor = "1.0.0-rc11"
 
 [libraries]
 
