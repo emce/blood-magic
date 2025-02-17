@@ -18,6 +18,9 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +32,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
@@ -47,8 +51,6 @@ import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.close
-import mobi.cwiklinski.bloodline.resources.icon_eye_closed
-import mobi.cwiklinski.bloodline.resources.icon_eye_opened
 import mobi.cwiklinski.bloodline.resources.profileAvatarTitle
 import mobi.cwiklinski.bloodline.resources.profileDataCurrentPasswordLabel
 import mobi.cwiklinski.bloodline.resources.profileDataPasswordLabel
@@ -257,11 +259,12 @@ fun ChangePasswordView(
                     visualTransformation = if (showCurrentPassword) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
                         Image(
-                            painterResource(if (showCurrentPassword) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
+                            if (showCurrentPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             "password",
                             modifier = Modifier.clickable {
                                 showCurrentPasswordChanged.invoke(!showCurrentPassword)
-                            }
+                            },
+                            colorFilter = ColorFilter.tint(AppThemeColors.grey3)
                         )
                     },
                 )
@@ -287,11 +290,12 @@ fun ChangePasswordView(
                     else PasswordVisualTransformation(),
                     trailingIcon = {
                         Image(
-                            painterResource(if (showPassword) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
+                            if (showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             "password",
                             modifier = Modifier.clickable {
                                 showPasswordChanged.invoke(!showPassword)
-                            }
+                            },
+                            colorFilter = ColorFilter.tint(AppThemeColors.grey3)
                         )
                     },
                 )
@@ -316,11 +320,12 @@ fun ChangePasswordView(
                     visualTransformation = if (showRepeat) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
                         Image(
-                            painterResource(if (showRepeat) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
+                            if (showRepeat) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             "password",
                             modifier = Modifier.clickable {
                                 showRepeatChanged.invoke(!showRepeat)
-                            }
+                            },
+                            colorFilter = ColorFilter.tint(AppThemeColors.grey3)
                         )
                     },
                 )

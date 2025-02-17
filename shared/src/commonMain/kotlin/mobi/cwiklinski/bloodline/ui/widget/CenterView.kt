@@ -15,6 +15,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Signpost
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,9 +44,6 @@ import mobi.cwiklinski.bloodline.resources.centerContact
 import mobi.cwiklinski.bloodline.resources.centerInfo
 import mobi.cwiklinski.bloodline.resources.centerRegion
 import mobi.cwiklinski.bloodline.resources.centersEmpty
-import mobi.cwiklinski.bloodline.resources.ic_address
-import mobi.cwiklinski.bloodline.resources.ic_browser
-import mobi.cwiklinski.bloodline.resources.ic_phone
 import mobi.cwiklinski.bloodline.resources.icon_poland
 import mobi.cwiklinski.bloodline.resources.placeholder_center
 import mobi.cwiklinski.bloodline.resources.placeholder_map
@@ -165,7 +166,7 @@ fun CenterView(
                     horizontalArrangement = Arrangement.Start
                 ) {
                     Icon(
-                        painterResource(Res.drawable.ic_address),
+                        Icons.Filled.Signpost,
                         contentDescription = center.getFullAddress(),
                         modifier = Modifier.size(iconSize)
                     )
@@ -191,7 +192,7 @@ fun CenterView(
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Icon(
-                                painterResource(Res.drawable.ic_browser),
+                                Icons.Filled.Public,
                                 contentDescription = center.getFullAddress(),
                                 modifier = Modifier.size(iconSize)
                             )
@@ -219,7 +220,7 @@ fun CenterView(
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Icon(
-                                painterResource(Res.drawable.ic_phone),
+                                Icons.Filled.Phone,
                                 contentDescription = center.getFullAddress(),
                                 modifier = Modifier.size(iconSize)
                             )

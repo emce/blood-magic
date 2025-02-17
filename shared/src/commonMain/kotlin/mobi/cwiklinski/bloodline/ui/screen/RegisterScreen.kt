@@ -19,6 +19,9 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -41,8 +45,6 @@ import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.icon_apple
-import mobi.cwiklinski.bloodline.resources.icon_eye_closed
-import mobi.cwiklinski.bloodline.resources.icon_eye_opened
 import mobi.cwiklinski.bloodline.resources.icon_facebook
 import mobi.cwiklinski.bloodline.resources.icon_google
 import mobi.cwiklinski.bloodline.resources.icon_register
@@ -272,11 +274,12 @@ fun RegisterView(
                 trailingIcon = {
                     if (formEnabled) {
                         Image(
-                            painterResource(if (showPassword) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
+                            if (showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             "password",
                             modifier = Modifier.clickable {
                                 passwordTransform(!showPassword)
-                            }
+                            },
+                            colorFilter = ColorFilter.tint(AppThemeColors.grey3)
                         )
                     }
                 },
@@ -292,11 +295,12 @@ fun RegisterView(
                 trailingIcon = {
                     if (formEnabled) {
                         Image(
-                            painterResource(if (showRepeat) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
+                            if (showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                             "password",
                             modifier = Modifier.clickable {
                                 repeatTransform(!showRepeat)
-                            }
+                            },
+                            colorFilter = ColorFilter.tint(AppThemeColors.grey3)
                         )
                     }
                 },

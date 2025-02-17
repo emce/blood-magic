@@ -24,8 +24,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
@@ -70,7 +71,6 @@ import mobi.cwiklinski.bloodline.resources.heroGenitive
 import mobi.cwiklinski.bloodline.resources.heroinGenitive
 import mobi.cwiklinski.bloodline.resources.ic_sex_female
 import mobi.cwiklinski.bloodline.resources.ic_sex_male
-import mobi.cwiklinski.bloodline.resources.icon_logout
 import mobi.cwiklinski.bloodline.resources.male
 import mobi.cwiklinski.bloodline.resources.profileAvatarTitle
 import mobi.cwiklinski.bloodline.resources.profileDataEmailLabel
@@ -150,7 +150,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                                 }
                             }) {
                                 Icon(
-                                    Icons.Filled.Star,
+                                    Icons.Filled.WaterDrop,
                                     contentDescription = "not",
                                     modifier = Modifier.padding(5.dp)
                                 )
@@ -160,7 +160,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             screenModel.loggingOut()
                         }) {
                             Icon(
-                                painterResource(Res.drawable.icon_logout),
+                                Icons.AutoMirrored.Filled.Logout,
                                 contentDescription = stringResource(Res.string.settingsLogoutTitle),
                                 modifier = Modifier.padding(5.dp)
                             )
@@ -269,24 +269,26 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                     title = stringResource(Res.string.profileTitle),
                     actions = {
                         if (getPlatform().isDebugBinary) {
-                            TextButton(onClick = {
+                            IconButton(onClick = {
                                 screenModel.screenModelScope.launch {
                                     Job.checkNotifications()
                                 }
                             }) {
-                                Text(
-                                    "not",
-                                    style = contentAction()
+                                Icon(
+                                    Icons.Filled.Notifications,
+                                    contentDescription = "not",
+                                    modifier = Modifier.padding(5.dp)
                                 )
                             }
-                            TextButton(onClick = {
+                            IconButton(onClick = {
                                 screenModel.screenModelScope.launch {
                                     Job.checkPotentialDonation()
                                 }
                             }) {
-                                Text(
-                                    "don",
-                                    style = contentAction()
+                                Icon(
+                                    Icons.Filled.WaterDrop,
+                                    contentDescription = "not",
+                                    modifier = Modifier.padding(5.dp)
                                 )
                             }
                         }

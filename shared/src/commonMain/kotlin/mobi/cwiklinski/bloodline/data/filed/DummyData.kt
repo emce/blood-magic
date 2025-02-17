@@ -3503,7 +3503,10 @@ object DummyData {
                 1
             ),
             "Notyfikacja 1",
-            "To jest treść pierwszej notyfikacji. To jest automatycznie wygenerowany tekst.",
+            """To jest treść pierwszej **notyfikacji**. 
+                To jest automatycznie wygenerowany tekst:
+                - piewrsze
+                - drugie""".trimMargin(),
             "Warszawa"
         ),
         Notification(
@@ -3515,7 +3518,10 @@ object DummyData {
                 1
             ),
             "Notyfikacja 2",
-            "To jest treść drugiej notyfikacji. To jest automatycznie wygenerowany tekst.",
+            """To jest treść drugiej **notyfikacji**. 
+                To jest automatycznie wygenerowany tekst:
+                - piewrsze
+                - drugie""".trimMargin(),
             "Polska"
         ),
         Notification(
@@ -3527,7 +3533,10 @@ object DummyData {
                 10
             ),
             "Notyfikacja 3",
-            "To jest treść trzeciej notyfikacji. To jest automatycznie wygenerowany tekst.",
+            """To jest treść trzeciej **notyfikacji**. 
+                To jest automatycznie wygenerowany tekst:
+                - piewrsze
+                - drugie""".trimMargin(),
             "Gdańsk"
         ),
         Notification(
@@ -3539,7 +3548,10 @@ object DummyData {
                 11
             ),
             "Notyfikacja 4",
-            "To jest treść czwartej notyfikacji. To jest automatycznie wygenerowany tekst.",
+            """To jest treść czwartej **notyfikacji**. 
+                To jest automatycznie wygenerowany tekst:
+                - piewrsze
+                - drugie""".trimMargin(),
             "Kraków"
         ),
         Notification(
@@ -3551,7 +3563,10 @@ object DummyData {
                 21
             ),
             "Notyfikacja 5",
-            "To jest treść piątej notyfikacji. To jest automatycznie wygenerowany tekst.",
+            """To jest treść piątej **notyfikacji**. 
+                To jest automatycznie wygenerowany tekst:
+                - piewrsze
+                - drugie""".trimMargin(),
             "Polska"
         )
     )

@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +45,7 @@ import mobi.cwiklinski.bloodline.resources.notificationsTitle
 import mobi.cwiklinski.bloodline.ui.model.NotificationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.NotificationState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
+import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.util.NotificationTab
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
@@ -96,12 +97,7 @@ class NotificationsScreen : AppScreen() {
         val screenModel = navigator.koinNavigatorScreenModel<NotificationScreenModel>()
         MobileLayoutWithTitle(
             navigationIcon = {
-                IconButton(onClick = { navigator.pop() }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.DoneAll,
-                        contentDescription = stringResource(Res.string.goBack)
-                    )
-                }
+                getMarkAllAction { navigator.pop() }
             },
             title = stringResource(Res.string.notificationsTitle),
             actions = {
@@ -124,13 +120,7 @@ class NotificationsScreen : AppScreen() {
         MobileLayoutWithTitle(
             title = stringResource(Res.string.notificationsTitle),
             actions = {
-                IconButton(onClick = { screenModel.setForMarkAllAsRead() }) {
-                    Icon(
-                        painterResource(Res.drawable.ic_mark_all_read),
-                        contentDescription = stringResource(Res.string.notificationsMarkAllAsRead),
-                        modifier = Modifier.padding(6.dp)
-                    )
-                }
+                getMarkAllAction { navigator.pop() }
                 CloseButton {
                     navigator.pop()
                 }
@@ -172,6 +162,16 @@ class NotificationsScreen : AppScreen() {
             }
         )
     }
+
+    @Composable
+    fun getMarkAllAction(onClick: () -> Unit) {
+        IconButton(onClick = onClick) {
+            Icon(
+                imageVector = Icons.Filled.DoneAll,
+                contentDescription = stringResource(Res.string.goBack)
+            )
+        }
+    }
 }
 
 @Composable
@@ -195,7 +195,8 @@ fun NotificationsView(
                     },
                     text = {
                         Text(
-                            text = stringResource(tab.title),
+                            text = stringResource(tab.title).uppercase(),
+                            style = itemSubTitle(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )

@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -23,12 +25,12 @@ import com.mikepenz.markdown.m3.Markdown
 import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.ic_map_pin
-import mobi.cwiklinski.bloodline.resources.ic_mark_read
 import mobi.cwiklinski.bloodline.resources.notificationsLocationDescription
 import mobi.cwiklinski.bloodline.resources.seeAll
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.notificationRichTextColors
 import mobi.cwiklinski.bloodline.ui.theme.notificationInfo
 import mobi.cwiklinski.bloodline.ui.theme.notificationTitle
+import mobi.cwiklinski.bloodline.ui.theme.richTextTypography
 import mobi.cwiklinski.bloodline.ui.util.getType
 import mobi.cwiklinski.bloodline.ui.util.toLocalizedString
 import org.jetbrains.compose.resources.painterResource
@@ -78,7 +80,7 @@ fun NotificationView(
                                 .padding(8.dp)
                         ) {
                             Icon(
-                                painterResource(Res.drawable.ic_mark_read),
+                                Icons.Filled.Done,
                                 contentDescription = stringResource(Res.string.seeAll),
                             )
                         }
@@ -89,6 +91,7 @@ fun NotificationView(
         Markdown(
             notification.message.replace("<br>", "\n"),
             colors = notificationRichTextColors(),
+            typography = richTextTypography(),
             modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
         )
         Row(

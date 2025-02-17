@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.VisualTransformation
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.inputPlaceHolder
+import mobi.cwiklinski.bloodline.ui.theme.itemTrailing
 
 @Composable
 fun OutlinedInput(
@@ -40,7 +41,7 @@ fun OutlinedInput(
         readOnly = readOnly,
         textStyle = inputPlaceHolder(),
         label = {
-            Text(label)
+            Text(label, style = itemTrailing().copy(color = AppThemeColors.grey3))
         },
         placeholder = placeholder,
         leadingIcon = leadingIcon,

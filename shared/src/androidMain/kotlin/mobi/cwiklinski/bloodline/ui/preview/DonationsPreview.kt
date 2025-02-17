@@ -21,7 +21,7 @@ fun DonationItemPreview() {
 fun DonationsPreview() {
     DonationsView(
         paddingValues = PaddingValues(0.dp),
-        donations = DummyData.DONATIONS.toList(),
+        donations = DummyData.DONATIONS.filter{ it.hemoglobin > 0 && it.systolic > 0 }.toList(),
         onEdit = {},
         onDelete = {},
         onShare = {},

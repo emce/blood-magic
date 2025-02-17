@@ -16,6 +16,6 @@ fun CenterPreview() {
     Column(
         modifier = Modifier.fillMaxSize().background(Color.White)
     ) {
-        CenterView(DummyData.CENTERS.random())
+        CenterView(DummyData.CENTERS.filter { it.site.isNotEmpty() && it.phone.isNotEmpty() && it.info.isNotEmpty() }.random())
     }
 }

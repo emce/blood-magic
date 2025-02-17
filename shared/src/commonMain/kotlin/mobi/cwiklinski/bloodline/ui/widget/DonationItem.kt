@@ -13,6 +13,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Compress
+import androidx.compose.material.icons.filled.DeleteOutline
+import androidx.compose.material.icons.filled.EditNote
+import androidx.compose.material.icons.filled.Iron
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -38,16 +44,11 @@ import mobi.cwiklinski.bloodline.resources.donationPlasma
 import mobi.cwiklinski.bloodline.resources.donationPlatelets
 import mobi.cwiklinski.bloodline.resources.donationsDelete
 import mobi.cwiklinski.bloodline.resources.donationsEdit
-import mobi.cwiklinski.bloodline.resources.icon_delete
 import mobi.cwiklinski.bloodline.resources.icon_donation_alert
-import mobi.cwiklinski.bloodline.resources.icon_edit
-import mobi.cwiklinski.bloodline.resources.icon_ferrum
-import mobi.cwiklinski.bloodline.resources.icon_flow
 import mobi.cwiklinski.bloodline.resources.icon_full_blood
 import mobi.cwiklinski.bloodline.resources.icon_packed
 import mobi.cwiklinski.bloodline.resources.icon_plasma
 import mobi.cwiklinski.bloodline.resources.icon_platelets
-import mobi.cwiklinski.bloodline.resources.icon_share
 import mobi.cwiklinski.bloodline.resources.liter
 import mobi.cwiklinski.bloodline.resources.milliliter
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
@@ -113,7 +114,7 @@ fun DonationItem(
                     .fillMaxWidth()
                     .padding(defaultPadding)
             ) {
-                val (typeIcon, title, subtitle, amount, share, center, addtional, actions) = createRefs()
+                val (typeIcon, title, subtitle, amount, share, center, additional, actions) = createRefs()
                 // Type icon
                 Image(
                     painterResource(icon),
@@ -139,7 +140,7 @@ fun DonationItem(
                 ) {
                     if (isMobile()) {
                         Image(
-                            painterResource(Res.drawable.icon_share),
+                            Icons.Filled.Share,
                             stringResource(Res.string.donationsEdit),
                             colorFilter = ColorFilter.tint(AppThemeColors.rose2),
                             modifier = Modifier.size(16.dp)
@@ -214,7 +215,7 @@ fun DonationItem(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .padding(horizontal = defaultPadding)
-                            .constrainAs(addtional) {
+                            .constrainAs(additional) {
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
                                 top.linkTo(center.bottom, 10.dp)
@@ -224,9 +225,10 @@ fun DonationItem(
                     ) {
                         if (donation.hemoglobin > 0f) {
                             Image(
-                                painterResource(Res.drawable.icon_ferrum),
+                                Icons.Filled.Iron,
                                 contentDescription = stringResource(Res.string.donationNewHemoglobin),
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(16.dp),
+                                colorFilter = ColorFilter.tint(AppThemeColors.grey)
                             )
                             Text(
                                 "${donation.hemoglobin} g/dl",
@@ -237,9 +239,10 @@ fun DonationItem(
                         Spacer(modifier = Modifier.height(20.dp).weight(1f))
                         if (donation.systolic > 0 && donation.diastolic > 0) {
                             Image(
-                                painterResource(Res.drawable.icon_flow),
+                                Icons.Filled.Compress,
                                 contentDescription = stringResource(Res.string.donationNewPressureLabel),
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(16.dp),
+                                colorFilter = ColorFilter.tint(AppThemeColors.grey)
                             )
                             Text(
                                 "${donation.systolic}/${donation.diastolic} mmHg",
@@ -271,7 +274,7 @@ fun DonationItem(
                             textDecoration = TextDecoration.None,
                             leadingIcon = {
                                 Icon(
-                                    painterResource(Res.drawable.icon_edit),
+                                    Icons.Filled.EditNote,
                                     modifier = Modifier.size(16.dp),
                                     contentDescription = stringResource(Res.string.donationsEdit)
                                 )
@@ -287,7 +290,7 @@ fun DonationItem(
                             textColor = AppThemeColors.rose1,
                             leadingIcon = {
                                 Icon(
-                                    painterResource(Res.drawable.icon_delete),
+                                    Icons.Filled.DeleteOutline,
                                     modifier = Modifier.size(16.dp),
                                     contentDescription = stringResource(Res.string.donationsDelete),
                                     tint = AppThemeColors.rose1

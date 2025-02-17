@@ -18,6 +18,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
@@ -32,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -50,12 +55,9 @@ import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.getScreenWidth
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.icon_apple
-import mobi.cwiklinski.bloodline.resources.icon_eye_closed
-import mobi.cwiklinski.bloodline.resources.icon_eye_opened
 import mobi.cwiklinski.bloodline.resources.icon_facebook
 import mobi.cwiklinski.bloodline.resources.icon_google
 import mobi.cwiklinski.bloodline.resources.icon_login
-import mobi.cwiklinski.bloodline.resources.icon_question
 import mobi.cwiklinski.bloodline.resources.loginEmailError
 import mobi.cwiklinski.bloodline.resources.loginEmailLabel
 import mobi.cwiklinski.bloodline.resources.loginEmailTip
@@ -277,8 +279,9 @@ fun LoginView(
                     modifier = Modifier.padding(horizontal = 8.dp)
                 ) {
                     Icon(
-                        painterResource(Res.drawable.icon_question),
-                        contentDescription = stringResource(Res.string.loginEmailTip)
+                        Icons.AutoMirrored.Filled.HelpOutline,
+                        contentDescription = stringResource(Res.string.loginEmailTip),
+                        tint = AppThemeColors.grey3
                     )
                 }
             }
@@ -308,11 +311,12 @@ fun LoginView(
                     trailingIcon = {
                         if (formEnabled) {
                             Image(
-                                painterResource(if (showPassword) Res.drawable.icon_eye_opened else Res.drawable.icon_eye_closed),
+                                if (showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                                 "password",
                                 modifier = Modifier.clickable {
                                     passwordTransform(!showPassword)
-                                }
+                                },
+                                colorFilter = ColorFilter.tint(AppThemeColors.grey3)
                             )
                         }
                     },

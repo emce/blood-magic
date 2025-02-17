@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -12,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.resources.Res
-import mobi.cwiklinski.bloodline.resources.icon_logout
 import mobi.cwiklinski.bloodline.resources.infoTitle
 import mobi.cwiklinski.bloodline.resources.nav_icon_info
 import mobi.cwiklinski.bloodline.resources.profileTitle
@@ -39,7 +40,7 @@ fun MobileToolbarPreview() {
             }
             IconButton(onClick = { }) {
                 Icon(
-                    painterResource(Res.drawable.icon_logout),
+                    Icons.AutoMirrored.Filled.Logout,
                     contentDescription = stringResource(Res.string.settingsLogoutTitle),
                     modifier = Modifier.size(40.dp).padding(5.dp)
                 )

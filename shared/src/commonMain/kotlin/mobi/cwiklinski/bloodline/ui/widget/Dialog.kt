@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +39,6 @@ import mobi.cwiklinski.bloodline.resources.donationsDeleteTitle
 import mobi.cwiklinski.bloodline.resources.goBack
 import mobi.cwiklinski.bloodline.resources.ic_mark_all_read
 import mobi.cwiklinski.bloodline.resources.icon_close
-import mobi.cwiklinski.bloodline.resources.icon_delete
 import mobi.cwiklinski.bloodline.resources.notificationsMarkAllAsReadButton
 import mobi.cwiklinski.bloodline.resources.notificationsMarkAllAsReadMessage
 import mobi.cwiklinski.bloodline.resources.notificationsMarkAllAsReadTitle
@@ -142,7 +144,7 @@ fun DonationDeleteDialog(
         ) {
             val (titleRef, messageRef, imageRef, buttonsRef) = createRefs()
             Image(
-                painterResource(Res.drawable.icon_delete),
+                Icons.Filled.DeleteForever,
                 contentDescription = stringResource(Res.string.close),
                 colorFilter = ColorFilter.tint(AppThemeColors.iconRed),
                 modifier = Modifier
@@ -347,7 +349,7 @@ fun NotificationDeleteDialog(
         ) {
             val (titleRef, messageRef, imageRef, buttonsRef) = createRefs()
             Image(
-                painterResource(Res.drawable.icon_delete),
+                Icons.Filled.DeleteOutline,
                 contentDescription = stringResource(Res.string.close),
                 colorFilter = ColorFilter.tint(AppThemeColors.iconRed),
                 modifier = Modifier
