@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -97,7 +99,12 @@ class NotificationsScreen : AppScreen() {
         val screenModel = navigator.koinNavigatorScreenModel<NotificationScreenModel>()
         MobileLayoutWithTitle(
             navigationIcon = {
-                getMarkAllAction { navigator.pop() }
+                IconButton(onClick = { navigator.pop() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(Res.string.goBack)
+                    )
+                }
             },
             title = stringResource(Res.string.notificationsTitle),
             actions = {
