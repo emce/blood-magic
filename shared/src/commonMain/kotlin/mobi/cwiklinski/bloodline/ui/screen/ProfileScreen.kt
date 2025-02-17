@@ -26,9 +26,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Female
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Male
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.WaterDrop
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
@@ -157,12 +159,24 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             }
                         }
                         IconButton(onClick = {
+                            screenModel.screenModelScope.launch {
+                                navigator.push(AboutScreen())
+                            }
+                        }) {
+                            Icon(
+                                Icons.Outlined.Info,
+                                contentDescription = "not",
+                                modifier = Modifier.padding(5.dp)
+                            )
+                        }
+                        IconButton(onClick = {
                             screenModel.loggingOut()
                         }) {
                             Icon(
                                 Icons.AutoMirrored.Filled.Logout,
                                 contentDescription = stringResource(Res.string.settingsLogoutTitle),
-                                modifier = Modifier.padding(5.dp)
+                                modifier = Modifier.padding(5.dp),
+                                tint = AppThemeColors.red1
                             )
                         }
                     },

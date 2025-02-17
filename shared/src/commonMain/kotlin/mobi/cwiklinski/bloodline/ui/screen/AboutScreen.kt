@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,8 +21,10 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.m3.rememberLibraries
+import mobi.cwiklinski.bloodline.config.AppConfig
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.resources.Res
+import mobi.cwiklinski.bloodline.resources.appName
 import mobi.cwiklinski.bloodline.resources.close
 import mobi.cwiklinski.bloodline.resources.goBack
 import mobi.cwiklinski.bloodline.resources.icon_close
@@ -30,7 +33,10 @@ import mobi.cwiklinski.bloodline.resources.infoTeam
 import mobi.cwiklinski.bloodline.resources.infoTeamDescription
 import mobi.cwiklinski.bloodline.resources.infoTitle
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.librariesColors
+import mobi.cwiklinski.bloodline.ui.theme.cardTitle
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
+import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.widget.DesktopWithTitleScaffold
 import mobi.cwiklinski.bloodline.ui.widget.HeaderText
 import mobi.cwiklinski.bloodline.ui.widget.MobileLayoutWithTitle
@@ -60,7 +66,18 @@ class AboutScreen : AppScreen() {
                 }
             }
         ) {
-            Column {
+            Column(
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    stringResource(Res.string.appName),
+                    style = toolbarTitle()
+                )
+                Text(
+                    AppConfig.VERSION,
+                    style = cardTitle()
+                )
                 HeaderText(
                     stringResource(Res.string.infoTeam),
                     textStyle = getTypography().headlineLarge
@@ -138,8 +155,17 @@ fun AboutHorizontalView(libraries: Libs?) {
     ) {
         Column(
             modifier = Modifier.weight(1f).padding(20.dp),
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                stringResource(Res.string.appName),
+                style = toolbarTitle()
+            )
+            Text(
+                AppConfig.VERSION,
+                style = cardTitle()
+            )
             HeaderText(
                 stringResource(Res.string.infoTeam),
                 textStyle = getTypography().headlineLarge
