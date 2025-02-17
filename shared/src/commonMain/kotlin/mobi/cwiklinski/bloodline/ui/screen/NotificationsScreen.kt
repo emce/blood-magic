@@ -98,7 +98,7 @@ class NotificationsScreen : AppScreen() {
             navigationIcon = {
                 IconButton(onClick = { navigator.pop() }) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.DoneAll,
                         contentDescription = stringResource(Res.string.goBack)
                     )
                 }

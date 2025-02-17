@@ -71,10 +71,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.material3)
+            api(compose.runtime)
+            api(compose.foundation)
+            api(compose.material)
+            api(compose.material3)
+            api(compose.materialIconsExtended)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.constraintlayout.compose.multiplatform)

@@ -5,15 +5,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.Constants
-import mobi.cwiklinski.bloodline.common.Either
-import mobi.cwiklinski.bloodline.common.isAfter
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
-import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.data.api.NotificationService
-import mobi.cwiklinski.bloodline.domain.NotificationType
 import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.util.fillWithRead
@@ -38,96 +33,6 @@ class NotificationScreenModel(
         bootstrap()
         screenModelScope.launch {
             _notificationsRead.emit(storageService.getReadList())
-        }
-    }
-
-    fun addNotification(
-        date: LocalDate,
-        location: String,
-        type: NotificationType,
-        title: String,
-        message: String
-    ) {
-        mutableState.value = NotificationState.Saving
-        validateNotification(date, location, title, message) {
-            screenModelScope.launch {
-                notificationService.addNotification(
-                    date,
-                    location,
-                    title,
-                    message,
-                    type
-                )
-                    .collectLatest {
-                        when (it) {
-                            is Either.Left -> {
-                                mutableState.value = NotificationState.Saved
-                            }
-
-                            is Either.Right -> {
-                                mutableState.value =
-                                    NotificationState.Error(NotificationError.ERROR)
-                            }
-                        }
-                    }
-            }
-        }
-    }
-
-    fun updateNotification(
-        id: String,
-        date: LocalDate,
-        location: String,
-        type: NotificationType,
-        title: String,
-        message: String
-    ) {
-        mutableState.value = NotificationState.Saving
-        validateNotification(date, location, title, message) {
-            screenModelScope.launch {
-                notificationService.updateNotification(
-                    id,
-                    date,
-                    location,
-                    title,
-                    message,
-                    type
-                )
-                    .collectLatest {
-                        when (it) {
-                            is Either.Left -> {
-                                mutableState.value = NotificationState.Saved
-                            }
-
-                            is Either.Right -> {
-                                mutableState.value =
-                                    NotificationState.Error(NotificationError.ERROR)
-                            }
-                        }
-                    }
-            }
-        }
-    }
-
-    fun markToDeletion(notification: Notification) {
-        mutableState.value = NotificationState.ToDelete(notification)
-    }
-
-    fun deleteNotification(notification: Notification) {
-        mutableState.value = NotificationState.Saving
-        screenModelScope.launch {
-            notificationService.deleteNotification(notification.id)
-                .collectLatest {
-                    when (it) {
-                        is Either.Left -> {
-                            mutableState.value = NotificationState.Deleted
-                        }
-
-                        is Either.Right -> {
-                            mutableState.value = NotificationState.Error(NotificationError.DELETION_ERROR)
-                        }
-                    }
-                }
         }
     }
 
@@ -175,40 +80,9 @@ class NotificationScreenModel(
     fun resetState() {
         mutableState.value = NotificationState.Idle
     }
-
-    private fun validateNotification(
-        date: LocalDate,
-        location: String,
-        title: String,
-        message: String,
-        follow: () -> Unit
-    ) {
-        if (!date.isAfter(today())) {
-            if (location.isEmpty()) {
-                if (title.isEmpty()) {
-                    if (message.isEmpty()) {
-                        follow.invoke()
-                    } else {
-                        mutableState.value = NotificationState.Error(NotificationError.MESSAGE_ERROR)
-                    }
-                } else {
-                    mutableState.value = NotificationState.Error(NotificationError.TITLE_ERROR)
-                }
-            } else {
-                mutableState.value = NotificationState.Error(NotificationError.NO_LOCATION_ERROR)
-            }
-        } else {
-            mutableState.value = NotificationState.Error(NotificationError.DATE_IN_FUTURE_ERROR)
-        }
-    }
 }
 
 enum class NotificationError {
-    DATE_IN_FUTURE_ERROR,
-    NO_LOCATION_ERROR,
-    TITLE_ERROR,
-    MESSAGE_ERROR,
-    DELETION_ERROR,
     ERROR
 }
 
@@ -221,9 +95,5 @@ sealed class NotificationState {
     data object MarkingAllAsRead : NotificationState()
     data object MarkedAllAsRead : NotificationState()
     data object MarkingAllError : NotificationState()
-    data object Saving : NotificationState()
-    data object Saved : NotificationState()
-    data class ToDelete(val notification: Notification) : NotificationState()
-    data object Deleted : NotificationState()
     data class Error(val error: NotificationError) : NotificationState()
 }
