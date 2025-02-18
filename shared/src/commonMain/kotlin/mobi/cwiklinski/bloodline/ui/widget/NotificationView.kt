@@ -21,16 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.mikepenz.markdown.m3.Markdown
 import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.ic_map_pin
 import mobi.cwiklinski.bloodline.resources.notificationsLocationDescription
 import mobi.cwiklinski.bloodline.resources.seeAll
-import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.notificationRichTextColors
 import mobi.cwiklinski.bloodline.ui.theme.notificationInfo
 import mobi.cwiklinski.bloodline.ui.theme.notificationTitle
-import mobi.cwiklinski.bloodline.ui.theme.richTextTypography
 import mobi.cwiklinski.bloodline.ui.util.getType
 import mobi.cwiklinski.bloodline.ui.util.toLocalizedString
 import org.jetbrains.compose.resources.painterResource
@@ -88,10 +85,8 @@ fun NotificationView(
                 }
             }
         }
-        Markdown(
+        RichText(
             notification.message.replace("<br>", "\n"),
-            colors = notificationRichTextColors(),
-            typography = richTextTypography(),
             modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
         )
         Row(

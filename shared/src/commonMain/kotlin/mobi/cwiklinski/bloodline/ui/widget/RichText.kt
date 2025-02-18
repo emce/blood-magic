@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import com.mikepenz.markdown.coil3.Coil3ImageTransformerImpl
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.components.MarkdownComponent
 import com.mikepenz.markdown.compose.components.markdownComponents
@@ -44,6 +45,7 @@ fun RichText(
         modifier = modifier,
         colors = dialogRichTextColors(),
         typography = richTextTypography(),
-        components = components
+        components = components,
+        imageTransformer = Coil3ImageTransformerImpl,
     )
 }

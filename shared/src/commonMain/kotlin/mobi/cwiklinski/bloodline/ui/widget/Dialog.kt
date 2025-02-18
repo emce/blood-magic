@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.mikepenz.markdown.m3.Markdown
 import kotlinx.serialization.Serializable
 import mobi.cwiklinski.bloodline.data.Parcelable
 import mobi.cwiklinski.bloodline.data.Parcelize
@@ -47,7 +46,6 @@ import mobi.cwiklinski.bloodline.resources.settingsLogoutMessage
 import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.dialogRichTextColors
 import mobi.cwiklinski.bloodline.ui.theme.alertTitle
 import mobi.cwiklinski.bloodline.ui.theme.hugeTitle
 import org.jetbrains.compose.resources.painterResource
@@ -104,14 +102,13 @@ fun InformationDialog(
                     centerHorizontallyTo(parent)
                 }
             )
-            Markdown(
+            RichText(
                 message,
                 modifier = Modifier.constrainAs(messageRef) {
                     top.linkTo(titleRef.bottom, 20.dp)
                     bottom.linkTo(parent.bottom, 20.dp)
                     centerHorizontallyTo(parent)
                 },
-                colors = dialogRichTextColors()
             )
         }
     }
@@ -238,13 +235,12 @@ fun MarkAllReadDialog(
                     centerHorizontallyTo(parent)
                 }
             )
-            Markdown(
+            RichText(
                 stringResource(Res.string.notificationsMarkAllAsReadMessage),
                 modifier = Modifier.constrainAs(messageRef) {
                     top.linkTo(titleRef.bottom, 20.dp)
                     centerHorizontallyTo(parent)
                 },
-                colors = dialogRichTextColors()
             )
             Row(
                 modifier = Modifier.constrainAs(buttonsRef) {
