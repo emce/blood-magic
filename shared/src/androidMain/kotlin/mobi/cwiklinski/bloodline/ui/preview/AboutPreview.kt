@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.android.play.core.integrity.x
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import mobi.cwiklinski.bloodline.config.AppConfig
@@ -28,7 +27,6 @@ import mobi.cwiklinski.bloodline.ui.theme.AppTheme
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.librariesColors
 import mobi.cwiklinski.bloodline.ui.theme.cardTitle
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
-import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.widget.HeaderText
 import mobi.cwiklinski.bloodline.ui.widget.RichText

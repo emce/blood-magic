@@ -35,7 +35,6 @@ import mobi.cwiklinski.bloodline.resources.infoTitle
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.librariesColors
 import mobi.cwiklinski.bloodline.ui.theme.cardTitle
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
-import mobi.cwiklinski.bloodline.ui.theme.toolbarSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.widget.DesktopWithTitleScaffold
 import mobi.cwiklinski.bloodline.ui.widget.HeaderText
@@ -68,7 +67,8 @@ class AboutScreen : AppScreen() {
         ) {
             Column(
                 verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth().padding(20.dp)
             ) {
                 Text(
                     stringResource(Res.string.appName),
