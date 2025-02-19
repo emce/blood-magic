@@ -27,7 +27,9 @@ fun NotificationsPreview() {
 @Composable
 fun NotificationPreview() {
     Column(
-        modifier = Modifier.fillMaxWidth().wrapContentHeight().background(Color.White)
+        modifier = Modifier.fillMaxWidth()
+            .wrapContentHeight()
+            .background(Color.White)
     ) {
         NotificationView(notification = DummyData.NOTIFICATIONS.random())
     }

@@ -13,6 +13,6 @@ class NotificationServiceImplementation(db: FirebaseDatabase) : NotificationServ
         .valueEvents
         .map { events ->
             events.value<Map<String, FirebaseNotification>>().values.map { it.toNotification() }
-                .toList().sortedByDescending { it.date }
+                .toList().sortedByDescending { it.date }.take(20)
         }
 }

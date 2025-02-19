@@ -19,8 +19,7 @@ import mobi.cwiklinski.bloodline.resources.notificationsUnreadMessage
 import mobi.cwiklinski.bloodline.resources.notificationsUnreadTitle
 import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.ui.util.NextDonationTime
-import mobi.cwiklinski.bloodline.ui.util.fillWithRead
-import mobi.cwiklinski.bloodline.ui.util.getReadList
+import mobi.cwiklinski.bloodline.ui.util.getLatestRead
 import org.jetbrains.compose.resources.getPluralString
 import org.jetbrains.compose.resources.getString
 import org.koin.core.component.KoinComponent
@@ -60,9 +59,9 @@ object Job : KoinComponent {
     suspend fun checkNotifications() {
         val notificationService: NotificationService by inject()
         val storageService: StorageService by inject()
-        val readList = storageService.getReadList()
+        val latestRead = storageService.getLatestRead()
         val notifications = notificationService.getNotifications().first()
-        val unread = notifications.fillWithRead(readList).filter { !it.read }
+        val unread = notifications.filter { !it.date.isAfter(latestRead) }
         if (unread.isNotEmpty()) {
             val notifier = NotifierManager.getLocalNotifier()
             notifier.notify(

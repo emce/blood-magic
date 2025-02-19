@@ -36,11 +36,7 @@ import mobi.cwiklinski.bloodline.resources.donationsDelete
 import mobi.cwiklinski.bloodline.resources.donationsDeleteMessage
 import mobi.cwiklinski.bloodline.resources.donationsDeleteTitle
 import mobi.cwiklinski.bloodline.resources.goBack
-import mobi.cwiklinski.bloodline.resources.ic_mark_all_read
 import mobi.cwiklinski.bloodline.resources.icon_close
-import mobi.cwiklinski.bloodline.resources.notificationsMarkAllAsReadButton
-import mobi.cwiklinski.bloodline.resources.notificationsMarkAllAsReadMessage
-import mobi.cwiklinski.bloodline.resources.notificationsMarkAllAsReadTitle
 import mobi.cwiklinski.bloodline.resources.settingsLogoutAction
 import mobi.cwiklinski.bloodline.resources.settingsLogoutMessage
 import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
@@ -189,77 +185,6 @@ fun DonationDeleteDialog(
                         onDelete.invoke(donation)
                     },
                     text = stringResource(Res.string.donationsDelete)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun MarkAllReadDialog(
-    onClose: () -> Unit,
-    onConfirm: () -> Unit
-) {
-    BasicAlertDialog(
-        onDismissRequest = { },
-    ) {
-        ConstraintLayout(
-            modifier = Modifier.background(
-                AppThemeColors.white,
-                RoundedCornerShape(24.dp)
-            ).padding(
-                top = 24.dp,
-                bottom = 48.dp,
-                start = 24.dp,
-                end = 24.dp
-            )
-        ) {
-            val (titleRef, messageRef, imageRef, buttonsRef) = createRefs()
-            Image(
-                painterResource(Res.drawable.ic_mark_all_read),
-                contentDescription = stringResource(Res.string.notificationsMarkAllAsReadTitle),
-                modifier = Modifier
-                    .size(96.dp)
-                    .constrainAs(imageRef) {
-                        top.linkTo(parent.top)
-                        centerHorizontallyTo(parent)
-                    }.clickable {
-                        onClose.invoke()
-                    }
-            )
-            Text(
-                stringResource(Res.string.notificationsMarkAllAsReadTitle),
-                style = alertTitle(),
-                modifier = Modifier.constrainAs(titleRef) {
-                    top.linkTo(imageRef.bottom, 20.dp)
-                    centerHorizontallyTo(parent)
-                }
-            )
-            RichText(
-                stringResource(Res.string.notificationsMarkAllAsReadMessage),
-                modifier = Modifier.constrainAs(messageRef) {
-                    top.linkTo(titleRef.bottom, 20.dp)
-                    centerHorizontallyTo(parent)
-                },
-            )
-            Row(
-                modifier = Modifier.constrainAs(buttonsRef) {
-                    top.linkTo(messageRef.bottom, 40.dp)
-                }.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SecondaryButton(
-                    onClick = {
-                        onClose.invoke()
-                    },
-                    text = stringResource(Res.string.goBack)
-                )
-                SubmitButton(
-                    onClick = {
-                        onConfirm.invoke()
-                    },
-                    text = stringResource(Res.string.notificationsMarkAllAsReadButton)
                 )
             }
         }

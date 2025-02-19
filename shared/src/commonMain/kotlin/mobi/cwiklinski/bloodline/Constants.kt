@@ -32,7 +32,7 @@ object Constants {
 
     // Storage
     const val EMAIL_KEY = "email"
-    const val NOTIFICATIONS_READ = "notifications_read"
+    const val NOTIFICATIONS_LATEST = "notifications_latest"
 
     // Notifications
     const val CHANNEL_NAME = "BloodMagic"

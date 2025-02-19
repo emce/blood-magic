@@ -29,6 +29,7 @@ import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.common.event.SideEffect
 import mobi.cwiklinski.bloodline.common.removeDiacritics
+import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.domain.model.Notification
@@ -148,23 +149,21 @@ fun LocalDate.toLocalizedString(): String {
     return "${this.dayOfMonth} ${months[this.monthNumber - 1]} ${this.year}"
 }
 
-fun List<Notification>.fillWithRead(readList: List<String>): List<Notification> {
-    val filledList = mutableListOf<Notification>()
-    this.forEach { notification ->
-        filledList.add(notification.copy(
-            read = readList.contains(notification.id)
-        ))
+suspend fun StorageService.getLatestRead(): LocalDate {
+    val current = this.getString(Constants.NOTIFICATIONS_LATEST, "2000-01-01")
+    return try {
+        if (current.isEmpty()) {
+            LocalDate(2000, 1, 1)
+        } else {
+            LocalDate.parse(current)
+        }
+    } catch (e: IllegalArgumentException) {
+        LocalDate(2000, 1, 1)
     }
-    return filledList.toList()
 }
 
-suspend fun StorageService.getReadList(): List<String> {
-    val current = this.getString(Constants.NOTIFICATIONS_READ, "")
-    return if (current.isEmpty()) {
-        emptyList()
-    } else {
-        Json.decodeFromString<List<String>>(current)
-    }
+suspend fun StorageService.setLatestRead() {
+    this.storeString(Constants.NOTIFICATIONS_LATEST, today().toString())
 }
 
 @OptIn(InternalVoyagerApi::class)

@@ -3,7 +3,6 @@ package mobi.cwiklinski.bloodline.ui.widget
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,10 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +20,6 @@ import mobi.cwiklinski.bloodline.domain.model.Notification
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.ic_map_pin
 import mobi.cwiklinski.bloodline.resources.notificationsLocationDescription
-import mobi.cwiklinski.bloodline.resources.seeAll
 import mobi.cwiklinski.bloodline.ui.theme.notificationInfo
 import mobi.cwiklinski.bloodline.ui.theme.notificationTitle
 import mobi.cwiklinski.bloodline.ui.util.getType
@@ -34,11 +28,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun NotificationView(
-    notification: Notification,
-    isMarking: (String) -> Boolean = { false },
-    onMarkRead: (notification: Notification) -> Unit = {},
-) {
+fun NotificationView(notification: Notification) {
     Column(
         modifier = Modifier
         .background(notification.getType().color)
@@ -61,29 +51,6 @@ fun NotificationView(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f).padding(horizontal = 10.dp)
             )
-            if (!notification.read) {
-                BoxWithConstraints(
-                    modifier = Modifier.size(40.dp)
-                ) {
-                    if (isMarking(notification.id)) {
-                        FormProgress(modifier = Modifier.size(40.dp))
-                    } else {
-                        IconButton(
-                            onClick = {
-                                onMarkRead.invoke(notification)
-                            },
-                            modifier = Modifier
-                                .size(40.dp)
-                                .padding(8.dp)
-                        ) {
-                            Icon(
-                                Icons.Filled.Done,
-                                contentDescription = stringResource(Res.string.seeAll),
-                            )
-                        }
-                    }
-                }
-            }
         }
         RichText(
             notification.message.replace("<br>", "\n"),
