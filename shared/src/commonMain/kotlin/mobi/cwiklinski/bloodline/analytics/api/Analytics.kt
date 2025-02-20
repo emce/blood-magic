@@ -12,4 +12,6 @@ interface Analytics {
     }
 
     fun trackAction(action: Event.Action)
+
+    fun setUserId(userId: String)
 }

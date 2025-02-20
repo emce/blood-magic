@@ -4,15 +4,17 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import mobi.cwiklinski.bloodline.analytics.api.Analytics
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
-import mobi.cwiklinski.bloodline.storage.api.StorageService
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
+import mobi.cwiklinski.bloodline.storage.api.StorageService
 
 class SplashScreenModel(
     callbackManager: CallbackManager,
     private val authService: AuthenticationService,
     private val storageService: StorageService,
+    private val analytics: Analytics
 ) : AppModel<AuthenticationState>(AuthenticationState.Idle, callbackManager) {
 
     init {
@@ -24,7 +26,11 @@ class SplashScreenModel(
             authService.authenticationState
                 .debounce(SPLASH_DELAY)
                 .collectLatest {
-                    if (storageService.getProfile() != null) {
+                    val profile = storageService.getProfile()
+                    if (profile != null) {
+                        profile.id?.let { id ->
+                            analytics.setUserId(id)
+                        }
                         mutableState.value = it
                     } else {
                         mutableState.value = AuthenticationState.NotLogged

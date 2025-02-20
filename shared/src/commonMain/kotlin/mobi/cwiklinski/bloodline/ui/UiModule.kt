@@ -21,6 +21,7 @@ val uiModule = buildList {
                 callbackManager = get(),
                 authService = get(),
                 storageService = get(),
+                analytics = get()
             )
         }
         factory {
