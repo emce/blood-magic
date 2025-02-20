@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Notification
@@ -96,6 +98,7 @@ fun NotificationsView(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     notifications: List<Notification> = emptyList()
 ) {
+    TrackScreen(Constants.ANALYTICS_SCREEN_NOTIFICATIONS)
     Column(
         modifier = Modifier.padding(paddingValues)
     ) {

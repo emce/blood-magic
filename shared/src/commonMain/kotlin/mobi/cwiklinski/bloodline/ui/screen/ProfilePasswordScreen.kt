@@ -44,6 +44,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
@@ -171,6 +173,7 @@ fun ChangePasswordView(
     errorMessage: @Composable (List<ProfileError>) -> String = { "" },
     errors: List<ProfileError> = emptyList()
 ) {
+    TrackScreen(Constants.ANALYTICS_SCREEN_PROFILE_PASSWORD)
     val focusManager = LocalFocusManager.current
     if (errors.isNotEmpty()) {
         koinInject<CallbackManager>().postSideEffect(SideEffects.ErrorSnackBar(errorMessage.invoke(errors)))

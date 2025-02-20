@@ -23,6 +23,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import co.touchlab.kermit.Logger
 import kotlinx.datetime.Clock
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationState
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.resources.Res
@@ -78,6 +80,7 @@ class SplashScreen(override val key: ScreenKey = Clock.System.now().toString()) 
 
 @Composable
 fun SplashView(paddingValues: PaddingValues) {
+    TrackScreen(Constants.ANALYTICS_SCREEN_SPLASH)
     ConstraintLayout(
         modifier = Modifier.padding(paddingValues).fillMaxSize().background(
             AppThemeColors.startingGradient

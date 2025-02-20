@@ -39,6 +39,8 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import co.touchlab.kermit.Logger
 import kotlinx.datetime.Clock
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.isAfter
 import mobi.cwiklinski.bloodline.common.isValidPressure
@@ -296,6 +298,7 @@ fun NewDonationForm(
     disqualification: Int = 0,
     onDisqualificationChanged: (Boolean) -> Unit = {}
 ) {
+    TrackScreen(Constants.ANALYTICS_SCREEN_NEW_DONATION)
     val focusManager = LocalFocusManager.current
     Column(
         modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(20.dp)

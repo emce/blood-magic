@@ -45,6 +45,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.common.event.Events
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.data.Parcelize
@@ -252,6 +253,7 @@ fun HomeView(
     unreadNotifications: List<Notification>, onNotificationIconClicked: () -> Unit,
     openNewDonationForm: () -> Unit, showDonationsClicked: () -> Unit, shareText: (String) -> Unit
 ) {
+    TrackScreen(Constants.ANALYTICS_SCREEN_HOME)
     var donationWidth by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
     val hero =

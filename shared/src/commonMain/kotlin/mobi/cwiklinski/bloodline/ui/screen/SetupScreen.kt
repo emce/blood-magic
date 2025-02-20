@@ -55,6 +55,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import co.touchlab.kermit.Logger
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.isValidEmail
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
@@ -325,6 +327,7 @@ fun SetupView(
     if (isError) {
         koinInject<CallbackManager>().postSideEffect(SideEffects.ErrorSnackBar(errorText.invoke(error)))
     }
+    TrackScreen(Constants.ANALYTICS_SCREEN_SETUP)
     Column(
         modifier = Modifier
             .fillMaxSize()

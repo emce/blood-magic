@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
@@ -21,6 +20,8 @@ import cafe.adriel.voyager.core.lifecycle.LifecycleEffectOnce
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import co.touchlab.kermit.Logger
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.resources.Res
@@ -43,15 +44,13 @@ class LogoutScreen : AppScreen() {
     @IgnoredOnParcel
     override val supportDialogs = false
 
-    @Composable
-    override fun defaultView() = portraitPhoneView()
-
     @OptIn(ExperimentalVoyagerApi::class)
     @Composable
-    override fun portraitPhoneView() {
+    override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.koinNavigatorScreenModel<ExitScreenModel>()
         val state by screenModel.state.collectAsStateWithLifecycle(ExitState.Idle)
+        TrackScreen(Constants.ANALYTICS_SCREEN_LOGOUT)
         if (state == ExitState.LoggedOut) {
             navigator.clearStack()
             Logger.d("Redirecting to Splash Screen")
@@ -82,7 +81,4 @@ class LogoutScreen : AppScreen() {
             }
         }
     }
-
-    @Composable
-    override fun tabletView() = portraitPhoneView()
 }

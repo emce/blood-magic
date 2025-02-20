@@ -86,6 +86,7 @@ google-firebase-common = { module = "dev.gitlive:firebase-common", version.ref =
 google-firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "google-firebase-kmm" }
 google-firebase-database = { module = "dev.gitlive:firebase-database", version.ref = "google-firebase-kmm" }
 google-firebase-messaging = { module = "dev.gitlive:firebase-messaging", version.ref = "google-firebase-kmm" }
+google-firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "google-firebase-kmm" }
 google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }

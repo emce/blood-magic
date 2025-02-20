@@ -21,6 +21,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.m3.rememberLibraries
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.config.AppConfig
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.resources.Res
@@ -148,6 +150,7 @@ class AboutScreen : AppScreen() {
 
 @Composable
 fun AboutHorizontalView(libraries: Libs?) {
+    TrackScreen(Constants.ANALYTICS_SCREEN_ABOUT)
     Row(
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.Top,

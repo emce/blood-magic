@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.Parcelize
@@ -143,6 +145,7 @@ fun ResetView(
     errors: List<ResetError> = emptyList(),
     errorMessage: @Composable (List<ResetError>) -> String = { "" }
 ) {
+    TrackScreen(Constants.ANALYTICS_SCREEN__RESET)
     if (errors.isNotEmpty()) {
         koinInject<CallbackManager>().postSideEffect(SideEffects.ErrorSnackBar(errorMessage.invoke(errors)))
     }

@@ -27,6 +27,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Donation
@@ -218,6 +220,7 @@ fun DonationsView(
     onShare: (String) -> Unit,
     onDonationAdd: () -> Unit
 ) {
+    TrackScreen(Constants.ANALYTICS_SCREEN_DONATIONS)
     Box(
         modifier = Modifier.fillMaxSize().padding(paddingValues)
             .background(

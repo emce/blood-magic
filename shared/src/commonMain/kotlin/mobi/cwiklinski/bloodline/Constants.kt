@@ -45,4 +45,33 @@ object Constants {
 
     // Animations
     const val ANIMATION_SPEED = 1000
+
+    // Analytics
+    const val ANALYTICS_NO_VALUE = ""
+    const val ANALYTICS_KEY_SECTION = "section"
+    const val ANALYTICS_KEY_SUB_SECTION = "subsection"
+    const val ANALYTICS_KEY_SUB_SUB_SECTION = "subsubsection"
+
+    const val ANALYTICS_SCREEN_ABOUT = "AboutScreen"
+    const val ANALYTICS_SCREEN_CENTER = "CenterScreen"
+    const val ANALYTICS_SCREEN_CENTERS = "CentersScreen"
+    const val ANALYTICS_SCREEN_DELETE = "DeleteScreen"
+    const val ANALYTICS_SCREEN_DONATIONS = "DonationsScreen"
+    const val ANALYTICS_SCREEN_EDIT_DONATION = "EditDonationScreen"
+    const val ANALYTICS_SCREEN_HOME = "HomeScreen"
+    const val ANALYTICS_SCREEN_LOGIN = "LoginScreen"
+    const val ANALYTICS_SCREEN_LOGOUT = "LogoutScreen"
+    const val ANALYTICS_SCREEN_NEW_DONATION = "NewDonationScreen"
+    const val ANALYTICS_SCREEN_NOTIFICATIONS = "NotificationsScreen"
+    const val ANALYTICS_SCREEN_PROFILE_AVATAR = "ProfileAvatarScreen"
+    const val ANALYTICS_SCREEN_PROFILE_DELETE = "ProfileDeleteScreen"
+    const val ANALYTICS_SCREEN_PROFILE_PASSWORD = "ProfilePasswordScreen"
+    const val ANALYTICS_SCREEN_PROFILE = "ProfileScreen"
+    const val ANALYTICS_SCREEN_REGISTER = "RegisterScreen"
+    const val ANALYTICS_SCREEN__RESET = "ResetScreen"
+    const val ANALYTICS_SCREEN_SETUP = "SetupScreen"
+    const val ANALYTICS_SCREEN_SPLASH = "SplashScreen"
+
+    const val ANALYTICS_ACTION_ACCOUNT_DELETED = "ActionAccountDeleted"
+
 }

@@ -26,7 +26,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Female
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Male
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.WaterDrop
@@ -61,6 +60,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.common.Job
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
@@ -514,6 +515,7 @@ fun ProfileView(
     val heroinGenitive = stringResource(Res.string.heroinGenitive)
     val hero = if (sex.isFemale()) heroinGenitive else heroGenitive
     val scrollState = rememberScrollState()
+    TrackScreen(Constants.ANALYTICS_SCREEN_PROFILE)
     if (errors.isNotEmpty()) {
         koinInject<CallbackManager>().postSideEffect(SideEffects.ErrorSnackBar(errorMessage.invoke(errors)))
     }

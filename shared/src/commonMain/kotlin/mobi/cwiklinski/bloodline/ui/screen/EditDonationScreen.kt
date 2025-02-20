@@ -27,6 +27,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import co.touchlab.kermit.Logger
+import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.common.event.SideEffects
 import mobi.cwiklinski.bloodline.common.isAfter
 import mobi.cwiklinski.bloodline.common.isValidPressure
@@ -70,6 +72,7 @@ class EditDonationScreen(
         val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
         val centerSearch by screenModel.query.collectAsStateWithLifecycle(donation.center.toSelection())
         val centerList by screenModel.filteredCenters.collectAsStateWithLifecycle(emptyList())
+        TrackScreen(Constants.ANALYTICS_SCREEN_EDIT_DONATION)
         if (state == DonationState.Saved) {
             screenModel.clearError()
             screenModel.postSideEffect(
