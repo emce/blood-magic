@@ -1,6 +1,7 @@
 package mobi.cwiklinski.bloodline.di
 
 import co.touchlab.kermit.Logger
+import mobi.cwiklinski.bloodline.analytics.firebase.createAnalyticsModule
 import mobi.cwiklinski.bloodline.auth.firebase.createAuthenticationModule
 import mobi.cwiklinski.bloodline.common.manager.AppCallbackManager
 import mobi.cwiklinski.bloodline.common.manager.CallbackManager
@@ -35,6 +36,7 @@ object Dependencies {
             platformModule,
             createAuthenticationModule(),
             *createDataModule().toTypedArray(),
+            createAnalyticsModule(),
             *uiModule.toTypedArray(),
             module {
                 single<CallbackManager> { AppCallbackManager(get()) }

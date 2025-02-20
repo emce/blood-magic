@@ -4,11 +4,6 @@ import kotlinx.datetime.LocalDate
 
 object Constants {
 
-    // Reminder
-    const val REMINDER_PERIOD_FULL_BLOOD = (8 * 7) + 1
-    const val REMINDER_PERIOD_PLASMA = (4 * 7) + 1
-    const val REMINDER_PERIOD_PLATELETS = (4 * 7) + 1
-
     // Period after donation
     const val PERIOD_FULL_BLOOD_FULL_BLOOD = (8 * 7) + 1
     const val PERIOD_FULL_BLOOD_PLASMA = (2 * 7) + 1
@@ -33,11 +28,6 @@ object Constants {
     // Storage
     const val EMAIL_KEY = "email"
     const val NOTIFICATIONS_LATEST = "notifications_latest"
-
-    // Notifications
-    const val CHANNEL_NAME = "BloodMagic"
-    const val CHANNEL_ID = "mobi.cwiklinski.bloodline"
-    const val NOTIFICATION_ID = 2001
 
     // Centers
     const val CENTER_URL = "https://krwiodawca.cwiklin.ski/storage/images/center/%id.jpg"

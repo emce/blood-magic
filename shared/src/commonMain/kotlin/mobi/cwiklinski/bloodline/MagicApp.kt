@@ -16,8 +16,6 @@ import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.transitions.ScreenTransition
 import coil3.compose.setSingletonImageLoaderFactory
 import kotlinx.coroutines.delay
-import mobi.cwiklinski.bloodline.analytics.api.LocalAnalytics
-import mobi.cwiklinski.bloodline.analytics.api.NoOpAnalytics
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationInitializer
 import mobi.cwiklinski.bloodline.common.Job
 import mobi.cwiklinski.bloodline.common.manager.AppManager
@@ -39,10 +37,8 @@ fun MagicApp() {
         maxStack = 3,
         animation = StackedSnackbarAnimation.Slide
     )
-    val analytics = NoOpAnalytics()
     CompositionLocalProvider(
-        LocalSnackBar provides snackBarHostState,
-        LocalAnalytics provides analytics,
+        LocalSnackBar provides snackBarHostState
     ) {
         setSingletonImageLoaderFactory { context ->
             getAsyncImageLoader(context)
