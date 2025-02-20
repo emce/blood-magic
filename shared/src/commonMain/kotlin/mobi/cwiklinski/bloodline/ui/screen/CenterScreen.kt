@@ -9,6 +9,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import mobi.cwiklinski.bloodline.Constants
+import mobi.cwiklinski.bloodline.analytics.api.ContextData
+import mobi.cwiklinski.bloodline.analytics.api.Event
 import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.data.Parcelable
 import mobi.cwiklinski.bloodline.data.Parcelize
@@ -30,7 +32,15 @@ class CenterScreen(val center: Center, private val onSiteClick: ((link: String) 
     @Composable
     override fun Content() {
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
-        TrackScreen(Constants.ANALYTICS_SCREEN_CENTER)
+        TrackScreen(
+            Event.View(
+                Constants.ANALYTICS_SCREEN_CENTER,
+                ContextData(Constants.ANALYTICS_SCREEN_CENTER, mutableMapOf(
+                    "name" to center.name,
+                    "address" to center.getFullAddress()
+                ))
+            )
+        )
         BottomSheetScaffold(
             sheetGesturesEnabled = false,
             sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
