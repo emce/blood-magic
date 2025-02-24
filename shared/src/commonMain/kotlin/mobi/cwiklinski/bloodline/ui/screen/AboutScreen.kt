@@ -125,7 +125,7 @@ fun AboutVerticalView() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp)
+            .padding(vertical = 20.dp)
     ) {
         Text(
             stringResource(Res.string.appName),
@@ -155,12 +155,13 @@ fun AboutVerticalView() {
         }
         if (tabIndex == 0) {
             RichText(
-                stringResource(Res.string.infoTeamDescription).trimIndent()
+                stringResource(Res.string.infoTeamDescription).trimIndent(),
+                modifier = Modifier.padding(horizontal = 20.dp)
             )
         } else {
             LibrariesContainer(
                 libraries = libraries,
-                modifier = Modifier.fillMaxWidth().weight(1.0f),
+                modifier = Modifier.fillMaxWidth().weight(1.0f).padding(horizontal = 20.dp),
                 colors = librariesColors(),
                 showVersion = false
             )
