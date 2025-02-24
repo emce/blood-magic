@@ -39,6 +39,7 @@ import mobi.cwiklinski.bloodline.resources.infoLibraries
 import mobi.cwiklinski.bloodline.resources.infoTeam
 import mobi.cwiklinski.bloodline.resources.infoTeamDescription
 import mobi.cwiklinski.bloodline.resources.infoTitle
+import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.librariesColors
 import mobi.cwiklinski.bloodline.ui.theme.cardTitle
 import mobi.cwiklinski.bloodline.ui.theme.getTypography
@@ -115,17 +116,17 @@ class AboutScreen : AppScreen() {
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun AboutVerticalView() {
+fun AboutVerticalView(defaultTab: Int = 0) {
     val libraries by rememberLibraries {
         Res.readBytes("files/aboutlibraries.json").decodeToString()
     }
-    var tabIndex by remember { mutableStateOf(0) }
+    var tabIndex by remember { mutableStateOf(defaultTab) }
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
+            .padding(vertical = 20.dp, horizontal = 0.dp)
             .fillMaxSize()
-            .padding(vertical = 20.dp)
     ) {
         Text(
             stringResource(Res.string.appName),
@@ -135,7 +136,10 @@ fun AboutVerticalView() {
             AppConfig.VERSION,
             style = cardTitle()
         )
-        PrimaryTabRow(selectedTabIndex = tabIndex) {
+        PrimaryTabRow(
+            selectedTabIndex = tabIndex,
+            containerColor = AppThemeColors.background
+        ) {
             AboutTab.entries.forEachIndexed { index, tab ->
                 Tab(
                     selected = tabIndex == index,
@@ -161,7 +165,7 @@ fun AboutVerticalView() {
         } else {
             LibrariesContainer(
                 libraries = libraries,
-                modifier = Modifier.fillMaxWidth().weight(1.0f).padding(horizontal = 20.dp),
+                modifier = Modifier.padding(horizontal = 20.dp).fillMaxWidth().weight(1.0f),
                 colors = librariesColors(),
                 showVersion = false
             )
