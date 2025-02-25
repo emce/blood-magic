@@ -130,7 +130,7 @@ fun DonationItem(
                 // Share icon
                 val shareText = getShareText(donation)
                 Box(
-                    modifier = Modifier.size(if (isMobile()) 40.dp else 0.dp).clickable {
+                    modifier = Modifier.size(if (isMobile() && showAction) 40.dp else 0.dp).clickable {
                         onShare.invoke(shareText)
                     }.constrainAs(share) {
                         end.linkTo(parent.end)
@@ -138,7 +138,7 @@ fun DonationItem(
                     },
                     contentAlignment = Alignment.Center
                 ) {
-                    if (isMobile()) {
+                    if (isMobile() && showAction) {
                         Image(
                             Icons.Filled.Share,
                             stringResource(Res.string.donationsEdit),

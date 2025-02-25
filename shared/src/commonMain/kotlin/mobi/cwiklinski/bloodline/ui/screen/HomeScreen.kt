@@ -497,9 +497,7 @@ fun HomeView(
                         donation = it,
                         onEdit = {},
                         onDelete = {},
-                        onShare = { text ->
-                            shareText(text)
-                        },
+                        onShare = { },
                         showAction = false,
                         modifier = Modifier.width(if (isMobile() || getOrientation() == Orientation.Vertical) donationWidth else donationWidth / 2 - 2.dp)
                     )
