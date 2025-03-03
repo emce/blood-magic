@@ -44,7 +44,7 @@ import mobi.cwiklinski.bloodline.ui.model.ResetError
 import mobi.cwiklinski.bloodline.ui.model.ResetScreenModel
 import mobi.cwiklinski.bloodline.ui.model.ResetState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.theme.cardTitle
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
@@ -169,7 +169,7 @@ fun ResetView(
         Spacer(Modifier.height(30.dp))
         Text(
             stringResource(Res.string.resetTitle),
-            style = getTypography().displayMedium.copy(
+            style = cardTitle().copy(
                 color = AppThemeColors.violet4
             )
         )

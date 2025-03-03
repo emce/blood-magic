@@ -1,9 +1,14 @@
 package mobi.cwiklinski.bloodline
 
+import android.app.Activity
 import android.content.res.Configuration
 import android.os.Build
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
@@ -48,3 +53,6 @@ actual fun isTablet(): Boolean {
 @Composable
 actual fun isMobile() = true
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Composable
+actual fun getWindowSizeClass(): WindowSizeClass = calculateWindowSizeClass(LocalActivity.current as Activity)

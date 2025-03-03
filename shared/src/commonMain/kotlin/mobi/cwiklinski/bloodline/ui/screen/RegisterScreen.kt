@@ -68,7 +68,7 @@ import mobi.cwiklinski.bloodline.ui.model.RegisterError
 import mobi.cwiklinski.bloodline.ui.model.RegisterScreenModel
 import mobi.cwiklinski.bloodline.ui.model.RegisterState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.theme.cardTitle
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
@@ -247,7 +247,7 @@ fun RegisterView(
         Spacer(Modifier.height(30.dp))
         Text(
             stringResource(Res.string.registerTitle),
-            style = getTypography().displayMedium.copy(
+            style = cardTitle().copy(
                 color = AppThemeColors.violet4
             )
         )
@@ -340,7 +340,7 @@ fun RegisterView(
                     Text(
                         stringResource(Res.string.registerSocialSectionTitle),
                         modifier = Modifier.padding(horizontal = 10.dp),
-                        style = getTypography().bodyMedium.copy(color = AppThemeColors.grey3)
+                        style = cardTitle().copy(color = AppThemeColors.grey3)
                     )
                 }
             }

@@ -77,7 +77,7 @@ import mobi.cwiklinski.bloodline.ui.model.LoginError
 import mobi.cwiklinski.bloodline.ui.model.LoginScreenModel
 import mobi.cwiklinski.bloodline.ui.model.LoginState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
-import mobi.cwiklinski.bloodline.ui.theme.getTypography
+import mobi.cwiklinski.bloodline.ui.theme.cardTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.itemTrailing
 import mobi.cwiklinski.bloodline.ui.util.avatarShadow
@@ -245,7 +245,7 @@ fun LoginView(
         Spacer(Modifier.height(30.dp))
         Text(
             stringResource(Res.string.loginTitle),
-            style = getTypography().displayMedium.copy(
+            style = cardTitle().copy(
                 color = AppThemeColors.violet4
             )
         )

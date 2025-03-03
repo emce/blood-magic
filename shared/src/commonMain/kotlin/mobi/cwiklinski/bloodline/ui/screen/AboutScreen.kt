@@ -42,7 +42,6 @@ import mobi.cwiklinski.bloodline.resources.infoTitle
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors.librariesColors
 import mobi.cwiklinski.bloodline.ui.theme.cardTitle
-import mobi.cwiklinski.bloodline.ui.theme.getTypography
 import mobi.cwiklinski.bloodline.ui.theme.itemSubTitle
 import mobi.cwiklinski.bloodline.ui.theme.toolbarTitle
 import mobi.cwiklinski.bloodline.ui.widget.DesktopWithTitleScaffold
@@ -200,7 +199,7 @@ fun AboutHorizontalView() {
             )
             HeaderText(
                 stringResource(Res.string.infoTeam),
-                textStyle = getTypography().headlineLarge
+                textStyle = cardTitle()
             )
             RichText(
                 stringResource(Res.string.infoTeamDescription).trimIndent(),
@@ -213,7 +212,7 @@ fun AboutHorizontalView() {
         ) {
             HeaderText(
                 stringResource(Res.string.infoLibraries),
-                textStyle = getTypography().headlineLarge
+                textStyle = cardTitle()
             )
             LibrariesContainer(
                 libraries = libraries,
