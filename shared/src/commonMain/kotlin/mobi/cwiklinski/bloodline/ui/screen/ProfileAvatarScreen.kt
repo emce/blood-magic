@@ -169,7 +169,7 @@ fun AvatarView(
         }
         Column(
             modifier = Modifier.fillMaxWidth().wrapContentHeight()
-                .background(AppThemeColors.white).padding(bottom = 20.dp)
+                .background(AppThemeColors.white).padding(bottom = 40.dp)
                 .scrollable(
                     rememberScrollState(), Orientation.Vertical
                 ),

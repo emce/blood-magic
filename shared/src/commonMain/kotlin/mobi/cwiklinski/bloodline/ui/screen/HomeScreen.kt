@@ -269,7 +269,7 @@ fun HomeView(
             NotificationsButton(
                 modifier = Modifier
                     .constrainAs(bellRef) {
-                        top.linkTo(parent.top, 40.dp)
+                        top.linkTo(parent.top, 60.dp)
                         end.linkTo(parent.end, 10.dp)
                     },
                 onClick = onNotificationIconClicked,

@@ -130,7 +130,7 @@ class EditDonationScreen(
             sheetContent = {
                 Column(
                     modifier = Modifier.fillMaxWidth().height(100.dp).background(AppThemeColors.modalHeader).padding(20.dp),
-                    verticalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (state != DonationState.Saving) {
