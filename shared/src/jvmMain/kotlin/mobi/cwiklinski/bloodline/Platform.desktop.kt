@@ -2,7 +2,12 @@ package mobi.cwiklinski.bloodline
 
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import java.awt.Toolkit
@@ -37,3 +42,12 @@ actual fun isTablet() = false
 
 @Composable
 actual fun isMobile() = false
+
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Composable
+actual fun getWindowSizeClass(): WindowSizeClass = calculateWindowSizeClass()
+
+@Composable
+actual fun StatusBarColors(statusBarColor: Color, navBarColor: Color) {
+    SideEffect { }
+}

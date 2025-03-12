@@ -16,7 +16,6 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
@@ -44,12 +43,7 @@ fun BottomBar(
             elevation = 0.dp,
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        0.0f to Color(0xFFB794A5),
-                        1.0f to Color(0xFFE1C7D3),
-                    )
-                ),
+                .background(AppThemeColors.navigationGradient),
         ) {
             NavigationItem.entries.filter { it != NavigationItem.OTHER }.forEach { item ->
                 BottomNavigationItem(

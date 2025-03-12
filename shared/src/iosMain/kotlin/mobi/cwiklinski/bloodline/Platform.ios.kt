@@ -6,19 +6,29 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.zeroValue
 import mobi.cwiklinski.bloodline.ui.widget.isHorizontal
+import platform.CoreGraphics.CGRect
 import platform.UIKit.UIApplication
+import platform.UIKit.UIColor
 import platform.UIKit.UIDevice
 import platform.UIKit.UIInterfaceOrientationLandscapeLeft
 import platform.UIKit.UIInterfaceOrientationLandscapeRight
 import platform.UIKit.UIInterfaceOrientationPortrait
 import platform.UIKit.UIInterfaceOrientationPortraitUpsideDown
+import platform.UIKit.UINavigationBar
 import platform.UIKit.UIUserInterfaceIdiomPad
+import platform.UIKit.UIView
 import platform.UIKit.UIWindow
+import platform.UIKit.statusBarManager
 import kotlin.experimental.ExperimentalNativeApi
 
 @OptIn(ExperimentalNativeApi::class)
@@ -65,3 +75,37 @@ actual fun isMobile() = true
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 actual fun getWindowSizeClass(): WindowSizeClass = calculateWindowSizeClass()
+
+@OptIn(ExperimentalForeignApi::class)
+@Composable
+private fun statusBarView() = remember {
+    val keyWindow: UIWindow? =
+        UIApplication.sharedApplication.windows.firstOrNull { (it as? UIWindow)?.isKeyWindow() == true } as? UIWindow
+    val tag = 3848245L // https://stackoverflow.com/questions/56651245/how-to-change-the-status-bar-background-color-and-text-color-on-ios-13
+
+    keyWindow?.viewWithTag(tag) ?: run {
+        val height =
+            keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?: zeroValue<CGRect>()
+        val statusBarView = UIView(frame = height)
+        statusBarView.tag = tag
+        statusBarView.layer.zPosition = 999999.0
+        keyWindow?.addSubview(statusBarView)
+        statusBarView
+    }
+}
+
+@Composable
+actual fun StatusBarColors(statusBarColor: Color, navBarColor: Color) {
+    val statusBar = statusBarView()
+    SideEffect {
+        statusBar.backgroundColor = statusBarColor.toUIColor()
+        UINavigationBar.appearance().backgroundColor = navBarColor.toUIColor()
+    }
+}
+
+private fun Color.toUIColor(): UIColor = UIColor(
+    red = this.red.toDouble(),
+    green = this.green.toDouble(),
+    blue = this.blue.toDouble(),
+    alpha = this.alpha.toDouble(),
+)

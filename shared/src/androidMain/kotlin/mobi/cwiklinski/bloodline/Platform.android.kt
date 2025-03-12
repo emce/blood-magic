@@ -3,13 +3,19 @@ package mobi.cwiklinski.bloodline
 import android.app.Activity
 import android.content.res.Configuration
 import android.os.Build
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.LocalActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -56,3 +62,17 @@ actual fun isMobile() = true
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 actual fun getWindowSizeClass(): WindowSizeClass = calculateWindowSizeClass(LocalActivity.current as Activity)
+
+@Composable
+actual fun StatusBarColors(
+    statusBarColor: Color,
+    navBarColor: Color
+) {
+    val activity = LocalActivity.current as ComponentActivity
+    SideEffect {
+        activity.enableEdgeToEdge(
+            SystemBarStyle.light(statusBarColor.toArgb(), statusBarColor.toArgb()),
+            SystemBarStyle.light(navBarColor.toArgb(), navBarColor.toArgb())
+        )
+    }
+}

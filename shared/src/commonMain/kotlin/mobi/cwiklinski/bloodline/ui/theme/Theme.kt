@@ -109,7 +109,7 @@ object AppThemeColors {
     )
 
     val authGradient = Brush.linearGradient(
-        0.13f to Color(0xFFE1C7D3),
+        0.13f to violet1,
         0.56f to Color(0xFFFFF3EE),
         0.74f to Color(0xFFFCFCFC),
         1.00f to white
@@ -120,10 +120,8 @@ object AppThemeColors {
     )
 
     val navigationGradient = Brush.verticalGradient(
-        0.0f to Color(0xFFB794A5),
-        1f to Color(0xFFE1C7D3),
-        startY = 0.0f,
-        endY = Float.POSITIVE_INFINITY
+        0.0f to violet2,
+        1.0f to violet1,
     )
 
     val notificationButtonGradient = Brush.verticalGradient(
