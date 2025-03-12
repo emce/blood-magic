@@ -124,6 +124,13 @@ object AppThemeColors {
         1.0f to violet1,
     )
 
+    val profileGradient = Brush.verticalGradient(
+        0.0f to topBarBackground,
+        0.6f to topBarBackground,
+        0.61f to white,
+        1.0f to white
+    )
+
     val notificationButtonGradient = Brush.verticalGradient(
         0.0f to Color(0xFFDC9991),
         1f to Color(0xFFFFB5A7),

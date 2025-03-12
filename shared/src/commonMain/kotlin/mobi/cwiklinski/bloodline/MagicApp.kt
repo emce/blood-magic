@@ -21,7 +21,6 @@ import mobi.cwiklinski.bloodline.common.Job
 import mobi.cwiklinski.bloodline.common.manager.AppManager
 import mobi.cwiklinski.bloodline.ui.screen.SplashScreen
 import mobi.cwiklinski.bloodline.ui.theme.AppTheme
-import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.util.FadeTransition
 import mobi.cwiklinski.bloodline.ui.widget.getAsyncImageLoader
 import org.koin.compose.KoinContext
@@ -54,10 +53,6 @@ fun MagicApp() {
                     Job.runNotificationCheck()
                     Job.runPotentialDonationCheck()
                 }
-                StatusBarColors(
-                    statusBarColor = AppThemeColors.topBarBackground,
-                    navBarColor = AppThemeColors.violet1,
-                )
                 BottomSheetNavigator(
                     modifier = Modifier.animateContentSize(),
                     sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),

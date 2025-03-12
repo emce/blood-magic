@@ -324,10 +324,10 @@ fun HomeView(
             if (donations.isEmpty()) {
                 Row(
                     modifier = Modifier.height(140.dp).fillMaxWidth()
-                        .padding(start = 20.dp)
                         .horizontalScroll(rememberScrollState())
                 ) {
                     CarouselItem(
+                        modifier = Modifier.padding(start = 10.dp),
                         icon = Res.drawable.home_carousel_wand,
                         title = stringResource(Res.string.homeCarouselAmountTitle).replace(
                             "%d", "0"
@@ -335,6 +335,7 @@ fun HomeView(
                         subTitle = stringResource(Res.string.homeCarouselAmountSubtitle)
                     )
                     CarouselItem(
+                        modifier = Modifier.padding(end = 10.dp),
                         icon = Res.drawable.home_carousel_cauldron,
                         title = 0.capacity(
                             stringResource(Res.string.milliliter),
@@ -387,7 +388,6 @@ fun HomeView(
             } else {
                 Row(
                     modifier = Modifier.height(140.dp).fillMaxWidth()
-                        .padding(start = 20.dp)
                         .horizontalScroll(rememberScrollState())
                 ) {
                     val amount = donations.filter { !it.disqualification }.size
@@ -399,6 +399,7 @@ fun HomeView(
                             )
                         }
                     CarouselItem(
+                        modifier = Modifier.padding(start = 10.dp),
                         icon = Res.drawable.home_carousel_cauldron,
                         title = totalSum.capacity(
                             stringResource(Res.string.milliliter),
@@ -446,6 +447,7 @@ fun HomeView(
                         }
                     }
                     CarouselItem(
+                        modifier = Modifier.padding(end = 10.dp),
                         icon = badge,
                         title = badgeTitle,
                         subTitle = badgeSubTitle,

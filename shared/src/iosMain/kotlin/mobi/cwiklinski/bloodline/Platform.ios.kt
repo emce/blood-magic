@@ -14,9 +14,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.zeroValue
+import kotlinx.cinterop.useContents
 import mobi.cwiklinski.bloodline.ui.widget.isHorizontal
-import platform.CoreGraphics.CGRect
+import platform.CoreGraphics.CGRectMake
 import platform.UIKit.UIApplication
 import platform.UIKit.UIColor
 import platform.UIKit.UIDevice
@@ -25,10 +25,10 @@ import platform.UIKit.UIInterfaceOrientationLandscapeRight
 import platform.UIKit.UIInterfaceOrientationPortrait
 import platform.UIKit.UIInterfaceOrientationPortraitUpsideDown
 import platform.UIKit.UINavigationBar
+import platform.UIKit.UIScreen
 import platform.UIKit.UIUserInterfaceIdiomPad
 import platform.UIKit.UIView
 import platform.UIKit.UIWindow
-import platform.UIKit.statusBarManager
 import kotlin.experimental.ExperimentalNativeApi
 
 @OptIn(ExperimentalNativeApi::class)
@@ -81,16 +81,21 @@ actual fun getWindowSizeClass(): WindowSizeClass = calculateWindowSizeClass()
 private fun statusBarView() = remember {
     val keyWindow: UIWindow? =
         UIApplication.sharedApplication.windows.firstOrNull { (it as? UIWindow)?.isKeyWindow() == true } as? UIWindow
-    val tag = 3848245L // https://stackoverflow.com/questions/56651245/how-to-change-the-status-bar-background-color-and-text-color-on-ios-13
-
+    val safeAreaInsets = UIApplication.sharedApplication.keyWindow?.safeAreaInsets
+    val width = UIScreen.mainScreen.bounds.useContents { this.size.width }
+    var topInset = 0.0
+    safeAreaInsets?.let {
+        topInset = safeAreaInsets.useContents {
+            this.top
+        }
+    }
+    val tag = 3848245L
+    val statusBarMine = UIView(frame = CGRectMake(.0, .0, width, topInset))
     keyWindow?.viewWithTag(tag) ?: run {
-        val height =
-            keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?: zeroValue<CGRect>()
-        val statusBarView = UIView(frame = height)
-        statusBarView.tag = tag
-        statusBarView.layer.zPosition = 999999.0
-        keyWindow?.addSubview(statusBarView)
-        statusBarView
+        statusBarMine.tag = tag
+        statusBarMine.layer.zPosition = 999999.0
+        keyWindow?.addSubview(statusBarMine)
+        statusBarMine
     }
 }
 

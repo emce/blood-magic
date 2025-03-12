@@ -2,19 +2,14 @@ package mobi.cwiklinski.bloodline.ui.widget
 
 import StackedSnackbarHost
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,9 +37,7 @@ fun MobilePortraitNavigationTitleLayout(
     desiredContent: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
-        modifier = modifier
-            .windowInsetsPadding(WindowInsets.safeDrawing)
-            .background(AppThemeColors.homeGradient),
+        modifier = modifier,
         topBar = {
             MobileTitleBar(
                 navigationIcon = navigationIcon,
@@ -89,9 +82,7 @@ fun MobilePortraitNavigationLayout(
     desiredContent: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
-        modifier = modifier
-            .windowInsetsPadding(WindowInsets.safeDrawing)
-            .background(AppThemeColors.homeGradient),
+        modifier = modifier,
         topBar = topBar,
         backgroundColor = backgroundColor,
         floatingActionButton = {
@@ -164,9 +155,7 @@ fun MobileLandscapeNavigationLayout(
     desiredContent: @Composable () -> Unit
 ) {
     Scaffold(
-        modifier = modifier
-            .windowInsetsPadding(WindowInsets.safeDrawing)
-            .background(AppThemeColors.homeGradient),
+        modifier = modifier,
         backgroundColor = backgroundColor,
         snackbarHost = { StackedSnackbarHost(LocalSnackBar.current) },
     ) { paddingValues ->
@@ -204,8 +193,7 @@ fun MobileLayoutWithTitle(
     desiredContent: @Composable (PaddingValues) -> Unit
 ) {
     MobileLayout(
-        modifier = modifier
-            .windowInsetsPadding(WindowInsets.safeDrawing),
+        modifier = modifier,
         topBar = {
             MobileTitleBar(
                 navigationIcon = navigationIcon,
@@ -226,8 +214,7 @@ fun MobileLayout(
     desiredContent: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
-        modifier = modifier
-            .windowInsetsPadding(WindowInsets.safeDrawing),
+        modifier = modifier,
         topBar = topBar,
         backgroundColor = backgroundColor,
         snackbarHost = { StackedSnackbarHost(LocalSnackBar.current) },

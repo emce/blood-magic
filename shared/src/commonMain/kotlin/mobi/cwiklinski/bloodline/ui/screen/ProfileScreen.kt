@@ -181,7 +181,6 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             )
                         }
                     },
-                    colors = topBarColors()
                 )
             },
             selected = NavigationItem.PROFILE,
@@ -523,6 +522,9 @@ fun ProfileView(
         modifier = Modifier.padding(paddingValues)
             .fillMaxSize()
             .verticalScroll(scrollState)
+            .drawBehind {
+                drawRect(AppThemeColors.topBarBackground)
+            }
             .drawBehind {
                 val start = 100.dp.value
                 val middle = 450.dp.value
