@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
@@ -119,7 +118,6 @@ class HomeScreen : AppScreen() {
     @Composable
     override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         MobilePortraitNavigationLayout(
             navigationAction = { navigationItem ->
                 when (navigationItem) {
@@ -138,7 +136,7 @@ class HomeScreen : AppScreen() {
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             },
         ) { paddingValues ->
             InternalHomeView(paddingValues)
@@ -148,7 +146,6 @@ class HomeScreen : AppScreen() {
     @Composable
     override fun tabletView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         MobileLandscapeNavigationLayout(
             navigationAction = { navigationItem ->
                 when (navigationItem) {
@@ -170,7 +167,7 @@ class HomeScreen : AppScreen() {
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             },
             infoClicked = {
                 navigator.push(AboutScreen())
@@ -184,7 +181,6 @@ class HomeScreen : AppScreen() {
     @Composable
     override fun desktopView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         DesktopNavigationScaffold(
             navigationAction = { navigationItem ->
                 when (navigationItem) {
@@ -206,7 +202,7 @@ class HomeScreen : AppScreen() {
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             },
             infoClicked = {
                 navigator.push(AboutScreen())
@@ -220,7 +216,6 @@ class HomeScreen : AppScreen() {
     @Composable
     private fun InternalHomeView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<HomeScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
         val profile by screenModel.profile.collectAsStateWithLifecycle(Profile(""))
@@ -231,7 +226,7 @@ class HomeScreen : AppScreen() {
             profile,
             unreadNotification,
             { navigator.push(NotificationsScreen()) },
-            { bottomSheetNavigator.show(NewDonationScreen()) },
+            { navigator.push(NewDonationScreen()) },
             { navigator.push(DonationsScreen()) },
             { text ->
                 screenModel.postEvent(

@@ -128,7 +128,6 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
     @Composable
     override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
         MobilePortraitNavigationLayout(
             topBar = {
@@ -201,7 +200,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             },
             modifier = Modifier
                 .drawBehind {
@@ -218,7 +217,6 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
     @Composable
     override fun tabletView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
         MobileLandscapeNavigationLayout(
             topBar = {
@@ -254,7 +252,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             },
             infoClicked = {
                 navigator.push(AboutScreen())
@@ -275,7 +273,6 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
     @Composable
     override fun desktopView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<ProfileScreenModel>()
         DesktopNavigationScaffold(
             topBar = {
@@ -335,7 +332,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             },
             infoClicked = {
                 navigator.push(AboutScreen())

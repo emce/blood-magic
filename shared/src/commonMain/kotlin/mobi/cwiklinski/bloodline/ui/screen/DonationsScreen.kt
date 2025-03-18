@@ -25,7 +25,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
@@ -60,7 +59,6 @@ class DonationsScreen : AppScreen() {
     @Composable
     override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         handleSideEffects<DonationState, DonationScreenModel>()
         MobilePortraitNavigationTitleLayout(
             title = stringResource(Res.string.donationsTitle),
@@ -85,7 +83,7 @@ class DonationsScreen : AppScreen() {
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             }
         ) { paddingValues ->
             InternalDonationsView(paddingValues)
@@ -95,7 +93,6 @@ class DonationsScreen : AppScreen() {
     @Composable
     override fun tabletView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         handleSideEffects<DonationState, DonationScreenModel>()
         MobileLandscapeNavigationTitleLayout(
             title = stringResource(Res.string.donationsTitle),
@@ -120,7 +117,7 @@ class DonationsScreen : AppScreen() {
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             },
             infoClicked = {
                 navigator.push(AboutScreen())
@@ -134,7 +131,6 @@ class DonationsScreen : AppScreen() {
     @Composable
     override fun desktopView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         handleSideEffects<DonationState, DonationScreenModel>()
         DesktopNavigationTitleScaffold(
             title = stringResource(Res.string.donationsTitle),
@@ -159,7 +155,7 @@ class DonationsScreen : AppScreen() {
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             },
             infoClicked = {
                 navigator.push(AboutScreen())
@@ -173,7 +169,6 @@ class DonationsScreen : AppScreen() {
     @Composable
     fun InternalDonationsView(paddingValues: PaddingValues) {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
         val donations by screenModel.donations.collectAsStateWithLifecycle(emptyList())
         val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
@@ -196,7 +191,7 @@ class DonationsScreen : AppScreen() {
             paddingValues = paddingValues,
             donations = donations,
             onEdit = { donation ->
-                bottomSheetNavigator.show(EditDonationScreen(donation))
+                navigator.push(EditDonationScreen(donation))
             },
             onDelete = { donation ->
                 screenModel.markToDelete(donation)
@@ -205,7 +200,7 @@ class DonationsScreen : AppScreen() {
                 screenModel.postSideEffect(SideEffects.ShareText(text))
             },
             onDonationAdd = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             }
         )
     }

@@ -1,15 +1,16 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.DisplayMode
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
@@ -24,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import co.touchlab.kermit.Logger
 import mobi.cwiklinski.bloodline.Constants
@@ -36,20 +36,21 @@ import mobi.cwiklinski.bloodline.common.toMillis
 import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
 import mobi.cwiklinski.bloodline.data.Parcelize
+import mobi.cwiklinski.bloodline.domain.DonationType
+import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationEditInformationMessage
 import mobi.cwiklinski.bloodline.resources.donationEditSubmit
 import mobi.cwiklinski.bloodline.resources.donationEditTitle
 import mobi.cwiklinski.bloodline.resources.donationNewInformationTitle
+import mobi.cwiklinski.bloodline.resources.goBack
 import mobi.cwiklinski.bloodline.ui.model.DonationError
 import mobi.cwiklinski.bloodline.ui.model.DonationScreenModel
 import mobi.cwiklinski.bloodline.ui.model.DonationState
-import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.util.koinNavigatorScreenModel
-import mobi.cwiklinski.bloodline.ui.widget.CloseButton
 import mobi.cwiklinski.bloodline.ui.widget.FormProgress
-import mobi.cwiklinski.bloodline.ui.widget.MobileTitleBar
+import mobi.cwiklinski.bloodline.ui.widget.MobileLayoutWithTitle
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import mobi.cwiklinski.bloodline.ui.widget.toLocalDate
 import org.jetbrains.compose.resources.stringResource
@@ -66,7 +67,6 @@ class EditDonationScreen(
     @Composable
     override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val focusManager = LocalFocusManager.current
         val screenModel = navigator.koinNavigatorScreenModel<DonationScreenModel>()
         val state by screenModel.state.collectAsStateWithLifecycle(DonationState.Idle)
@@ -81,7 +81,7 @@ class EditDonationScreen(
                     message = stringResource(Res.string.donationEditInformationMessage),
                 )
             )
-            bottomSheetNavigator.hide()
+            navigator.pop()
         }
         val calendarState = rememberDatePickerState(
             initialSelectedDateMillis = donation.date.toMillis(),
@@ -111,70 +111,19 @@ class EditDonationScreen(
         centerLabel = donation.center.toSelection()
         screenModel.query.value = donation.center.toSelection()
         focusManager.clearFocus()
-        BottomSheetScaffold(
-            sheetGesturesEnabled = false,
-            sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-            sheetBackgroundColor = AppThemeColors.white,
-            topBar = {
-                MobileTitleBar(
-                    title = stringResource(Res.string.donationEditTitle),
-                    actions = {
-                        CloseButton {
-                            bottomSheetNavigator.hide()
-                        }
-                    }
-                )
-            },
-            sheetPeekHeight = 100.dp,
-            sheetElevation = 16.dp,
-            sheetContent = {
-                Column(
-                    modifier = Modifier.fillMaxWidth().height(100.dp).background(AppThemeColors.modalHeader).padding(20.dp),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    if (state != DonationState.Saving) {
-                        SubmitButton(
-                            onClick = {
-                                var systolic = 0
-                                var diastolic = 0
-                                var hemoglobin = 0f
-                                try {
-                                    if (pressure.isValidPressure()) {
-                                        val pressures = pressure.split("/")
-                                        systolic = pressures.first().toInt()
-                                        diastolic = pressures.last().toInt()
-                                    }
-                                } catch (e: NumberFormatException) {
-                                    Logger.e("Parsing pressure", e)
-                                }
-                                try {
-                                    hemoglobin = hemoglobinValue.toFloat()
-                                } catch (e: NumberFormatException) {
-                                    Logger.e("Parsing hemoglobin", e)
-                                }
-                                screenModel.updateDonation(
-                                    id = donation.id,
-                                    amount = amountValue.toInt(),
-                                    date = calendarState.selectedDateMillis.toLocalDate(),
-                                    center = centerSelected,
-                                    type = donationType.type,
-                                    hemoglobin = hemoglobin,
-                                    systolic = systolic,
-                                    diastolic = diastolic,
-                                    disqualification = disqualificationValue == 1
-                                )
-                            },
-                            text = stringResource(Res.string.donationEditSubmit),
-                        )
-                    } else {
-                        FormProgress()
-                    }
+        MobileLayoutWithTitle(
+            title = stringResource(Res.string.donationEditTitle),
+            navigationIcon = {
+                IconButton(onClick = { navigator.pop() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(Res.string.goBack)
+                    )
                 }
-                Spacer(modifier = Modifier.height(40.dp))
-            },
+            }
         ) {
-            NewDonationForm(
+            EditDonationView(
+                state = state,
                 formEnabled = state != DonationState.Saving,
                 donationType = donationType,
                 onDonationTypeChanged = { newType ->
@@ -230,8 +179,114 @@ class EditDonationScreen(
                 disqualification = disqualificationValue,
                 onDisqualificationChanged = { isChecked ->
                     disqualificationValue = if (isChecked) 1 else 0
+                },
+                updateDonation = {
+                    var systolic = 0
+                    var diastolic = 0
+                    var hemoglobin = 0f
+                    try {
+                        if (pressure.isValidPressure()) {
+                            val pressures = pressure.split("/")
+                            systolic = pressures.first().toInt()
+                            diastolic = pressures.last().toInt()
+                        }
+                    } catch (e: NumberFormatException) {
+                        Logger.e("Parsing pressure", e)
+                    }
+                    try {
+                        hemoglobin = hemoglobinValue.toFloat()
+                    } catch (e: NumberFormatException) {
+                        Logger.e("Parsing hemoglobin", e)
+                    }
+                    screenModel.updateDonation(
+                        id = donation.id,
+                        amount = amountValue,
+                        date = calendarState.selectedDateMillis.toLocalDate(),
+                        center = centerSelected,
+                        type = donationType.type,
+                        hemoglobin = hemoglobin,
+                        systolic = systolic,
+                        diastolic = diastolic,
+                        disqualification = disqualificationValue == 1
+                    )
                 }
             )
         }
     }
+}
+
+@Composable
+fun EditDonationView(
+    state: DonationState = DonationState.Idle,
+    formEnabled: Boolean = true,
+    donationType: DonationType = DonationType.FULL_BLOOD,
+    onDonationTypeChanged: (DonationType) -> Unit = {},
+    centerList: List<Center> = emptyList(),
+    centerSearch: String = "",
+    onCenterSearchChanged: (String) -> Unit = {},
+    onCenterSearchCleared: () -> Unit = {},
+    onCenterSearchChosen: (Center) -> Unit = {},
+    centerErrorMessage: String? = null,
+    amount: String = "",
+    onAmountChanged: (String) -> Unit = {},
+    isAmountError: Boolean = false,
+    amountErrorMessage: String = "",
+    calendarState: DatePickerState = rememberDatePickerState(),
+    isDateError: Boolean = false,
+    dateErrorMessage: String = "",
+    hemoglobin: String = "",
+    onHemoglobinChanged: (String) -> Unit = {},
+    isHemoglobinError: Boolean = false,
+    hemoglobinErrorMessage: String = "",
+    pressure: String = "",
+    onPressureChanged: (String) -> Unit = {},
+    isPressureError: Boolean = false,
+    pressureErrorMessage: String = "",
+    disqualification: Int = 0,
+    onDisqualificationChanged: (Boolean) -> Unit = {},
+    updateDonation: () -> Unit = {}
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        NewDonationForm(
+            formEnabled = formEnabled,
+            donationType = donationType,
+            onDonationTypeChanged = onDonationTypeChanged,
+            centerList = centerList,
+            centerSearch = centerSearch,
+            onCenterSearchChanged = onCenterSearchChanged,
+            onCenterSearchCleared = onCenterSearchCleared,
+            onCenterSearchChosen = onCenterSearchChosen,
+            centerErrorMessage = centerErrorMessage,
+            amount = amount,
+            onAmountChanged = onAmountChanged,
+            isAmountError = isAmountError,
+            amountErrorMessage = amountErrorMessage,
+            calendarState = calendarState,
+            isDateError = isDateError,
+            dateErrorMessage = dateErrorMessage,
+            hemoglobin = hemoglobin,
+            onHemoglobinChanged = onHemoglobinChanged,
+            isHemoglobinError = isHemoglobinError,
+            hemoglobinErrorMessage = hemoglobinErrorMessage,
+            pressure = pressure,
+            onPressureChanged = onPressureChanged,
+            isPressureError = isPressureError,
+            pressureErrorMessage = pressureErrorMessage,
+            disqualification = disqualification,
+            onDisqualificationChanged = onDisqualificationChanged
+        )
+        if (state != DonationState.Saving) {
+            SubmitButton(
+                onClick = updateDonation,
+                text = stringResource(Res.string.donationEditSubmit),
+            )
+        } else {
+            FormProgress()
+        }
+    }
+    Spacer(modifier = Modifier.height(40.dp))
 }

@@ -69,7 +69,6 @@ class CentersScreen : AppScreen() {
     @Composable
     override fun defaultView() {
         val navigator = LocalNavigator.currentOrThrow
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = navigator.koinNavigatorScreenModel<CenterScreenModel>()
         val query by screenModel.query.collectAsStateWithLifecycle("")
         var showSearch by remember { mutableStateOf(false) }
@@ -121,7 +120,7 @@ class CentersScreen : AppScreen() {
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             }
         ) { paddingValues ->
             InternalCentersView(paddingValues)
@@ -180,7 +179,7 @@ class CentersScreen : AppScreen() {
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             },
             infoClicked = {
                 navigator.push(AboutScreen())
@@ -244,7 +243,7 @@ class CentersScreen : AppScreen() {
                 }
             },
             floatingAction = {
-                bottomSheetNavigator.show(NewDonationScreen())
+                navigator.push(NewDonationScreen())
             },
             infoClicked = {
                 navigator.push(AboutScreen())
