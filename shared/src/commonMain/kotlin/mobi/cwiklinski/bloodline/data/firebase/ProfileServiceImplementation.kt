@@ -7,6 +7,7 @@ import dev.gitlive.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
@@ -66,6 +67,7 @@ class ProfileServiceImplementation(
         centerId: String
     ): Flow<ProfileServiceState> = callbackFlow {
         try {
+            trySend(ProfileServiceState.Saving)
             withContext(Dispatchers.Default) {
                 try {
                     mainRef.push()
@@ -81,8 +83,9 @@ class ProfileServiceImplementation(
                         avatar
                     )
                 )
+                trySendBlocking(ProfileServiceState.Saved)
             }
-            trySend(ProfileServiceState.Saved)
+            trySendBlocking(ProfileServiceState.Saved)
         } catch (exception: FirebaseException) {
             trySend(ProfileServiceState.Error(exception))
         }

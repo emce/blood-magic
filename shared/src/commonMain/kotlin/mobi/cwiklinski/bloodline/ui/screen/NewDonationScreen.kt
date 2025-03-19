@@ -53,7 +53,6 @@ import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationNewAmountLabel
 import mobi.cwiklinski.bloodline.resources.donationNewCenterLabel
-import mobi.cwiklinski.bloodline.resources.donationNewDateLabel
 import mobi.cwiklinski.bloodline.resources.donationNewDisqualificationLabel
 import mobi.cwiklinski.bloodline.resources.donationNewHemoglobin
 import mobi.cwiklinski.bloodline.resources.donationNewInformationMessage
@@ -339,10 +338,6 @@ fun NewDonationForm(
             )
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            stringResource(Res.string.donationNewDateLabel),
-            style = contentText()
-        )
         DateField(
             modifier = Modifier.fillMaxWidth(),
             calendarState,
@@ -404,6 +399,6 @@ fun NewDonationForm(
                 modifier = Modifier.weight(1f)
             )
         }
-        Spacer(modifier = Modifier.height(105.dp))
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }

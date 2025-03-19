@@ -32,7 +32,6 @@ import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -75,17 +74,16 @@ import mobi.cwiklinski.bloodline.resources.female
 import mobi.cwiklinski.bloodline.resources.heroGenitive
 import mobi.cwiklinski.bloodline.resources.heroinGenitive
 import mobi.cwiklinski.bloodline.resources.male
+import mobi.cwiklinski.bloodline.resources.notSet
 import mobi.cwiklinski.bloodline.resources.profileAvatarTitle
 import mobi.cwiklinski.bloodline.resources.profileDataEmailLabel
 import mobi.cwiklinski.bloodline.resources.profileDataNameLabel
 import mobi.cwiklinski.bloodline.resources.profileDataSubmitButton
-import mobi.cwiklinski.bloodline.resources.profileDataTitle
 import mobi.cwiklinski.bloodline.resources.profileDeleteTitle
 import mobi.cwiklinski.bloodline.resources.profilePasswordChangeTitle
 import mobi.cwiklinski.bloodline.resources.profileTitle
 import mobi.cwiklinski.bloodline.resources.settingsDefaultCenterLabel
 import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
-import mobi.cwiklinski.bloodline.resources.settingsReminderLabel
 import mobi.cwiklinski.bloodline.resources.settingsSexLabel
 import mobi.cwiklinski.bloodline.resources.settingsStartingLabel
 import mobi.cwiklinski.bloodline.ui.model.ProfileError
@@ -116,9 +114,11 @@ import mobi.cwiklinski.bloodline.ui.widget.MobileLandscapeNavigationLayout
 import mobi.cwiklinski.bloodline.ui.widget.MobilePortraitNavigationLayout
 import mobi.cwiklinski.bloodline.ui.widget.MobileTitleBar
 import mobi.cwiklinski.bloodline.ui.widget.OutlinedInput
+import mobi.cwiklinski.bloodline.ui.widget.ProfileDialog
 import mobi.cwiklinski.bloodline.ui.widget.SubmitButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
 @Parcelize
@@ -389,18 +389,25 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                 }
             }
         }
-        if (state == ProfileState.LoggingOut) {
-            screenModel.resetState()
-            navigator.clearStack()
-            navigator.replaceAll(LogoutScreen())
-        }
-        if (state == ProfileState.ToLoggedOut) {
-            LogoutDialog(state, { screenModel.cancelLogout() } ) {
-                screenModel.logout()
+        when (state) {
+            ProfileState.LoggingOut -> {
+                screenModel.resetState()
+                navigator.clearStack()
+                navigator.replaceAll(LogoutScreen())
             }
+            ProfileState.ToLoggedOut -> {
+                LogoutDialog(state, { screenModel.cancelLogout() } ) {
+                    screenModel.logout()
+                }
+            }
+            ProfileState.Saved -> {
+                screenModel.resetState()
+            }
+            else -> {}
         }
         ProfileView(
             paddingValues = paddingValues,
+            state = state,
             avatar = avatar,
             editAvatar = {
                 bottomSheetNavigator.show(ProfileAvatarScreen())
@@ -416,11 +423,6 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
             nameError = state is ProfileState.Error
                     && (state as ProfileState.Error).errors.contains(ProfileError.DATA),
             email = email,
-            onEmailChanged = { newEmail ->
-                email = newEmail
-            },
-            emailError = state is ProfileState.Error &&
-                    (state as ProfileState.Error).errors.contains(ProfileError.EMAIL),
             sex = sex,
             onSexChanged = { newSex ->
                 sex = newSex
@@ -443,10 +445,6 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
             },
             startingError = state is ProfileState.Error
                     && (state as ProfileState.Error).errors.contains(ProfileError.DATA),
-            notification = notification,
-            onNotificationChanged = { newNotification ->
-                notification = newNotification
-            },
             errorMessage = { errors ->
                 getError(errors)
             },
@@ -479,6 +477,7 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
 @Composable
 fun ProfileView(
     paddingValues: PaddingValues = PaddingValues(0.dp),
+    state: ProfileState = ProfileState.Idle,
     avatar: Avatar = Avatar.FENIX,
     editAvatar: () -> Unit = {},
     avatarName: @Composable (String) -> String = { avatar.name },
@@ -487,8 +486,6 @@ fun ProfileView(
     onNameChanged: (String) -> Unit = {},
     nameError: Boolean = false,
     email: String = "",
-    onEmailChanged: (String) -> Unit = {},
-    emailError: Boolean = false,
     sex: Sex = Sex.MALE,
     onSexChanged: (Sex) -> Unit = {},
     center: String = "center",
@@ -499,21 +496,55 @@ fun ProfileView(
     starting: Int = 0,
     onStartingChanged: (Int) -> Unit = {},
     startingError: Boolean = false,
-    notification: Boolean = true,
-    onNotificationChanged: (Boolean) -> Unit = {},
     errorMessage: @Composable (List<ProfileError>) -> String = { "" },
     onProfileDelete: () ->Unit = {},
     onPasswordChange: () -> Unit = {},
     errors: List<ProfileError> = emptyList(),
     onProfileSave: () -> Unit = {}
 ) {
-    val heroGenitive = stringResource(Res.string.heroGenitive)
-    val heroinGenitive = stringResource(Res.string.heroinGenitive)
-    val hero = if (sex.isFemale()) heroinGenitive else heroGenitive
+    var showForm by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     TrackScreen(Constants.ANALYTICS_SCREEN_PROFILE)
     if (errors.isNotEmpty()) {
         koinInject<CallbackManager>().postSideEffect(SideEffects.ErrorSnackBar(errorMessage.invoke(errors)))
+    }
+    when (state) {
+        is ProfileState.Error -> {}
+        ProfileState.Idle -> {}
+        ProfileState.LoggingOut -> {}
+        ProfileState.Saved -> {
+            showForm = false
+        }
+        ProfileState.Saving -> {}
+        ProfileState.ToDelete -> {}
+        ProfileState.ToLoggedOut -> {}
+    }
+    if (showForm) {
+        ProfileDialog(
+            onClose = {
+                showForm = false
+            },
+            onSubmit = onProfileSave,
+            formEnabled = formEnabled
+        ) {
+            ProfileEditForm(
+                formEnabled = formEnabled,
+                name = name,
+                onNameChanged = onNameChanged,
+                nameError = nameError,
+                sex = sex,
+                onSexChanged = onSexChanged,
+                center = center,
+                centerList = centerList,
+                onCenterChanged = onCenterChanged,
+                onCenterPicked = onCenterPicked,
+                onCenterClear = onCenterClear,
+                starting = starting,
+                onStartingChanged = onStartingChanged,
+                startingError = startingError,
+                errorMessage = errorMessage
+            )
+        }
     }
     Column(
         modifier = Modifier.padding(paddingValues)
@@ -581,133 +612,44 @@ fun ProfileView(
             modifier = Modifier.padding(horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                stringResource(Res.string.profileDataTitle).replace("%s", hero),
-                style = contentText(),
-                modifier = Modifier.fillMaxWidth()
-            )
-            Break()
-            OutlinedInput(
-                text = name,
-                onValueChanged = onNameChanged,
-                label = stringResource(Res.string.profileDataNameLabel),
-                enabled = formEnabled,
-                error = nameError,
-                errorMessage = errorMessage(listOf(ProfileError.DATA))
-            )
-            Break()
-            OutlinedInput(
-                text = email,
-                onValueChanged = onEmailChanged,
-                label = stringResource(Res.string.profileDataEmailLabel),
-                enabled = formEnabled,
-                error = emailError,
-                errorMessage = errorMessage(listOf(ProfileError.EMAIL))
-            )
-            Break()
-            Row(
-                modifier = Modifier.selectableGroup().padding(vertical = 10.dp).fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            ProfileData(
+                stringResource(Res.string.profileDataEmailLabel)
             ) {
                 Text(
-                    stringResource(Res.string.settingsSexLabel),
-                    style = itemSubTitle()
+                    email,
+                    style = contentAction(),
                 )
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .background(
-                            if (sex.isFemale()) AppThemeColors.grey3 else AppThemeColors.background,
-                            shape = RoundedCornerShape(10.dp)
-                        )
-                        .selectable(
-                            selected = (sex == Sex.FEMALE),
-                            onClick = {
-                                onSexChanged.invoke(Sex.FEMALE)
-                            },
-                            role = Role.RadioButton
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        Icons.Filled.Female,
-                        stringResource(Res.string.female),
-                        colorFilter = ColorFilter.tint(
-                            if (sex.isFemale())
-                                AppThemeColors.white
-                            else
-                                AppThemeColors.violet2
-                        ),
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .background(
-                            if (!sex.isFemale()) AppThemeColors.grey else AppThemeColors.background,
-                            shape = RoundedCornerShape(10.dp)
-                        )
-                        .selectable(
-                            selected = (sex == Sex.MALE),
-                            onClick = {
-                                onSexChanged.invoke(Sex.MALE)
-                            },
-                            role = Role.RadioButton
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        Icons.Filled.Male,
-                        stringResource(Res.string.male),
-                        colorFilter = ColorFilter.tint(
-                            if (!sex.isFemale())
-                                AppThemeColors.white
-                            else
-                                AppThemeColors.violet2
-                        ),
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-                Spacer(Modifier.width(20.dp))
             }
             Break()
-            AutoCompleteTextView(
-                modifier = Modifier.fillMaxWidth(),
-                query = center,
-                enabled = formEnabled,
-                queryLabel = stringResource(Res.string.settingsDefaultCenterLabel),
-                onQueryChanged = onCenterChanged,
-                predictions = centerList.filter(center),
-                onClearClick = onCenterClear,
-                onItemClick = onCenterPicked
-            ) { center, index ->
-                CenterSelectItem(center = center, previous = if (index > 0) centerList[index - 1] else null)
+            ProfileData(
+                stringResource(Res.string.settingsSexLabel)
+            ) {
+                Image(
+                    if (sex.isFemale()) Icons.Filled.Female else Icons.Filled.Male,
+                    stringResource(if (sex.isFemale()) Res.string.female else Res.string.male),
+                    colorFilter = ColorFilter.tint(AppThemeColors.violet2),
+                    modifier = Modifier.size(30.dp)
+                )
             }
             Break()
-            OutlinedInput(
-                text = starting.toString(),
-                onValueChanged = {
-                    onStartingChanged.invoke(it.toIntOrNull() ?: 0)
-                },
-                label = stringResource(Res.string.settingsStartingLabel),
-                enabled = formEnabled,
-                error = startingError,
-                errorMessage = errorMessage(listOf(ProfileError.DATA)),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
+            ProfileData(
+                stringResource(Res.string.settingsDefaultCenterLabel)
+            ) {
+                Text(
+                    center.ifEmpty { stringResource(Res.string.notSet) },
+                    style = contentAction(),
+                )
+            }
             Break()
-            Text(
-                stringResource(Res.string.settingsReminderLabel),
-                style = itemSubTitle()
-            )
-            Switch(
-                checked = notification,
-                onCheckedChange = onNotificationChanged,
-                enabled = formEnabled,
-                colors = AppThemeColors.switchColors()
-            )
+            ProfileData(
+                stringResource(Res.string.settingsStartingLabel)
+            ) {
+                Text(
+                    starting.toString(),
+                    style = contentAction(),
+                )
+            }
+            Break()
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -727,16 +669,167 @@ fun ProfileView(
                 )
             }
             Break()
-            if (formEnabled) {
-                SubmitButton(
-                    onClick = onProfileSave,
-                    text = stringResource(Res.string.profileDataSubmitButton),
-                    enabled = formEnabled,
-                )
-            } else {
-                FormProgress()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                if (formEnabled) {
+                    SubmitButton(
+                        onClick = {
+                            showForm = true
+                        },
+                        text = stringResource(Res.string.profileDataSubmitButton),
+                        enabled = formEnabled,
+                    )
+                } else {
+                    FormProgress()
+                }
             }
             Spacer(Modifier.height(100.dp))
         }
+    }
+}
+
+@Preview
+@Composable
+fun ProfileEditForm(
+    formEnabled: Boolean = true,
+    name: String = "",
+    onNameChanged: (String) -> Unit = {},
+    nameError: Boolean = false,
+    sex: Sex = Sex.MALE,
+    onSexChanged: (Sex) -> Unit = {},
+    center: String = "center",
+    centerList: List<Center> = emptyList(),
+    onCenterChanged: (String) -> Unit = {},
+    onCenterPicked: (Center) -> Unit = {},
+    onCenterClear: () -> Unit = {},
+    starting: Int = 0,
+    onStartingChanged: (Int) -> Unit = {},
+    startingError: Boolean = false,
+    errorMessage: @Composable (List<ProfileError>) -> String = { "" }
+) {
+    Break()
+    OutlinedInput(
+        text = name,
+        onValueChanged = onNameChanged,
+        label = stringResource(Res.string.profileDataNameLabel),
+        enabled = formEnabled,
+        error = nameError,
+        errorMessage = errorMessage(listOf(ProfileError.DATA))
+    )
+    Break()
+    Row(
+        modifier = Modifier.selectableGroup().padding(vertical = 10.dp).fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            stringResource(Res.string.settingsSexLabel),
+            style = itemSubTitle()
+        )
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(
+                    if (sex.isFemale()) AppThemeColors.grey3 else AppThemeColors.background,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .selectable(
+                    selected = (sex == Sex.FEMALE),
+                    onClick = {
+                        onSexChanged.invoke(Sex.FEMALE)
+                    },
+                    role = Role.RadioButton
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                Icons.Filled.Female,
+                stringResource(Res.string.female),
+                colorFilter = ColorFilter.tint(
+                    if (sex.isFemale())
+                        AppThemeColors.white
+                    else
+                        AppThemeColors.violet2
+                ),
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(
+                    if (!sex.isFemale()) AppThemeColors.grey else AppThemeColors.background,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .selectable(
+                    selected = (sex == Sex.MALE),
+                    onClick = {
+                        onSexChanged.invoke(Sex.MALE)
+                    },
+                    role = Role.RadioButton
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                Icons.Filled.Male,
+                stringResource(Res.string.male),
+                colorFilter = ColorFilter.tint(
+                    if (!sex.isFemale())
+                        AppThemeColors.white
+                    else
+                        AppThemeColors.violet2
+                ),
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        Spacer(Modifier.width(20.dp))
+    }
+    Break()
+    val filteredCenters = centerList.filter(center)
+    AutoCompleteTextView(
+        modifier = Modifier.fillMaxWidth(),
+        query = center,
+        enabled = formEnabled,
+        queryLabel = stringResource(Res.string.settingsDefaultCenterLabel),
+        onQueryChanged = onCenterChanged,
+        predictions = filteredCenters,
+        onClearClick = onCenterClear,
+        onItemClick = onCenterPicked
+    ) { selectedCenter, index ->
+        CenterSelectItem(center = selectedCenter, previous = if (index > 0) filteredCenters[index - 1] else null)
+    }
+    Break()
+    OutlinedInput(
+        text = starting.toString(),
+        onValueChanged = {
+            onStartingChanged.invoke(it.toIntOrNull() ?: 0)
+        },
+        label = stringResource(Res.string.settingsStartingLabel),
+        enabled = formEnabled,
+        error = startingError,
+        errorMessage = errorMessage(listOf(ProfileError.DATA)),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+    )
+    Break()
+}
+
+@Composable
+fun ProfileData(
+    title: String,
+    value: @Composable () -> Unit
+) {
+    Row(
+        modifier = Modifier.padding(vertical = 10.dp).fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            title,
+            style = itemSubTitle()
+        )
+        value.invoke()
     }
 }

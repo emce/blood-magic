@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -37,9 +38,11 @@ import mobi.cwiklinski.bloodline.resources.donationsDeleteMessage
 import mobi.cwiklinski.bloodline.resources.donationsDeleteTitle
 import mobi.cwiklinski.bloodline.resources.goBack
 import mobi.cwiklinski.bloodline.resources.icon_close
+import mobi.cwiklinski.bloodline.resources.profileTitle
 import mobi.cwiklinski.bloodline.resources.settingsLogoutAction
 import mobi.cwiklinski.bloodline.resources.settingsLogoutMessage
 import mobi.cwiklinski.bloodline.resources.settingsLogoutTitle
+import mobi.cwiklinski.bloodline.resources.setupSave
 import mobi.cwiklinski.bloodline.ui.model.ProfileState
 import mobi.cwiklinski.bloodline.ui.theme.AppThemeColors
 import mobi.cwiklinski.bloodline.ui.theme.alertTitle
@@ -319,6 +322,75 @@ fun NotificationDeleteDialog(
                     },
                     text = "Usuń notyfikację"
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun ProfileDialog(
+    onClose: () -> Unit,
+    onSubmit: () -> Unit,
+    formEnabled: Boolean = true,
+    content: @Composable () -> Unit = {}
+) {
+    BasicAlertDialog(
+        onDismissRequest = { },
+    ) {
+        ConstraintLayout(
+            modifier = Modifier
+                .background(
+                    AppThemeColors.white,
+                    RoundedCornerShape(24.dp)
+                ).padding(
+                    top = 24.dp,
+                    bottom = 48.dp,
+                    start = 24.dp,
+                    end = 24.dp
+                )
+        ) {
+            val (titleRef, contentRef, buttonsRef) = createRefs()
+            Text(
+                stringResource(Res.string.profileTitle),
+                style = alertTitle().copy(
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier.constrainAs(titleRef) {
+                    top.linkTo(parent.top, 20.dp)
+                    centerHorizontallyTo(parent)
+                }
+            )
+            Column(
+                modifier = Modifier.constrainAs(contentRef) {
+                    top.linkTo(titleRef.bottom, 20.dp)
+                    centerHorizontallyTo(parent)
+                }.fillMaxWidth().wrapContentHeight()
+            ) {
+                content.invoke()
+            }
+            Row(
+                modifier = Modifier.constrainAs(buttonsRef) {
+                    top.linkTo(contentRef.bottom, 40.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (formEnabled) {
+                    SecondaryButton(
+                        onClick = {
+                            onClose.invoke()
+                        },
+                        text = stringResource(Res.string.goBack)
+                    )
+                    SubmitButton(
+                        onClick = onSubmit,
+                        text = stringResource(Res.string.setupSave)
+                    )
+                } else {
+                    FormProgress()
+                }
             }
         }
     }

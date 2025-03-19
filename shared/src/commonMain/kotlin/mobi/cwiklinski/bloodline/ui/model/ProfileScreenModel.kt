@@ -12,13 +12,13 @@ import mobi.cwiklinski.bloodline.auth.api.AuthResult
 import mobi.cwiklinski.bloodline.auth.api.AuthenticationService
 import mobi.cwiklinski.bloodline.common.Either
 import mobi.cwiklinski.bloodline.common.isValidEmail
+import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 import mobi.cwiklinski.bloodline.data.api.CenterService
 import mobi.cwiklinski.bloodline.data.api.ProfileService
 import mobi.cwiklinski.bloodline.data.api.ProfileServiceState
 import mobi.cwiklinski.bloodline.domain.Sex
 import mobi.cwiklinski.bloodline.domain.model.Profile
 import mobi.cwiklinski.bloodline.storage.api.StorageService
-import mobi.cwiklinski.bloodline.common.manager.CallbackManager
 
 class ProfileScreenModel(
     callbackManager: CallbackManager,
@@ -56,7 +56,9 @@ class ProfileScreenModel(
                             mutableState.value = ProfileState.Saved
                             updateProfile()
                         }
-                        ProfileServiceState.Saving -> {}
+                        ProfileServiceState.Saving -> {
+                            mutableState.value = ProfileState.Saving
+                        }
                     }
                 }
         }

@@ -7,6 +7,7 @@
     <string name="goBack">Back</string>
     <string name="confirm">Confirm</string>
     <string name="seeAll">more</string>
+    <string name="notSet">not pointed</string>
     <string name="milliliter">ml</string>
     <string name="liter">l</string>
     <string name="donationFullBlood">Full Blood</string>
