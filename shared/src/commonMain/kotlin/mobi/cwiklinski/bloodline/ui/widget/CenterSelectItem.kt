@@ -32,7 +32,7 @@ fun CenterSelectItem(modifier: Modifier = Modifier, center: Center, previous: Ce
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center
     ) {
-        if (center.voivodeship != previous?.voivodeship) {
+        if (previous == null || center.voivodeship != previous.voivodeship) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

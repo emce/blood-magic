@@ -69,7 +69,7 @@ fun LeftNavigation(
         }
         Spacer(modifier = Modifier.weight(1f))
         NavigationRailItem(
-            modifier = Modifier.padding(vertical = 5.dp),
+            modifier = Modifier.padding(vertical = 40.dp),
             selected = false,
             onClick = {
                 infoClicked?.invoke()

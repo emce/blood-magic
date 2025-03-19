@@ -28,7 +28,6 @@ fun ProfilePreview() {
             email = profile.email,
             sex = profile.sex,
             starting = profile.starting,
-            notification = profile.notification,
             center = profile.centerId
         )
     }

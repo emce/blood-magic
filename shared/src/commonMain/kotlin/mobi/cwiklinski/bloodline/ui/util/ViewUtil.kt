@@ -25,7 +25,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.Constants
 import mobi.cwiklinski.bloodline.common.event.SideEffect
 import mobi.cwiklinski.bloodline.common.removeDiacritics

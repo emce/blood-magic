@@ -3,6 +3,7 @@ package mobi.cwiklinski.bloodline.ui.widget
 import StackedSnackbarHost
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import mobi.cwiklinski.bloodline.LocalSnackBar
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationNewTitle
@@ -165,11 +167,14 @@ fun MobileLandscapeNavigationLayout(
             horizontalArrangement = Arrangement.Start
         ) {
             LeftNavigation(
-                modifier = Modifier,
                 onClicked = navigationAction,
                 selected = selected,
                 floatingActionButton = {
-                    FloatingButton(floatingAction = floatingAction)
+                    Box(
+                        modifier = Modifier.padding(start = 10.dp, top = 40.dp, end = 10.dp)
+                    ) {
+                        FloatingButton(floatingAction = floatingAction)
+                    }
                 },
                 infoClicked = infoClicked
             )

@@ -9,6 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.navigator.Navigator
@@ -38,7 +39,8 @@ fun MagicApp() {
         animation = StackedSnackbarAnimation.Slide
     )
     CompositionLocalProvider(
-        LocalSnackBar provides snackBarHostState
+        LocalSnackBar provides snackBarHostState,
+        LocalWindowInfo provides LocalWindowInfo.current
     ) {
         setSingletonImageLoaderFactory { context ->
             getAsyncImageLoader(context)
