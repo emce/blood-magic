@@ -1,5 +1,7 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -286,8 +288,10 @@ fun NewDonationForm(
     TrackScreen(Constants.ANALYTICS_SCREEN_NEW_DONATION)
     val focusManager = LocalFocusManager.current
     Column(
-        modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(20.dp)
-            .verticalScroll(rememberScrollState()),
+        modifier = Modifier.fillMaxWidth().padding(20.dp)
+            .scrollable(
+                rememberScrollState(), Orientation.Vertical
+            ),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Bottom,
     ) {
