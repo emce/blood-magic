@@ -25,19 +25,13 @@ actual class PlatformManager {
         return false
     }
 
-    internal actual fun getClipboard(): String? {
-        return null
-    }
+    internal actual fun getClipboard() : String? = null
 
-    actual fun clearClipboard() {
-    }
+    actual fun clearClipboard() { }
 
-    actual suspend fun shareText(content: String) {
-    }
+    actual suspend fun shareText(content: String) { }
 
-    actual suspend fun shareFile(path: String) {
-    }
+    actual suspend fun shareFile(path: String) { }
 
-    actual fun enableLocationService() {
-    }
+    actual fun enableLocationService() { }
 }

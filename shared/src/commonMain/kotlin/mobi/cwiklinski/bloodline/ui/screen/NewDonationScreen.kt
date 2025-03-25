@@ -1,12 +1,16 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -50,6 +54,7 @@ import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Profile
+import mobi.cwiklinski.bloodline.getOrientation
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationNewAmountLabel
 import mobi.cwiklinski.bloodline.resources.donationNewCenterLabel
@@ -149,8 +154,13 @@ class NewDonationScreen(
                 }
             }
         ) {
+            val systemBarsPadding = WindowInsets.systemBars.asPaddingValues()
+            val multiplier = if (getOrientation() == Orientation.Vertical) 0 else 2
+            val padding = systemBarsPadding.calculateTopPadding() * multiplier
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                    .padding(start = padding, end = padding)
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -286,8 +296,7 @@ fun NewDonationForm(
     TrackScreen(Constants.ANALYTICS_SCREEN_NEW_DONATION)
     val focusManager = LocalFocusManager.current
     Column(
-        modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(20.dp)
-            .verticalScroll(rememberScrollState()),
+        modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(20.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Bottom,
     ) {

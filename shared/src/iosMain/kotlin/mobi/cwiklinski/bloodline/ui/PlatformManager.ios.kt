@@ -1,14 +1,17 @@
 package mobi.cwiklinski.bloodline.ui
 
 import androidx.compose.runtime.Composable
+import mobi.cwiklinski.bloodline.DeviceOrientation
 import platform.Foundation.NSURL
 import platform.UIKit.UIActivityViewController
 import platform.UIKit.UIApplication
+import platform.UIKit.UIDevice
+import platform.UIKit.UIDeviceOrientation
 import platform.UIKit.UIPasteboard
 
 @Composable
 actual fun rememberPlatformManager(): PlatformManager {
-    return mobi.cwiklinski.bloodline.ui.PlatformManager(UIApplication.sharedApplication())
+    return PlatformManager(UIApplication.sharedApplication())
 }
 
 actual class PlatformManager(private val application: UIApplication) {
@@ -45,10 +48,9 @@ actual class PlatformManager(private val application: UIApplication) {
         )
     }
 
-    actual suspend fun shareFile(path: String) {
+    actual suspend fun shareFile(path: String) { }
 
-    }
+    actual fun enableLocationService() { }
 
-    actual fun enableLocationService() {
-    }
+
 }

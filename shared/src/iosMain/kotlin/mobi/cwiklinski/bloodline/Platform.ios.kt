@@ -20,6 +20,7 @@ import platform.CoreGraphics.CGRectMake
 import platform.UIKit.UIApplication
 import platform.UIKit.UIColor
 import platform.UIKit.UIDevice
+import platform.UIKit.UIDeviceOrientation
 import platform.UIKit.UIInterfaceOrientationLandscapeLeft
 import platform.UIKit.UIInterfaceOrientationLandscapeRight
 import platform.UIKit.UIInterfaceOrientationPortrait
@@ -114,3 +115,10 @@ private fun Color.toUIColor(): UIColor = UIColor(
     blue = this.blue.toDouble(),
     alpha = this.alpha.toDouble(),
 )
+@Composable
+actual fun getDeviceOrientation() = when (UIDevice.currentDevice.orientation) {
+    UIDeviceOrientation.UIDeviceOrientationLandscapeLeft -> DeviceOrientation.LANDSCAPE_LEFT
+    UIDeviceOrientation.UIDeviceOrientationLandscapeRight -> DeviceOrientation.LANDSCAPE_RIGHT
+    UIDeviceOrientation.UIDeviceOrientationPortraitUpsideDown -> DeviceOrientation.PORTRAIT_UPSIDE_DOWN
+    else -> DeviceOrientation.PORTRAIT
+}

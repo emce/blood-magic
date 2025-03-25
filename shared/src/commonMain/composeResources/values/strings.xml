@@ -3,6 +3,8 @@
     <string name="languageCode">pl</string>
     <string name="idShare">BloodMagic</string>
     <string name="appName">Magia Krwi</string>
+    <string name="blood">Magia</string>
+    <string name="magic">Krwi</string>
     <string name="soon">Już wkrótce będzie dostępne!</string>
     <string name="goBack">Wróć</string>
     <string name="confirm">Potwierdź</string>

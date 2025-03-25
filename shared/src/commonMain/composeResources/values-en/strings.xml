@@ -3,6 +3,8 @@
     <string name="languageCode">en</string>
     <string name="idShare">BloodMagic</string>
     <string name="appName">Blood Magic</string>
+    <string name="blood">Blood</string>
+    <string name="magic">Magic</string>
     <string name="soon">Coming soon!</string>
     <string name="goBack">Back</string>
     <string name="confirm">Confirm</string>
