@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
@@ -231,7 +232,9 @@ class ProfileScreen(override val key: ScreenKey = Clock.System.now().toString())
                             )
                         }
                     },
-                    colors = topBarColors()
+                    colors = topBarColors().copy(
+                        containerColor = AppThemeColors.topBarBackground
+                    )
                 )
             },
             selected = NavigationItem.PROFILE,

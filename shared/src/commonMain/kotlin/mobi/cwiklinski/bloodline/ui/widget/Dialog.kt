@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.DeleteOutline
@@ -337,8 +339,10 @@ fun ProfileDialog(
     BasicAlertDialog(
         onDismissRequest = { },
     ) {
-        ConstraintLayout(
+        Column(
             modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
                 .background(
                     AppThemeColors.white,
                     RoundedCornerShape(24.dp)
@@ -348,32 +352,17 @@ fun ProfileDialog(
                     start = 24.dp,
                     end = 24.dp
                 )
+                .verticalScroll(rememberScrollState())
         ) {
-            val (titleRef, contentRef, buttonsRef) = createRefs()
             Text(
                 stringResource(Res.string.profileTitle),
                 style = alertTitle().copy(
                     textAlign = TextAlign.Center
-                ),
-                modifier = Modifier.constrainAs(titleRef) {
-                    top.linkTo(parent.top, 20.dp)
-                    centerHorizontallyTo(parent)
-                }
+                )
             )
-            Column(
-                modifier = Modifier.constrainAs(contentRef) {
-                    top.linkTo(titleRef.bottom, 20.dp)
-                    centerHorizontallyTo(parent)
-                }.fillMaxWidth().wrapContentHeight()
-            ) {
-                content.invoke()
-            }
+            content.invoke()
             Row(
-                modifier = Modifier.constrainAs(buttonsRef) {
-                    top.linkTo(contentRef.bottom, 40.dp)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
