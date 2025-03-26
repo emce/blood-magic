@@ -6,7 +6,6 @@ import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.PersistableBundle
 import android.provider.Settings
@@ -18,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.idShare
 import org.jetbrains.compose.resources.stringResource
@@ -47,7 +47,7 @@ actual class PlatformManager(
         try {
             if (openSystemBrowser) {
                 context.startActivity(Intent(Intent.ACTION_VIEW).also {
-                    it.setData(Uri.parse(url))
+                    it.setData(url.toUri())
                 })
             } else {
                 val builder = CustomTabsIntent.Builder()
@@ -57,7 +57,7 @@ actual class PlatformManager(
                     CustomTabColorSchemeParams.Builder().build()
                 )
                 val customTabsIntent = builder.build()
-                customTabsIntent.launchUrl(context, Uri.parse(url))
+                customTabsIntent.launchUrl(context, url.toUri())
 
             }
         } catch (e: Exception) {

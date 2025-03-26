@@ -15,7 +15,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -171,12 +173,18 @@ fun ProfileDeleteView(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
-                RichText(
-                    stringResource(Res.string.profileDeleteContent)
-                        .replace("%s", stringResource(Res.string.profileDeleteButton)),
-                    modifier = Modifier.weight(1.0f),
-                    centered = true
-                )
+                Column(
+                    modifier = Modifier.fillMaxWidth().wrapContentHeight().verticalScroll(
+                        rememberScrollState()
+                    )
+                ) {
+                    RichText(
+                        stringResource(Res.string.profileDeleteContent)
+                            .replace("%s", stringResource(Res.string.profileDeleteButton)),
+                        modifier = Modifier.weight(1.0f),
+                        centered = true
+                    )
+                }
                 if (!isSaving) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),

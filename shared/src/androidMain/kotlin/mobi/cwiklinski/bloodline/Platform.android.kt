@@ -1,8 +1,14 @@
 package mobi.cwiklinski.bloodline
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
+import android.util.DisplayMetrics
+import android.view.Display
+import android.view.Surface
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.LocalActivity
@@ -49,11 +55,7 @@ actual fun getDonationGridSize(): GridCells =
 @Composable
 actual fun isTablet(): Boolean {
     val configuration = LocalConfiguration.current
-    return if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        configuration.screenWidthDp > 840
-    } else {
-        configuration.screenWidthDp > 600
-    }
+    return configuration.smallestScreenWidthDp >= 600
 }
 
 @Composable
@@ -74,5 +76,44 @@ actual fun StatusBarColors(
             SystemBarStyle.light(statusBarColor.toArgb(), statusBarColor.toArgb()),
             SystemBarStyle.light(navBarColor.toArgb(), navBarColor.toArgb())
         )
+    }
+}
+
+@SuppressLint("ObsoleteSdkInt", "Deprecation")
+fun getDisplayCompat(context: Context): Display? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        context.display.let { display ->
+            if (display.isValid) display else null
+        }
+    } else {
+        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager
+        try {
+            windowManager?.defaultDisplay?.also { display ->
+                val metrics = DisplayMetrics()
+                display.getRealMetrics(metrics)
+                if (metrics.widthPixels > 0 && metrics.heightPixels > 0) {
+                    return display
+                }
+            }
+            null
+        } catch (e: Exception) {
+            null
+        }
+    }
+}
+
+@Composable
+actual fun getDeviceOrientation(): DeviceOrientation {
+    val activity = LocalActivity.current
+    return if (activity != null) {
+        when (getDisplayCompat(activity)?.rotation) {
+            Surface.ROTATION_0 -> DeviceOrientation.PORTRAIT
+            Surface.ROTATION_90 -> DeviceOrientation.LANDSCAPE_LEFT
+            Surface.ROTATION_180 -> DeviceOrientation.PORTRAIT_UPSIDE_DOWN
+            Surface.ROTATION_270 -> DeviceOrientation.LANDSCAPE_RIGHT
+            else -> DeviceOrientation.PORTRAIT
+        }
+    } else {
+        DeviceOrientation.PORTRAIT
     }
 }

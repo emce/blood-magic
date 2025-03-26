@@ -1,11 +1,6 @@
 package mobi.cwiklinski.bloodline.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.staticCompositionLocalOf
-
-val LocalPlatformManager: ProvidableCompositionLocal<PlatformManager> =
-    staticCompositionLocalOf { error("PlatformManager not initialized") }
 
 @Composable
 expect fun rememberPlatformManager(): PlatformManager

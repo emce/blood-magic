@@ -44,3 +44,13 @@ expect fun getWindowSizeClass(): WindowSizeClass
 
 @Composable
 expect fun StatusBarColors(statusBarColor: Color, navBarColor: Color)
+
+@Composable
+expect fun getDeviceOrientation(): DeviceOrientation
+
+enum class DeviceOrientation {
+    LANDSCAPE_LEFT,
+    LANDSCAPE_RIGHT,
+    PORTRAIT,
+    PORTRAIT_UPSIDE_DOWN
+}

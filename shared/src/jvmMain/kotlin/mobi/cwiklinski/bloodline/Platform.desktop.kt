@@ -51,3 +51,6 @@ actual fun getWindowSizeClass(): WindowSizeClass = calculateWindowSizeClass()
 actual fun StatusBarColors(statusBarColor: Color, navBarColor: Color) {
     SideEffect { }
 }
+
+@Composable
+actual fun getDeviceOrientation() = DeviceOrientation.LANDSCAPE_LEFT

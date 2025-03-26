@@ -1,12 +1,16 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
@@ -29,6 +33,7 @@ import mobi.cwiklinski.bloodline.analytics.api.TrackScreen
 import mobi.cwiklinski.bloodline.data.IgnoredOnParcel
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.model.Notification
+import mobi.cwiklinski.bloodline.getOrientation
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.goBack
 import mobi.cwiklinski.bloodline.resources.notificationsEmpty
@@ -99,11 +104,15 @@ fun NotificationsView(
     notifications: List<Notification> = emptyList()
 ) {
     TrackScreen(Constants.ANALYTICS_SCREEN_NOTIFICATIONS)
+    val systemBarsPadding = WindowInsets.systemBars.asPaddingValues()
+    val multiplier = if (getOrientation() == Orientation.Vertical) 0 else 2
+    val padding = systemBarsPadding.calculateTopPadding() * multiplier
     Column(
-        modifier = Modifier.padding(paddingValues)
+        modifier = Modifier.padding(paddingValues).background(AppThemeColors.background)
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
+                .padding(horizontal = padding)
                 .background(AppThemeColors.white),
             verticalArrangement = Arrangement.Top,
         ) {
