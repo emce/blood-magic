@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.ui.screen
 
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -46,6 +47,7 @@ import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.domain.DonationType
 import mobi.cwiklinski.bloodline.domain.model.Center
 import mobi.cwiklinski.bloodline.domain.model.Donation
+import mobi.cwiklinski.bloodline.getOrientation
 import mobi.cwiklinski.bloodline.resources.Res
 import mobi.cwiklinski.bloodline.resources.donationEditInformationMessage
 import mobi.cwiklinski.bloodline.resources.donationEditSubmit
@@ -254,7 +256,8 @@ fun EditDonationView(
     updateDonation: () -> Unit = {}
 ) {
     val systemBarsPadding = WindowInsets.systemBars.asPaddingValues()
-    val padding = systemBarsPadding.calculateTopPadding() * 2
+    val multiplier = if (getOrientation() == Orientation.Vertical) 0 else 2
+    val padding = systemBarsPadding.calculateTopPadding() * multiplier
     Column(
         modifier = Modifier.fillMaxWidth().wrapContentHeight()
             .padding(start = padding, end = padding)

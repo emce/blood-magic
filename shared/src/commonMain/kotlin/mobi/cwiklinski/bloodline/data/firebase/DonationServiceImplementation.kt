@@ -1,5 +1,6 @@
 package mobi.cwiklinski.bloodline.data.firebase
 
+import co.touchlab.kermit.Logger
 import dev.gitlive.firebase.FirebaseException
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.database.DatabaseException
@@ -49,10 +50,17 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
                     if (donations.isEmpty()) {
                         emit(emptyList())
                     } else {
-                        emit(donations.map { donation ->
-                            donation.toDonation(centers.first { it.id == donation.centerId }
-                                .toCenter())
-                        }.sortedByDescending { it.date })
+                        val finalDonations = mutableListOf<Donation>()
+                        donations.forEach { donation ->
+                            try {
+                                val center = centers.first { it.id == donation.centerId }
+                                    .toCenter()
+                                finalDonations.add(donation.toDonation(center))
+                            } catch (e: NoSuchElementException) {
+                                Logger.e("Donations parsing", e)
+                            }
+                        }
+                        emit(finalDonations.sortedByDescending { it.date })
                     }
                 } catch (e: DatabaseException) {
                     emit(emptyList())
