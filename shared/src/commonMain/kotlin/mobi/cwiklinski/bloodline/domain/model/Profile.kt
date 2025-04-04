@@ -1,7 +1,6 @@
 package mobi.cwiklinski.bloodline.domain.model
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import mobi.cwiklinski.bloodline.data.Parcelable
 import mobi.cwiklinski.bloodline.data.Parcelize
@@ -10,7 +9,7 @@ import mobi.cwiklinski.bloodline.domain.Sex
 @Serializable
 @Parcelize
 data class Profile(
-    val id: String?,
+    val id: String? = "",
     val name: String = "",
     val email: String = "",
     val avatar: String = "WIZARD",

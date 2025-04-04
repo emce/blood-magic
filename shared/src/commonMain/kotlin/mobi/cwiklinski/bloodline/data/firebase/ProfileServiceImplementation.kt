@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -37,6 +36,7 @@ class ProfileServiceImplementation(
     private val mainRef = db.reference("settings").child(auth.currentUser?.uid ?: "-")
 
     private val _profileData = if (auth.currentUser != null) try {
+        var settings = FirebaseSettings()
         mainRef.valueEvents
             .map {
                 if (it.exists) {
@@ -54,8 +54,8 @@ class ProfileServiceImplementation(
                 }
             }
         } catch (e: DatabaseException) {
-            flowOf(Profile(""))
-        } else flowOf(Profile(null))
+            flowOf(Profile())
+        } else flowOf(Profile())
 
     override fun updateProfileData(
         name: String,
@@ -127,20 +127,17 @@ class ProfileServiceImplementation(
     private fun createNode() {
         coroutineScope.launch {
             try {
-                if (!mainRef.valueEvents.first().exists) {
-                    mainRef.push()
-                    mainRef.setValue(
-                        FirebaseSettings(
-                            "",
-                            auth.currentUser?.email ?: "",
-                            Sex.MALE.sex,
-                            0,
-                            "",
-                            0,
-                            "WIZARD"
-                        )
+                mainRef.setValue(
+                    FirebaseSettings(
+                        "",
+                        auth.currentUser?.email ?: "",
+                        Sex.MALE.sex,
+                        0,
+                        "",
+                        0,
+                        "WIZARD"
                     )
-                }
+                )
             } catch (e: FirebaseException) {
                 e.printStackTrace()
             }

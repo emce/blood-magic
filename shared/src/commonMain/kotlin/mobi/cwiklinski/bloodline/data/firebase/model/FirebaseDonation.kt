@@ -25,15 +25,29 @@ data class FirebaseDonation(
     var disqualification: Boolean = false
 ) {
     
-    fun toDonation(center: Center) = Donation(
-        id.toString(),
-        LocalDate(year, month, day),
-        DonationType.byType(type),
-        amount,
-        hemoglobin,
-        systolic,
-        diastolic,
-        disqualification,
-        center
-    ) 
+    fun toDonation(center: Center): Donation {
+        var donation = Donation()
+        if (id != null) {
+            donation = donation.copy(id = id!!)
+        }
+        donation = donation.copy(date = LocalDate(year, month, day))
+        donation = donation.copy(type = DonationType.byType(type))
+        if (amount != 0) {
+            donation = donation.copy(amount = amount)
+        }
+        if (hemoglobin != 0.0f) {
+            donation = donation.copy(hemoglobin = hemoglobin)
+        }
+        if (systolic != 0) {
+            donation = donation.copy(systolic = systolic)
+        }
+        if (diastolic != 0) {
+            donation = donation.copy(diastolic = diastolic)
+        }
+        if (disqualification) {
+            donation = donation.copy(disqualification = disqualification)
+        }
+        donation = donation.copy(center = center)
+        return donation
+    }
 }

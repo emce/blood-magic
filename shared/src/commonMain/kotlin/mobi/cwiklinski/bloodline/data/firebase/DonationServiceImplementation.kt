@@ -56,6 +56,8 @@ class DonationServiceImplementation(db: FirebaseDatabase, val auth: FirebaseAuth
                     }
                 } catch (e: DatabaseException) {
                     emit(emptyList())
+                } catch (e: NoSuchElementException) {
+                    emit(emptyList())
                 }
             }
         } catch (e: DatabaseException) {

@@ -1,12 +1,10 @@
 package mobi.cwiklinski.bloodline.domain.model
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import mobi.cwiklinski.bloodline.common.isAfter
 import mobi.cwiklinski.bloodline.common.isBefore
+import mobi.cwiklinski.bloodline.common.today
 import mobi.cwiklinski.bloodline.data.Parcelable
 import mobi.cwiklinski.bloodline.data.Parcelize
 import mobi.cwiklinski.bloodline.data.TypeParceler
@@ -18,16 +16,16 @@ import kotlin.math.roundToInt
 @Serializable
 @Parcelize
 data class Donation(
-    var id: String,
+    var id: String = "",
     @TypeParceler<LocalDate, LocalDateParceler>()
-    var date: LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
+    var date: LocalDate = today(),
     var type: DonationType = DonationType.FULL_BLOOD,
     var amount: Int = 0,
     var hemoglobin: Float = 0.0f,
     var systolic: Int = 0,
     var diastolic: Int = 0,
     var disqualification: Boolean = false,
-    var center: Center
+    var center: Center = Center()
 ) : Parcelable {
 
     fun convertToFullBlood(sex: Sex): Int {
