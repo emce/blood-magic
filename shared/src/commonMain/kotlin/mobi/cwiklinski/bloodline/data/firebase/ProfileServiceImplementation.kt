@@ -39,10 +39,14 @@ class ProfileServiceImplementation(
         var settings = FirebaseSettings()
         mainRef.valueEvents
             .map {
-                if (it.exists) {
-                    it.value<FirebaseSettings>()
-                } else {
-                    createNode()
+                try {
+                    if (it.exists) {
+                        it.value<FirebaseSettings>()
+                    } else {
+                        createNode()
+                        FirebaseSettings()
+                    }
+                } catch (e: Exception) {
                     FirebaseSettings()
                 }
             }
